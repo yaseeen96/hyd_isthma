@@ -11,7 +11,7 @@ Tech Stack - Flutter
 1. Navigate to frontend directory
 
 ```
-cd frontend
+cd frontend\ application
 ```
 
 2. Build apk
