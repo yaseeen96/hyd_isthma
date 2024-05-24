@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hyd_isthma_app/src/common_widgets/page_not_found.dart';
-import 'package:hyd_isthma_app/src/features/home/presentation/home_screen.dart';
+import 'package:jih_ijtema_app/src/common_widgets/page_not_found.dart';
+import 'package:jih_ijtema_app/src/features/home/presentation/home_screen.dart';
 
 CustomTransitionPage buildPageWithDefaultTransition({
   required BuildContext context,

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "670064840339",
+    "project_id": "jih-ijtema",
+    "storage_bucket": "jih-ijtema.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670064840339:android:280d8417876aba5bd8c766",
+        "android_client_info": {
+          "package_name": "com.example.jih_ijtema_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0667FspleBfrOmxkfXjf5x09d9a27FEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

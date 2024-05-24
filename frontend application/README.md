@@ -1,4 +1,4 @@
-# hyd_isthma_app
+# jih_ijtema_app
 
 Event Management Solution for Hyderabad Isthma
 

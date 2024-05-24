@@ -1,4 +1,4 @@
-package com.example.hyd_isthma_app
+package com.example.jih_ijtema_app
 
 import io.flutter.embedding.android.FlutterActivity
 
