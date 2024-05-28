@@ -1,15 +1,17 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+
+import { DarkModeProvider } from "./utils/check_dark_mode";
+import { useDarkMode } from "./utils/check_dark_mode";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const isDarkMode = useDarkMode();
 
   return (
-    <div>
-      <h1 className="text-2xl text-red-600">hello</h1>
-    </div>
+    <DarkModeProvider>
+      <div className="dark:bg-black h-[100vh] w-[100vw] flex justify-center items-center">
+        <h1 className="text-2xl dark:text-white text-red-600">Ijtema App</h1>
+      </div>
+    </DarkModeProvider>
   );
 }
 
