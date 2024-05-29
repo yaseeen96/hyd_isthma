@@ -1,16 +1,7 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { DarkModeProvider } from "./utils/check_dark_mode";
-import { useDarkMode } from "./utils/check_dark_mode";
-import router from "./routes";
-import { RouterProvider } from "react-router-dom";
-
-function App() {
-  return (
-    <DarkModeProvider>
-      <RouterProvider router={router} />
-    </DarkModeProvider>
-  );
+function App({ children }) {
+    return <div className="main-section antialiased relative font-nunito text-sm font-normal">{children}</div>;
 }
 
 export default App;

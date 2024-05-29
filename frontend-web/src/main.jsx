@@ -1,13 +1,25 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
-import "./index.css";
-import { RouterProvider } from "react-router-dom";
-import router from "./routes/index.jsx";
-import { DarkModeProvider } from "./utils/check_dark_mode.jsx";
+import React, { Suspense } from 'react';
+import ReactDOM from 'react-dom/client';
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+// Perfect Scrollbar
+import 'react-perfect-scrollbar/dist/css/styles.css';
+
+// Tailwind css
+import './index.css';
+
+// Router
+import { RouterProvider } from 'react-router-dom';
+import router from './router/index';
+// redux
+import { Provider } from 'react-redux';
+import store from './store/index';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.StrictMode>
+        <Suspense>
+            <Provider store={store}>
+                <RouterProvider router={router} />
+            </Provider>
+        </Suspense>
+    </React.StrictMode>
 );
