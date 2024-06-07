@@ -17,13 +17,13 @@ const Otp = () => {
                 <div>
                     <label htmlFor="OTP">OTP</label>
                     <div className="relative text-white-dark">
-                        <input id="OTP" type="number" placeholder="Enter 6 digit otp number" className="form-input ps-10 placeholder:text-white-dark" />
+                        <input id="OTP" type="number" placeholder="Enter your otp" className="form-input ps-10 placeholder:text-white-dark" />
                         <span className="absolute start-4 top-1/2 -translate-y-1/2">
                             <IconPhone fill={true} />
                         </span>
                     </div>
                 </div>
-                <button type="submit" className="btn btn-gradient !mt-6 w-full border-0 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]">
+                <button type="submit" className="btn btn-primary !mt-6 w-full border-0 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]">
                     Verify
                 </button>
             </form>
