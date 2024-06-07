@@ -1,0 +1,44 @@
+FROM php:8.1-apache
+
+# copy virtual host config into container
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+
+# Enable rewrite mode
+RUN a2enmod rewrite
+
+# Install necessary packages
+RUN apt-get update && \
+    apt-get install \
+    libzip-dev \
+    wget \
+    git \
+    unzip \
+    -y --no-install-recommends
+
+# install php extensions
+RUN docker-php-ext-install pdo pdo_mysql bcmath zip
+
+
+# copy compose installable
+COPY ./install-composer.sh ./
+
+# copy php.ini
+COPY ./php.ini /usr/local/etc/php/
+
+
+# Cleanup packages and install composer
+RUN apt-get purge -y g++ \
+    && apt-get autoremove -y \
+    && rm -r /var/lib/apt/lists/* \
+    && rm -rf /tmp/* \
+    && sh ./install-composer.sh \
+    && rm ./install-composer.sh
+
+# change the working directory
+WORKDIR /var/www
+
+# Change the owner of the container document root
+RUN chown -R www-data:www-data /var/www
+
+# Start Apache in foreground
+CMD ["apache2-foreground"]
