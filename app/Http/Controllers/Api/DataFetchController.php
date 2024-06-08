@@ -14,7 +14,6 @@ class DataFetchController extends Controller
         $migrator = new UsersMigrator($url);
         $migrator->loadFromServer();
         $users = $migrator->getUsers();
-        dd($users);
         $migrator->exportToCSV("users.csv", $users);
         // $migrator->importCSVToDB('test1', 'user', 'pwd', 'db', 'table', 'users.csv');
     }

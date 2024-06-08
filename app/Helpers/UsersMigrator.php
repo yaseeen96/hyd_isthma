@@ -36,11 +36,9 @@ class UsersMigrator
             $allUsers = $resultsJson['data'];
 
             $getUserURL = $this->url . "/" . self::getUserAPIPath . '?' . self::getUserAPIQueryParameter . "=";
-            $counter = 1;
             foreach ($allUsers as $aUser) {
                 $userNumber = $aUser['userName'];
                 if ($userNumber !== '') {
-                    $counter++;
                     // echo "Processing user " . $userNumber . PHP_EOL;
                     $getUserURLByID = $getUserURL . $userNumber;
                     curl_setopt($curl, CURLOPT_URL, $getUserURLByID);
@@ -52,10 +50,6 @@ class UsersMigrator
                         $this->users[$userNumber] = $this->getUserFromResponse($userInfo);
                     }
                 }
-                if ($counter == 3) {
-                    break;
-                }
-
             }
             // echo "Number of users retrieved from the server " . count($this->users) . PHP_EOL;
         } else {
@@ -111,6 +105,7 @@ class UsersMigrator
         $file = fopen($path, 'w');
 
         if ($file === false) {
+            echo "Failed to open file " . $csvPath . PHP_EOL;
             throw new Exception('Could not open file for writing: ' . $path);
         }
 
@@ -119,7 +114,7 @@ class UsersMigrator
             fputcsv($file, $userRow);
         }
         fclose($file);
-
+        echo "Successfully exported data to csv file." . PHP_EOL;
         return $path;
     }
 
