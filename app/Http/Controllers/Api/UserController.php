@@ -20,7 +20,6 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $user = auth()->user();
-        dd($user);
         $data = [
             "confirm_arrival" => $request->get('confirm_arrival'),
             "reason_for_not_coming" => $request->get('reason_for_not_coming'),

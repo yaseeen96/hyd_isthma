@@ -30,16 +30,6 @@ class UserFactory extends Factory
             'password' => null,
             'remember_token' => Str::random(10),
             "phone" => $this->faker->phoneNumber,
-            "rukn_id" => $this->faker->word,
-            "full_name" => $this->faker->name,
-            "unit_name" => $this->faker->word,
-            "district" => $this->faker->word,
-            "halqa" => $this->faker->word,
-            "gender" => $this->faker->word,
-            "confirm_arrival" => null,
-            "reason_for_not_coming" => "",
-            "ameer_permission_taken" => null,
-            "emergency_contact" => ""
         ];
     }
 

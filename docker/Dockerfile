@@ -16,7 +16,7 @@ RUN apt-get update && \
     -y --no-install-recommends
 
 # install php extensions
-RUN docker-php-ext-install pdo pdo_mysql bcmath zip
+RUN docker-php-ext-install mysqli pdo pdo_mysql bcmath zip
 
 
 # copy compose installable
