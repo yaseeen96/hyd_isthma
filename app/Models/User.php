@@ -22,16 +22,13 @@ class User extends Authenticatable
         'email',
         'password',
         "phone",
-        "rukn_id",
-        "full_name",
+        "user_number",
         "unit_name",
-        "district",
-        "halqa",
+        "zone_name",
+        "division_name",
+        "dob",
         "gender",
-        "confirm_arrival",
-        "reason_for_not_coming",
-        "ameer_permission_taken",
-        "emergency_contact"
+        "status",
     ];
 
     /**
@@ -53,4 +50,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function registration()
+    {
+        return $this->HasOne(Registration::class, 'user_id', 'id');
+    }
 }

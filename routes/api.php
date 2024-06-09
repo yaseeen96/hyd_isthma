@@ -21,12 +21,13 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', 'AuthController@login');
         Route::post('verifyOtp', 'AuthController@verifyOtp');
+        Route::post('verifyToken', 'AuthController@verifyToken');
     });
     /* protected routes */
     Route::middleware('auth:sanctum')->group(function () {
         Route::group(['prefix' => 'user'], function () {
             Route::get('getUserDetails', 'UserController@index');
-            Route::post('UpdateUserDetails', 'UserController@update');
+            Route::post('register', 'UserController@register');
         });
     });
     Route::get('fetchUsers', 'DataFetchController@index');

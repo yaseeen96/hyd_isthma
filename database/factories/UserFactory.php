@@ -30,6 +30,13 @@ class UserFactory extends Factory
             'password' => null,
             'remember_token' => Str::random(10),
             "phone" => $this->faker->phoneNumber,
+            "user_number" => "testing",
+            "unit_name" => "testing",
+            "zone_name" => "testing",
+            "division_name" => "testing",
+            "dob" => "testing",
+            "gender" => "testing",
+            "status" => "testing",
         ];
     }
 

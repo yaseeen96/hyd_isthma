@@ -6,10 +6,12 @@ use App\Helpers\SmsHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OtpVerifyRequest;
 use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\VerifyTokenRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 use Ichtrojan\Otp\Otp;
 
 class AuthController extends Controller
@@ -73,6 +75,23 @@ class AuthController extends Controller
                 'token' => $token,
                 'user' => $user,
             ]
+        ], Response::HTTP_OK);
+    }
+
+    public function verifyToken(VerifyTokenRequest $request)
+    {
+        $token = $request->token;
+
+        $isTokenExists = PersonalAccessToken::findToken($token);
+        if (!isset($isTokenExists)) {
+            return response()->json([
+                "message" => "Token not exists",
+                "status" => "failure"
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+        return response()->json([
+            "status" => "success",
+            "message" => "Token exists"
         ], Response::HTTP_OK);
     }
 }

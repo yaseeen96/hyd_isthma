@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Registration>
  */
 class RegistartionFactory extends Factory
 {
@@ -18,12 +18,6 @@ class RegistartionFactory extends Factory
     {
         return [
             "user_id" => 1,
-            "rukn_id" => "123123",
-            "full_name" => "kahkashan",
-            "unit_name" => "asdfasdf",
-            "district" => "Kalaburagi",
-            "halqa" => "testing",
-            "gender" => "F",
             "confirm_arrival" => null,
             "reason_for_not_coming" => "",
             "ameer_permission_taken" => null,
