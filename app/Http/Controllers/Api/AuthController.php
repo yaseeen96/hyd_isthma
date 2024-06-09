@@ -26,7 +26,7 @@ class AuthController extends Controller
         /* generating otp for user */
         $otp = (new Otp)->generate($user->phone, 'numeric', 4, 30);
         /* sending OTP to user */
-        $isOtpSend = SmsHelper::sendOtpMsg($user->phone, $otp->token);
+        $isOtpSend = SmsHelper::sendOtpMsg($user->phone, $user->name, $otp->token);
 
         if (!$isOtpSend) {
             return response()->json([
