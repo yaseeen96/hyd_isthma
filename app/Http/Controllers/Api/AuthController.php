@@ -89,9 +89,16 @@ class AuthController extends Controller
                 "status" => "failure"
             ], Response::HTTP_UNAUTHORIZED);
         }
+        $user = $isTokenExists->tokenable;
+        $IsRegDone = $user->registration;
         return response()->json([
             "status" => "success",
-            "message" => "Token exists"
+            "message" => "Token exists",
+            "data" => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'confirm_arrival' => isset($IsRegDone) ? $user->registration->confirm_arrival : null
+            ]
         ], Response::HTTP_OK);
     }
 }
