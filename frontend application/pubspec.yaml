@@ -41,11 +41,9 @@ dependencies:
   flutter_riverpod: ^2.5.1
   logger: ^2.2.0
   flutter_native_splash: ^2.3.5
-  awesome_notifications_fcm: ^0.9.3+1
-  awesome_notifications_core: ^0.9.3
-  awesome_notifications: ^0.9.3+1
   firebase_core: ^2.31.1
   firebase_crashlytics: ^3.5.6
+  webview_flutter: ^4.8.0
   # dart run flutter_native_splash:create
 
 dev_dependencies:
