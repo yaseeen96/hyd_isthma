@@ -6,19 +6,46 @@ const rotateX = plugin(function ({ addUtilities }) {
         },
     });
 });
+
+const flowbite = require('flowbite-react/tailwind');
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+    content: [
+        // ...
+        flowbite.content(),
+    ],
+    plugins: [
+        // ...
+        flowbite.plugin(),
+    ],
+};
 module.exports = {
     content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
-    darkMode: 'class',
     theme: {
         container: {
             center: true,
         },
         extend: {
             colors: {
+                gray: {
+                    100: '#E5E5E5',
+                    200: '#CCCCCC',
+                    300: '#B2B2B2',
+                    400: '#999999',
+                    500: '#7F7F7F',
+                    600: '#666666',
+                    700: '#4C4C4C',
+                    800: '#1A1A1A',
+                },
                 primary: {
                     DEFAULT: '#5C0099',
-                    light: '#f2e6ff',
-                    'dark-light': 'rgba(92, 0, 153, 0.15)',
+                    100: '#F4F0F7',
+                    200: '#DED3E5',
+                    300: '#BCA3CC',
+                    400: '#A96FCF',
+                    500: '#8635BD',
+                    600: '#5C0099',
                 },
                 secondary: {
                     DEFAULT: '#fdc500',
@@ -50,11 +77,7 @@ module.exports = {
                     light: '#eaeaec',
                     'dark-light': 'rgba(59,63,92,.15)',
                 },
-                black: {
-                    DEFAULT: '#0e1726',
-                    light: '#e3e4eb',
-                    'dark-light': 'rgba(14,23,38,.15)',
-                },
+
                 white: {
                     DEFAULT: '#ffffff',
                     light: '#e0e6ed',
