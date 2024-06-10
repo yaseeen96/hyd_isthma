@@ -8,7 +8,6 @@ export const sendOtpService = async (phone) => {
 
         return response.data;
     } catch (error) {
-        console.log(error);
         throw new Error(error.response.data.message.phone[0]);
     }
 };
@@ -22,7 +21,6 @@ export const verifyOtpService = async (phone, otp) => {
 
         return response.data;
     } catch (error) {
-        console.log(error);
         // check if response.data.message.otp is an array
         if (error.response.data.message.otp instanceof Array) {
             throw new Error(error.response.data.message.otp[0]);

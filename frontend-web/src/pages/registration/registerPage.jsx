@@ -36,12 +36,10 @@ const RegisterPage = () => {
 
     useAsyncEffect(async () => {
         const response = await getUserDetails();
-        console.log(response);
         setUser(response);
     }, []);
 
     const onConfirmed = (e) => {
-        console.log(e.target.value);
         setUserDetails({ ...userDetails, confirmArrival: e.target.value === 'true' });
     };
 

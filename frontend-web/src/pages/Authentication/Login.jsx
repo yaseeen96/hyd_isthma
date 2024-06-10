@@ -18,13 +18,11 @@ const Login = () => {
         try {
             setLoading(true);
             const response = await sendOtpService(phone);
-            console.log('response');
+
             setUserState((prev) => ({ ...prev, phone: phone }));
             toast.success(response.message);
             navigate('/verifyOtp');
         } catch (error) {
-            console.log('error from login.jsx');
-            console.log(error);
             toast.error(`${error}`);
         } finally {
             setLoading(false);

@@ -4,7 +4,6 @@ import { useDarkMode } from '../../../utils/hooks/useDarkMode';
 const AuthLayout = ({ children, title }) => {
     const isDarkMode = useDarkMode();
     const navigate = useNavigate();
-    console.log('isDarkMode', isDarkMode);
     return (
         <div>
             <div className="relative flex min-h-screen items-center justify-center bg-[url(/assets/images/auth/map.png)] bg-cover bg-center bg-no-repeat px-6 py-10 dark:bg-[#060818] sm:px-16">

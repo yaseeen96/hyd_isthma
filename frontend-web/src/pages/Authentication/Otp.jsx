@@ -1,17 +1,13 @@
 import AuthLayout from './Layout/AuthLayout';
 import IconPhone from '../../components/Icon/IconPhone';
-
 import { useNavigate } from 'react-router-dom';
-import { useDarkMode } from '../../utils/hooks/useDarkMode';
 import { verifyOtpService } from '../../services/login_service';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { userStateAtom } from '../../store/atoms/userStateAtom';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 const Otp = () => {
-    const isDarkMode = useDarkMode();
-    console.log('isDarkMode in Otp:', isDarkMode);
     const navigate = useNavigate();
     const [otp, setOtp] = useState('');
     const [loading, setLoading] = useState(false);

@@ -10,31 +10,24 @@ const StickyNavBar = () => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
-                console.log('IntersectionObserver entry:', entry);
-                console.log('IntersectionObserver entry.intersectionRatio:', entry.intersectionRatio);
                 setIsSticky(entry.intersectionRatio < 1);
             },
             { threshold: [1] }
         );
 
         if (navbarRef.current) {
-            console.log('Observing navbar:', navbarRef.current);
             observer.observe(navbarRef.current);
         } else {
-            console.log('navbarRef.current is null');
         }
 
         return () => {
             if (navbarRef.current) {
-                console.log('Unobserving navbar:', navbarRef.current);
                 observer.unobserve(navbarRef.current);
             }
         };
     }, []);
 
-    useEffect(() => {
-        console.log('isSticky state changed:', isSticky);
-    }, [isSticky]);
+    useEffect(() => {}, [isSticky]);
 
     return (
         <div ref={navbarRef} className={`sticky-navbar bg-gray-50 dark:bg-black  w-screen min-h-16 max-h-32 pt-8 sticky top-[-1px] ${isSticky ? 'backdrop-blur-md' : ''}`}>

@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
     const navigate = useNavigate();
     const onRegisterIjtema = () => {
-        console.log('Register for Ijtema');
         navigate('/home/register');
     };
     const isArrivalConfirmed = localStorage.getItem('arrivalConfirmed');
@@ -20,7 +19,7 @@ const HomePage = () => {
             <TileButton
                 title={isArrivalConfirmed ? 'Registered Successfully' : 'Register for Ijtema'}
                 isCompleted={isArrivalConfirmed}
-                onClick={isArrivalConfirmed ? null : onRegisterIjtema}
+                onClick={onRegisterIjtema}
                 icon={<MdEventNote color="black" size={30} />}
             />
         </HomeLayout>
