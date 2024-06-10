@@ -1,3 +1,7 @@
+.sticky-navbar {
+    transition: background-color 1s ease, top 1s ease, opacity 1s ease;
+    opacity: 1;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -29,11 +33,11 @@
         @apply bg-[#fafafa]/90 px-6 pt-4 dark:bg-[#060818]/90;
     }
 
-    .navbar-floating header>div>div:first-child {
+    .navbar-floating header > div > div:first-child {
         @apply rounded-md;
     }
 
-    .horizontal .navbar-floating header>div>div:first-child {
+    .horizontal .navbar-floating header > div > div:first-child {
         @apply rounded-b-none;
     }
 
@@ -42,22 +46,22 @@
     }
 
     /* Sidebar */
-    .sidebar:hover .nav-item>a {
+    .sidebar:hover .nav-item > a {
         @apply w-auto;
     }
 
-    .sidebar .nav-item>button,
-    .sidebar .nav-item>a {
+    .sidebar .nav-item > button,
+    .sidebar .nav-item > a {
         @apply mb-1 flex w-full items-center justify-between overflow-hidden whitespace-nowrap rounded-md p-2.5 text-[#506690] hover:bg-[#000]/[0.08] hover:text-black dark:hover:bg-[#181f32] dark:hover:text-white-dark;
     }
 
-    .sidebar .nav-item>button.active,
-    .sidebar .nav-item>a.active {
+    .sidebar .nav-item > button.active,
+    .sidebar .nav-item > a.active {
         @apply bg-[#000]/[0.08] text-black dark:bg-[#181f32] dark:text-white-dark;
     }
 
-    .sidebar .nav-item>button.active>div>span,
-    .sidebar .nav-item>a.active>div>span {
+    .sidebar .nav-item > button.active > div > span,
+    .sidebar .nav-item > a.active > div > span {
         @apply dark:!text-white-dark;
     }
 
@@ -133,8 +137,8 @@
         @apply bg-gray-100 text-primary dark:bg-primary/10;
     }
 
-    .horizontal-menu>li.nav-item:hover>ul.sub-menu,
-    .horizontal-menu>li.nav-item>ul.sub-menu>li:hover>ul {
+    .horizontal-menu > li.nav-item:hover > ul.sub-menu,
+    .horizontal-menu > li.nav-item > ul.sub-menu > li:hover > ul {
         @apply block;
     }
 
@@ -169,7 +173,7 @@
         @apply lg:w-[260px];
     }
 
-    .collapsible-vertical.toggle-sidebar .sidebar .nav-item>a {
+    .collapsible-vertical.toggle-sidebar .sidebar .nav-item > a {
         @apply w-auto;
     }
 
@@ -192,14 +196,14 @@
     }
 
     .collapsible-vertical .sidebar .collapse-icon,
-    .collapsible-vertical .main-logo>span {
+    .collapsible-vertical .main-logo > span {
         @apply transition-opacity duration-300 lg:opacity-0;
     }
 
     .collapsible-vertical .sidebar:hover .collapse-icon,
     .collapsible-vertical.toggle-sidebar .collapse-icon,
-    .collapsible-vertical .sidebar:hover .main-logo>span,
-    .collapsible-vertical.toggle-sidebar .main-logo>span {
+    .collapsible-vertical .sidebar:hover .main-logo > span,
+    .collapsible-vertical.toggle-sidebar .main-logo > span {
         @apply duration-500 lg:opacity-100;
     }
 
@@ -211,21 +215,21 @@
         @apply flex rotate-180;
     }
 
-    .collapsible-vertical .sidebar ul>h2 span {
+    .collapsible-vertical .sidebar ul > h2 span {
         @apply hidden whitespace-nowrap;
     }
 
-    .collapsible-vertical .sidebar ul>h2 svg {
+    .collapsible-vertical .sidebar ul > h2 svg {
         @apply block;
     }
 
-    .collapsible-vertical .sidebar:hover ul>h2 span,
-    .collapsible-vertical.toggle-sidebar .sidebar ul>h2 span {
+    .collapsible-vertical .sidebar:hover ul > h2 span,
+    .collapsible-vertical.toggle-sidebar .sidebar ul > h2 span {
         @apply inline;
     }
 
-    .collapsible-vertical .sidebar:hover ul>h2 svg,
-    .collapsible-vertical.toggle-sidebar .sidebar ul>h2 svg {
+    .collapsible-vertical .sidebar:hover ul > h2 svg,
+    .collapsible-vertical.toggle-sidebar .sidebar ul > h2 svg {
         @apply hidden;
     }
 
@@ -245,7 +249,7 @@
 
     /* Buttons */
     .btn {
-        @apply relative flex items-center justify-center rounded-md border px-5 py-2 text-sm font-semibold shadow-[0_10px_20px_-10px] outline-none transition duration-300 hover:shadow-none;
+        @apply relative flex items-center justify-center rounded-md border px-5 py-2 text-sm font-semibold outline-none transition duration-300 hover:shadow-none h-[50px];
     }
 
     .btn-lg {
@@ -358,7 +362,7 @@
     .form-textarea,
     .form-select,
     .form-multiselect {
-        @apply w-full rounded-md border border-white-light bg-white px-4 py-2 text-sm font-semibold text-black !outline-none focus:border-primary focus:ring-transparent dark:border-[#17263c] dark:bg-[#121e32] dark:text-white-dark dark:focus:border-primary;
+        @apply w-full rounded-md border border-white-light bg-white px-4 py-2 text-sm font-semibold text-black !outline-none focus:border-primary focus:ring-transparent dark:border-[#17263c] dark:bg-[#121e32] dark:text-white-dark dark:focus:border-primary  h-[50px] placeholder:text-gray-300;
     }
 
     .form-input-lg,
@@ -508,7 +512,7 @@
         @apply relative;
     }
 
-    .dropdown>button {
+    .dropdown > button {
         @apply flex;
     }
 
@@ -516,12 +520,12 @@
         @apply my-1 min-w-[120px] rounded bg-white p-0 py-2 shadow dark:bg-[#1b2e4b] text-black dark:text-white-dark;
     }
 
-    .dropdown ul li>a,
-    .dropdown ul li>button {
+    .dropdown ul li > a,
+    .dropdown ul li > button {
         @apply flex items-center px-4 py-2 hover:bg-primary/10 hover:text-primary;
     }
 
-    .dropdown ul li>button {
+    .dropdown ul li > button {
         @apply w-full;
     }
 
@@ -578,8 +582,8 @@
 }
 
 /* perfect scrollbar */
-.ps__rail-y>.ps__thumb-y,
-.ps__rail-y>.ps__thumb-y {
+.ps__rail-y > .ps__thumb-y,
+.ps__rail-y > .ps__thumb-y {
     @apply !w-1.5 !bg-[#DDDDDD] dark:!bg-[#2d334c];
 }
 
