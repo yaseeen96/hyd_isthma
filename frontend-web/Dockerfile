@@ -4,20 +4,20 @@ FROM node:21.7.2-alpine
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and yarn.lock to the container
-COPY package.json yarn.lock ./
+# Copy package.json and package-lock.json to the container
+COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN yarn install --frozen-lockfile
+RUN npm ci
 
 # Copy the app's source code to the container
 COPY . .
 
 # Build the React app with Vite
-RUN yarn build
+RUN npm run build
 
 # Install serve to serve the build
-RUN yarn global add serve
+RUN npm install -g serve
 
 # Expose the port that the app runs on
 EXPOSE 5000
