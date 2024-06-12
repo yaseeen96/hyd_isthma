@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes(['register' => false]);
+
+Route::get('/', 'DashboardController@index')->name('dashboard');
+Route::resource('members', 'MembersController', ['only' => ['index']]);

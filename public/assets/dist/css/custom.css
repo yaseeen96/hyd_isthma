@@ -1,0 +1,28 @@
+/* custom css */
+.login-page{
+    background-image: url('../../img/logos/map.png');
+}
+.login-box {
+    width: 50% !important;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+.custom-table-head > thead > tr > th  {
+    text-transform: uppercase !important;
+    color: #7b7575a1;
+    letter-spacing: 1px;
+    font-size: 12px;
+}
+.btn-purple {
+    background-color: blueviolet;
+    color: #fff;
+}
+.btn-purple:hover{
+    color: #fff;
+}
+
+@media only screen and (min-width: 280px) and (max-width: 1024px) {
+    .login-box {
+            width: 90% !important;
+            padding: 10px !important;
+        }
+}
