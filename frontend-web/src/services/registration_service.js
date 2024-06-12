@@ -1,10 +1,11 @@
 import axios from 'axios';
 export const confirmRegistrationService = async (data) => {
     try {
+        console.log(data);
         const response = await axios.post(
             'https://jihapi.kkshan.amlc.in/api/v1/user/register',
             {
-                confirmArrival: data.confirmArrival ? 1 : 0,
+                confirmArrival: data.confirmArrival,
                 reason_for_not_coming: data.reason_for_not_coming ?? null,
                 emergency_contact: data.emergency_contact,
                 ameer_permission_taken: data.ameer_permission_taken ? 1 : 0,

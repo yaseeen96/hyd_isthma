@@ -40,7 +40,10 @@ const RegisterPage = () => {
     }, []);
 
     const onConfirmed = (e) => {
-        setUserDetails({ ...userDetails, confirmArrival: e.target.value === 'true' });
+        // check type of e.target.value
+
+        console.log(typeof e.target.value);
+        setUserDetails({ ...userDetails, confirmArrival: e.target.value });
     };
 
     const calculateAge = (dob) => {
@@ -110,9 +113,9 @@ const RegisterPage = () => {
                     Will you be able to attend the event?
                 </label>
                 <select id="confirmation" name="confirmation" className="form-select text-gray-300 " onChange={onConfirmed}>
-                    <option value={false}>Choose Option</option>
-                    <option value={true}>Yes</option>
-                    <option value={false}>No</option>
+                    <option value={0}>Choose Option</option>
+                    <option value={0}>Yes</option>
+                    <option value={1}>No</option>
                 </select>
             </div>
             {userDetails.confirmArrival === false && (

@@ -17,8 +17,8 @@ const HomePage = () => {
                 </h1>
             </div>
             <TileButton
-                title={isArrivalConfirmed ? 'Registered Successfully' : 'Register for Ijtema'}
-                isCompleted={isArrivalConfirmed}
+                title={isArrivalConfirmed == 'true' ? 'Registered Successfully' : 'Register for Ijtema'}
+                isCompleted={isArrivalConfirmed == 'true'}
                 onClick={onRegisterIjtema}
                 icon={<MdEventNote color="black" size={30} />}
             />
