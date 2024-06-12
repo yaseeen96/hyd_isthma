@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('registrations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('member_id')->constrained();
             $table->boolean("confirm_arrival")->nullable();
             $table->string("reason_for_not_coming")->nullable();
             $table->boolean("ameer_permission_taken")->nullable();

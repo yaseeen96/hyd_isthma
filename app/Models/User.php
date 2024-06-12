@@ -51,8 +51,4 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function registration()
-    {
-        return $this->HasOne(Registration::class, 'user_id', 'id');
-    }
 }

@@ -10,7 +10,7 @@ class Registration extends Model
     use HasFactory;
 
     protected $fillable = [
-        "user_id",
+        "member_id",
         "confirm_arrival",
         "reason_for_not_coming",
         "ameer_permission_taken",
@@ -19,6 +19,6 @@ class Registration extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Member::class);
     }
 }

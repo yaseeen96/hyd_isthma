@@ -26,8 +26,8 @@ Route::group(['prefix' => 'v1'], function () {
     /* protected routes */
     Route::middleware('auth:sanctum')->group(function () {
         Route::group(['prefix' => 'user'], function () {
-            Route::get('getUserDetails', 'UserController@index');
-            Route::post('register', 'UserController@register');
+            Route::get('getUserDetails', 'RegistrationController@index');
+            Route::post('register', 'RegistrationController@register');
         });
     });
     Route::get('fetchUsers', 'DataFetchController@index');
