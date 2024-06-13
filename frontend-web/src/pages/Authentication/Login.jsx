@@ -37,7 +37,7 @@ const Login = () => {
                         <input
                             id="Phone"
                             type="tel"
-                            placeholder="Enter Phone Number"
+                            placeholder="Enter your phone number"
                             className="form-input ps-10 placeholder:text-white-dark"
                             onChange={(e) => {
                                 setPhone(e.target.value);
