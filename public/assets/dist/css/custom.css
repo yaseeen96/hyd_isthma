@@ -1,4 +1,7 @@
 /* custom css */
+:root {
+    --color-purple: blueviolet;
+}
 .login-page{
     background-image: url('../../img/logos/map.png');
 }
@@ -13,7 +16,7 @@
     font-size: 12px;
 }
 .btn-purple {
-    background-color: blueviolet;
+    background-color: var(--color-purple);
     color: #fff;
 }
 .btn-purple:hover{
@@ -25,4 +28,12 @@
             width: 90% !important;
             padding: 10px !important;
         }
+}
+/* styling for datatable navigations */
+.page-item.active .page-link {
+    background-color: var(--color-purple);
+    border-color: var(--color-purple);
+}
+.page-link{
+    color: var(--color-purple);
 }

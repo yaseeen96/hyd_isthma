@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Member;
 use App\Models\Registration;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 

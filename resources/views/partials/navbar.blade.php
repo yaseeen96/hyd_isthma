@@ -17,67 +17,51 @@
          <!-- Messages Dropdown Menu -->
          <li class="nav-item dropdown">
              <a class="nav-link" data-toggle="dropdown" href="#">
-                 <i class="far fa-user"></i>
+                 <i class="fas fa-user"></i>
              </a>
              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                 {{-- <a href="#" class="dropdown-item"> --}}
-                 {{-- <!-- Message Start -->
+                 <a href="#" class="dropdown-item">
                      <div class="media">
                          <div class="media-body">
-                             <div class="row d-flex">
-                                 <div class="col-2">
-                                     <span class="text-left text-sm text-danger"><i class="fas fa-star"></i></span>
-                                 </div>
-                                 <div class="col-10">
-                                     <a href="{{ route('logout') }}"
-                                         onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                         {{ __('Logout') }}
-                                     </a>
-                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                         class="d-none">
-                                         @csrf
-                                     </form>
-                                 </div>
-                             </div>
+                             <h3 class="dropdown-item-title">
+                                 Hi, {{ auth()->user()->name }}
+                             </h3>
                          </div>
                      </div>
                      <!-- Message End -->
                  </a>
                  <div class="dropdown-divider"></div>
                  <a href="#" class="dropdown-item">
-                     <!-- Message Start -->
                      <div class="media">
-                         <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                         <i class="fas fa-house-user mr-5"></i>
                          <div class="media-body">
                              <h3 class="dropdown-item-title">
-                                 John Pierce
-                                 <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                                 Manage Profile
+                                 <span class="float-right text-sm text-muted"><i class="fas fa-arrow-right"></i></span>
                              </h3>
-                             <p class="text-sm">I got your message bro</p>
-                             <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
                          </div>
                      </div>
                      <!-- Message End -->
                  </a>
                  <div class="dropdown-divider"></div>
-                 <a href="#" class="dropdown-item">
-                     <!-- Message Start -->
+                 <a href="#" class="dropdown-item"
+                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                      <div class="media">
-                         <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                         <i class="fas fa-power-off mr-5"></i>
                          <div class="media-body">
                              <h3 class="dropdown-item-title">
-                                 Nora Silvester
-                                 <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                                 Logout
+                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                     @csrf
+                                 </form>
+                                 <span class="float-right text-sm text-muted"><i class="fas fa-arrow-right"></i></span>
                              </h3>
-                             <p class="text-sm">The subject goes here</p>
-                             <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
                          </div>
                      </div>
                      <!-- Message End -->
                  </a>
                  <div class="dropdown-divider"></div>
-                 <a href="#" class="dropdown-item dropdown-footer">See All Messages</a> --}}
+
              </div>
          </li>
      </ul>

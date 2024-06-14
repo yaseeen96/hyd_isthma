@@ -54,6 +54,15 @@
                           </p>
                       </a>
                   </li>
+                  <li class="nav-item">
+                      <a href="{{ route('registrations.index') }}"
+                          class="nav-link {{ in_array(request()->route()->getName(), ['registrations.index', 'registrations.show']) ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-file-alt"></i>
+                          <p>
+                              Registrations
+                          </p>
+                      </a>
+                  </li>
               </ul>
           </nav>
           <!-- /.sidebar-menu -->

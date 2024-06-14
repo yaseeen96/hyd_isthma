@@ -28,7 +28,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'user'], function () {
             Route::get('getUserDetails', 'RegistrationController@index');
             Route::post('register', 'RegistrationController@register');
+
         });
+
+        Route::post('logout', 'AuthController@logout');
+        Route::post('deleteAccount', 'AuthController@deleteAccount');
     });
     Route::get('fetchUsers', 'DataFetchController@index');
 });

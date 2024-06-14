@@ -1,4 +1,4 @@
-@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Members'])
+@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Registrations'])
 @section('content')
     <!-- Main content -->
     <section class="content">
@@ -6,28 +6,32 @@
             <div class="card shadow-sm">
                 <div class="card-header d-flex justify-content-start ">
                     <h3 class="card-title font-weight-bold">
-                        Members
+                        Registrations
                     </h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-12">
+                            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4"></div>
+                        </div>
+                        <div class="col-lg-12">
                             <div class="table-responsive">
                                 <table
-                                    class="custom-table-head  table table-bordered table-hover dataTable dtr-inline  collapsed"
-                                    id="members-table">
+                                    class="custom-table-head  table table-bordered table-hover dataTable dtr-inline collapsed"
+                                    id="registrations-table">
                                     <thead>
                                         <tr>
                                             <th>ID </th>
                                             <th>Name</th>
-                                            <th>Email</th>
                                             <th>Phone</th>
-                                            <th>User Number</th>
                                             <th>Unit Name</th>
                                             <th>Zone Name</th>
                                             <th>Division Name</th>
-                                            <th>DOB</th>
-                                            <th>Gender</th>
+                                            <th>Confirm Arrival</th>
+                                            <th>Non Availibility Reason</th>
+                                            <th>Ammer Permission Taken</th>
+                                            <th>Emergency Contact</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -43,57 +47,64 @@
 @push('scripts')
     <script type="text/javascript">
         $(function() {
-            $('#members-table').DataTable({
+            $('#registrations-table').DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": true,
                 processing: true,
                 serverSide: true,
-                ordering: true,
+                // "paging": false,
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'csv',
-                        filename: 'Members List'
+                        filename: 'Registrations List'
                     },
                     {
                         extend: 'excel',
-                        filename: 'Members List'
+                        filename: 'Registrations List'
                     },
                     {
                         extend: 'pdf',
-                        filename: 'Members List'
+                        filename: 'Registrations List'
                     }
                 ],
-                ajax: "{{ route('members.index') }}",
+                ajax: "{{ route('registrations.index') }}",
                 columns: [{
                         data: 'id'
                     },
                     {
-                        data: 'name'
+                        data: 'member.name',
                     },
                     {
-                        data: 'email'
+                        data: 'member.phone',
                     },
                     {
-                        data: 'phone'
+                        data: 'member.unit_name',
                     },
                     {
-                        data: 'user_number',
+                        data: 'member.zone_name',
                     },
                     {
-                        data: 'unit_name',
+                        data: 'member.division_name',
                     },
                     {
-                        data: 'zone_name',
+                        data: 'confirm_arrival'
                     },
                     {
-                        data: 'division_name',
+                        data: 'reason_for_not_coming'
                     },
                     {
-                        data: 'dob',
+                        data: 'ameer_permission_taken',
                     },
                     {
-                        data: 'gender',
+                        data: 'emergency_contact',
+                    },
+                    {
+                        data: 'action'
                     }
-                ]
-            })
+
+                ],
+            });
         })
     </script>
 @endpush

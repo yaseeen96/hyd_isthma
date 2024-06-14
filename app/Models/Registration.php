@@ -17,7 +17,7 @@ class Registration extends Model
         "emergency_contact"
     ];
 
-    public function user()
+    public function member()
     {
         return $this->belongsTo(Member::class);
     }

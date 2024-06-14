@@ -41,10 +41,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
         integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    {{-- searchable select --}}
+    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    {{-- chat js  --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{{ asset('assets/dist/css/custom.css') }}?v=0.1">
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed text-sm">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
     <div class="wrapper">
         <!-- Preloader -->
         {{-- <div class="preloader flex-column justify-content-center align-items-center">
@@ -73,8 +79,10 @@
                                     @php
                                         $url = isset($id) ? route($purl, $id) : route($purl);
                                     @endphp
-                                    <li class="breadcrumb-item active">
-                                        {!! $ptype === 'child' ? '<a href="' . $url . '">' . $ctitle . '</a>' : $ctitle !!}
+                                    <li class="breadcrumb-item active ">
+                                        {!! $ptype === 'child'
+                                            ? '<a class="text-purple font-weight-bold" href="' . $url . '">' . $ctitle . '</a>'
+                                            : $ctitle !!}
                                     </li>
                                 @endisset
                             </ol>
@@ -123,19 +131,30 @@
     <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- AdminLTE for demo purposes -->
-    {{-- <script src="{{ asset('assets/dist/js/demo.js') }}"></script> --}}
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    {{-- <script src="{{ asset('assets/dist/js/pages/dashboard.js') }}"></script> --}}
-    @stack('scripts')
+    <script src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
     <script type="text/javascript">
-        $(function() {
-            console.log("1");
-        });
+        //Initialize Select2 Elements
+        $('.select2').select2()
+
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4',
+            placeholder: "Select a value",
+            allowClear: true
+        })
     </script>
+    @stack('scripts')
 
 </body>
 

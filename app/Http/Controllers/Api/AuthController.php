@@ -20,10 +20,16 @@ class AuthController extends Controller
     public function login(MemberLoginRequest $request)
     {
 
-
-        $member = Member::where('phone', $request->phone)->first();
+        // temp active condition for delete account functionality
+        $member = Member::where(['phone' => $request->phone, 'status' => 'Active'])->first();
         // Auth::login($member);
-
+        // temp condition for delete account feature
+        if (!isset($member)) {
+            return response()->json([
+                'message' => 'Account does not exists',
+                'status' => 'failure'
+            ], Response::HTTP_BAD_REQUEST);
+        }
         /* generating otp for user */
         $otp = (new Otp)->generate($member->phone, 'numeric', 4, 30);
         /* sending OTP to user */
@@ -100,6 +106,31 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'confirm_arrival' => isset($IsRegDone) ? $user->registration->confirm_arrival : null
             ]
+        ], Response::HTTP_OK);
+    }
+
+    public function logout(Request $request)
+    {
+        $token = explode(' ', $request->header('authorization'));
+        $isTokenExists = PersonalAccessToken::findToken($token[1]);
+        if (!isset($token) || empty($isTokenExists)) {
+            return response()->json([
+                "message" => "Token are not set in headers / Token Expired",
+                "status" => "failure"
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+        $member = $isTokenExists->tokenable;
+        $member->tokens()->delete();
+        return response()->noContent();
+    }
+
+    public function deleteAccount(Request $request)
+    {
+        $user = auth()->user();
+        $user->update(['status' => 'InActive']);
+        return response()->json([
+            'message' => 'Account Deleted',
+            'status' => 'failure'
         ], Response::HTTP_OK);
     }
 }
