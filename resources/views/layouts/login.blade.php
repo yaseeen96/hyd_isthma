@@ -35,9 +35,11 @@
         </div>
         @yield('content')
     </div>
-    <script type="text/javascript" href={{ asset('assets/plugins/jquery/jquery.min.js') }}></script>
-    <script type="text/javascript" href={{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}></script>
-    <script type="text/javascript" href={{ asset('assets/dist/js/adminlte.min.js') }}></script>
+    <script type="text/javascript" src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/dist/js/auth.js') }}"></script>
 </body>
 
 </html>
