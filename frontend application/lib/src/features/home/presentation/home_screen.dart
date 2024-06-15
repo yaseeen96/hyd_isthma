@@ -24,12 +24,16 @@ class _HomeScreenState extends State<HomeScreen> {
           onWebResourceError: (WebResourceError error) {},
         ),
       )
-      ..loadRequest(Uri.parse('http://localhost:5173/'));
+      ..enableZoom(false)
+      ..loadRequest(Uri.parse('https://ijtema.jihhrd.com/'));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: WebViewWidget(controller: controller));
+    return Scaffold(
+        body: WebViewWidget(
+      controller: controller,
+    ));
   }
 }

@@ -44,6 +44,8 @@ dependencies:
   firebase_core: ^2.31.1
   firebase_crashlytics: ^3.5.6
   webview_flutter: ^4.8.0
+  firebase_messaging: ^14.9.4
+  flutter_local_notifications: ^17.1.2
   # dart run flutter_native_splash:create
 
 dev_dependencies:
@@ -67,6 +69,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+
 flutter:
   uses-material-design: true
 
