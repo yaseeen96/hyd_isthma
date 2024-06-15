@@ -1,5 +1,4 @@
-package com.example.jih_ijtema_app
-
+package com.jih.ijtema
 import io.flutter.embedding.android.FlutterActivity
 
 class MainActivity: FlutterActivity()

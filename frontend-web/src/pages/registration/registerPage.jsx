@@ -10,10 +10,10 @@ const RegisterPage = () => {
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState(null);
     const [userDetails, setUserDetails] = useState({
-        confirmArrival: null,
+        confirmArrival: '1',
         reason_for_not_coming: '',
         emergency_contact: '',
-        ameer_permission_taken: null,
+        ameer_permission_taken: '1',
     });
 
     const handleSubmit = async (e) => {
@@ -64,7 +64,7 @@ const RegisterPage = () => {
                 <label htmlFor="rukn-id" className="ml-1 w-1/3 mb-0">
                     Rukn ID
                 </label>
-                <input id="rukn-id" type="text" name="reciever-name" className="form-input text-gray-400 " placeholder="Enter Rukn ID" readOnly value={user ? user.data.member_id : ''} />
+                <input id="rukn-id" type="text" name="reciever-name" className="form-input text-gray-400 " placeholder="Enter Rukn ID" readOnly value={user ? user.data.user_number : ''} />
             </div>
             <div className="mt-4 flex flex-col items-start w-full gap-1">
                 <label htmlFor="full-name" className="ml-1 w-1/3 mb-0">
@@ -104,7 +104,7 @@ const RegisterPage = () => {
             </div>
             <div className="mt-4 flex flex-col items-start w-full gap-1">
                 <label htmlFor="Age" className="ml-1 w-1/3 mb-0">
-                    Age
+                    dob
                 </label>
                 <input id="Age" type="number" name="reciever-name" className="form-input text-gray-400 " placeholder="Enter Age" value={calculateAge(user ? user.data.dob : null)} />
             </div>
@@ -113,12 +113,11 @@ const RegisterPage = () => {
                     Will you be able to attend the event?
                 </label>
                 <select id="confirmation" name="confirmation" className="form-select text-gray-300 " onChange={onConfirmed}>
-                    <option value={0}>Choose Option</option>
-                    <option value={0}>Yes</option>
-                    <option value={1}>No</option>
+                    <option value={1}>Yes</option>
+                    <option value={0}>No</option>
                 </select>
             </div>
-            {userDetails.confirmArrival === false && (
+            {userDetails.confirmArrival === '0' ? (
                 <>
                     <div className="mt-4 flex flex-col items-start w-full gap-1">
                         <label htmlFor="reason-for-not-confirming" className="ml-1 w-full mb-0">
@@ -143,9 +142,8 @@ const RegisterPage = () => {
                             className="form-select "
                             onChange={(e) => setUserDetails((prev) => ({ ...prev, ameer_permission_taken: e.target.value }))}
                         >
-                            <option value={null}>Choose Option</option>
-                            <option value={true}>Yes</option>
-                            <option value={false}>No</option>
+                            <option value={1}>Yes</option>
+                            <option value={0}>No</option>
                         </select>
                     </div>
                     <div className="mt-4 flex flex-col items-start w-full gap-1">
@@ -162,7 +160,7 @@ const RegisterPage = () => {
                         />
                     </div>
                 </>
-            )}
+            ) : null}
 
             <button className={`btn btn-primary mx-auto my-4 w-full`} onClick={handleSubmit} disabled={loading || userDetails.confirmArrival == null}>
                 {loading ? 'Registering' : 'Register'}
