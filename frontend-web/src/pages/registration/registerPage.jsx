@@ -46,6 +46,10 @@ const RegisterPage = () => {
         setUserDetails({ ...userDetails, confirmArrival: e.target.value });
     };
 
+    const onReasonChange = (e) => {
+        setUserDetails({ ...userDetails, reason_for_not_coming: e.target.value });
+    };
+
     const calculateAge = (dob) => {
         if (!dob) return 0;
         const today = new Date();
@@ -123,14 +127,13 @@ const RegisterPage = () => {
                         <label htmlFor="reason-for-not-confirming" className="ml-1 w-full mb-0">
                             Reason for not coming?
                         </label>
-                        <input
-                            id="reason-for-not-confirming"
-                            type="text"
-                            name="reason_for_not_coming"
-                            className="form-input "
-                            placeholder="Enter reason"
-                            onChange={(e) => setUserDetails((prev) => ({ ...prev, reason_for_not_coming: e.target.value }))}
-                        />
+                        <select id="reason_for_not_coming" name="reason_for_not_coming" className="form-select text-gray-300 " onChange={onReasonChange}>
+                            <option value={''}>Choose Option</option>
+                            <option value={'Health problem'}>Health problem</option>
+                            <option value={'Emergency'}>Emergency</option>
+                            <option value={'Financial problem'}>Financial problem</option>
+                            <option value={'No reason'}>No reason</option>
+                        </select>
                     </div>
                     <div className="flex flex-col items-start mt-4 gap-2 w-full">
                         <label htmlFor="ameers-permission-taken" className="ltr:mr-2 rtl:ml-2 w-full mb-0 text-gray-300">
