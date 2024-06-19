@@ -126,7 +126,7 @@
         $(function() {
             $('#unit_name').on('change', function() {
                 $.ajax({
-                    url: "{{ env('APP_URL') . '/api/v1/getZones' }}",
+                    url: "{{ route('getZones') }}",
                     type: 'GET',
                     data: {
                         unit_name: $(this).val()
