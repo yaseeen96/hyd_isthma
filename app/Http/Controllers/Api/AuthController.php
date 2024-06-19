@@ -88,7 +88,6 @@ class AuthController extends Controller
     public function verifyToken(VerifyTokenRequest $request)
     {
         $token = $request->token;
-
         $isTokenExists = PersonalAccessToken::findToken($token);
         if (!isset($isTokenExists)) {
             return response()->json([
@@ -97,6 +96,9 @@ class AuthController extends Controller
             ], Response::HTTP_UNAUTHORIZED);
         }
         $user = $isTokenExists->tokenable;
+        if(isset($request->push_token)) {
+            $user->update(['push_token' => $request->push_token]);
+        }
         $IsRegDone = $user->registration;
         return response()->json([
             "status" => "success",

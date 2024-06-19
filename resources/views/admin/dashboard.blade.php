@@ -62,11 +62,11 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>UNIT NAME</label>
-                        <select class="form-control select2bs4" style="width: 100%;" id="unit_name" onchange="updateChart()"
+                        <select class="form-control select2bs4" style="width: 100%;" id="unit_name"
                             placeholder="Select Unit Name">
-                            @isset($distnctUnitName)
+                            @isset($locationsList['distnctUnitName'])
                                 <option value="">All</option>
-                                @foreach ($distnctUnitName as $name)
+                                @foreach ($locationsList['distnctUnitName'] as $name)
                                     <option value="{{ $name->unit_name }}"> {{ $name->unit_name }}</option>
                                 @endforeach
                             @endisset
@@ -79,9 +79,9 @@
                         <label>ZONE NAME</label>
                         <select class="form-control select2bs4" style="width: 100%;" id="zone_name"
                             onchange="updateChart()">
-                            @isset($distnctZoneName)
+                            @isset($locationsList['distnctZoneName'])
                                 <option value="">All</option>
-                                @foreach ($distnctZoneName as $name)
+                                @foreach ($locationsList['distnctZoneName'] as $name)
                                     <option value="{{ $name->zone_name }}"> {{ $name->zone_name }}</option>
                                 @endforeach
                             @endisset
@@ -93,9 +93,9 @@
                         <label>DIVISION NAME</label>
                         <select class="form-control select2bs4" style="width: 100%;" id="division_name"
                             onchange="updateChart()">
-                            @isset($distnctDivisionName)
+                            @isset($locationsList['distnctDivisionName'])
                                 <option value="">All</option>
-                                @foreach ($distnctDivisionName as $name)
+                                @foreach ($locationsList['distnctDivisionName'] as $name)
                                     <option value="{{ $name->division_name }}"> {{ $name->division_name }}</option>
                                 @endforeach
                             @endisset
@@ -123,6 +123,23 @@
 @endsection
 @push('scripts')
     <script>
+        $(function() {
+            $('#unit_name').on('change', function() {
+                $.ajax({
+                    url: "{{ env('APP_URL') . '/api/v1/getZones' }}",
+                    type: 'GET',
+                    data: {
+                        unit_name: $(this).val()
+                    },
+                    success: function(data) {
+                        if (data.zone_name != null) {
+                            $('#zone_name').val(data.zone_name).trigger('change');
+                            updateChart();
+                        }
+                    }
+                });
+            });
+        });
         var registrationsCtx = document.getElementById('registrations').getContext('2d');
         var attendeesCtx = document.getElementById('attendees').getContext('2d');
         // doughnut chart for registrations
@@ -147,27 +164,37 @@
                     attendees.data.labels = data.filterData.attendees.labels;
                     attendees.data.datasets[0].data = data.filterData.attendees.data;
                     registrations.update();
+                    attendees.update();
                 }
             });
         }
 
         function prepareChart(identifier, filterData, label) {
-            console.log(filterData)
             var chart = new Chart(identifier, {
-                type: 'doughnut',
+                type: 'bar',
                 data: {
-                    // labels: filterData.[label].labels, // hwo do I pass dynamic js varibale here
                     labels: filterData[label].labels,
                     datasets: [{
-                        label: 'Total Attendees',
+                        label: `${label}`,
                         data: filterData[label].data,
                         backgroundColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(54, 162, 235)',
+                            'rgb(75, 192, 192, 0.2)',
+                            'rgb(255, 99, 132, 0.2)',
                         ],
-                        hoverOffset: 4
+                        borderColor: [
+                            'rgb(75, 192, 192)',
+                            'rgb(255, 99, 132)',
+                        ],
+                        borderWidth: 1
                     }]
                 },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
             });
             return chart;
         }

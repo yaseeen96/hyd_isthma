@@ -16,7 +16,9 @@ class RegistrationController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $user,
+
         ], Response::HTTP_OK);
+
     }
 
     public function register(Request $request)
@@ -28,6 +30,7 @@ class RegistrationController extends Controller
             "reason_for_not_coming" => $request->get('reason_for_not_coming'),
             "ameer_permission_taken" => $request->get('ameer_permission_taken'),
             "emergency_contact" => $request->get('emergency_contact'),
+            "dob" => $request->get('dob'),
         ];
         Registration::updateOrCreate(['member_id' => $user->id], $regsData);
         $data = Member::with('registration')->where('id', $user->id)->get();

@@ -26,6 +26,7 @@ class VerifyTokenRequest extends FormRequest
     {
         return [
             'token' => 'required',
+            'push_token' => 'nullable|string'
         ];
     }
 

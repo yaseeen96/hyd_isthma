@@ -11,10 +11,15 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        <div id="panel-heading">
+
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-12">
                             <div class="table-responsive">
                                 <table
-                                    class="custom-table-head  table table-bordered table-hover dataTable dtr-inline  collapsed"
+                                    class="custom-table-head nowrap table table-bordered table-hover dataTable dtr-inline  collapsed"
                                     id="members-table">
                                     <thead>
                                         <tr>
@@ -26,7 +31,7 @@
                                             <th>Unit Name</th>
                                             <th>Zone Name</th>
                                             <th>Division Name</th>
-                                            <th>DOB</th>
+                                            <th>Date Of Birth</th>
                                             <th>Gender</th>
                                         </tr>
                                     </thead>
@@ -42,13 +47,60 @@
 @endsection
 @push('scripts')
     <script type="text/javascript">
+        $("#example_wrapper > .dt-buttons").appendTo("div.panel-heading");
         $(function() {
             $('#members-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ordering: true,
+                ajax: "{{ route('members.index') }}",
+                columns: [{
+                        data: 'id',
+                        orderable: true
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email',
+                    },
+                    {
+                        data: 'phone',
+                        name: 'phone',
+                    },
+                    {
+                        data: 'user_number',
+                        name: 'user_number',
+                    },
+                    {
+                        data: 'unit_name',
+                        name: 'unit_name',
+                    },
+                    {
+                        data: 'zone_name',
+                        name: 'unit_name'
+                    },
+                    {
+                        data: 'division_name',
+                        name: 'division_name'
+                    },
+                    {
+                        data: 'dob',
+                        name: 'dob',
+                        orderable: false,
+                    },
+                    {
+                        data: 'gender',
+                        name: 'gender'
+                    }
+                ],
+                "lengthMenu": [50, 100, 500, 1000, 2000, 5000, 10000, 20000],
                 dom: 'Bfrtip',
                 buttons: [{
+                        extend: 'pageLength'
+                    },
+                    {
                         extend: 'csv',
                         filename: 'Members List'
                     },
@@ -61,37 +113,8 @@
                         filename: 'Members List'
                     }
                 ],
-                ajax: "{{ route('members.index') }}",
-                columns: [{
-                        data: 'id'
-                    },
-                    {
-                        data: 'name'
-                    },
-                    {
-                        data: 'email'
-                    },
-                    {
-                        data: 'phone'
-                    },
-                    {
-                        data: 'user_number',
-                    },
-                    {
-                        data: 'unit_name',
-                    },
-                    {
-                        data: 'zone_name',
-                    },
-                    {
-                        data: 'division_name',
-                    },
-                    {
-                        data: 'dob',
-                    },
-                    {
-                        data: 'gender',
-                    }
+                "order": [
+                    [0, "asc"]
                 ]
             })
         })

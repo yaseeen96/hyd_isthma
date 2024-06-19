@@ -14,9 +14,12 @@ class MembersController extends Controller
             abort(403);
 
         if ($request->ajax()) {
-            $query = Member::select('members.*')->orderBy('id', 'asc');
+            $query = Member::select('members.*')->orderBy('name', 'asc');
 
-            return $dataTables->eloquent($query)->make(true);
+            return $dataTables->eloquent($query)
+                    ->editColumn('dob', function(Member $member) {
+                        return date('d-m-Y', strtotime($member->dob));
+            })->rawColumns(['dob'])->make(true);
         }
 
         return view('admin.members.list');

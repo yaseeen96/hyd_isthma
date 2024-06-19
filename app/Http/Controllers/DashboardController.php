@@ -22,9 +22,7 @@ class DashboardController extends Controller
         $totRegistered = Registration::count();
         $totAttendees = Registration::where('confirm_arrival', 1)->count();
         $totNonAttendees = Registration::where('confirm_arrival', 0)->count();
-        $distnctUnitName = Member::select('unit_name')->distinct()->get();
-        $distnctZoneName = Member::select('zone_name')->distinct()->get();
-        $distnctDivisionName = Member::select('division_name')->distinct()->get();
+
 
         // chartjs statistics
         $query = $this->fetchFilterData($request);
@@ -61,9 +59,6 @@ class DashboardController extends Controller
             'totRegistered' => $totRegistered,
             'totAttendees' => $totAttendees,
             'totNonAttendees' => $totNonAttendees,
-            'distnctUnitName' => $distnctUnitName,
-            'distnctZoneName' => $distnctZoneName,
-            'distnctDivisionName' => $distnctDivisionName,
             'filterData' => $filterData
         ]);
     }
@@ -73,6 +68,7 @@ class DashboardController extends Controller
         $unit_name = $request->get('unit_name');
         $zone_name = $request->get('zone_name');
         $division_name = $request->get('division_name');
+
         $query = Registration::with('member')
             ->whereHas('member', function ($q) use ($unit_name, $zone_name, $division_name) {
                 isset($unit_name) ? $q->where('unit_name', $unit_name) : $q;

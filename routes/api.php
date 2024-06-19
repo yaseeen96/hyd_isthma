@@ -35,4 +35,5 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('deleteAccount', 'AuthController@deleteAccount');
     });
     Route::get('fetchUsers', 'DataFetchController@index');
+    Route::get('getZones', 'AdminDataFetchController@getZoneNames');
 });

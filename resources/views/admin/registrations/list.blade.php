@@ -12,14 +12,80 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4"></div>
+                            <button class="btn btn-purple float-right" type="button" data-toggle="collapse"
+                                data-target="#regFilters" aria-expanded="false" aria-controls="regFilters">
+                                <i class="fas fa-filter"></i> Filter
+                            </button>
+
                         </div>
+                        <div class="collapse container" id="regFilters">
+                            <div class="card card-body shadow-none">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>UNIT NAME</label>
+                                            <select class="form-control select2bs4" style="width: 100%;" id="unit_name"
+                                                onchange="setFilter('unit_name')" placeholder="Select Unit Name">
+                                                @isset($locationsList['distnctUnitName'])
+                                                    <option value="">All</option>
+                                                    @foreach ($locationsList['distnctUnitName'] as $name)
+                                                        <option value="{{ $name->unit_name }}"> {{ $name->unit_name }}</option>
+                                                    @endforeach
+                                                @endisset
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>ZONE NAME</label>
+                                            <select class="form-control select2bs4" style="width: 100%;" id="zone_name"
+                                                onchange="setFilter('zone_name')">
+                                                @isset($locationsList['distnctZoneName'])
+                                                    <option value="">All</option>
+                                                    @foreach ($locationsList['distnctZoneName'] as $name)
+                                                        <option value="{{ $name->zone_name }}"> {{ $name->zone_name }}</option>
+                                                    @endforeach
+                                                @endisset
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>DIVISION NAME</label>
+                                            <select class="form-control select2bs4" style="width: 100%;" id="division_name"
+                                                onchange="setFilter('division_name')">
+                                                @isset($locationsList['distnctDivisionName'])
+                                                    <option value="">All</option>
+                                                    @foreach ($locationsList['distnctDivisionName'] as $name)
+                                                        <option value="{{ $name->division_name }}"> {{ $name->division_name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endisset
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Confirm Arrival</label>
+                                            <select class="form-control w-full" id="confirm_arrival"
+                                                onchange="setFilter('confirm_arrival')">
+                                                <option value="">-Select Filter-</option>
+                                                <option value="1">Yes</option>
+                                                <option value="0">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-12">
                             <div class="table-responsive">
                                 <table
-                                    class="custom-table-head  table table-bordered table-hover dataTable dtr-inline collapsed"
+                                    class="custom-table-head nowrap table table-bordered table-hover dataTable dtr-inline collapsed"
                                     id="registrations-table">
-                                    <thead>
+                                    <thead class="">
                                         <tr>
                                             <th>ID </th>
                                             <th>Name</th>
@@ -47,15 +113,17 @@
 @push('scripts')
     <script type="text/javascript">
         $(function() {
-            $('#registrations-table').DataTable({
-                "responsive": true,
+            regTable = $('#registrations-table').DataTable({
+                "responsive": false,
                 "lengthChange": false,
                 "autoWidth": true,
                 processing: true,
                 serverSide: true,
-                // "paging": false,
                 dom: 'Bfrtip',
                 buttons: [{
+                        extend: 'pageLength',
+                    },
+                    {
                         extend: 'csv',
                         filename: 'Registrations List'
                     },
@@ -68,7 +136,15 @@
                         filename: 'Registrations List'
                     }
                 ],
-                ajax: "{{ route('registrations.index') }}",
+                ajax: {
+                    url: "{{ route('registrations.index') }}",
+                    data: function(d) {
+                        d.confirm_arrival = $("#confirm_arrival").val()
+                        d.unit_name = $("#unit_name").val()
+                        d.zone_name = $("#zone_name").val()
+                        d.division_name = $("#division_name").val()
+                    }
+                },
                 columns: [{
                         data: 'id'
                     },
@@ -102,9 +178,27 @@
                     {
                         data: 'action'
                     }
-
                 ],
+                "lengthMenu": [50, 100, 500, 1000, 2000, 5000, 10000, 20000]
             });
-        })
+            $('#unit_name').on('change', function() {
+                $.ajax({
+                    url: "{{ env('APP_URL') . '/api/v1/getZones' }}",
+                    type: 'GET',
+                    data: {
+                        unit_name: $(this).val()
+                    },
+                    success: function(data) {
+                        if (data.zone_name != null) {
+                            $('#zone_name').val(data.zone_name).trigger('change');
+                        }
+                    }
+                });
+            });
+        });
+
+        function setFilter(type) {
+            regTable.draw();
+        }
     </script>
 @endpush

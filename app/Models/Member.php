@@ -24,6 +24,7 @@ class Member extends Authenticatable
         "dob",
         "gender",
         "status",
+        "push_token",
     ];
 
     public function registration()

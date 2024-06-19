@@ -131,8 +131,10 @@
                                         <div class="col-sm-3 border-right">
                                             <div class="description-block ">
                                                 <div>
-                                                    <h3 class="description-header badge text-lg">
-                                                        {{ !empty($member->ameer_permission_taken) ? $member->ameer_permission_taken : '-' }}
+                                                    @php $ammer_permission_taken = !empty($member->ameer_permission_taken) ? $member->ameer_permission_taken : '-' @endphp
+                                                    <h3
+                                                        class="description-header badge text-lg {{ ($member->ameer_permission_taken ? 'badge-success' : $ammer_permission_taken == 0) ? 'badge-danger' : '' }}">
+                                                        {{ ($member->ameer_permission_taken ? 'YES' : $ammer_permission_taken == 0) ? 'NO' : '-' }}
                                                     </h3>
                                                 </div>
                                                 <span class="description-text">Ameer Permission Taken</span>
