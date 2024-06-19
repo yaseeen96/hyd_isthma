@@ -39,7 +39,12 @@ const StickyNavBar = () => {
                 ) : (
                     <>
                         <img src={isDarkMode ? 'assets/images/auth/logo_app_white.png' : 'assets/images/auth/logo_app_black.png'} alt="Logo" />
-                        <button>
+                        <button
+                            onClick={() => {
+                                localStorage.removeItem('token');
+                                window.location.reload();
+                            }}
+                        >
                             <CgProfile
                                 size={35}
                                 style={{
