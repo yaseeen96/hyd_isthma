@@ -79,6 +79,7 @@
                         <label>DISTRICT NAME</label>
                         <select class="form-control select2bs4" style="width: 100%;" id="division_name"
                             onchange="getLocations('division_name', 'unit_name')">
+                            <option value=""> -- select Division Name </option>
                             {{-- data will be dynamically filled --}}
                         </select>
                     </div>
@@ -88,6 +89,7 @@
                         <label>UNIT NAME</label>
                         <select class="form-control select2bs4" style="width: 100%;" id="unit_name"
                             placeholder="Select Unit Name">
+                            <option value=""> -- select Unit Name </option>
                             {{-- data will be dynamically filled --}}
                             {{-- @isset($locationsList['distnctUnitName'])
                                 <option value="">All</option>
@@ -147,10 +149,13 @@
                             el.text = item[dataName];
                             $(`#${dataName}`).append(el);
                         });
+                        $(`#${dataName}`).val('').trigger('change');
+                        updateChart();
                     }
+
                 }
             });
-            updateChart();
+
         }
         // chart data
         var registrationsCtx = document.getElementById('registrations').getContext('2d');
