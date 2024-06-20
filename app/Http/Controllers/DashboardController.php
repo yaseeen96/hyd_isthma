@@ -12,9 +12,7 @@ class DashboardController extends Controller
     public $totArkansMems = 0;
     public function __construct()
     {
-
         $this->middleware('auth');
-
     }
     public function index(Request $request)
     {
@@ -84,11 +82,20 @@ class DashboardController extends Controller
         return $query;
     }
 
-    public function getZoneNames(Request $request)
+    public function getDivisions(Request $request)
     {
-        $unit_name = $request->input('unit_name');
-        $zone_name = Member::where('unit_name', $unit_name)->pluck('zone_name')->first();
-        return response()->json(['zone_name' => $zone_name]);
+        $zone_name = $request->input('zone_name');
+        $division_name = Member::select('division_name')->distinct()->where('zone_name', $zone_name)->get();
+        return response()->json(['division_name' => $division_name]);
+    }
+
+    public function getUnits(Request $request)
+    {
+
+        $division_name = $request->input('division_name');
+        $unit_name = Member::select('unit_name')->distinct()->where('division_name', $division_name)->get();
+        return response()->json(['unit_name' => $unit_name]);
+
     }
 
 }

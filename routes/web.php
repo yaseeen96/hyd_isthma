@@ -17,7 +17,9 @@ Auth::routes(['register' => false]);
 Route::get('/', 'DashboardController@index')->name('dashboard');
 Route::resource('members', 'MembersController', ['only' => ['index']]);
 Route::resource('registrations', 'RegistrationController', ['only' => ['index', 'show']]);
-Route::get('getZones', 'DashboardController@getZoneNames')->name('getZones');
+Route::get('getDivisions', 'DashboardController@getDivisions')->name('getDivisions');
+Route::get('getUnits', 'DashboardController@getUnits')->name('getUnits');
+
 
 // temp routes
 Route::prefix('delete')->group(function () {

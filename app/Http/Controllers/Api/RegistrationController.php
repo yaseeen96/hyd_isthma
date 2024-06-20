@@ -13,9 +13,10 @@ class RegistrationController extends Controller
     public function index()
     {
         $user = auth()->user();
+        $userData = Member::with('registration')->where('id', $user->id)->get();
         return response()->json([
             'status' => 'success',
-            'data' => $user,
+            'data' => $userData,
 
         ], Response::HTTP_OK);
 
@@ -30,8 +31,10 @@ class RegistrationController extends Controller
             "reason_for_not_coming" => $request->get('reason_for_not_coming'),
             "ameer_permission_taken" => $request->get('ameer_permission_taken'),
             "emergency_contact" => $request->get('emergency_contact'),
-            "dob" => $request->get('dob'),
         ];
+        if (!empty($request->input('dob'))) {
+            $user->update(['dob' => $request->get('dob')]);
+        }
         Registration::updateOrCreate(['member_id' => $user->id], $regsData);
         $data = Member::with('registration')->where('id', $user->id)->get();
         return response()->json([

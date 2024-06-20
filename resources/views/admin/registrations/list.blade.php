@@ -16,30 +16,18 @@
                                 data-target="#regFilters" aria-expanded="false" aria-controls="regFilters">
                                 <i class="fas fa-filter"></i> Filter
                             </button>
-
+                            <button class="btn btn-purple float-right mr-2" onclick="clearFilters()"> <i
+                                    class="fas fa-filter "></i> Clear
+                                Filters</button>
                         </div>
                         <div class="collapse container" id="regFilters">
                             <div class="card card-body shadow-none">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label>UNIT NAME</label>
-                                            <select class="form-control select2bs4" style="width: 100%;" id="unit_name"
-                                                onchange="setFilter('unit_name')" placeholder="Select Unit Name">
-                                                @isset($locationsList['distnctUnitName'])
-                                                    <option value="">All</option>
-                                                    @foreach ($locationsList['distnctUnitName'] as $name)
-                                                        <option value="{{ $name->unit_name }}"> {{ $name->unit_name }}</option>
-                                                    @endforeach
-                                                @endisset
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
                                             <label>ZONE NAME</label>
                                             <select class="form-control select2bs4" style="width: 100%;" id="zone_name"
-                                                onchange="setFilter('zone_name')">
+                                                onchange="getLocations('zone_name', 'division_name')">
                                                 @isset($locationsList['distnctZoneName'])
                                                     <option value="">All</option>
                                                     @foreach ($locationsList['distnctZoneName'] as $name)
@@ -51,16 +39,25 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>DIVISION NAME</label>
+                                            <label>DISTRICT NAME</label>
                                             <select class="form-control select2bs4" style="width: 100%;" id="division_name"
-                                                onchange="setFilter('division_name')">
-                                                @isset($locationsList['distnctDivisionName'])
-                                                    <option value="">All</option>
-                                                    @foreach ($locationsList['distnctDivisionName'] as $name)
-                                                        <option value="{{ $name->division_name }}"> {{ $name->division_name }}
-                                                        </option>
-                                                    @endforeach
-                                                @endisset
+                                                onchange="getLocations('division_name', 'unit_name')">
+                                                {{-- data will be dynamically filled --}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>UNIT NAME</label>
+                                            <select class="form-control select2bs4" style="width: 100%;" id="unit_name"
+                                                placeholder="Select Unit Name">
+                                                {{-- data will be dynamically filled --}}
+                                                {{-- @isset($locationsList['distnctUnitName'])
+                                                <option value="">All</option>
+                                                @foreach ($locationsList['distnctUnitName'] as $name)
+                                                    <option value="{{ $name->unit_name }}"> {{ $name->unit_name }}</option>
+                                                @endforeach
+                                                @endisset --}}
                                             </select>
                                         </div>
                                     </div>
@@ -112,6 +109,13 @@
 @endsection
 @push('scripts')
     <script type="text/javascript">
+        // clear filters data
+        function clearFilters() {
+            $('#zone_name').val('').trigger('change');
+            $('#division_name').val('').trigger('change');
+            $('#unit_name').val('').trigger('change');
+            updateChart();
+        }
         $(function() {
             regTable = $('#registrations-table').DataTable({
                 "responsive": false,
@@ -181,21 +185,35 @@
                 ],
                 "lengthMenu": [50, 100, 500, 1000, 2000, 5000, 10000, 20000]
             });
-            $('#unit_name').on('change', function() {
-                $.ajax({
-                    url: "{{ route('getZones') }}",
-                    type: 'GET',
-                    data: {
-                        unit_name: $(this).val()
-                    },
-                    success: function(data) {
-                        if (data.zone_name != null) {
-                            $('#zone_name').val(data.zone_name).trigger('change');
-                        }
-                    }
-                });
-            });
+
         });
+
+        function getLocations(actionType, dataName) {
+            const val = $(`#${actionType}`).val();
+            $.ajax({
+                url: dataName === "division_name" ? "{{ route('getDivisions') }}" : "{{ route('getUnits') }}",
+                type: 'GET',
+                data: {
+                    [actionType]: val
+                },
+                success: function(data) {
+                    let el = document.createElement('option');
+                    el.value = '';
+                    el.text = `-- Select ${dataName.replace('_', ' ')} --`;
+                    if (data[dataName].length > 0) {
+                        console.log(data[dataName].length);
+                        $(`#${dataName}`).empty().append(el);
+                        data[dataName].forEach(function(item) {
+                            let el = document.createElement('option');
+                            el.value = item[dataName];
+                            el.text = item[dataName];
+                            $(`#${dataName}`).append(el);
+                        });
+                    }
+                }
+            });
+            setFilter();
+        }
 
         function setFilter(type) {
             regTable.draw();

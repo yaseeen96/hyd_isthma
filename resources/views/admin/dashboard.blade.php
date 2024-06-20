@@ -55,30 +55,16 @@
                     <h5 class="font-weight-bold">Filter By</h5>
                 </div>
                 <div class="col-md-6">
-                    {{-- <button class="btn btn-purple float-right"> <i class="fas fa-filter"></i> Clear Filters</button> --}}
+                    <button class="btn btn-purple float-right" onclick="clearFilters()"> <i class="fas fa-filter"></i> Clear
+                        Filters</button>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>UNIT NAME</label>
-                        <select class="form-control select2bs4" style="width: 100%;" id="unit_name"
-                            placeholder="Select Unit Name">
-                            @isset($locationsList['distnctUnitName'])
-                                <option value="">All</option>
-                                @foreach ($locationsList['distnctUnitName'] as $name)
-                                    <option value="{{ $name->unit_name }}"> {{ $name->unit_name }}</option>
-                                @endforeach
-                            @endisset
-                        </select>
-                    </div>
-
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
                         <label>ZONE NAME</label>
                         <select class="form-control select2bs4" style="width: 100%;" id="zone_name"
-                            onchange="updateChart()">
+                            onchange="getLocations('zone_name', 'division_name')">
                             @isset($locationsList['distnctZoneName'])
                                 <option value="">All</option>
                                 @foreach ($locationsList['distnctZoneName'] as $name)
@@ -90,15 +76,25 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>DIVISION NAME</label>
+                        <label>DISTRICT NAME</label>
                         <select class="form-control select2bs4" style="width: 100%;" id="division_name"
-                            onchange="updateChart()">
-                            @isset($locationsList['distnctDivisionName'])
+                            onchange="getLocations('division_name', 'unit_name')">
+                            {{-- data will be dynamically filled --}}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>UNIT NAME</label>
+                        <select class="form-control select2bs4" style="width: 100%;" id="unit_name"
+                            placeholder="Select Unit Name">
+                            {{-- data will be dynamically filled --}}
+                            {{-- @isset($locationsList['distnctUnitName'])
                                 <option value="">All</option>
-                                @foreach ($locationsList['distnctDivisionName'] as $name)
-                                    <option value="{{ $name->division_name }}"> {{ $name->division_name }}</option>
+                                @foreach ($locationsList['distnctUnitName'] as $name)
+                                    <option value="{{ $name->unit_name }}"> {{ $name->unit_name }}</option>
                                 @endforeach
-                            @endisset
+                            @endisset --}}
                         </select>
                     </div>
                 </div>
@@ -123,23 +119,40 @@
 @endsection
 @push('scripts')
     <script>
-        $(function() {
-            $('#unit_name').on('change', function() {
-                $.ajax({
-                    url: "{{ route('getZones') }}",
-                    type: 'GET',
-                    data: {
-                        unit_name: $(this).val()
-                    },
-                    success: function(data) {
-                        if (data.zone_name != null) {
-                            $('#zone_name').val(data.zone_name).trigger('change');
-                            updateChart();
-                        }
+        // clear filters data
+        function clearFilters() {
+            $('#zone_name').val('').trigger('change');
+            $('#division_name').val('').trigger('change');
+            $('#unit_name').val('').trigger('change');
+            updateChart();
+        }
+        // fill division and unit names dynamically 
+        function getLocations(actionType, dataName) {
+            const val = $(`#${actionType}`).val();
+            $.ajax({
+                url: dataName === "division_name" ? "{{ route('getDivisions') }}" : "{{ route('getUnits') }}",
+                type: 'GET',
+                data: {
+                    [actionType]: val
+                },
+                success: function(data) {
+                    let el = document.createElement('option');
+                    el.value = '';
+                    el.text = `-- Select ${dataName.replace('_', ' ')} --`;
+                    if (data[dataName].length > 0) {
+                        $(`#${dataName}`).empty().append(el);
+                        data[dataName].forEach(function(item) {
+                            let el = document.createElement('option');
+                            el.value = item[dataName];
+                            el.text = item[dataName];
+                            $(`#${dataName}`).append(el);
+                        });
                     }
-                });
+                }
             });
-        });
+            updateChart();
+        }
+        // chart data
         var registrationsCtx = document.getElementById('registrations').getContext('2d');
         var attendeesCtx = document.getElementById('attendees').getContext('2d');
         // doughnut chart for registrations
@@ -156,7 +169,6 @@
                     `?unit_name=${unit_name}&zone_name=${zone_name}&division_name=${division_name}`,
                 method: 'GET',
                 success: function(data) {
-                    console.log(data);
                     // updating registrations chart data
                     registrations.data.labels = data.filterData.registrations.labels;
                     registrations.data.datasets[0].data = data.filterData.registrations.data;
