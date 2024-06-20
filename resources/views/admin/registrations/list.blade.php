@@ -42,6 +42,7 @@
                                             <label>DISTRICT NAME</label>
                                             <select class="form-control select2bs4" style="width: 100%;" id="division_name"
                                                 onchange="getLocations('division_name', 'unit_name')">
+                                                <option value="">All</option>
                                                 {{-- data will be dynamically filled --}}
                                             </select>
                                         </div>
@@ -50,7 +51,8 @@
                                         <div class="form-group">
                                             <label>UNIT NAME</label>
                                             <select class="form-control select2bs4" style="width: 100%;" id="unit_name"
-                                                placeholder="Select Unit Name">
+                                                placeholder="Select Unit Name" onchange="setFilter('unit_name')">
+                                                <option value="">All</option>
                                                 {{-- data will be dynamically filled --}}
                                                 {{-- @isset($locationsList['distnctUnitName'])
                                                 <option value="">All</option>
@@ -209,10 +211,14 @@
                             el.text = item[dataName];
                             $(`#${dataName}`).append(el);
                         });
+                        if (actionType === "zone_name") {
+                            $('#division_name').val('').trigger('change');
+                            $('#unit_name').val('').trigger('change');
+                        }
+                        setFilter();
                     }
                 }
             });
-            setFilter();
         }
 
         function setFilter(type) {

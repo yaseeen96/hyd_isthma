@@ -149,10 +149,12 @@
                             el.text = item[dataName];
                             $(`#${dataName}`).append(el);
                         });
-                        $(`#${dataName}`).val('').trigger('change');
+                        if (actionType === "zone_name") {
+                            $('#division_name').val('').trigger('change');
+                            $('#unit_name').val('').trigger('change');
+                        }
                         updateChart();
                     }
-
                 }
             });
 
