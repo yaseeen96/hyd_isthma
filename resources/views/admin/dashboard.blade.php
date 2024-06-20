@@ -88,7 +88,7 @@
                     <div class="form-group">
                         <label>UNIT NAME</label>
                         <select class="form-control select2bs4" style="width: 100%;" id="unit_name"
-                            placeholder="Select Unit Name">
+                            placeholder="Select Unit Name" onchange="updateChart()">
                             <option value=""> -- select Unit Name </option>
                             {{-- data will be dynamically filled --}}
                             {{-- @isset($locationsList['distnctUnitName'])
