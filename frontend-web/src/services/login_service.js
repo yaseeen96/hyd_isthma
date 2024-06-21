@@ -28,3 +28,21 @@ export const verifyOtpService = async (phone, otp) => {
         throw new Error(error.response.data.message);
     }
 };
+
+export const logoutService = async () => {
+    try {
+        const response = await axios.post('https://jihapi.kkshan.amlc.in/api/v1/logout', null, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
+
+        if (response.status === 204) {
+            localStorage.removeItem('token');
+            window.location.reload();
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        return false;
+    }
+};
