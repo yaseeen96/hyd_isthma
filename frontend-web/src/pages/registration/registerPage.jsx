@@ -149,10 +149,9 @@ const RegisterPage = () => {
             </div>
             <div className="flex flex-col items-start mt-4 gap-2 w-full">
                 <label htmlFor="confirmation" className="ltr:mr-2 rtl:ml-2 w-full mb-0">
-                    Will you be able to attend the event?
+                    Please confirm you are going to attend the event?
                 </label>
                 <select value={userDetails.confirmArrival} id="confirmation" name="confirmation" className="form-select text-gray-300 " onChange={onConfirmed}>
-                    <option value={''}>Choose Option</option>
                     <option value={'1'}>Yes</option>
                     <option value={'0'}>No</option>
                 </select>
@@ -161,7 +160,7 @@ const RegisterPage = () => {
                 <>
                     <div className="mt-4 flex flex-col items-start w-full gap-1">
                         <label htmlFor="reason-for-not-confirming" className="ml-1 w-full mb-0">
-                            Reason for not coming?
+                            What is the reason for not attending?
                         </label>
                         <select id="reason_for_not_coming" name="reason_for_not_coming" className="form-select text-gray-300 " onChange={onReasonChange} value={userDetails.reason_for_not_coming}>
                             <option value={''}>Choose Option</option>
@@ -172,8 +171,8 @@ const RegisterPage = () => {
                         </select>
                     </div>
                     <div className="flex flex-col items-start mt-4 gap-2 w-full">
-                        <label htmlFor="ameers-permission-taken" className="ltr:mr-2 rtl:ml-2 w-full mb-0 text-gray-300">
-                            Ameer's permission taken?
+                        <label htmlFor="ameers-permission-taken" className="ltr:mr-2 rtl:ml-2 w-full mb-0">
+                            Did you seek Permission from your Ameer-e-Muqami/Ameer-e-Halqa?
                         </label>
                         <select
                             value={userDetails.ameer_permission_taken}
