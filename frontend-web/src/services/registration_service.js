@@ -9,9 +9,10 @@ export const confirmRegistrationService = async (data) => {
             'https://jihapi.kkshan.amlc.in/api/v1/user/register',
             {
                 confirm_arrival: data.confirmArrival,
-                reason_for_not_coming: data.reason_for_not_coming,
+                reason_for_not_coming: data.confirmArrival === '1' ? null : data.reason_for_not_coming,
                 emergency_contact: data.emergency_contact,
-                ameer_permission_taken: data.ameer_permission_taken,
+                ameer_permission_taken: data.confirmArrival === '1' ? null : data.ameer_permission_taken,
+                dob: data.date_of_birth.startDate,
             },
             { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         );
