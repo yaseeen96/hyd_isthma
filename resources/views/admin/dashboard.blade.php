@@ -105,12 +105,36 @@
                 <div class="col-md-6">
                     <div class="card card-widget widget-user p-3">
                         <h5 class="font-weight-bold">Registrations</h5>
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="border rounded-circle"
+                                style="background-color: rgb(75, 192, 192, 0.5); width: 20px;height: 20px;">
+                            </div>
+                            <span class="font-weight-bold ml-2">Registered: <span
+                                    id="totRegistered">{{ number_format($totRegistered, 0) }}</span></span>
+                            <div class="border rounded-circle ml-3"
+                                style="background-color: rgb(255, 99, 132, 0.5); width: 20px;height: 20px;">
+                            </div>
+                            <span class="font-weight-bold ml-2">Not Registered: <span
+                                    id="totNotRegistered">{{ number_format($totArkansMems - $totRegistered, 0) }}</span></span>
+                        </div>
                         <canvas id="registrations"></canvas>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="card card-widget widget-user p-3">
                         <h5 class="font-weight-bold">Availibility</h5>
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="border rounded-circle"
+                                style="background-color: rgb(75, 192, 192, 0.5); width: 20px;height: 20px;">
+                            </div>
+                            <span class="font-weight-bold ml-2">Attendees: <span
+                                    id="totAttendees">{{ number_format($totAttendees, 0) }}</span></span>
+                            <div class="border rounded-circle ml-3"
+                                style="background-color: rgb(255, 99, 132, 0.5); width: 20px;height: 20px;">
+                            </div>
+                            <span class="font-weight-bold ml-2">Non Attendees: <span
+                                    id="totNonAttendees">{{ number_format($totNonAttendees, 0) }}</span></span>
+                        </div>
                         <canvas id="attendees"></canvas>
                     </div>
                 </div>
@@ -179,9 +203,16 @@
                     // updating registrations chart data
                     registrations.data.labels = data.filterData.registrations.labels;
                     registrations.data.datasets[0].data = data.filterData.registrations.data;
+
                     // updating attendees chart data
                     attendees.data.labels = data.filterData.attendees.labels;
                     attendees.data.datasets[0].data = data.filterData.attendees.data;
+
+                    $("#totRegistered").text(data.filterData.registrations.data[0]);
+                    $("#totNotRegistered").text(data.filterData.registrations.data[1]);
+                    $("#totAttendees").text(data.filterData.attendees.data[0]);
+                    $("#totNonAttendees").text(data.filterData.attendees.data[1]);
+
                     registrations.update();
                     attendees.update();
                 }
