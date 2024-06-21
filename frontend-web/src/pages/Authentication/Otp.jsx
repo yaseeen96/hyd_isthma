@@ -19,7 +19,7 @@ const Otp = () => {
             setLoading(true);
             const response = await verifyOtpService(userState.phone, otp);
             setUserState((prev) => ({ ...prev, token: response.data.token, name: response.data.name, halqa: response.data.halqa }));
-            toast.success("Yayyyy! You're logged in");
+            toast.success('Your login is successful');
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('name', response.data.user.name);
             navigate('/home');
