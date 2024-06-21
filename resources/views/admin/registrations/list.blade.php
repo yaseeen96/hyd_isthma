@@ -145,7 +145,10 @@
                 ajax: {
                     url: "{{ route('registrations.index') }}",
                     data: function(d) {
-                        d.confirm_arrival = $("#confirm_arrival").val()
+                        const queryParams = new URLSearchParams(window.location.search);
+                        d.confirm_arrival = $("#confirm_arrival").val() == '' ? queryParams.has(
+                            'confirm_arrival') ? queryParams.get('confirm_arrival') : '' : $(
+                            "#confirm_arrival").val();
                         d.unit_name = $("#unit_name").val()
                         d.zone_name = $("#zone_name").val()
                         d.division_name = $("#division_name").val()

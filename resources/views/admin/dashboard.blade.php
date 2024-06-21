@@ -23,8 +23,8 @@
                             <span class="info-box-text font-weight-bold">REGISTERED</span>
                             <span class="info-box-number text-lg">{{ number_format($totRegistered) }}</span>
                         </div>
-                        <span class="info-box-icon"><a href="{{ route('registrations.index') }}" class="text-success"><i
-                                    class="fas fa-arrow-alt-circle-right"></i></a></span>
+                        <span class="info-box-icon"><a href="{{ route('registrations.index') }}?confirm_arrival="
+                                class="text-success"><i class="fas fa-arrow-alt-circle-right"></i></a></span>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6 col-12">
@@ -34,8 +34,8 @@
                             <span class="info-box-text font-weight-bold">ATTENDEES</span>
                             <span class="info-box-number text-lg">{{ number_format($totAttendees) }}</span>
                         </div>
-                        <span class="info-box-icon"><a href="{{ route('registrations.index') }}" class="text-warning"><i
-                                    class="fas fa-arrow-alt-circle-right"></i></a></span>
+                        <span class="info-box-icon"><a href="{{ route('registrations.index') }}?confirm_arrival=1"
+                                class="text-warning"><i class="fas fa-arrow-alt-circle-right"></i></a></span>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6 col-12">
@@ -45,8 +45,8 @@
                             <span class="info-box-text font-weight-bold">NON ATTENDEES</span>
                             <span class="info-box-number text-lg">{{ number_format($totNonAttendees) }}</span>
                         </div>
-                        <span class="info-box-icon"><a href="{{ route('registrations.index') }}" class="text-danger"><i
-                                    class="fas fa-arrow-alt-circle-right"></i></a></span>
+                        <span class="info-box-icon"><a href="{{ route('registrations.index') }}?confirm_arrival=0"
+                                class="text-danger"><i class="fas fa-arrow-alt-circle-right"></i></a></span>
                     </div>
                 </div>
             </div>
