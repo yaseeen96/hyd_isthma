@@ -17,9 +17,11 @@ class MembersController extends Controller
             $query = Member::select('members.*')->orderBy('name', 'asc');
 
             return $dataTables->eloquent($query)
-                    ->editColumn('dob', function(Member $member) {
-                        return date('d-m-Y', strtotime($member->dob));
-            })->rawColumns(['dob'])->make(true);
+                ->editColumn('dob', function (Member $member) {
+                    return date('d-m-Y', strtotime($member->dob));
+                })->addColumn('action', function (Member $member) {
+                    return '<a href="' . route('members.edit', $member->id) . '" class="btn btn-sm btn-purple btn-clean btn-icon" title="Edit"><i class="fas fa-edit" ></i></a>';
+                })->rawColumns(['dob', 'action'])->make(true);
         }
 
         return view('admin.members.list');
@@ -31,7 +33,9 @@ class MembersController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.members.form')->with([
+            'member' => new Member()
+        ]);
     }
 
     /**
@@ -39,7 +43,17 @@ class MembersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'phone' => 'required',
+            'zone_name' => 'required',
+            'unit_name' => 'required',
+            'division_name' => 'required'
+        ]);
+
+        $member = new Member();
+        $member::create($request->all());
+        return redirect()->route('members.index');
     }
 
     /**
@@ -47,23 +61,45 @@ class MembersController extends Controller
      */
     public function show(string $id)
     {
-        //
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Member $member)
     {
-        //
+        // $member = Member::find($id);
+        return view('admin.members.form')->with([
+            'member' => $member
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Member $member)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'zone_name' => 'required',
+            'unit_name' => 'required',
+            'division_name' => 'required'
+        ]);
+        $updateData = [
+            "name" => $request->name,
+            "email" => $request->email,
+            "zone_name" => $request->zone_name,
+            "unit_name" => $request->unit_name,
+            "division_name" => $request->division_name,
+            "status" => $request->status,
+            "dob" => date('Y-m-d', strtotime($request->dob)),
+            "user_number" => $request->user_number,
+            "gender" => $request->gender
+        ];
+
+        $member->update($updateData);
+        return redirect()->route('members.index');
     }
 
     /**

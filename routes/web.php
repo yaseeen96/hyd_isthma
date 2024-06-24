@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => false]);
 Route::get('/', 'DashboardController@index')->name('dashboard');
-Route::resource('members', 'MembersController', ['only' => ['index']]);
+Route::resource('members', 'MembersController');
 Route::resource('registrations', 'RegistrationController', ['only' => ['index', 'show']]);
 Route::get('getDivisions', 'DashboardController@getDivisions')->name('getDivisions');
 Route::get('getUnits', 'DashboardController@getUnits')->name('getUnits');

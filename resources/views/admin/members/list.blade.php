@@ -11,8 +11,9 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div id="panel-heading">
-
+                        <div class="col-lg-12">
+                            <a href="{{ route('members.create') }}" class="btn btn-purple float-right"><i
+                                    class="fas fa-plus mr-2"></i>Create</a>
                         </div>
                     </div>
                     <div class="row">
@@ -33,6 +34,7 @@
                                             <th>Division Name</th>
                                             <th>Date Of Birth</th>
                                             <th>Gender</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -93,6 +95,10 @@
                     {
                         data: 'gender',
                         name: 'gender'
+                    },
+                    {
+                        data: 'action',
+                        orderable: false,
                     }
                 ],
                 "lengthMenu": [50, 100, 500, 1000, 2000, 5000, 10000, 20000],
