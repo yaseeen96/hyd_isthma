@@ -21,7 +21,7 @@ class MembersController extends Controller
                     return date('d-m-Y', strtotime($member->dob));
                 })->addColumn('action', function (Member $member) {
                     return '<a href="' . route('members.edit', $member->id) . '" class="btn btn-sm btn-purple btn-clean btn-icon" title="Edit"><i class="fas fa-edit" ></i></a>';
-                })->rawColumns(['dob', 'action'])->make(true);
+                })->rawColumns(['dob', 'action'])->addIndexColumn()->make(true);
         }
 
         return view('admin.members.list');

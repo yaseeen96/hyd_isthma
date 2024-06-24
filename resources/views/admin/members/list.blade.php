@@ -24,7 +24,7 @@
                                     id="members-table">
                                     <thead>
                                         <tr>
-                                            <th>ID </th>
+                                            <th>SL.No </th>
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Phone</th>
@@ -56,8 +56,10 @@
                 serverSide: true,
                 ajax: "{{ route('members.index') }}",
                 columns: [{
-                        data: 'id',
-                        orderable: true
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'name',

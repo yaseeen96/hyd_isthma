@@ -40,7 +40,7 @@ class RegistrationController extends Controller
                 })
                 ->addColumn('action', function (Registration $registration) {
                     return '<a href="' . route('registrations.show', $registration->id) . '" class="badge badge-primary" title="View"><i class="fas fa-eye" ></i></a>';
-                })->rawColumns(['confirm_arrival', 'ameer_permission_taken', 'action'])->make(true);
+                })->rawColumns(['confirm_arrival', 'ameer_permission_taken', 'action'])->addIndexColumn()->make(true);
         }
 
         return view('admin.registrations.list');

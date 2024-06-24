@@ -86,7 +86,7 @@
                                     id="registrations-table">
                                     <thead class="">
                                         <tr>
-                                            <th>ID </th>
+                                            <th>Sl No </th>
                                             <th>Name</th>
                                             <th>Phone</th>
                                             <th>Unit Name</th>
@@ -155,7 +155,10 @@
                     }
                 },
                 columns: [{
-                        data: 'id'
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'member.name',
