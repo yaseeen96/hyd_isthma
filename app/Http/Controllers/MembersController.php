@@ -84,7 +84,8 @@ class MembersController extends Controller
             'name' => 'required',
             'zone_name' => 'required',
             'unit_name' => 'required',
-            'division_name' => 'required'
+            'division_name' => 'required',
+            'phone' =>  'required'
         ]);
         $updateData = [
             "name" => $request->name,
@@ -95,7 +96,8 @@ class MembersController extends Controller
             "status" => $request->status,
             "dob" => date('Y-m-d', strtotime($request->dob)),
             "user_number" => $request->user_number,
-            "gender" => $request->gender
+            "gender" => $request->gender,
+            "phone" => $request->phone,
         ];
 
         $member->update($updateData);

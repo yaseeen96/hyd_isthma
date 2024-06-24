@@ -35,8 +35,7 @@
                                     <div class="col-lg-12">
                                         <label for="phone">Phone <span class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="phone" id="phone"
-                                            value="{{ old('phone', $member->phone) }}"
-                                            disabled="{{ isset($member->id) ? true : false }}">
+                                            value="{{ old('phone', $member->phone) }}">
                                         @if ($errors->has('phone'))
                                             <span class="text-danger">
                                                 {{ $errors->first('phone') }}
