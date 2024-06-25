@@ -46,6 +46,7 @@ dependencies:
   webview_flutter: ^4.8.0
   firebase_messaging: ^14.9.4
   flutter_local_notifications: ^17.1.2
+  flutter_inappwebview: ^6.0.0
   # dart run flutter_native_splash:create
 
 dev_dependencies:

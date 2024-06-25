@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jih_ijtema_app/src/features/home/presentation/home_screen.dart';
+import 'package:jih_ijtema_app/src/providers/fcm_provider.dart';
 import 'package:jih_ijtema_app/src/routing/router_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:jih_ijtema_app/src/utils/logger.dart';
 
 import 'firebase_options.dart';
 
-// Initialize the FlutterLocalNotificationsPlugin
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 void main() async {
-  // Initialize Firebase
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Initialize FCM
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  // Request permissions for iOS (if applicable)
+  // Debug prints to check flow
+  logger.i("Requesting notification permissions");
+
+  // Request permissions for notifications
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
     announcement: false,
@@ -32,14 +35,32 @@ void main() async {
     sound: true,
   );
 
-  // Initialize local notifications
+  // Print the result of the permission request
+  logger.i('User granted permission: ${settings.authorizationStatus}');
+
+  // Setting up notification channels for Android and iOS
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
-  const InitializationSettings initializationSettings =
-      InitializationSettings(android: initializationSettingsAndroid);
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  const DarwinInitializationSettings initializationSettingsIOS =
+      DarwinInitializationSettings(
+    requestAlertPermission: true,
+    requestBadgePermission: true,
+    requestSoundPermission: true,
+    onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+  );
+  const InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+    iOS: initializationSettingsIOS,
+  );
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+  );
 
-  // Handle foreground messages
+  FirebaseMessaging.instance.getToken().then((value) {
+    logger.i("Token: $value");
+  });
+
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     RemoteNotification? notification = message.notification;
     AndroidNotification? android = message.notification?.android;
@@ -59,7 +80,6 @@ void main() async {
     }
   });
 
-  // Handle background messages
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   runApp(
@@ -69,24 +89,37 @@ void main() async {
   );
 }
 
-// Background message handler
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   debugPrint('Handling a background message: ${message.messageId}');
 }
 
-class MyApp extends StatelessWidget {
+void onDidReceiveLocalNotification(
+    int id, String? title, String? body, String? payload) {
+  // handle foreground notification for iOS
+}
+
+void onDidReceiveNotificationResponse(NotificationResponse response) {
+  // handle notification tap response
+}
+
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: customRouter,
-      title: 'JIH Ijtema App', // change the title
+    return MaterialApp(
+      title: 'JIH Ijtema App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),
+      home: const HomeScreen(),
     );
   }
 }

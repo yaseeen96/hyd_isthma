@@ -44,7 +44,7 @@ if (flutterVersionName == null) {
   }
 
 android {
-    namespace "com.jih.jtema_app"
+    namespace "com.jih.ijtema"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
