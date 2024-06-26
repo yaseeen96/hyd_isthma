@@ -64,6 +64,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 javaScriptEnabled: true,
                 supportZoom: false,
                 javaScriptCanOpenWindowsAutomatically: true,
+                useHybridComposition: false,
               ),
               onLoadStop: (controller, url) async {
                 if (_fcmToken != null) {

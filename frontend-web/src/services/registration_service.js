@@ -12,6 +12,7 @@ export const confirmRegistrationService = async (data) => {
             emergency_contact: data.emergency_contact,
             ameer_permission_taken: data.confirmArrival === '1' ? null : data.ameer_permission_taken,
             dob: data.date_of_birth.startDate,
+            email: data.email,
         });
         return response.data.status === 'success';
     } catch (error) {

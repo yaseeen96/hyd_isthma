@@ -15,6 +15,7 @@ const RegisterPage = () => {
         reason_for_not_coming: '',
         emergency_contact: '',
         ameer_permission_taken: '1',
+        email: '',
     });
 
     const handleSubmit = async (e) => {
@@ -145,6 +146,20 @@ const RegisterPage = () => {
                         console.log(value);
                         setUserDetails((prevDetails) => ({ ...prevDetails, date_of_birth: value }));
                     }}
+                />
+            </div>
+            <div className="mt-4 flex flex-col items-start w-full gap-1">
+                <label htmlFor="email" className="ml-1 w-1/3 mb-0">
+                    Email
+                </label>
+                <input
+                    id="email"
+                    type="email"
+                    name="reciever-name"
+                    className="form-input text-gray-400 "
+                    placeholder="Enter Email"
+                    defaultValue={user ? user.data[0].email : ''}
+                    onChange={(e) => setUserDetails((prev) => ({ ...prev, email: e.target.value }))}
                 />
             </div>
             <div className="flex flex-col items-start mt-4 gap-2 w-full">
