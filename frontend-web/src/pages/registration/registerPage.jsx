@@ -28,13 +28,19 @@ const RegisterPage = () => {
             if (isSuccess) {
                 localStorage.setItem('arrivalConfirmed', userDetails.confirmArrival);
                 toast.success(
-                    `
-                    Thanks for completing the first phase of registration for Arkan Ijtema. Here are the next steps:
-
-                    •⁠  ⁠We will soon provide program details, informative videos, and other important information.
-                    •⁠  ⁠We will collect your arrival dates and interests to better serve you.
-                    •⁠  ⁠Stay tuned for updates.
-                    `
+                    <div>
+                        Thanks for completing the first phase of registration for Arkan Ijtema. Here are the next steps:
+                        <br />
+                        <ul>
+                            <li>We will soon provide program details, informative videos, and other important information.</li>
+                            <li>We will collect your arrival dates and interests to better serve you.</li>
+                            <li>Stay tuned for updates.</li>
+                        </ul>
+                    </div>,
+                    {
+                        autoClose: false,
+                        hideProgressBar: false,
+                    }
                 );
                 navigate('/home');
             }
