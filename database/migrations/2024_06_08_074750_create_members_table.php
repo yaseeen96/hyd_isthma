@@ -14,7 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->string('name')->nullable();
             $table->string('email')->nullable();
-            $table->string("phone")->unique();
+            // $table->string("phone")->unique(); // brefore it was unite removed the unique from the phone
+            $table->string("phone");
             $table->string("user_number")->nullable();
             $table->string("unit_name")->nullable();
             $table->string("zone_name")->nullable();

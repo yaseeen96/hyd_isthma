@@ -50,7 +50,7 @@ class MembersController extends Controller
             'unit_name' => 'required',
             'division_name' => 'required'
         ]);
-
+        
         $member = new Member();
         $member::create($request->all());
         return redirect()->route('members.index');
@@ -69,6 +69,7 @@ class MembersController extends Controller
      */
     public function edit(Member $member)
     {
+        $member->dob = date('d-m-Y', strtotime($member->dob));
         // $member = Member::find($id);
         return view('admin.members.form')->with([
             'member' => $member
@@ -86,14 +87,14 @@ class MembersController extends Controller
             'unit_name' => 'required',
             'division_name' => 'required',
             'phone' =>  'required'
-        ]);
+        ]); 
         $updateData = [
             "name" => $request->name,
             "email" => $request->email,
             "zone_name" => $request->zone_name,
             "unit_name" => $request->unit_name,
             "division_name" => $request->division_name,
-            "status" => $request->status,
+            "status" => $request->status === 'on' ? 'Active' : 'InActive',
             "dob" => date('Y-m-d', strtotime($request->dob)),
             "user_number" => $request->user_number,
             "gender" => $request->gender,

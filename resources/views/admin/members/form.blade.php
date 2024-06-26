@@ -73,8 +73,8 @@
                                 <div class="form-group row">
                                     <div class="col-lg-12">
                                         <label for="dob">Date Of Birth</label>
-                                        <input type="date" class="form-control" name="dob" id="dob"
-                                            value="{{ old('dob', $member->dob) }}">
+                                        <input type="text" class="form-control" name="dob" id="dob"
+                                            placeholder="dd-mm-yyyy" value="{{ old('dob', $member->dob) }}">
                                         @if ($errors->has('dob'))
                                             <span class="text-danger">
                                                 {{ $errors->first('dob') }}
@@ -82,7 +82,6 @@
                                         @endif
                                     </div>
                                 </div>
-
                             </div>
 
                             <div class="col-lg-6">
@@ -154,7 +153,8 @@
                                         <div
                                             class="custom-control custom-switch custom-switch-off-gray custom-switch-on-success">
                                             <input type="checkbox" class="custom-control-input" id="customSwitch3"
-                                                name="status" {{ $member->status ? 'checked' : 'unchecked' }}>
+                                                name="status"
+                                                {{ $member->status === 'Active' ? 'checked' : 'unchecked' }}>
                                             <label class="custom-control-label" for="customSwitch3"></label>
                                         </div>
                                         @if ($errors->has('status'))

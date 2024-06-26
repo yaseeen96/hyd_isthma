@@ -35,6 +35,10 @@ class RegistrationController extends Controller
         if (!empty($request->input('dob'))) {
             $user->update(['dob' => $request->get('dob')]);
         }
+         if (!empty($request->input('email'))) {
+            $user->update(['email' => $request->get('email')]);
+        }
+
         Registration::updateOrCreate(['member_id' => $user->id], $regsData);
         $data = Member::with('registration')->where('id', $user->id)->get();
         return response()->json([
