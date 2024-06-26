@@ -2,9 +2,17 @@ import axios from 'axios';
 
 export const sendOtpService = async (phone) => {
     try {
-        const response = await axios.post('https://jihapi.kkshan.amlc.in/api/v1/auth/login', {
-            phone: `${phone}`,
-        });
+        const response = await axios.post(
+            'https://jihapi.kkshan.amlc.in/api/v1/auth/login',
+            {
+                phone: `${phone}`,
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
 
         return response.data;
     } catch (error) {
@@ -14,10 +22,18 @@ export const sendOtpService = async (phone) => {
 
 export const verifyOtpService = async (phone, otp) => {
     try {
-        const response = await axios.post('https://jihapi.kkshan.amlc.in/api/v1/auth/verifyOtp', {
-            phone: `${phone}`,
-            otp: otp,
-        });
+        const response = await axios.post(
+            'https://jihapi.kkshan.amlc.in/api/v1/auth/verifyOtp',
+            {
+                phone: `${phone}`,
+                otp: otp,
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
 
         return response.data;
     } catch (error) {
@@ -32,7 +48,7 @@ export const verifyOtpService = async (phone, otp) => {
 export const logoutService = async () => {
     try {
         const response = await axios.post('https://jihapi.kkshan.amlc.in/api/v1/logout', null, {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, 'Content-Type': 'application/json' },
         });
 
         if (response.status === 204) {

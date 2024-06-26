@@ -7,7 +7,15 @@ export const isUserLoggedIn = async () => {
         return false;
     }
     try {
-        const response = await axios.post('https://jihapi.kkshan.amlc.in/api/v1/auth/verifyToken', { token: token, push_token: fcmToken });
+        const response = await axios.post(
+            'https://jihapi.kkshan.amlc.in/api/v1/auth/verifyToken',
+            { token: token, push_token: fcmToken },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
         if (response.data.status === 'success') {
             return { user: response.data.data, isLoggedIn: true };
         } else {

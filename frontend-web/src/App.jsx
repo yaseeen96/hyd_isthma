@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useAsyncEffect from 'use-async-effect';
 import { isUserLoggedIn } from './services/check_token_validity_service';
 import { useLocation } from 'react-router-dom';
+
 function App({ children }) {
     const location = useLocation();
     const navigate = useNavigate();

@@ -14,12 +14,14 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late String? _fcmToken;
   bool _isReady = false;
+  String initialUrl = "https://ijtema.jihhrd.com/";
 
   @override
   void initState() {
     super.initState();
     // Retrieve the FCM token asynchronously
     fetchFcmToken();
+    handleNotificationOpened();
   }
 
   Future<void> fetchFcmToken() async {
@@ -30,29 +32,51 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
+  void handleNotificationOpened() {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      logger.i("Notification clicked!");
+
+      if (message.data.containsKey('url')) {
+        setState(() {
+          initialUrl = message.data['url'];
+        });
+      }
+    });
+    // Also handle any notification which might have launched the app
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage? message) {
+      if (message != null && message.data.containsKey('url')) {
+        setState(() {
+          initialUrl = message.data['url'];
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _isReady
           ? InAppWebView(
-              initialUrlRequest:
-                  URLRequest(url: WebUri("https://ijtema.jihhrd.com/")),
+              initialUrlRequest: URLRequest(url: WebUri(initialUrl)),
               initialSettings: InAppWebViewSettings(
                 javaScriptEnabled: true,
                 supportZoom: false,
+                javaScriptCanOpenWindowsAutomatically: true,
               ),
               onLoadStop: (controller, url) async {
                 if (_fcmToken != null) {
                   await controller.evaluateJavascript(source: '''
-              localStorage.setItem("fcmtoken", "${_fcmToken}");
-            ''');
+                    localStorage.setItem("fcmtoken", "$_fcmToken");
+                  ''');
                 }
               },
               onReceivedError: (controller, request, error) {
                 logger.e("Failed to load ${request.url}: ${error.description}");
               },
             )
-          : Center(child: CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }
