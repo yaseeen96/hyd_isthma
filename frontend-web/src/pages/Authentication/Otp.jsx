@@ -30,7 +30,7 @@ const Otp = () => {
         }
     }
     return (
-        <AuthLayout title="Otp has been sent to your registered phone number">
+        <AuthLayout title="Otp has been sent to your registered phone number" noBanner={true}>
             <form className="space-y-5 dark:text-white" onSubmit={submitForm}>
                 <div>
                     <div className="relative text-white-dark">

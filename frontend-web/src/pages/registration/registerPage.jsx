@@ -20,17 +20,26 @@ const RegisterPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         try {
             setLoading(true);
             const isSuccess = await confirmRegistrationService(userDetails);
 
             if (isSuccess) {
                 localStorage.setItem('arrivalConfirmed', userDetails.confirmArrival);
-                toast.success('Registration Successful');
+                toast.success(
+                    ```
+                    Thanks for completing the first phase of registration for Arkan Ijtema. Here are the next steps:
+
+                    •⁠  ⁠We will soon provide program details, informative videos, and other important information.
+                    •⁠  ⁠We will collect your arrival dates and interests to better serve you.
+                    •⁠  ⁠Stay tuned for updates.
+                    ```
+                );
                 navigate('/home');
             }
         } catch (error) {
-            toast.error('Registration Failed. Please come back later');
+            toast.error(`Registration Failed. Please come back later`);
         } finally {
             setLoading(false);
         }
