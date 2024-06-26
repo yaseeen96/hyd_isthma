@@ -53,6 +53,7 @@ class MembersController extends Controller
         
         $member = new Member();
         $member::create($request->all());
+        $member->update(['status' => $member->status === 'on' ? 'Active' : 'Inactive']);
         return redirect()->route('members.index');
     }
 
