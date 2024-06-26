@@ -3,7 +3,6 @@ import { axiosAuthenticatedClient } from './axios_client';
 export const confirmRegistrationService = async (data) => {
     try {
         console.log(data);
-        // log tyoe of confirmArrival
         console.log(typeof data.confirmArrival);
 
         const response = await axiosAuthenticatedClient.post('user/register', {
@@ -14,8 +13,10 @@ export const confirmRegistrationService = async (data) => {
             dob: data.date_of_birth.startDate,
             email: data.email,
         });
+        console.log(response.data);
         return response.data.status === 'success';
     } catch (error) {
+        console.error(error);
         return false;
     }
 };

@@ -28,18 +28,18 @@ const RegisterPage = () => {
             if (isSuccess) {
                 localStorage.setItem('arrivalConfirmed', userDetails.confirmArrival);
                 toast.success(
-                    ```
+                    `
                     Thanks for completing the first phase of registration for Arkan Ijtema. Here are the next steps:
 
                     •⁠  ⁠We will soon provide program details, informative videos, and other important information.
                     •⁠  ⁠We will collect your arrival dates and interests to better serve you.
                     •⁠  ⁠Stay tuned for updates.
-                    ```
+                    `
                 );
                 navigate('/home');
             }
         } catch (error) {
-            toast.error(`Registration Failed. Please come back later`);
+            toast.error(`Registration Failed. Please come back later ${error}`);
         } finally {
             setLoading(false);
         }
@@ -65,6 +65,12 @@ const RegisterPage = () => {
                             reason_for_not_coming: response.data[0].registration.reason_for_not_coming ?? '',
                             emergency_contact: response.data[0].registration.emergency_contact ?? '',
                             ameer_permission_taken: response.data[0].registration.ameer_permission_taken?.toString() ?? '0',
+                        }));
+                    }
+                    if (response.data[0].email != null) {
+                        setUserDetails((prevDetails) => ({
+                            ...prevDetails,
+                            email: response.data[0].email,
                         }));
                     }
                 }
