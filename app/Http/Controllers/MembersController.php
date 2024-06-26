@@ -51,9 +51,12 @@ class MembersController extends Controller
             'division_name' => 'required'
         ]);
         
-        $member = new Member();
-        $member::create($request->all());
-        $member->update(['status' => $member->status === 'on' ? 'Active' : 'Inactive']);
+        $member = Member::create($request->all());
+        $member->update(
+                [
+                    'status' => $member->status === 'on' ? 'Active' : 'Inactive',
+                    'dob' => date('Y-m-d', strtotime($request->dob))
+                ]);
         return redirect()->route('members.index');
     }
 
