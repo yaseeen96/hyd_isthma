@@ -19,12 +19,6 @@ Route::resource('members', 'MembersController');
 Route::resource('registrations', 'RegistrationController', ['only' => ['index', 'show']]);
 Route::get('getDivisions', 'DashboardController@getDivisions')->name('getDivisions');
 Route::get('getUnits', 'DashboardController@getUnits')->name('getUnits');
-Route::get('emailtesting', function () {
-    return view('mail.login-otp')->with([
-        'member' => \App\Models\Member::find(1),
-        'otp' => '1234'
-    ]);
-});
 
 // temp routes
 Route::prefix('delete')->group(function () {
