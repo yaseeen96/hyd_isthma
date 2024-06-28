@@ -30,14 +30,14 @@ const Login = () => {
     };
 
     return (
-        <AuthLayout title="Enter your phone number to login">
+        <AuthLayout title="Enter your email or phone number to login">
             <form className="space-y-5 dark:text-white" onSubmit={submitForm}>
                 <div className="mt-5">
                     <div className="relative text-white-dark">
                         <input
                             id="Phone"
-                            type="tel"
-                            placeholder="Enter your phone number"
+                            type="text"
+                            placeholder="Enter your email / phone number"
                             className="form-input ps-10 placeholder:text-white-dark"
                             onChange={(e) => {
                                 setPhone(e.target.value);
