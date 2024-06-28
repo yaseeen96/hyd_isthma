@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OtpVerifyRequest;
 use App\Http\Requests\MemberLoginRequest;
 use App\Http\Requests\VerifyTokenRequest;
+use App\Mail\OtpEmail;
 use App\Models\Member;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
 use Ichtrojan\Otp\Otp;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -21,7 +23,9 @@ class AuthController extends Controller
     {
 
         // temp active condition for delete account functionality
-        $member = Member::where(['phone' => $request->phone, 'status' => 'Active'])->first();
+        $condition = str_contains($request->phone, '@') ? ['email' => $request->phone] : ['phone' => $request->phone];
+        $condition['status'] = 'Active';
+        $member = Member::where($condition)->first();
         // Auth::login($member);
         // temp condition for delete account feature
         if (!isset($member)) {
@@ -30,29 +34,48 @@ class AuthController extends Controller
                 'status' => 'failure'
             ], Response::HTTP_BAD_REQUEST);
         }
+        $identifier = array_key_exists('phone', $condition) ? 'phone' : 'email';
+        $identifierValue = $member->$identifier;
         /* generating otp for user */
-        $otp = (new Otp)->generate($member->phone, 'numeric', 4, 30);
-        /* sending OTP to user */
-        $isOtpSend = SmsHelper::sendOtpMsg($member->phone, $member->name, $otp->token);
-
-        if (!$isOtpSend) {
-            return response()->json([
-                'message' => 'Failed to send OTP',
-                'status' => 'failure'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        $otp = (new Otp)->generate($identifierValue, 'numeric', 4, 30);
+        $messageStr = '';
+        if(array_key_exists('phone', $condition)) {
+            /* sending OTP to user */
+            $isOtpSend = SmsHelper::sendOtpMsg($identifierValue, $member->name, $otp->token);
+             if (!$isOtpSend) {
+                return response()->json([
+                    'message' => 'Failed to send OTP',
+                    'status' => 'failure'
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+            $messageStr = $this->obfuscate_phone($identifierValue);
+        } else {
+            /* sending otp mail to member */
+            Mail::to($member->email, $member->name)->send(new OtpEmail($member, $otp->token));
+            $messageStr = $this->obfuscate_phone($identifierValue);
         }
 
-        $phone = $member->phone;
-        $hiddenPhoneNo = substr($phone, 0, 3) . '****' . substr($phone, -3);
-
         return response()->json([
-            'message' => 'OTP sent to your phone number ' . $hiddenPhoneNo,
+            'message' => 'OTP sent to your '. ($identifier === 'phone' ? 'phone number ' : 'email address '). $messageStr,
             'status' => 'success',
             'data' => [
-                'phone' => $member->phone
+                'phone' => $identifierValue,
             ]
         ], Response::HTTP_OK);
+    }
 
+    public function obfuscate_phone($phone) {
+        $hiddenPhoneNo = substr($phone, 0, 3) . '****' . substr($phone, -3);
+        return $hiddenPhoneNo;
+    }
+
+    public static function obfuscate_email($email)
+    {
+        $em = explode("@", $email);
+        $name = implode('@', array_slice($em, 0, count($em) - 1));
+        $len = floor(strlen($name) / 2);
+
+        return substr($name, 0, $len) . str_repeat('*', $len) . "@" . end($em);
     }
 
     public function verifyOtp(OtpVerifyRequest $request)
@@ -68,8 +91,9 @@ class AuthController extends Controller
                 'status' => 'failure'
             ], Response::HTTP_UNAUTHORIZED);
         }
+        $condition = str_contains($request->phone, '@') ? ['email' => $request->phone] : ['phone' => $request->phone];
 
-        $member = Member::where('phone', $phone)->first();
+        $member = Member::where($condition)->first();
 
         $member->tokens()->delete();
 

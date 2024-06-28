@@ -9,6 +9,7 @@ class SmsHelper
     public static function sendOtpMsg($mobile, $name, $otp)
     {
         $client = new Client();
+        $name = preg_replace('/\(\d+\)/', '', $name);
         $response = $client->request('GET', env('TEXTLOCAL_APIURL'), [
             'query' => [
                 'apikey' => env('TEXTLOCAL_APIKEY'),
