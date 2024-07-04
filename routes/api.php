@@ -28,7 +28,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'user'], function () {
             Route::get('getUserDetails', 'RegistrationController@index');
             Route::post('register', 'RegistrationController@register');
-
+            Route::post('familyDetails', 'RegistrationController@updateFamilyDetails');
+            Route::post('financialDetails', 'RegistrationController@updateFinancialDetails');
+            Route::post('additionalDetails', 'RegistrationController@updateAdditionalDetails');
         });
 
         Route::post('logout', 'AuthController@logout');

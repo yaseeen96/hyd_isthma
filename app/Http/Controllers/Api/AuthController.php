@@ -9,6 +9,7 @@ use App\Http\Requests\MemberLoginRequest;
 use App\Http\Requests\VerifyTokenRequest;
 use App\Mail\OtpEmail;
 use App\Models\Member;
+use App\Models\RegFamilyDetail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -130,7 +131,8 @@ class AuthController extends Controller
             "data" => [
                 'id' => $user->id,
                 'name' => $user->name,
-                'confirm_arrival' => isset($IsRegDone) ? $user->registration->confirm_arrival : null
+                'confirm_arrival' => isset($IsRegDone) ? $user->registration->confirm_arrival : null,
+                'tilesInfo' => $this->getProfileProgress($user),
             ]
         ], Response::HTTP_OK);
     }
@@ -158,5 +160,17 @@ class AuthController extends Controller
             'message' => 'Account Deleted',
             'status' => 'failure'
         ], Response::HTTP_OK);
+    }
+
+    // get tiles information
+    public function getProfileProgress(Member $member) {
+        $familyDetails = RegFamilyDetail::where(['registration_id' => $member->registration->id])->count();
+        $financialDetails = $member->registration->member_fees;
+        $arrivalDetails = $member->registration->arrival_details;
+        return [
+            'family_details' => $familyDetails > 0 ? 1 :  0,
+            "financial_details" => $financialDetails > 0 ? 1 : 0,
+            "additional_details" => $arrivalDetails ? 1 : 0,
+        ];
     }
 }

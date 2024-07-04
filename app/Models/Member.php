@@ -27,8 +27,15 @@ class Member extends Authenticatable
         "push_token",
     ];
 
+
+
     public function registration()
     {
         return $this->HasOne(Registration::class, 'member_id', 'id');
+    }
+
+    public function regFamilyDetails()
+    {
+        return $this->HasMany(RegFamilyDetail::class, 'registration_id', 'id');
     }
 }
