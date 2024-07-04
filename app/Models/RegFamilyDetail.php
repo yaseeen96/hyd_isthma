@@ -15,6 +15,12 @@ class RegFamilyDetail extends Model
         'name',
         'age',
         'gender',
-        'fees'
+        'fees' 
     ];
+    
+    public function registration()
+    {
+        return $this->belongsTo(Registration::class, 'registration_id');
+    }
+
 }

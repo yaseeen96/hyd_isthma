@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Registration;
+use App\Models\RegFamilyDetail;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -67,8 +68,20 @@ class RegistrationController extends Controller
      */
     public function show(string $id)
     {
+        // dd($id);
         $member = Registration::with('member')->where('id', $id)->get()->first();
-        return view('admin.registrations.show', compact('member'));
+        $registration = Registration::with(['familyDetails', 'purchaseDetails'])->find($id);
+        $familyDetails =   $registration->familyDetails;
+        $purchaseDetails =   $registration->purchaseDetails;
+
+        $mehramDetails = $registration->familyDetails->where('type', 'mehram');
+        $childrenDetails = $registration->familyDetails->where('type', 'children');
+
+        $data['member'] = $member;
+        $data['mehramDetails'] = $mehramDetails;
+        $data['childrenDetails'] = $childrenDetails;
+        $data['purchaseDetails'] = $purchaseDetails;
+        return view('admin.registrations.show', $data);
     }
 
     /**

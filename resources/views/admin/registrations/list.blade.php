@@ -7,7 +7,7 @@
                 <div class="card-header d-flex justify-content-start ">
                     <h3 class="card-title font-weight-bold">
                         Registrations
-                    </h3>
+                    </h3> 
                 </div>
                 <div class="card-body">
                     <div class="row">

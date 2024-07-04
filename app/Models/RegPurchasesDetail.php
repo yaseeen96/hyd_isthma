@@ -14,4 +14,9 @@ class RegPurchasesDetail extends Model
         'type',
         'qty'
     ];
+
+    public function registration()
+    {
+        return $this->belongsTo(Registration::class, 'registration_id');
+    }
 }
