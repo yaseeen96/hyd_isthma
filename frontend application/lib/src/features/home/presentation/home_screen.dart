@@ -19,7 +19,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Retrieve the FCM token asynchronously
     fetchFcmToken();
     handleNotificationOpened();
   }
@@ -42,7 +41,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         });
       }
     });
-    // Also handle any notification which might have launched the app
+
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) {

@@ -47,6 +47,7 @@ dependencies:
   flutter_local_notifications: ^17.1.2
   flutter_inappwebview: ^6.0.0
   upgrader: ^10.3.0
+  device_info_plus: ^10.1.0
   # dart run flutter_native_splash:create
 
 dev_dependencies:

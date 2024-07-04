@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jih_ijtema_app/src/features/home/presentation/home_screen.dart';
-import 'package:jih_ijtema_app/src/providers/fcm_provider.dart';
-import 'package:jih_ijtema_app/src/routing/router_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -22,10 +20,8 @@ void main() async {
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  // Debug prints to check flow
   logger.i("Requesting notification permissions");
 
-  // Request permissions for notifications
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
     announcement: false,
@@ -36,10 +32,8 @@ void main() async {
     sound: true,
   );
 
-  // Print the result of the permission request
   logger.i('User granted permission: ${settings.authorizationStatus}');
 
-  // Setting up notification channels for Android and iOS
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
   const DarwinInitializationSettings initializationSettingsIOS =
