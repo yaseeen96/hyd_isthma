@@ -129,4 +129,34 @@ class RegistrationController extends Controller
             'message' => 'Financial details updated successfully',
         ], Response::HTTP_OK);
     }
+
+    public function getFamilyDetails($id){
+
+        $registration = Registration::with('familyDetails')->find($id);
+        $mehrams = $registration->familyDetails->where('type', 'mehram')->map(function ($item) {
+            return [
+                'name' => $item->name,
+                'age' => $item->age,
+                'gender' => $item->gender,
+                'fees' => $item->fees,
+            ];
+        })->toArray();
+
+        $childrens = $registration->familyDetails->where('type', 'children')->map(function ($item) {
+            return [
+                'name' => $item->name,
+                'age' => $item->age,
+                'gender' => $item->gender,
+                'fees' => $item->fees,
+            ];
+        })->toArray();
+
+        return response()->json([
+            'status' => 'success',
+           'member_fees' => $registration->member_fees,
+            'mehrams' => $mehrams,
+            'childrens' => $childrens,
+
+        ], Response::HTTP_OK);
+    }
 }

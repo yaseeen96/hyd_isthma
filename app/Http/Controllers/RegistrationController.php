@@ -71,7 +71,6 @@ class RegistrationController extends Controller
         // dd($id);
         $member = Registration::with('member')->where('id', $id)->get()->first();
         $registration = Registration::with(['familyDetails', 'purchaseDetails'])->find($id);
-        $familyDetails =   $registration->familyDetails;
         $purchaseDetails =   $registration->purchaseDetails;
 
         $mehramDetails = $registration->familyDetails->where('type', 'mehram');
@@ -83,6 +82,8 @@ class RegistrationController extends Controller
         $data['purchaseDetails'] = $purchaseDetails;
         return view('admin.registrations.show', $data);
     }
+
+
 
     /**
      * Show the form for editing the specified resource.

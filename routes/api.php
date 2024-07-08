@@ -31,6 +31,9 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('familyDetails', 'RegistrationController@updateFamilyDetails');
             Route::post('financialDetails', 'RegistrationController@updateFinancialDetails');
             Route::post('additionalDetails', 'RegistrationController@updateAdditionalDetails');
+
+            //niteen
+            Route::get('getfamilyDetails/{id}', 'RegistrationController@getFamilyDetails');
         });
 
         Route::post('logout', 'AuthController@logout');
