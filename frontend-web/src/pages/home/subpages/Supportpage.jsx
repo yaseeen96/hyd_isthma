@@ -34,8 +34,8 @@ const SupportPage = () => {
                     </span>
                     <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white">Call for Support</h2>
                     <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Speak to our friendly team.</p>
-                    <a href="tel:+918920221894">
-                        <p class="mt-2 text-sm text-primary dark:text-primary">+91 89202 21894</p>
+                    <a href="tel:+919319404079">
+                        <p class="mt-2 text-sm text-primary dark:text-primary">+91 93194 04079</p>
                     </a>
                     <a href="tel:+919849671884">
                         <p class="mt-2 text-sm text-primary dark:text-primary">+91 98496 71884</p>
