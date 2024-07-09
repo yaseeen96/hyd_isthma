@@ -25,6 +25,8 @@ Route::get('getUnits', 'DashboardController@getUnits')->name('getUnits');
 
 // Reports
 Route::geT('travelReport', 'ReportsController@travelReport')->name('travel-report');
+//niteen reports
+Route::get('healthReport', 'ReportsController@healthReport')->name('health-report');
 
 // temp routes
 Route::prefix('delete')->group(function () {

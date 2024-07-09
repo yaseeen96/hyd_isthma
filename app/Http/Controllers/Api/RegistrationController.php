@@ -131,7 +131,7 @@ class RegistrationController extends Controller
     }
 
     public function getFamilyDetails($id){
-
+        
         $registration = Registration::with('familyDetails')->find($id);
         $mehrams = $registration->familyDetails->where('type', 'mehram')->map(function ($item) {
             return [

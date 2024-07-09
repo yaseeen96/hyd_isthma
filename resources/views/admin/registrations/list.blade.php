@@ -215,7 +215,7 @@
                     [actionType]: val
                 },
                 success: function(data) {
-                    let el = document.createElement('option');
+                    let el = document.createElement('option'); 
                     el.value = '';
                     el.text = `-- Select ${dataName.replace('_', ' ')} --`;
                     if (data[dataName].length > 0) {

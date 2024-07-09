@@ -72,6 +72,15 @@
                           </p>
                       </a>
                   </li>
+                  <li class="nav-item">
+                      <a href="{{ route('health-report') }}"
+                          class="nav-link {{ request()->route()->getName() === 'health-report' ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-book-medical"></i>
+                          <p>
+                              Health Report
+                          </p>
+                      </a>
+                  </li>
               </ul>
           </nav>
           <!-- /.sidebar-menu -->
