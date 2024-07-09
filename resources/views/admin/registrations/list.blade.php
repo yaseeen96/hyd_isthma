@@ -7,11 +7,11 @@
                 <div class="card-header d-flex justify-content-start ">
                     <h3 class="card-title font-weight-bold">
                         Registrations
-                    </h3> 
+                    </h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-12 mb-5">
                             <button class="btn btn-purple float-right" type="button" data-toggle="collapse"
                                 data-target="#regFilters" aria-expanded="false" aria-controls="regFilters">
                                 <i class="fas fa-filter"></i> Filter
@@ -131,16 +131,26 @@
                     },
                     {
                         extend: 'csv',
-                        filename: 'Registrations List'
+                        filename: 'Registrations List',
+                        extraOptions: {
+                            columns: ':visible'
+                        }
                     },
                     {
                         extend: 'excel',
-                        filename: 'Registrations List'
+                        filename: 'Registrations List',
+                        extraOptions: {
+                            columns: ':visible'
+                        }
                     },
                     {
                         extend: 'pdf',
-                        filename: 'Registrations List'
-                    }
+                        filename: 'Registrations List',
+                        extraOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    'colvis'
                 ],
                 ajax: {
                     url: "{{ route('registrations.index') }}",

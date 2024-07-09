@@ -63,6 +63,15 @@
                           </p>
                       </a>
                   </li>
+                  <li class="nav-item">
+                      <a href="{{ route('travel-report') }}"
+                          class="nav-link {{ request()->route()->getName() === 'travel-report' ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-plane-arrival"></i>
+                          <p>
+                              Travel Report
+                          </p>
+                      </a>
+                  </li>
               </ul>
           </nav>
           <!-- /.sidebar-menu -->

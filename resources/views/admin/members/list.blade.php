@@ -110,16 +110,26 @@
                     },
                     {
                         extend: 'csv',
-                        filename: 'Members List'
+                        filename: 'Members List',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
                     },
                     {
                         extend: 'excel',
-                        filename: 'Members List'
+                        filename: 'Members List',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
                     },
                     {
                         extend: 'pdf',
-                        filename: 'Members List'
-                    }
+                        filename: 'Members List',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    'colvis',
                 ],
                 "order": [
                     [0, "asc"]

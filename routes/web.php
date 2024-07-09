@@ -23,6 +23,9 @@ Route::resource('registrations', 'RegistrationController', ['only' => ['index', 
 Route::get('getDivisions', 'DashboardController@getDivisions')->name('getDivisions');
 Route::get('getUnits', 'DashboardController@getUnits')->name('getUnits');
 
+// Reports
+Route::geT('travelReport', 'ReportsController@travelReport')->name('travel-report');
+
 // temp routes
 Route::prefix('delete')->group(function () {
     Route::get('account', 'DeleteAccountController@index')->name('delete-account');
