@@ -1,66 +1,39 @@
 @extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Members'])
 @section('content')
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid  mt-3 px-3  rounded-2 ">
-            <div class="card shadow-sm">
-                <div class="card-header d-flex justify-content-start ">
-                    <h3 class="card-title font-weight-bold">
-                        Members
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <a href="{{ route('members.create') }}" class="btn btn-purple float-right"><i
-                                    class="fas fa-plus mr-2"></i>Create</a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="table-responsive">
-                                <table
-                                    class="custom-table-head nowrap table table-bordered table-hover dataTable dtr-inline  collapsed"
-                                    id="members-table">
-                                    <thead>
-                                        <tr>
-                                            <th>SL.No </th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>User Number</th>
-                                            <th>Unit Name</th>
-                                            <th>Zone Name</th>
-                                            <th>Division Name</th>
-                                            <th>Date Of Birth</th>
-                                            <th>Gender</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+    <x-content-wrapper>
+        <x-slot:title>
+            Members
+        </x-slot>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <a href="{{ route('members.create') }}" class="btn btn-purple float-right"><i
+                            class="fas fa-plus mr-2"></i>Create</a>
                 </div>
             </div>
+            <x-table id="members-table">
+                <th>SL.No </th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>User Number</th>
+                <th>Unit Name</th>
+                <th>Zone Name</th>
+                <th>Division Name</th>
+                <th>Date Of Birth</th>
+                <th>Gender</th>
+                <th>Action</th>
+            </x-table>
         </div>
-    </section>
-    <!-- /.content -->
+    </x-content-wrapper>
 @endsection
 @push('scripts')
     <script type="text/javascript">
-        $("#example_wrapper > .dt-buttons").appendTo("div.panel-heading");
         $(function() {
             $('#members-table').DataTable({
-                processing: true,
-                serverSide: true,
                 ajax: "{{ route('members.index') }}",
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
+                columns: [
+                    dtIndexCol(),
                     {
                         data: 'name',
                         name: 'name'
@@ -103,37 +76,6 @@
                         orderable: false,
                     }
                 ],
-                "lengthMenu": [50, 100, 500, 1000, 2000, 5000, 10000, 20000],
-                dom: 'Bfrtip',
-                buttons: [{
-                        extend: 'pageLength'
-                    },
-                    {
-                        extend: 'csv',
-                        filename: 'Members List',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'excel',
-                        filename: 'Members List',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'pdf',
-                        filename: 'Members List',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    'colvis',
-                ],
-                "order": [
-                    [0, "asc"]
-                ]
             })
         })
     </script>

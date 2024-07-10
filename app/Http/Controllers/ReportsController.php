@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Registration;
 use App\Models\RegFamilyDetail;
 use Yajra\DataTables\DataTables;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
+use Kreait\Firebase\Exception\MessagingException;
 
 class ReportsController extends Controller
 {
@@ -53,5 +56,105 @@ class ReportsController extends Controller
     
         return view('admin.reports.health-report');
     }
-    
+
+    public function arrivalReport(Request $request, DataTables $dataTables) {
+        if (auth()->user()->id != 1)
+            abort(403);
+
+        if($request->ajax()) { 
+            $query = Registration::with('member')->whereHas('member', function ($query) use ($request) {
+                if (isset($request->unit_name)) {
+                    $query->where('unit_name', $request->unit_name);
+                }
+                if (isset($request->zone_name)) {
+                    $query->where('zone_name', $request->zone_name);
+                }
+                if (isset($request->division_name)) {
+                    $query->where('division_name', $request->division_name);
+                }
+            })->select('registrations.*')->where([['confirm_arrival', '=', 1], ['arrival_details', '!=', '']])->orderBy('id', 'asc');
+            return $dataTables->eloquent($query)
+                ->addColumn('travel_mode', function (Registration $registration) {
+                    return $registration->arrival_details['mode'] ?? 'NA';
+                })
+                ->addColumn('date_time', function (Registration $registration) {
+                    return $registration->arrival_details['datetime'] ?
+                        '<span class="badge badge-success">' . date('Y-m-d', strtotime($registration->arrival_details['datetime'])) . '</span>' : 'NA';
+                    })
+                ->addColumn('start_point', function (Registration $registration) {
+                    return $registration->arrival_details['start_point'] ?
+                        $registration->arrival_details['start_point'] : 'NA';
+                    })
+                ->addColumn('end_point', function (Registration $registration) {
+                    return $registration->arrival_details['end_point'] ?
+                        $registration->arrival_details['end_point'] : 'NA';
+                    })
+                ->addColumn('mode_identifier', function (Registration $registration) {
+                    return $registration->arrival_details['mode_identifier'] ?
+                        $registration->arrival_details['mode_identifier'] : 'NA';
+                    })
+                ->rawColumns(['travel_mode', 'date_time', 'start_point', 'end_point', 'mode_identifier'])
+                    ->addIndexColumn()->make(true);
+        }
+        return view('admin.reports.arrival-report');
+    }
+
+     public function departureReport(Request $request, DataTables $dataTables) {
+        if (auth()->user()->id != 1)
+            abort(403);
+
+        if($request->ajax()) { 
+            $query = Registration::with('member')->whereHas('member', function ($query) use ($request) {
+                if (isset($request->unit_name)) {
+                    $query->where('unit_name', $request->unit_name);
+                }
+                if (isset($request->zone_name)) {
+                    $query->where('zone_name', $request->zone_name);
+                }
+                if (isset($request->division_name)) {
+                    $query->where('division_name', $request->division_name);
+                }
+            })->select('registrations.*')->where([['confirm_arrival', '=', 1], ['departure_details', '!=', '']])->orderBy('id', 'asc');
+            return $dataTables->eloquent($query)
+                ->addColumn('travel_mode', function (Registration $registration) {
+                    return $registration->departure_details['mode'] ?? 'NA';
+                })
+                ->addColumn('date_time', function (Registration $registration) {
+                    return $registration->departure_details['datetime'] ?
+                        '<span class="badge badge-success">' . date('Y-m-d', strtotime($registration->departure_details['datetime'])) . '</span>' : 'NA';
+                    })
+                ->addColumn('start_point', function (Registration $registration) {
+                    return $registration->departure_details['start_point'] ?
+                        $registration->departure_details['start_point'] : 'NA';
+                    })
+                ->addColumn('end_point', function (Registration $registration) {
+                    return $registration->departure_details['end_point'] ?
+                        $registration->departure_details['end_point'] : 'NA';
+                    })
+                ->addColumn('mode_identifier', function (Registration $registration) {
+                    return $registration->departure_details['mode_identifier'] ?
+                        $registration->departure_details['mode_identifier'] : 'NA';
+                    })
+                ->rawColumns(['travel_mode', 'date_time', 'start_point', 'end_point', 'mode_identifier'])
+                    ->addIndexColumn()->make(true);
+        }
+        return view('admin.reports.departure-report');
+    }
+    public function testing() {
+
+        $messaging = app('firebase.messaging');
+        // $deviceToken = 'duCncov_Qk6q4sTWflgLhe:APA91bFcDqy-iRBaIHuyNkZZto8AcnGRvgkLFKm3RDUpNqUl2NuvHseGy4s-bnkznbARlk6n32vMZIcC3LzuoHvQAvEj9ju-MxRGnfMKRihcuz8f9dTAB67Aa8KUfiuyamK-LGkuThLb';
+        $deviceToken = 'cGZXwS03S4SKv47iRuGQ7z:APA91bETJ6qeC62fcgGS4jrgG5U_i5RynSzlCoKCmQHVDMgPOacL-NOIrgJwBpIpij10T8QWiRDuhNoVHHbyHgWwwwiQc68mOBIUWf1ykyq-OqHKFFrPsNjR0QC_xfdn2b_nrMWz3JJV';
+        $message = CloudMessage::withTarget('token', $deviceToken)
+            ->withNotification(Notification::create('Jih Push Notification', 'Testing Jih Push Notification'))
+            // ->withData(['key' => 'value']) // optional
+        ;
+        try {
+             $res = $messaging->send($message);
+            dd($res);
+            } catch (MessagingException $e) {
+                echo $e->getMessage();
+                print_r($e->errors());
+            }
+    }
 }

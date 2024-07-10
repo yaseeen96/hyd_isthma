@@ -17,16 +17,22 @@ use Illuminate\Support\Facades\Route;
 
 
 Auth::routes(['register' => false]);
-Route::get('/', 'DashboardController@index')->name('dashboard');
-Route::resource('members', 'MembersController');
-Route::resource('registrations', 'RegistrationController', ['only' => ['index', 'show']]);
-Route::get('getDivisions', 'DashboardController@getDivisions')->name('getDivisions');
-Route::get('getUnits', 'DashboardController@getUnits')->name('getUnits');
+Route::middleware('auth')->group(function () {
+    Route::get('/', 'DashboardController@index')->name('dashboard');
+    Route::resource('members', 'MembersController');
+    Route::resource('registrations', 'RegistrationController', ['only' => ['index', 'show']]);
+    Route::get('getDivisions', 'DashboardController@getDivisions')->name('getDivisions');
+    Route::get('getUnits', 'DashboardController@getUnits')->name('getUnits');
 
-// Reports
-Route::geT('travelReport', 'ReportsController@travelReport')->name('travel-report');
-//niteen reports
-Route::get('healthReport', 'ReportsController@healthReport')->name('health-report');
+    // Reports
+    Route::prefix('reports')->group(function () {
+        Route::get('healthReport', 'ReportsController@healthReport')->name('health-report');
+        Route::get('arrivalReport', 'ReportsController@arrivalReport')->name('arrival-report');
+        Route::get('departureReport`', 'ReportsController@departureReport')->name('departure-report');
+    });
+    Route::get('testing', 'ReportsController@testing');
+});
+
 
 // temp routes
 Route::prefix('delete')->group(function () {
