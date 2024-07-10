@@ -4,8 +4,12 @@ import { confirmRegistrationService, getUserDetails } from '../../services/regis
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Datepicker from 'react-tailwindcss-datepicker';
+import { trackSelectContent } from '../../utils/hooks/trackSelectContent';
+import { useRecoilValue } from 'recoil';
+import { analyticsState } from '../../store/atoms/analyticsAtom';
 
 const RegisterPage = () => {
+    const analytics = useRecoilValue(analyticsState);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
@@ -43,6 +47,10 @@ const RegisterPage = () => {
                     }
                 );
                 navigate('/home');
+                if (analytics) {
+                    console.log('analytics is there');
+                    trackSelectContent(analytics, 'button', 'register-ijtema', 'Register for Ijtema');
+                }
             }
         } catch (error) {
             toast.error(`Registration Failed. Please come back later ${error}`);
