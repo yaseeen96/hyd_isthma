@@ -25,6 +25,20 @@ const RegisterPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Validate required fields
+        const requiredFields = ['date_of_birth.startDate', 'confirmArrival', 'emergency_contact', 'email'];
+        if (userDetails.confirmArrival === '0') {
+            requiredFields.push('reason_for_not_coming', 'ameer_permission_taken');
+        }
+
+        for (const field of requiredFields) {
+            const fieldValue = field.split('.').reduce((obj, key) => obj && obj[key], userDetails);
+            if (!fieldValue) {
+                toast.error('Please fill all required fields.');
+                return;
+            }
+        }
+
         try {
             setLoading(true);
             const isSuccess = await confirmRegistrationService(userDetails);
@@ -48,7 +62,6 @@ const RegisterPage = () => {
                 );
                 navigate('/home');
                 if (analytics) {
-                    console.log('analytics is there');
                     trackSelectContent(analytics, 'button', 'register-ijtema', 'Register for Ijtema');
                 }
             }
@@ -166,16 +179,7 @@ const RegisterPage = () => {
                 <label htmlFor="dob" className="ml-1 w-1/3 mb-0">
                     Date of Birth
                 </label>
-
-                <Datepicker
-                    asSingle={true}
-                    useRange={false}
-                    value={userDetails.date_of_birth}
-                    onChange={(value) => {
-                        console.log(value);
-                        setUserDetails((prevDetails) => ({ ...prevDetails, date_of_birth: value }));
-                    }}
-                />
+                <Datepicker asSingle={true} useRange={false} value={userDetails.date_of_birth} onChange={(value) => setUserDetails((prevDetails) => ({ ...prevDetails, date_of_birth: value }))} />
             </div>
             <div className="mt-4 flex flex-col items-start w-full gap-1">
                 <label htmlFor="email" className="ml-1 w-1/3 mb-0">
@@ -185,9 +189,9 @@ const RegisterPage = () => {
                     id="email"
                     type="email"
                     name="reciever-name"
-                    className="form-input text-gray-400 "
+                    className="form-input "
                     placeholder="Enter Email"
-                    defaultValue={user ? user.data[0].email : ''}
+                    value={userDetails.email}
                     onChange={(e) => setUserDetails((prev) => ({ ...prev, email: e.target.value }))}
                 />
             </div>
@@ -195,7 +199,7 @@ const RegisterPage = () => {
                 <label htmlFor="confirmation" className="ltr:mr-2 rtl:ml-2 w-full mb-0">
                     Please confirm you are going to attend the event?
                 </label>
-                <select value={userDetails.confirmArrival} id="confirmation" name="confirmation" className="form-select text-gray-300 " onChange={onConfirmed}>
+                <select value={userDetails.confirmArrival} id="confirmation" name="confirmation" className="form-select " onChange={onConfirmed}>
                     <option value={'1'}>Yes</option>
                     <option value={'0'}>No</option>
                 </select>
@@ -206,7 +210,7 @@ const RegisterPage = () => {
                         <label htmlFor="reason-for-not-confirming" className="ml-1 w-full mb-0">
                             What is the reason for not attending?
                         </label>
-                        <select id="reason_for_not_coming" name="reason_for_not_coming" className="form-select text-gray-300 " onChange={onReasonChange} value={userDetails.reason_for_not_coming}>
+                        <select id="reason_for_not_coming" name="reason_for_not_coming" className="form-select " onChange={onReasonChange} value={userDetails.reason_for_not_coming}>
                             <option value={''}>Choose Option</option>
                             <option value={'Health problem'}>Health problem</option>
                             <option value={'Emergency'}>Emergency</option>
