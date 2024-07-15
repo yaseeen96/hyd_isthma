@@ -12,6 +12,20 @@ import 'firebase_options.dart';
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  debugPrint('Handling a background message: ${message.messageId}');
+}
+
+void onDidReceiveLocalNotification(
+    int id, String? title, String? body, String? payload) {
+  // handle foreground notification for iOS
+}
+
+void onDidReceiveNotificationResponse(NotificationResponse response) {
+  // handle notification tap response
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -47,10 +61,24 @@ void main() async {
     android: initializationSettingsAndroid,
     iOS: initializationSettingsIOS,
   );
+
   await flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
     onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
   );
+
+  const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    description:
+        'This channel is used for important notifications.', // description
+    importance: Importance.high,
+  );
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
 
   FirebaseMessaging.instance.getToken().then((value) {
     logger.i("Token: $value");
@@ -64,10 +92,11 @@ void main() async {
         notification.hashCode,
         notification.title,
         notification.body,
-        const NotificationDetails(
+        NotificationDetails(
           android: AndroidNotificationDetails(
-            'channel_id',
-            'channel_name',
+            channel.id,
+            channel.name,
+            channelDescription: channel.description,
             icon: '@mipmap/ic_launcher',
           ),
         ),
@@ -82,20 +111,6 @@ void main() async {
       child: MyApp(),
     ),
   );
-}
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  debugPrint('Handling a background message: ${message.messageId}');
-}
-
-void onDidReceiveLocalNotification(
-    int id, String? title, String? body, String? payload) {
-  // handle foreground notification for iOS
-}
-
-void onDidReceiveNotificationResponse(NotificationResponse response) {
-  // handle notification tap response
 }
 
 class MyApp extends ConsumerStatefulWidget {

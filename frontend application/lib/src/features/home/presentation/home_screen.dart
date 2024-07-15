@@ -15,6 +15,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   late String? _fcmToken;
   bool _isReady = false;
   String initialUrl = "https://ijtema.jihhrd.com/";
+  late InAppWebViewController _webViewController;
 
   @override
   void initState() {
@@ -53,30 +54,46 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
+  Future<bool> _onWillPop() async {
+    if (await _webViewController.canGoBack()) {
+      _webViewController.goBack();
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _isReady
-          ? InAppWebView(
-              initialUrlRequest: URLRequest(url: WebUri(initialUrl)),
-              initialSettings: InAppWebViewSettings(
-                javaScriptEnabled: true,
-                supportZoom: false,
-                javaScriptCanOpenWindowsAutomatically: true,
-                useHybridComposition: false,
-              ),
-              onLoadStop: (controller, url) async {
-                if (_fcmToken != null) {
-                  await controller.evaluateJavascript(source: '''
-                    localStorage.setItem("fcmtoken", "$_fcmToken");
-                  ''');
-                }
-              },
-              onReceivedError: (controller, request, error) {
-                logger.e("Failed to load ${request.url}: ${error.description}");
-              },
-            )
-          : const Center(child: CircularProgressIndicator()),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: _isReady
+            ? InAppWebView(
+                initialUrlRequest: URLRequest(url: WebUri(initialUrl)),
+                initialSettings: InAppWebViewSettings(
+                  javaScriptEnabled: true,
+                  supportZoom: false,
+                  javaScriptCanOpenWindowsAutomatically: true,
+                  useHybridComposition: false,
+                ),
+                onWebViewCreated: (controller) {
+                  _webViewController = controller;
+                },
+                onLoadStop: (controller, url) async {
+                  if (_fcmToken != null) {
+                    await controller.evaluateJavascript(source: '''
+                      localStorage.setItem("fcmtoken", "$_fcmToken");
+                    ''');
+                  }
+                },
+                onReceivedError: (controller, request, error) {
+                  logger
+                      .e("Failed to load ${request.url}: ${error.description}");
+                },
+              )
+            : const Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }
