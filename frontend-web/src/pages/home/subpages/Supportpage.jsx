@@ -18,8 +18,8 @@ const SupportPage = () => {
                     </span>
                     <h2 className="mt-4 text-base font-medium text-gray-800 dark:text-white">Chat to Support</h2>
                     <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Chat with our friendly team.</p>
-                    <a href="mailto:shoaibislam1997@gmail.com">
-                        <p className="mt-2 text-sm text-primary dark:text-primary">shoaibislam1997@gmail.com</p>
+                    <a href="mailto:aiia@jih.org.in">
+                        <p className="mt-2 text-sm text-primary dark:text-primary">aiia@jih.org.in</p>
                     </a>
                 </div>
                 <div className="p-4 rounded-lg bg-gray-50 md:p-6 dark:bg-gray-800 border border-gray-100 w-full my-2">
