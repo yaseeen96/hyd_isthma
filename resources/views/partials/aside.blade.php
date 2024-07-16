@@ -96,6 +96,15 @@
                           </p>
                       </a>
                   </li>
+                  <li class="nav-item">
+                      <a href="{{ route('tour-report') }}"
+                          class="nav-link {{ request()->route()->getName() === 'tour-report' ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-car-side"></i>
+                          <p>
+                              Tour Report
+                          </p>
+                      </a>
+                  </li>
               </ul>
           </nav>
           <!-- /.sidebar-menu -->

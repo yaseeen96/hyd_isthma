@@ -17,6 +17,40 @@ class ReportsController extends Controller
         return view('admin.reports.travel-report');  
     }
 
+    public function tourReport(Request $request, DataTables $dataTables){
+        
+        if (auth()->user()->id != 1) {
+            abort(403);
+        }
+    
+        if ($request->ajax()) {
+
+            $query = Registration::with('member')->whereHas('member', function ($query) use ($request) {
+                if (isset($request->zone_name)) {
+                    $query->where('zone_name', $request->zone_name);
+                }
+                if (isset($request->gender)) {
+                    $query->where('gender', $request->gender);
+                }
+                if (isset($request->unit_name)) {
+                    $query->where('unit_name', $request->unit_name);
+                }
+                if (isset($request->division_name)) {
+                    $query->where('division_name', $request->division_name);
+                }
+            })->select('registrations.*')->orderBy('id', 'asc');
+    
+            return $dataTables->eloquent($query)
+                ->editColumn('members_count', function (Registration $registration) {
+                    return $registration->sight_seeing ? $registration->sight_seeing['members_count'] : '<span class="badge badge-danger">0</span>';
+                })
+                ->rawColumns(['members_count'])
+                    ->addIndexColumn()->make(true);
+        }
+    
+        return view('admin.reports.tour-report');
+    }
+
     public function healthReport(Request $request, DataTables $dataTables){
         if (auth()->user()->id != 1) {
             abort(403);

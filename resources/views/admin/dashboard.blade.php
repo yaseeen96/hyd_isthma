@@ -144,12 +144,13 @@
     <!-- /.content -->
 @endsection
 @push('scripts')
-    <script>
+    <script> 
         // clear filters data
         function clearFilters() {
             $('#zone_name').val('').trigger('change');
             $('#division_name').val('').trigger('change');
             $('#unit_name').val('').trigger('change');
+            // $('#gender').val('').trigger('change');
             updateChart();
         }
         // fill division and unit names dynamically 

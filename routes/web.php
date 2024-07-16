@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
     // Reports
     Route::prefix('reports')->group(function () {
         Route::get('healthReport', 'ReportsController@healthReport')->name('health-report');
+        Route::get('tourReport', 'ReportsController@tourReport')->name('tour-report');
         Route::get('arrivalReport', 'ReportsController@arrivalReport')->name('arrival-report');
         Route::get('departureReport`', 'ReportsController@departureReport')->name('departure-report');
     });
