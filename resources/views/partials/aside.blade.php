@@ -100,7 +100,7 @@
                       </ul>
                   </li>
                   @endif
-
+                  
                   @if( auth()->user()->can('View HealthReport') || auth()->user()->id == 1)  
                   <li class="nav-item">
                       <a href="{{ route('health-report') }}"
@@ -112,7 +112,7 @@
                       </a>
                   </li>
                   @endif
-
+                  
                   @if( auth()->user()->can('View TourReport') || auth()->user()->id == 1)  
                   <li class="nav-item">
                       <a href="{{ route('tour-report') }}"
@@ -125,6 +125,10 @@
                   </li>
                   @endif
 
+                  @if( auth()->user()->can('View Notificaitons') || auth()->user()->can('View Permissions') || auth()->user()->can('View Users') ||  auth()->user()->id == 1)  
+                  <li class="nav-header">SETTINGS</li>
+                  @endif
+                  
                   @if( auth()->user()->can('Create Notifications') || auth()->user()->can('View Notifications') || auth()->user()->can('Edit Notifications') || auth()->user()->can('Delete Notifications') || auth()->user()->id == 1)  
                   <li class="nav-item">
                       <a href="{{ route('notifications.index') }}"

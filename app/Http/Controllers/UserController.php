@@ -17,14 +17,11 @@ class UserController extends Controller
         if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('View Users')){
             abort(403);
         }
-
-        if(auth()->user()->id != 1) 
-            abort(404);
         if($request->ajax()) {
             $query = User::query()->where('id', '!=', 1);
             return $datatable->eloquent($query)
                 ->addColumn('role', function(User $user) {
-                    return 'testing';
+                   return $user->getRoleNames()->first();
                 })
                 ->addColumn('action', function(User $user) {
                     return '<a href="'.route('user.edit', $user->id).'" class="btn-purple btn" ><i class="fas fa-edit"></i></a>
@@ -46,7 +43,6 @@ class UserController extends Controller
         if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('Create Users')){
             abort(403);
         }
-
 
         $roles = Role::all();
         return view('admin.users.form')->with([

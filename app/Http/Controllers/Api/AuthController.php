@@ -135,6 +135,7 @@ class AuthController extends Controller
             $user->update(['push_token' => $request->push_token]);
         }
         $IsRegDone = $user->registration;
+        $userProgress = $this->getProfileProgress($user);
         return response()->json([
             "status" => "success",
             "message" => "Token exists",
@@ -142,7 +143,13 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'confirm_arrival' => isset($IsRegDone) ? $user->registration->confirm_arrival : null,
-                'tilesInfo' => $this->getProfileProgress($user),
+                'tilesInfo' => $userProgress,
+                'registration' => [
+                    "confirm_arrival" => isset($IsRegDone) ? $user->registration->confirm_arrival : null,
+                    "arrival_dtls" => $userProgress['additional_details'],
+                    "family_dtls" => $userProgress['family_details'],
+                    "financial_dtls" => $userProgress['financial_details']
+                ]
             ]
         ], Response::HTTP_OK);
     }
