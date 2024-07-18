@@ -9,7 +9,8 @@ class SmsHelper
     public static function sendOtpMsg($mobile, $name, $otp)
     {
         $client = new Client();
-        $name = preg_replace('/\(\d+\)/', '', $name);
+        $name = preg_replace('/[0-9]+/', '', $name); // removing numbers from name
+        $name = preg_replace('/\([^)]*\)/', '', $name); // removing any brackets () from name
         $response = $client->request('GET', env('TEXTLOCAL_APIURL'), [
             'query' => [
                 'apikey' => env('TEXTLOCAL_APIKEY'),
@@ -24,5 +25,4 @@ class SmsHelper
             return false;
         }
     }
-
 }

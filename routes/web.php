@@ -1,7 +1,9 @@
 <?php
 
+use App\Helpers\SmsHelper;
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Http\Response;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,8 +14,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-
 
 
 Auth::routes(['register' => false]);
@@ -32,8 +32,10 @@ Route::middleware('auth')->group(function () {
         Route::get('departureReport`', 'ReportsController@departureReport')->name('departure-report');
     });
     Route::get('testing', 'ReportsController@testing');
+    Route::resource('notifications', 'NotificationsController');
+    Route::resource('permissions', 'PermissionsController');
+    Route::resource('user', 'UserController');
 });
-
 
 // temp routes
 Route::prefix('delete')->group(function () {

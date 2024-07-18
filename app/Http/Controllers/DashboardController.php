@@ -91,11 +91,9 @@ class DashboardController extends Controller
 
     public function getUnits(Request $request)
     {
-
         $division_name = $request->input('division_name');
         $unit_name = Member::select('unit_name')->distinct()->where('division_name', $division_name)->get();
         return response()->json(['unit_name' => $unit_name]);
-
     }
 
 }

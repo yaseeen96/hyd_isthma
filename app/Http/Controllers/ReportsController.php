@@ -12,14 +12,10 @@ use Kreait\Firebase\Exception\MessagingException;
 
 class ReportsController extends Controller
 {
-    // Itenary Report
-    public function travelReport() {
-        return view('admin.reports.travel-report');  
-    }
 
     public function tourReport(Request $request, DataTables $dataTables){
         
-        if (auth()->user()->id != 1) {
+        if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('View TourReport')){
             abort(403);
         }
     
@@ -52,7 +48,7 @@ class ReportsController extends Controller
     }
 
     public function healthReport(Request $request, DataTables $dataTables){
-        if (auth()->user()->id != 1) {
+        if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('View HealthReport')){
             abort(403);
         }
     
@@ -92,8 +88,11 @@ class ReportsController extends Controller
     }
 
     public function arrivalReport(Request $request, DataTables $dataTables) {
-        if (auth()->user()->id != 1)
+
+
+        if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('View TravelReport')){
             abort(403);
+        }
 
         if($request->ajax()) { 
             $query = Registration::with('member')->whereHas('member', function ($query) use ($request) {
@@ -134,8 +133,10 @@ class ReportsController extends Controller
     }
 
      public function departureReport(Request $request, DataTables $dataTables) {
-        if (auth()->user()->id != 1)
+
+        if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('View TravelReport')){
             abort(403);
+        }
 
         if($request->ajax()) { 
             $query = Registration::with('member')->whereHas('member', function ($query) use ($request) {
@@ -174,21 +175,21 @@ class ReportsController extends Controller
         }
         return view('admin.reports.departure-report');
     }
-    public function testing() {
-
-        $messaging = app('firebase.messaging');
+    public function testing(Request $request) {
+        $token = $request->get('token');
+        if (isset($token)){
+           $messaging = app('firebase.messaging');
         // $deviceToken = 'duCncov_Qk6q4sTWflgLhe:APA91bFcDqy-iRBaIHuyNkZZto8AcnGRvgkLFKm3RDUpNqUl2NuvHseGy4s-bnkznbARlk6n32vMZIcC3LzuoHvQAvEj9ju-MxRGnfMKRihcuz8f9dTAB67Aa8KUfiuyamK-LGkuThLb';
-        $deviceToken = 'cGZXwS03S4SKv47iRuGQ7z:APA91bETJ6qeC62fcgGS4jrgG5U_i5RynSzlCoKCmQHVDMgPOacL-NOIrgJwBpIpij10T8QWiRDuhNoVHHbyHgWwwwiQc68mOBIUWf1ykyq-OqHKFFrPsNjR0QC_xfdn2b_nrMWz3JJV';
-        $message = CloudMessage::withTarget('token', $deviceToken)
-            ->withNotification(Notification::create('Jih Push Notification', 'Testing Jih Push Notification'))
-            // ->withData(['key' => 'value']) // optional
-        ;
-        try {
-             $res = $messaging->send($message);
-            dd($res);
+            $deviceToken = $token;
+            $message = CloudMessage::withTarget('token', $deviceToken)
+                ->withNotification(Notification::create('Jih Push Notification', 'Testing Jih Push Notification'));
+            try {
+                $res = $messaging->send($message);
+                dd($res);
             } catch (MessagingException $e) {
                 echo $e->getMessage();
                 print_r($e->errors());
             }
+        }
     }
 }

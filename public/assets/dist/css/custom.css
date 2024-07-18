@@ -37,3 +37,7 @@
 .page-link{
     color: var(--color-purple);
 }
+
+.hide {
+    display: none !important;
+}

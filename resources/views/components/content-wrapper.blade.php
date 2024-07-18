@@ -2,11 +2,13 @@
  <section class="content">
      <div class="container-fluid  mt-3 px-3  rounded-2 ">
          <div class="card shadow-sm">
-             <div class="card-header d-flex justify-content-start ">
-                 <h3 class="card-title font-weight-bold">
-                     {{ $title }}
-                 </h3>
-             </div>
+             @isset($title)
+                 <div class="card-header d-flex justify-content-start ">
+                     <h3 class="card-title font-weight-bold">
+                         {{ $title }}
+                     </h3>
+                 </div>
+             @endisset
              {{ $slot }}
          </div>
      </div>

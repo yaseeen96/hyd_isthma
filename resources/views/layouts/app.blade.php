@@ -47,7 +47,7 @@
     <link rel="stylesheet" href="{{ asset('assets/dist/css/custom.css') }}?v=0.1">
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed text-sm">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
     <div class="wrapper">
         <!-- Preloader -->
         {{-- <div class="preloader flex-column justify-content-center align-items-center">

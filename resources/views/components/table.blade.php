@@ -8,6 +8,9 @@
                         {{ $slot }}
                     </tr>
                 </thead>
+                @isset($body)
+                   {{ $body }}
+                @endisset
             </table>
         </div>
     </div>

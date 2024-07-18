@@ -14,8 +14,10 @@ class RegistrationController extends Controller
      */
     public function index(Request $request, DataTables $dataTables)
     {
-        if (auth()->user()->id != 1)
-            abort(403);
+        if ( !(auth()->user()->hasPermissionTo('View Registrations')) && auth()->user()->id != 1){
+                abort(403);
+        }
+
         if ($request->ajax()) {
             $query = Registration::with('member')->whereHas('member', function ($query) use ($request) {
                 if (isset($request->unit_name)) {
@@ -68,7 +70,10 @@ class RegistrationController extends Controller
      */
     public function show(string $id)
     {
-        // dd($id);
+        if ( !auth()->user()->id != 1 && auth()->user()->hasPermissionTo('Show Registrations')){
+            abort(403);
+        }
+
         $member = Registration::with('member')->where('id', $id)->get()->first();
         $registration = Registration::with(['familyDetails', 'purchaseDetails'])->find($id);
         $purchaseDetails =   $registration->purchaseDetails;

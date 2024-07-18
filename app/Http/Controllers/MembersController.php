@@ -10,8 +10,9 @@ class MembersController extends Controller
 {
     public function index(Request $request, DataTables $dataTables)
     {
-        if (auth()->user()->id != 1) 
+        if (auth()->user()->id != 1 && auth()->user()->hasPermissionTo('View Members')){
             abort(403);
+        } 
         // \Log::info('Request data:', $request->all());
         if ($request->ajax()) {
             $query = Member::query();
@@ -28,7 +29,6 @@ class MembersController extends Controller
                     });
                 }
             }
-
             $query->select('members.*')->orderBy('name', 'asc');
 
             return $dataTables->eloquent($query)
@@ -49,6 +49,9 @@ class MembersController extends Controller
     
     public function create()
     {
+        if(auth()->user()->id != 1 && auth()->user()->hasPermissionTo('Create Members')) {
+            abort(403);
+        }
         return view('admin.members.form')->with([
             'member' => new Member()
         ]);
@@ -80,6 +83,10 @@ class MembersController extends Controller
 
     public function edit(Member $member)
     {
+        if(auth()->user()->id != 1 && auth()->user()->hasPermissionTo('Edit Members')) {
+            abort(403);
+        }
+        
         $member->dob = date('d-m-Y', strtotime($member->dob));
         // $member = Member::find($id);
         return view('admin.members.form')->with([
