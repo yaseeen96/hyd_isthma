@@ -31,12 +31,12 @@ Route::middleware('auth')->group(function () {
         Route::get('arrivalReport', 'ReportsController@arrivalReport')->name('arrival-report');
         Route::get('departureReport`', 'ReportsController@departureReport')->name('departure-report');
     });
-    Route::get('testing', 'ReportsController@testing');
+   
     Route::resource('notifications', 'NotificationsController');
     Route::resource('permissions', 'PermissionsController');
     Route::resource('user', 'UserController');
 });
-
+Route::get('testing', 'ReportsController@testing');
 // temp routes
 Route::prefix('delete')->group(function () {
     Route::get('account', 'DeleteAccountController@index')->name('delete-account');

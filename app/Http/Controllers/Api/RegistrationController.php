@@ -52,17 +52,44 @@ class RegistrationController extends Controller
 
     // update mehrams details
     public function updateFamilyDetails(Request $request) {
+        // dd($request->all());
         $user = auth()->user();   
-        $mehrams = $request->get('mehrams');
-        $childrens = $request->get('childrens');
+        $mehrams = $request->get('mehrams', []);
+        $childrens = $request->get('childrens', []); 
+        $state = $user->zone_name;
+
+        $stateBasedFees = config('fees.state_based_fees');
+        $mehramFees = config('fees.mehram_fees');
+
+        $baseFee = in_array($state, $stateBasedFees['special_states']) 
+                ? $stateBasedFees['special_fee'] 
+                : $stateBasedFees['default_fee'];
+
+        $member = Registration::updateOrCreate(
+            ['member_id' => $user->id],
+            ['member_fees' => $baseFee]
+        );
+
         if(isset($mehrams) && count($mehrams) > 0) {
+
             foreach($mehrams as $mehram) {
-                RegFamilyDetail::updateOrCreate(['registration_id' => $user->registration->id, 'type' => 'mehram', 'name' => $mehram['name']], $mehram);
+                $mehramFee = $mehramFees[strtolower($mehram['gender'])];
+                RegFamilyDetail::updateOrCreate(['registration_id' => $user->registration->id, 'type' => 'mehram', 'name' => $mehram['name']],array_merge($mehram, ['fees' => $mehramFee]));
             }
         }
         if(isset($childrens) && count($childrens) > 0) {
+
             foreach($childrens as $children) {
-                RegFamilyDetail::updateOrCreate(['registration_id' => $user->registration->id, 'type' => 'children', 'name' => $children['name']], $children);
+
+                if ($children['age'] <= 7) {
+                    $childrenFee = $mehramFees['children_below_7'];
+                } elseif ($children['age'] > 7) {
+                    $childrenFee = $mehramFees['children_above_7'];
+                } else {
+                    $childrenFee = 0;
+                }
+
+                RegFamilyDetail::updateOrCreate(['registration_id' => $user->registration->id, 'type' => 'children', 'name' => $children['name']],array_merge($children, ['fees' => $childrenFee]));
             }
         }
         return response()->json([
