@@ -1,7 +1,11 @@
+import ActionCard from '../../../components/common/actionCard';
 import TileButton from '../components/tileButton';
 import HomeLayout from '../layout/Homelayout';
 import { MdEventNote } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import { Ri4kFill, RiAlertFill, RiProfileFill } from 'react-icons/ri';
+import TileCard from '../components/tileCard';
+import LoadingTileCard from '../components/loadingTileCard';
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -11,17 +15,39 @@ const HomePage = () => {
     const isArrivalConfirmed = localStorage.getItem('arrivalConfirmed');
     return (
         <HomeLayout>
-            <div className="mb-4">
-                <h1 className=" text-2xl text-black dark:text-white font-bold">
-                    Welcome <br /> <span className=" text-primary">{localStorage.getItem('name')}</span>
-                </h1>
+            <ActionCard
+                message={'Have you completed your registration yet?'}
+                buttonText={'Register now'}
+                onButtonClick={() => {
+                    console.log('clicked');
+                }}
+            />
+
+            <div className="mt-6 grid grid-cols-2 w-full h-64 gap-4">
+                <LoadingTileCard
+                    icon={<RiProfileFill size={32} />}
+                    title={'Registration'}
+                    onClick={() => {
+                        console.log('clicked');
+                    }}
+                    percentage={30}
+                />
+                <TileCard
+                    icon={<RiAlertFill size={32} />}
+                    title={'Other Card'}
+                    onClick={() => {
+                        console.log('clicked');
+                    }}
+                />
             </div>
+            {/* 
             <TileButton
                 title={isArrivalConfirmed == '1' ? 'Registered Successfully' : 'Register for Ijtema'}
                 isCompleted={isArrivalConfirmed == '1'}
                 onClick={onRegisterIjtema}
                 icon={<MdEventNote color="black" size={30} />}
-            />
+            /> */}
+            {/* one card which will take you to ideal location */}
         </HomeLayout>
     );
 };
