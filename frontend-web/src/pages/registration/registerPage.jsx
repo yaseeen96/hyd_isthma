@@ -7,11 +7,13 @@ import Datepicker from 'react-tailwindcss-datepicker';
 import { trackSelectContent } from '../../utils/hooks/trackSelectContent';
 import { useRecoilValue } from 'recoil';
 import { analyticsState } from '../../store/atoms/analyticsAtom';
+import { useLoading } from '../../utils/hooks/useLoading';
+import LoadingComponent from '../../components/common/loadingComponent';
 
 const RegisterPage = () => {
     const analytics = useRecoilValue(analyticsState);
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(true);
+    const { loading, setLoading } = useLoading();
     const [user, setUser] = useState(null);
     const [userDetails, setUserDetails] = useState({
         date_of_birth: { startDate: null, endDate: null },
@@ -120,7 +122,7 @@ const RegisterPage = () => {
     };
 
     if (loading) {
-        return <div className="flex h-screen justify-center items-center">Loading...</div>; // or any other loading indicator you prefer
+        return <LoadingComponent />;
     }
 
     return (

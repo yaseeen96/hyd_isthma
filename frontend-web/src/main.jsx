@@ -13,15 +13,18 @@ import './index.css';
 
 import { DarkModeProvider } from './utils/hooks/useDarkMode';
 import App from './App';
+import { LoadingProvider } from './utils/hooks/useLoading';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <Suspense>
             <DarkModeProvider>
                 <RecoilRoot>
-                    <RouterProvider router={router}>
-                        <App />
-                    </RouterProvider>
+                    <LoadingProvider>
+                        <RouterProvider router={router}>
+                            <App />
+                        </RouterProvider>
+                    </LoadingProvider>
                 </RecoilRoot>
             </DarkModeProvider>
         </Suspense>
