@@ -15,15 +15,9 @@ const HomePage = () => {
     const isArrivalConfirmed = localStorage.getItem('arrivalConfirmed');
     return (
         <HomeLayout>
-            <ActionCard
-                message={'Have you completed your registration yet?'}
-                buttonText={'Register now'}
-                onButtonClick={() => {
-                    console.log('clicked');
-                }}
-            />
+            <ActionCard message={'Have you completed your registration yet?'} buttonText={'Register now'} onButtonClick={onRegisterIjtema} />
 
-            <div className="mt-6 grid grid-cols-2 w-full h-64 gap-4">
+            <div className="mt-6 grid grid-cols-2 w-full h-64 gap-4 animate-slide-in">
                 <LoadingTileCard
                     icon={<RiProfileFill size={32} />}
                     title={'Registration'}
@@ -47,7 +41,6 @@ const HomePage = () => {
                 onClick={onRegisterIjtema}
                 icon={<MdEventNote color="black" size={30} />}
             /> */}
-            {/* one card which will take you to ideal location */}
         </HomeLayout>
     );
 };

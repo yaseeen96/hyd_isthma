@@ -1,11 +1,11 @@
 import { lazy } from 'react';
 import HomeWrapper from '../pages/home/HomeWrapper';
 
-const RegisterPage = lazy(() => import('../pages/registration/registerPage'));
+const ArrivalRegistrationPage = lazy(() => import('../pages/registration/subpages/arrivalRegistrationPage'));
 const Otp = lazy(() => import('../pages/Authentication/Otp'));
 
 const Login = lazy(() => import('../pages/Authentication/Login'));
-const Index = lazy(() => import('../pages/Index'));
+const RegisterPage = lazy(() => import('../pages/registration/registerPage'));
 
 const routes = [
     {
@@ -31,6 +31,11 @@ const routes = [
     {
         path: '/home/register',
         element: <RegisterPage />,
+        layout: 'blank',
+    },
+    {
+        path: '/home/register/arrival',
+        element: <ArrivalRegistrationPage />,
         layout: 'blank',
     },
 ];
