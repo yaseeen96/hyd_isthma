@@ -18,14 +18,7 @@ const HomePage = () => {
             <ActionCard message={'Have you completed your registration yet?'} buttonText={'Register now'} onButtonClick={onRegisterIjtema} />
 
             <div className="mt-6 grid grid-cols-2 w-full h-64 gap-4 animate-slide-in">
-                <LoadingTileCard
-                    icon={<RiProfileFill size={32} />}
-                    title={'Registration'}
-                    onClick={() => {
-                        console.log('clicked');
-                    }}
-                    percentage={30}
-                />
+                <LoadingTileCard icon={<RiProfileFill size={32} />} title={'Registration'} onClick={onRegisterIjtema} percentage={30} />
                 <TileCard
                     icon={<RiAlertFill size={32} />}
                     title={'Other Card'}
