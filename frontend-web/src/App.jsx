@@ -12,6 +12,8 @@ import { analyticsState } from './store/atoms/analyticsAtom';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
+import { useLoading } from './utils/hooks/useLoading';
+import LoadingComponent from './components/common/loadingComponent';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -33,12 +35,14 @@ function App({ children }) {
     const navigate = useNavigate();
     const isDarkMode = useDarkMode();
     const setAnalyticsInstance = useSetRecoilState(analyticsState);
+    const { loading, setLoading } = useLoading();
 
     useEffect(() => {
         setAnalyticsInstance(analytics);
     }, []);
 
     useAsyncEffect(async () => {
+        setLoading(true);
         const { user, isLoggedIn } = await isUserLoggedIn();
         if (isLoggedIn) {
             localStorage.setItem('name', user.name);
@@ -49,11 +53,12 @@ function App({ children }) {
         } else {
             navigate('/login');
         }
+        setLoading(false);
     }, []);
 
     return (
         <>
-            {children}
+            {loading ? <LoadingComponent /> : children}
             <ToastContainer
                 position="bottom-center"
                 autoClose={3000}
