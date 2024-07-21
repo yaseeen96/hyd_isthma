@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { localStorageConstant } from '../utils/constants/localStorageConstants';
 
 export const isUserLoggedIn = async () => {
-    const token = localStorage.getItem('token');
-    const fcmToken = localStorage.getItem('fcmtoken');
+    const token = localStorage.getItem(localStorageConstant.token);
+    const fcmToken = localStorage.getItem(localStorageConstant.fcmToken);
     if (!token) {
         return false;
     }

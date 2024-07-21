@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import { userStateAtom } from '../../store/atoms/userStateAtom';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { localStorageConstant } from '../../utils/constants/localStorageConstants';
 
 const Otp = () => {
     const navigate = useNavigate();
@@ -20,8 +21,8 @@ const Otp = () => {
             const response = await verifyOtpService(userState.phone, otp);
             setUserState((prev) => ({ ...prev, token: response.data.token, name: response.data.name, halqa: response.data.halqa }));
             toast.success('Your login is successful');
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('name', response.data.user.name);
+            localStorage.setItem(localStorageConstant.token, response.data.token);
+            localStorage.setItem(localStorageConstant.name, response.data.user.name);
             navigate('/home');
         } catch (error) {
             toast.error(`${error}`);

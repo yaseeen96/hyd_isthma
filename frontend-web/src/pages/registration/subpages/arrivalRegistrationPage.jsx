@@ -9,6 +9,7 @@ import { useRecoilValue } from 'recoil';
 import { analyticsState } from '../../../store/atoms/analyticsAtom';
 import { useLoading } from '../../../utils/hooks/useLoading';
 import LoadingComponent from '../../../components/common/loadingComponent';
+import { localStorageConstant } from '../../../utils/constants/localStorageConstants';
 
 const ArrivalRegistrationPage = () => {
     const analytics = useRecoilValue(analyticsState);
@@ -46,7 +47,7 @@ const ArrivalRegistrationPage = () => {
             const isSuccess = await confirmRegistrationService(userDetails);
 
             if (isSuccess) {
-                localStorage.setItem('arrivalConfirmed', userDetails.confirmArrival);
+                localStorage.setItem(localStorageConstant.arrivalConfirmed, 1);
                 toast.success(
                     <div>
                         Thanks for completing the first phase of registration for Arkan Ijtema. Here are the next steps:
@@ -62,7 +63,7 @@ const ArrivalRegistrationPage = () => {
                         hideProgressBar: false,
                     }
                 );
-                navigate('/home');
+                navigate('/home/register');
                 if (analytics) {
                     trackSelectContent(analytics, 'button', 'register-ijtema', 'Register for Ijtema');
                 }

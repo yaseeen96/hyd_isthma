@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { localStorageConstant } from '../../utils/constants/localStorageConstants';
 
 const ActionCard = ({ message, buttonText, onButtonClick }) => {
     const [name, setName] = useState('');
 
     useEffect(() => {
         // Retrieve the name from localStorage
-        const storedName = localStorage.getItem('name') || 'Guest';
+        const storedName = localStorage.getItem(localStorageConstant.name) || 'Guest';
         setName(storedName);
     }, []);
 
     return (
-        <div className="w-full h-1/3  p-6 bg-white dark:bg-gray-900 shadow-lg rounded-lg flex flex-col justify-between animate-slide-in">
+        <div className="w-full  p-6 bg-white dark:bg-gray-900 shadow-lg rounded-lg flex flex-col justify-between animate-slide-in">
             <div className="flex flex-col items-start">
                 <h1 className="text-2xl text-black dark:text-white font-bold">
                     Welcome <br /> <span className="text-primary dark:text-primary-500">{name}</span>
