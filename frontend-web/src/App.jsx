@@ -15,6 +15,7 @@ import { getAnalytics } from 'firebase/analytics';
 import { useLoading } from './utils/hooks/useLoading';
 import LoadingComponent from './components/common/loadingComponent';
 import { localStorageConstant } from './utils/constants/localStorageConstants';
+import { ROUTES } from './router/routes';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -53,10 +54,10 @@ function App({ children }) {
             localStorage.setItem(localStorageConstant.financialDetails, user.registration.financial_dtls);
 
             if (location.pathname === '/') {
-                navigate('/home');
+                navigate(ROUTES.home, { replace: true });
             }
         } else {
-            navigate('/login');
+            navigate(ROUTES.login, { replace: true });
         }
         setLoading(false);
     }, []);

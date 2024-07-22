@@ -7,6 +7,7 @@ import { userStateAtom } from '../../store/atoms/userStateAtom';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { localStorageConstant } from '../../utils/constants/localStorageConstants';
+import { ROUTES } from '../../router/routes';
 
 const Otp = () => {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ const Otp = () => {
             toast.success('Your login is successful');
             localStorage.setItem(localStorageConstant.token, response.data.token);
             localStorage.setItem(localStorageConstant.name, response.data.user.name);
-            navigate('/home');
+            navigate(ROUTES.home, { replace: true });
         } catch (error) {
             toast.error(`${error}`);
         } finally {

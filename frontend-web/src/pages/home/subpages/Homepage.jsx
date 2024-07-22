@@ -7,11 +7,12 @@ import { RiAlertFill, RiProfileFill } from 'react-icons/ri';
 import TileCard from '../components/tileCard';
 import LoadingTileCard from '../components/loadingTileCard';
 import { localStorageConstant } from '../../../utils/constants/localStorageConstants';
+import { ROUTES } from '../../../router/routes';
 
 const HomePage = () => {
     const navigate = useNavigate();
     const onRegisterIjtema = () => {
-        navigate('/home/register');
+        navigate(ROUTES.register);
     };
     const isArrivalConfirmed = localStorage.getItem(localStorageConstant.arrivalConfirmed);
     return (

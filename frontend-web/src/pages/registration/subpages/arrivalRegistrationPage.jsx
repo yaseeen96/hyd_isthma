@@ -63,7 +63,7 @@ const ArrivalRegistrationPage = () => {
                         hideProgressBar: false,
                     }
                 );
-                navigate('/home/register');
+                navigate(-1);
                 if (analytics) {
                     trackSelectContent(analytics, 'button', 'register-ijtema', 'Register for Ijtema');
                 }

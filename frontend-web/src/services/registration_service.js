@@ -21,6 +21,17 @@ export const confirmRegistrationService = async (data) => {
     }
 };
 
+export const updateFamilyDetails = async (data) => {
+    try {
+        const response = await axiosAuthenticatedClient.post('/user/familyDetails', data);
+        console.log(`success: response: ${response.data}`);
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+};
+
 export const getUserDetails = async () => {
     try {
         const response = await axiosAuthenticatedClient.get('user/getUserDetails', {});

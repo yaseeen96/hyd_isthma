@@ -3,6 +3,7 @@ import StepsList from './components/stepsList';
 import { localStorageConstant } from '../../utils/constants/localStorageConstants';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { ROUTES } from '../../router/routes';
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -34,10 +35,10 @@ const RegisterPage = () => {
     const handleStepClick = (stepId) => {
         switch (stepId) {
             case 1:
-                navigate('/home/register/arrival');
+                navigate(ROUTES.rsvpRegistration);
                 break;
             case 2:
-                console.log('to navigate on family details');
+                navigate(ROUTES.familyRegistration);
                 break;
             case 3:
                 console.log('to navigate payment details');
