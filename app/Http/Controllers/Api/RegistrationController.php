@@ -16,13 +16,16 @@ class RegistrationController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $userData = Member::with('registration')->where('id', $user->id)->get();
+        // $userData = Member::with('registration', 'familyDetails', 'purchaseDetails')->where('id', $user->id)->get();
+        $memberData = Member::where('id', $user->id)->get();
+        $memberRegData = Registration::with('familyDetails', 'purchaseDetails')->where('member_id', $user->id)->get();
         return response()->json([
             'status' => 'success',
-            'data' => $userData,
-
+            'data' => [
+                'member_data' => $memberData,
+                'member_reg_data' => $memberRegData
+            ],
         ], Response::HTTP_OK);
-
     }
 
     public function register(Request $request)
@@ -53,16 +56,16 @@ class RegistrationController extends Controller
     // update mehrams details
     public function updateFamilyDetails(Request $request) {
         // dd($request->all());
-        $user = auth()->user();   
+        $user = auth()->user();
         $mehrams = $request->get('mehrams', []);
-        $childrens = $request->get('childrens', []); 
+        $childrens = $request->get('childrens', []);
         $state = $user->zone_name;
 
         $stateBasedFees = config('fees.state_based_fees');
         $mehramFees = config('fees.mehram_fees');
 
-        $baseFee = in_array($state, $stateBasedFees['special_states']) 
-                ? $stateBasedFees['special_fee'] 
+        $baseFee = in_array($state, $stateBasedFees['special_states'])
+                ? $stateBasedFees['special_fee']
                 : $stateBasedFees['default_fee'];
 
         $member = Registration::updateOrCreate(
@@ -157,8 +160,9 @@ class RegistrationController extends Controller
         ], Response::HTTP_OK);
     }
 
+    // not in use
     public function getFamilyDetails($id){
-        
+
         $registration = Registration::with('familyDetails')->find($id);
         $mehrams = $registration->familyDetails->where('type', 'mehram')->map(function ($item) {
             return [

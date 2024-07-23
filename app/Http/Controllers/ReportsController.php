@@ -14,11 +14,11 @@ class ReportsController extends Controller
 {
 
     public function tourReport(Request $request, DataTables $dataTables){
-        
+
         if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('View TourReport')){
             abort(403);
         }
-    
+
         if ($request->ajax()) {
 
             $query = Registration::with('member')->whereHas('member', function ($query) use ($request) {
@@ -35,7 +35,7 @@ class ReportsController extends Controller
                     $query->where('division_name', $request->division_name);
                 }
             })->select('registrations.*')->orderBy('id', 'asc');
-    
+
             return $dataTables->eloquent($query)
                 ->editColumn('members_count', function (Registration $registration) {
                     return $registration->sight_seeing ? $registration->sight_seeing['members_count'] : '<span class="badge badge-danger">0</span>';
@@ -43,7 +43,7 @@ class ReportsController extends Controller
                 ->rawColumns(['members_count'])
                     ->addIndexColumn()->make(true);
         }
-    
+
         return view('admin.reports.tour-report');
     }
 
@@ -51,7 +51,7 @@ class ReportsController extends Controller
         if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('View HealthReport')){
             abort(403);
         }
-    
+
         if ($request->ajax()) {
             $query = Registration::with('member')->whereHas('member', function ($query) use ($request) {
                 if (isset($request->zone_name)) {
@@ -65,7 +65,7 @@ class ReportsController extends Controller
                     $query->where('health_concern', $request->health_concern);
                 }
             })->orderBy('id', 'asc');
-    
+
             return $dataTables->eloquent($query)
                 ->editColumn('health_concern', function (Registration $registration) {
                     return $registration->health_concern ? $registration->health_concern : '<span class="badge badge-danger">NA</span>';
@@ -83,7 +83,7 @@ class ReportsController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
-    
+
         return view('admin.reports.health-report');
     }
 
@@ -94,7 +94,7 @@ class ReportsController extends Controller
             abort(403);
         }
 
-        if($request->ajax()) { 
+        if($request->ajax()) {
             $query = Registration::with('member')->whereHas('member', function ($query) use ($request) {
                 if (isset($request->unit_name)) {
                     $query->where('unit_name', $request->unit_name);
@@ -138,7 +138,7 @@ class ReportsController extends Controller
             abort(403);
         }
 
-        if($request->ajax()) { 
+        if($request->ajax()) {
             $query = Registration::with('member')->whereHas('member', function ($query) use ($request) {
                 if (isset($request->unit_name)) {
                     $query->where('unit_name', $request->unit_name);

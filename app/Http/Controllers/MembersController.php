@@ -12,7 +12,7 @@ class MembersController extends Controller
     {
         if (auth()->user()->id != 1 && auth()->user()->hasPermissionTo('View Members')){
             abort(403);
-        } 
+        }
         // \Log::info('Request data:', $request->all());
         if ($request->ajax()) {
             $query = Member::query();
@@ -46,7 +46,7 @@ class MembersController extends Controller
         return view('admin.members.list');
     }
 
-    
+
     public function create()
     {
         if(auth()->user()->id != 1 && auth()->user()->hasPermissionTo('Create Members')) {
@@ -66,7 +66,7 @@ class MembersController extends Controller
             'unit_name' => 'required',
             'division_name' => 'required'
         ]);
-        
+
         $member = Member::create($request->all());
         $member->update(
                 [
@@ -86,7 +86,7 @@ class MembersController extends Controller
         if(auth()->user()->id != 1 && auth()->user()->hasPermissionTo('Edit Members')) {
             abort(403);
         }
-        
+
         $member->dob = date('d-m-Y', strtotime($member->dob));
         // $member = Member::find($id);
         return view('admin.members.form')->with([
@@ -102,7 +102,7 @@ class MembersController extends Controller
             'unit_name' => 'required',
             'division_name' => 'required',
             'phone' =>  'required'
-        ]); 
+        ]);
         $updateData = [
             "name" => $request->name,
             "email" => $request->email,
@@ -115,7 +115,6 @@ class MembersController extends Controller
             "gender" => $request->gender,
             "phone" => $request->phone,
         ];
-
         $member->update($updateData);
         return redirect()->route('members.index');
     }
