@@ -16,7 +16,15 @@ class RegistrationController extends Controller
     public function index()
     {
         $user = auth()->user();
-        // $userData = Member::with('registration', 'familyDetails', 'purchaseDetails')->where('id', $user->id)->get();
+        $userData = Member::with('registration')->where('id', $user->id)->get();
+        return response()->json([
+            'status' => 'success',
+            'data' => $userData
+        ], Response::HTTP_OK);
+    }
+    public function getUserDetailsTest()
+    {
+        $user = auth()->user();
         $memberData = Member::where('id', $user->id)->get();
         $memberRegData = Registration::with('familyDetails', 'purchaseDetails')->where('member_id', $user->id)->get();
         return response()->json([

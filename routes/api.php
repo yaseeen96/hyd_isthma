@@ -27,6 +27,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::group(['prefix' => 'user'], function () {
             Route::get('getUserDetails', 'RegistrationController@index');
+            Route::get('getUserDetailsTest', 'RegistrationController@getUserDetailsTest');
             Route::post('register', 'RegistrationController@register');
             Route::post('familyDetails', 'RegistrationController@updateFamilyDetails');
             Route::post('financialDetails', 'RegistrationController@updateFinancialDetails');
