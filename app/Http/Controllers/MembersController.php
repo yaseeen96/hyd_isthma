@@ -10,7 +10,7 @@ class MembersController extends Controller
 {
     public function index(Request $request, DataTables $dataTables)
     {
-        if (auth()->user()->id != 1 && auth()->user()->hasPermissionTo('View Members')){
+        if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('View Members')){
             abort(403);
         }
         // \Log::info('Request data:', $request->all());
@@ -36,7 +36,7 @@ class MembersController extends Controller
                     return date('d-m-Y', strtotime($member->dob));
                 })
                 ->addColumn('action', function (Member $member) {
-                    return '<a href="' . route('members.edit', $member->id) . '" class="btn btn-sm btn-purple btn-clean btn-icon" title="Edit"><i class="fas fa-edit"></i></a>';
+                    return auth()->user()->id == 1 || auth()->user()->hasPermissionTo('Edit Members') ? '<a href="' . route('members.edit', $member->id) . '" class="btn btn-sm btn-purple btn-clean btn-icon" title="Edit"><i class="fas fa-edit"></i></a>' : '';
                 })
                 ->rawColumns(['dob', 'action'])
                 ->addIndexColumn()
@@ -49,7 +49,7 @@ class MembersController extends Controller
 
     public function create()
     {
-        if(auth()->user()->id != 1 && auth()->user()->hasPermissionTo('Create Members')) {
+        if(auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('Create Members')) {
             abort(403);
         }
         return view('admin.members.form')->with([
@@ -83,7 +83,7 @@ class MembersController extends Controller
 
     public function edit(Member $member)
     {
-        if(auth()->user()->id != 1 && auth()->user()->hasPermissionTo('Edit Members')) {
+        if(auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('Edit Members')) {
             abort(403);
         }
 

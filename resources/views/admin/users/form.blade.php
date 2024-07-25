@@ -10,8 +10,8 @@
                         {{ $user->id ? 'Edit' : 'Add' }} Member
                     </h3>
                 </div>
-                <form action="{{ $user->id ? route('user.update', $user->id) : route('user.store') }}"
-                    method="post" enctype="multipart/form-data">
+                <form action="{{ $user->id ? route('user.update', $user->id) : route('user.store') }}" method="post"
+                    enctype="multipart/form-data">
                     @csrf
                     {{ $user->id ? method_field('PUT') : '' }}
                     <div class="card-body ">
@@ -30,8 +30,8 @@
                                         @endif
                                     </div>
                                 </div>
-                                 {{-- email --}}
-                                 <div class="form-group row">
+                                {{-- email --}}
+                                <div class="form-group row">
                                     <div class="col-lg-12">
                                         <label for="email">Email</label>
                                         <input type="text" class="form-control" name="email" id="email"
@@ -47,11 +47,13 @@
                                 <div class="form-group row">
                                     <div class="col-lg-12">
                                         <label for="role">User Role</label>
-                                        <select  class="form-control" name="role" id="role">
+                                        <select class="form-control" name="role" id="role">
                                             <option value="">-- Select Role --</option>
                                             @foreach ($roles as $role)
                                                 @if ($role->id != 1)
-                                                    <option {{ (isset($user_role) && $user_role == $role->name) ? 'selected' : '' }} value="{{ $role->name }}">{{ $role->name }}</option>
+                                                    <option
+                                                        {{ isset($user_role) && $user_role == $role->name ? 'selected' : '' }}
+                                                        value="{{ $role->name }}">{{ $role->name }}</option>
                                                 @endif
                                             @endforeach
                                         </select>
@@ -66,8 +68,7 @@
                                 <div class="form-group row">
                                     <div class="col-lg-12">
                                         <label for="password">Password</label>
-                                        <input type="text" class="form-control" name="password" id="password"
-                                            >
+                                        <input type="text" class="form-control" name="password" id="password">
                                         @if ($errors->has('password'))
                                             <span class="text-danger">
                                                 {{ $errors->first('password') }}
@@ -81,14 +82,14 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-lg-12 text-right">
-                                <button class="btn btn-primary  mr-2">{{ $user->id ? 'Update' : 'Save' }}</button>
+                                <button class="btn btn-purple  mr-2">{{ $user->id ? 'Update' : 'Save' }}</button>
                                 <a href="{{ route('user.index') }}" class="btn btn-secondary ">Cancel</a>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
-            </div>
+        </div>
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->

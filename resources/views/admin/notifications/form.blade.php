@@ -187,7 +187,7 @@
                                 <input type="text" name="youtube_url" class="form-control">
                             </div>
                             <div class="row justify-content-end">
-                                <button class="btn btn-primary"><i class="fas mr-2 fa-paper-plane"></i>Send </button>
+                                <button class="btn btn-purple"><i class="fas mr-2 fa-paper-plane"></i>Send </button>
                                 <a href="{{ route('notifications.index') }}" class="btn btn-secondary ml-2">Cancel</a>
                             </div>
                         </div>

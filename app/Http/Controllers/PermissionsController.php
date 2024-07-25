@@ -13,7 +13,7 @@ class PermissionsController extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->id != 1 && auth()->user()->hasPermissionTo('View Permissions')){
+        if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('View Permissions')){
             abort(403);
         }
 
@@ -26,7 +26,7 @@ class PermissionsController extends Controller
      */
     public function create()
     {
-        if (!auth()->user()->id != 1 && auth()->user()->hasPermissionTo('Create Permissions')){
+        if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('Create Permissions')){
             abort(403);
         }
     }
@@ -44,7 +44,7 @@ class PermissionsController extends Controller
      */
     public function show(string $id)
     {
-        if (!auth()->user()->id != 1 && auth()->user()->hasPermissionTo('View Permissions')){
+        if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('View Permissions')){
             abort(403);
         }
     }
@@ -54,7 +54,7 @@ class PermissionsController extends Controller
      */
     public function edit(String $id)
     {
-        if (!auth()->user()->id != 1 && auth()->user()->hasPermissionTo('Edit Permissions')){
+        if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('Edit Permissions')){
             abort(403);
         }
 

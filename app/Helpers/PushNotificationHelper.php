@@ -16,8 +16,7 @@ class PushNotificationHelper {
         $title = $data['title'];
         $message = $data['message'];
         $ytUrl = $data['ytUrl'];
-        // $imgUrl = $data['imgUrl'];
-        $imgUrl = "https://standardtouch.com/wp-content/uploads/2021/11/ST-Transparent-Logo-Final-2.png";
+        $imgUrl = $data['imgUrl'];
         
         $factory = (new Factory)->withServiceAccount(storage_path(env('FIREBASE_CREDENTIALS')),);
         $messaging = $factory->createMessaging();

@@ -7,8 +7,10 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-12">
-                    <a href="{{ route('members.create') }}" class="btn btn-purple float-right"><i
-                            class="fas fa-plus mr-2"></i>Create</a>
+                    @if (auth()->user()->id == 1 || auth()->user()->can('Create Members'))
+                        <a href="{{ route('members.create') }}" class="btn btn-purple float-right"><i
+                                class="fas fa-plus mr-2"></i>Create</a>
+                    @endif
 
                     <button class="btn btn-purple float-right mr-2" type="button" data-toggle="collapse"
                         data-target="#regFilters" aria-expanded="false" aria-controls="regFilters">

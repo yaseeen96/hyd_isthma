@@ -133,6 +133,21 @@
                           auth()->user()->id == 1)
                       <li class="nav-header">SETTINGS</li>
                   @endif
+                  @if (auth()->user()->can('Create Users') ||
+                          auth()->user()->can('View Users') ||
+                          auth()->user()->can('Edit Users') ||
+                          auth()->user()->can('Delete Users') ||
+                          auth()->user()->id == 1)
+                      <li class="nav-item">
+                          <a href="{{ route('user.index') }}"
+                              class="nav-link {{ in_array(request()->route()->getName(), ['user.index', 'user.edit', 'user.create']) ? 'active' : '' }}">
+                              <i class="nav-icon fas fa-users"></i>
+                              <p>
+                                  Users
+                              </p>
+                          </a>
+                      </li>
+                  @endif
                   @if (auth()->user()->can('Create Notifications') ||
                           auth()->user()->can('View Notifications') ||
                           auth()->user()->can('Edit Notifications') ||
@@ -163,21 +178,7 @@
                           </a>
                       </li>
                   @endif
-                  @if (auth()->user()->can('Create Users') ||
-                          auth()->user()->can('View Users') ||
-                          auth()->user()->can('Edit Users') ||
-                          auth()->user()->can('Delete Users') ||
-                          auth()->user()->id == 1)
-                      <li class="nav-item">
-                          <a href="{{ route('user.index') }}"
-                              class="nav-link {{ in_array(request()->route()->getName(), ['user.index', 'user.edit', 'user.create']) ? 'active' : '' }}">
-                              <i class="nav-icon fas fa-users"></i>
-                              <p>
-                                  Users
-                              </p>
-                          </a>
-                      </li>
-                  @endif
+
               </ul>
           </nav>
           <!-- /.sidebar-menu -->

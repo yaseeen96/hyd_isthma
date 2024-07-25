@@ -42,7 +42,7 @@ class RegistrationController extends Controller
                     return $registration->ameer_permission_taken ? '<span class="badge badge-success">Yes</span>' : ($registration->ameer_permission_taken === 0 ? '<span class="badge badge-danger">NO</span>' : '-');
                 })
                 ->addColumn('action', function (Registration $registration) {
-                    return '<a href="' . route('registrations.show', $registration->id) . '" class="badge badge-primary" title="View"><i class="fas fa-eye" ></i></a>';
+                    return   '<a href="' . route('registrations.show', $registration->id) . '" class="badge badge-primary" title="View"><i class="fas fa-eye" ></i></a>';
                 })->rawColumns(['confirm_arrival', 'ameer_permission_taken', 'action'])->addIndexColumn()->make(true);
         }
 
@@ -70,7 +70,7 @@ class RegistrationController extends Controller
      */
     public function show(string $id)
     {
-        if ( !auth()->user()->id != 1 && auth()->user()->hasPermissionTo('Show Registrations')){
+        if ( auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('Show Registrations')){
             abort(403);
         }
 

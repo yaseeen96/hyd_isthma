@@ -7,8 +7,11 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-12">
-                    <a href="{{ route('user.create') }}" class="btn btn-purple float-right"><i
-                         class="fas fa-plus mr-2"></i>Create</a>
+                    @if (auth()->user()->id == 1 || auth()->user()->can('Create Users'))
+                        <a href="{{ route('user.create') }}" class="btn btn-purple float-right"><i
+                                class="fas fa-plus mr-2"></i>Add
+                            User</a>
+                    @endif
                 </div>
             </div>
             <x-table id="users-table">
@@ -23,7 +26,6 @@
 @endsection
 @push('scripts')
     <script type="text/javascript">
-
         $(function() {
             usersTable = $('#users-table').DataTable({
                 ajax: {
@@ -50,11 +52,13 @@
                 ],
             });
         });
-        $('table').on('click','.user-delete', function(e){
+        $('table').on('click', '.user-delete', function(e) {
             $.ajax({
                 url: $(this).data('href'),
                 method: 'DELETE',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 dataType: 'JSON',
                 success: function(data) {
                     usersTable.draw();

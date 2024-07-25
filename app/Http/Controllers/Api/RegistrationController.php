@@ -63,7 +63,6 @@ class RegistrationController extends Controller
 
     // update mehrams details
     public function updateFamilyDetails(Request $request) {
-        // dd($request->all());
         $user = auth()->user();
         $mehrams = $request->get('mehrams', []);
         $childrens = $request->get('childrens', []);
@@ -82,7 +81,6 @@ class RegistrationController extends Controller
         );
 
         if(isset($mehrams) && count($mehrams) > 0) {
-
             foreach($mehrams as $mehram) {
                 $mehramFee = $mehramFees[strtolower($mehram['gender'])];
                 RegFamilyDetail::updateOrCreate(['registration_id' => $user->registration->id, 'type' => 'mehram', 'name' => $mehram['name']],array_merge($mehram, ['fees' => $mehramFee]));

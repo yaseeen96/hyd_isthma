@@ -20,12 +20,17 @@ class UserController extends Controller
         if($request->ajax()) {
             $query = User::query()->where('id', '!=', 1);
             return $datatable->eloquent($query)
-                ->addColumn('role', function(User $user) {
-                   return $user->getRoleNames()->first();
+                ->addColumn('role', function (User $user) {
+                    return $user->getRoleNames()->first();
                 })
-                ->addColumn('action', function(User $user) {
-                    return '<a href="'.route('user.edit', $user->id).'" class="btn-purple btn" ><i class="fas fa-edit"></i></a>
-                            <span data-href="'.route('user.destroy', $user->id).'" class="btn-purple user-delete btn"><i class="fas fa-trash"></i></span>';
+                ->addColumn('action', function (User $user) {
+                    $link = (auth()->user()->id == 1 || auth()->user()->hasPermissionTo('Edit Users')) ?
+                        '<a href="' . route('user.edit', $user->id) . '" class="btn-purple btn mr-1" ><i class="fas fa-edit"></i></a>'
+                        : "";
+                    $link .= auth()->user()->id == 1 || auth()->user()->hasPermissionTo('Delete Users') ? 
+                            '<span data-href="'.route('user.destroy', $user->id).'" class="btn-purple user-delete btn"><i class="fas fa-trash"></i></span>' 
+                            : "";
+                    return $link;
                 })
                 ->rawColumns([ 'role', 'action'])
                 ->addIndexColumn()

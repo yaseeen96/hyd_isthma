@@ -21,7 +21,6 @@ class DashboardController extends Controller
         $totAttendees = Registration::where('confirm_arrival', 1)->count();
         $totNonAttendees = Registration::where('confirm_arrival', 0)->count();
 
-
         // chartjs statistics
         $query = $this->fetchFilterData($request);
         $filterData = [
