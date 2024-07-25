@@ -19,3 +19,6 @@ yarn-error.log
 /.vscode
 docker-compose.yml
 ./docker
+.storage
+.private
+private

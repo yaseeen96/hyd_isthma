@@ -11,22 +11,29 @@ use Kreait\Firebase\Exception\MessagingException;
 
 class PushNotificationHelper {
 
-    public static function sendNotification($tokens, $title, $message, $image_url = null, $youtube_url = null) {
-        $factory = (new Factory)->withServiceAccount(env('FIREBASE_CREDENTIALS'));
+    public static function sendNotification($data) {
+        $tokens = $data['tokens'];
+        $title = $data['title'];
+        $message = $data['message'];
+        $ytUrl = $data['ytUrl'];
+        // $imgUrl = $data['imgUrl'];
+        $imgUrl = "https://standardtouch.com/wp-content/uploads/2021/11/ST-Transparent-Logo-Final-2.png";
+        
+        $factory = (new Factory)->withServiceAccount(storage_path(env('FIREBASE_CREDENTIALS')),);
         $messaging = $factory->createMessaging();
         if(isset($tokens)) {
-            $imageUrl = 'https://picsum.photos/400/200';
-            $notification = Notification::fromArray([
-                'title' => $title,
-                'body' => $message,
-                'image' => $imageUrl,
-            ]);
-            // Create a CloudMessage
+            // Default notificaiton
+            $notification = Notification::create($title, $message)->withImageUrl($imgUrl);
+            
+            // Android push notification configurations
+
+            // preparing message
             $message = CloudMessage::new()
-            ->withNotification($notification);
+                ->withNotification($notification);
             try {
+                // sending push notificaiton message
                 $result = $messaging->sendMulticast($message, $tokens);
-                dd($result);
+                return true;
             } catch(MessagingException $e) {
                 throw new Exception($e);
             }

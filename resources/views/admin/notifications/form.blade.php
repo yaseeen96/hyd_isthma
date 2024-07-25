@@ -7,6 +7,15 @@
             <div class="card show-sm p-4">
                 <div class="row">
                     <div class="col-lg-12">
+                        @php
+                            $message = Session::get('success') ?? Session::get('error');
+                        @endphp
+                        @if ($message)
+                            <div class="alert {{ Session::get('success') ? 'alert-success' : 'alert-danger' }} alert-block">
+                                <button type="button" class="close text-white" data-dismiss="alert">X</button>
+                                <strong>{{ $message }}</strong>
+                            </div>
+                        @endif
                         <h4 class="text-secondary font-weight-bold">1. Audience</h4>
                         <div class="row">
                             <div class="col-lg-12">
@@ -73,7 +82,8 @@
                                         @isset($locationsList['distnctDivisionName'])
                                             <option value="">All</option>
                                             @foreach ($locationsList['distnctDivisionName'] as $name)
-                                                <option value="{{ $name->division_name }}"> {{ $name->division_name }}</option>
+                                                <option value="{{ $name->division_name }}"> {{ $name->division_name }}
+                                                </option>
                                             @endforeach
                                         @endisset
                                     </select>
@@ -114,7 +124,7 @@
                             <div class="col-lg-6 px-3">
                                 <div class="form-group row">
                                     <label for="gender">Gender</label>
-                                    <select class="form-control" id="gender">
+                                    <select class="form-control" id="gender" name="gender">
                                         <option value=""> -- Select Gender -- </option>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
@@ -124,7 +134,7 @@
                             <div class="col-lg-6 px-3">
                                 <div class="form-group row">
                                     <label for="gender">Registration</label>
-                                    <select class="form-control" id="reg_status">
+                                    <select class="form-control" id="reg_status" name="reg_status">
                                         <option value=""> -- Select Option -- </option>
                                         <option value="1">Registered</option>
                                         <option value="0">Not Registered</option>
