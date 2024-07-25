@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { axiosAuthenticatedClient } from './axios_client';
+import { toast } from 'react-toastify';
 export const confirmRegistrationService = async (data) => {
     try {
         console.log(data);
@@ -34,10 +35,19 @@ export const updateFamilyDetails = async (data) => {
 
 export const getUserDetails = async () => {
     try {
-        const response = await axiosAuthenticatedClient.get('user/getUserDetails', {});
+        const response = await axiosAuthenticatedClient.get('user/getUserDetails');
         return response.data;
     } catch (error) {
         console.error(error);
         return null;
+    }
+};
+
+export const getRegistrationDetails = async () => {
+    try {
+        const response = await axiosAuthenticatedClient.get('user/getUserDetailsTest');
+        return response.data;
+    } catch (error) {
+        console.error(error);
     }
 };

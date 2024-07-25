@@ -4,8 +4,16 @@ import { localStorageConstant } from '../../utils/constants/localStorageConstant
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { ROUTES } from '../../router/routes';
+import { useQuery } from 'react-query';
+import { getRegistrationDetails } from '../../services/registration_service';
+import LoadingComponent from '../../components/common/loadingComponent';
+import { useSetRecoilState } from 'recoil';
+import { registrationDetailsAtom } from '../../store/atoms/registrationDetailsAtom';
 
 const RegisterPage = () => {
+    const { isLoading, isError, data, error } = useQuery('getRegistrationDetails', getRegistrationDetails);
+    const setRegistrationDetails = useSetRecoilState(registrationDetailsAtom);
+
     const navigate = useNavigate();
     const steps = [
         { id: 1, title: 'RSVP for the Event', description: 'Let us know if you’ll be attending the event.' },
@@ -45,7 +53,6 @@ const RegisterPage = () => {
                 break;
             case 4:
                 console.log('to navigate travel details');
-
                 break;
             default:
                 toast.error('invalid selection');
@@ -53,6 +60,23 @@ const RegisterPage = () => {
     };
 
     const progress = (activeStep / steps.length) * 100;
+
+    useEffect(() => {
+        if (data) {
+            const newData = data.data;
+            setRegistrationDetails((prev) => ({ ...prev, ...newData }));
+        }
+    }, [data, setRegistrationDetails]);
+
+    if (isLoading) return <LoadingComponent />;
+
+    if (isError)
+        return (
+            <div className="flex flex-col justify-center items-center h-screen">
+                <h3>An Error Occurred. Please come back later</h3>
+                <h2>Error: {error}</h2>
+            </div>
+        );
 
     return (
         <div className="h-screen flex flex-col items-center justify-start p-6 bg-gray-50 dark:bg-gray-900">

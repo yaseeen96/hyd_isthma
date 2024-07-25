@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react';
 import RegistrationLayout from '../layout/registrationLayout';
-import { confirmRegistrationService, getUserDetails } from '../../../services/registration_service';
+import { confirmRegistrationService } from '../../../services/registration_service';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Datepicker from 'react-tailwindcss-datepicker';
 import { trackSelectContent } from '../../../utils/hooks/trackSelectContent';
 import { useRecoilValue } from 'recoil';
-import { analyticsState } from '../../../store/atoms/analyticsAtom';
+import { registrationDetailsAtom } from '../../../store/atoms/registrationDetailsAtom';
 import { useLoading } from '../../../utils/hooks/useLoading';
 import LoadingComponent from '../../../components/common/loadingComponent';
 import { localStorageConstant } from '../../../utils/constants/localStorageConstants';
 
 const ArrivalRegistrationPage = () => {
-    const analytics = useRecoilValue(analyticsState);
+    const user = useRecoilValue(registrationDetailsAtom);
     const navigate = useNavigate();
     const { loading, setLoading } = useLoading();
-    const [user, setUser] = useState(null);
     const [userDetails, setUserDetails] = useState({
         date_of_birth: { startDate: null, endDate: null },
         confirmArrival: '1',
@@ -24,6 +23,20 @@ const ArrivalRegistrationPage = () => {
         ameer_permission_taken: '1',
         email: '',
     });
+
+    useEffect(() => {
+        if (user && user.member_data && user.member_data.length > 0) {
+            const userData = user.member_data[0];
+            setUserDetails({
+                date_of_birth: { startDate: userData.dob, endDate: userData.dob },
+                confirmArrival: userData.confirmArrival ?? '1',
+                reason_for_not_coming: userData.reason_for_not_coming ?? '',
+                emergency_contact: userData.emergency_contact ?? '',
+                ameer_permission_taken: userData.ameer_permission_taken ?? '1',
+                email: userData.email ?? '',
+            });
+        }
+    }, [user]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -75,45 +88,6 @@ const ArrivalRegistrationPage = () => {
         }
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getUserDetails();
-                if (response && response.data && response.data.length > 0) {
-                    setUser(response);
-
-                    if (response.data[0].dob != null) {
-                        setUserDetails((prevDetails) => ({
-                            ...prevDetails,
-                            date_of_birth: { startDate: response.data[0].dob, endDate: response.data[0].dob },
-                        }));
-                    }
-                    if (response.data[0].registration != null) {
-                        setUserDetails((prevDetails) => ({
-                            ...prevDetails,
-                            confirmArrival: response.data[0].registration.confirm_arrival?.toString() ?? '0',
-                            reason_for_not_coming: response.data[0].registration.reason_for_not_coming ?? '',
-                            emergency_contact: response.data[0].registration.emergency_contact ?? '',
-                            ameer_permission_taken: response.data[0].registration.ameer_permission_taken?.toString() ?? '0',
-                        }));
-                    }
-                    if (response.data[0].email != null) {
-                        setUserDetails((prevDetails) => ({
-                            ...prevDetails,
-                            email: response.data[0].email,
-                        }));
-                    }
-                }
-            } catch (error) {
-                console.error('Failed to fetch user details', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
-
     const onConfirmed = (e) => {
         setUserDetails({ ...userDetails, confirmArrival: e.target.value });
     };
@@ -132,13 +106,21 @@ const ArrivalRegistrationPage = () => {
                 <label htmlFor="rukn-id" className="ml-1 w-1/3 mb-0">
                     Rukn ID
                 </label>
-                <input id="rukn-id" type="text" name="reciever-name" className="form-input text-gray-400 " placeholder="Enter Rukn ID" readOnly defaultValue={user ? user.data[0].user_number : ''} />
+                <input
+                    id="rukn-id"
+                    type="text"
+                    name="reciever-name"
+                    className="form-input text-gray-400 "
+                    placeholder="Enter Rukn ID"
+                    readOnly
+                    defaultValue={user ? user.member_data[0].user_number : ''}
+                />
             </div>
             <div className="mt-4 flex flex-col items-start w-full gap-1">
                 <label htmlFor="full-name" className="ml-1 w-1/3 mb-0">
                     Name
                 </label>
-                <input id="full-name" type="text" name="reciever-name" className="form-input text-gray-400 " placeholder="Enter Name" readOnly defaultValue={user ? user.data[0].name : ''} />
+                <input id="full-name" type="text" name="reciever-name" className="form-input text-gray-400 " placeholder="Enter Name" readOnly defaultValue={user ? user.member_data[0].name : ''} />
             </div>
             <div className="mt-4 flex flex-col items-start w-full gap-1">
                 <label htmlFor="phone-number" className="ml-1 w-1/3 mb-0">
@@ -151,32 +133,48 @@ const ArrivalRegistrationPage = () => {
                     className="form-input text-gray-400 "
                     placeholder="Enter phone number"
                     readOnly
-                    defaultValue={user ? user.data[0].phone : ''}
+                    defaultValue={user ? user.member_data[0].phone : ''}
                 />
             </div>
             <div className="mt-4 flex flex-col items-start w-full gap-1">
                 <label htmlFor="unit-name" className="ml-1 w-1/3 mb-0">
                     Unit Name
                 </label>
-                <input id="unit-name" type="text" name="reciever-name" className="form-input text-gray-400 " placeholder="Enter unit Name" readOnly defaultValue={user ? user.data[0].unit_name : ''} />
+                <input
+                    id="unit-name"
+                    type="text"
+                    name="reciever-name"
+                    className="form-input text-gray-400 "
+                    placeholder="Enter unit Name"
+                    readOnly
+                    defaultValue={user ? user.member_data[0].unit_name : ''}
+                />
             </div>
             <div className="mt-4 flex flex-col items-start w-full gap-1">
                 <label htmlFor="district" className="ml-1 w-1/3 mb-0">
                     District
                 </label>
-                <input id="district" type="text" name="reciever-name" className="form-input text-gray-400 " placeholder="Enter District" readOnly defaultValue={user ? user.data[0].unit_name : ''} />
+                <input
+                    id="district"
+                    type="text"
+                    name="reciever-name"
+                    className="form-input text-gray-400 "
+                    placeholder="Enter District"
+                    readOnly
+                    defaultValue={user ? user.member_data[0].unit_name : ''}
+                />
             </div>
             <div className="mt-4 flex flex-col items-start w-full gap-1">
                 <label htmlFor="halqa" className="ml-1 w-1/3 mb-0">
                     Halqa
                 </label>
-                <input id="halqa" type="text" name="reciever-name" className="form-input text-gray-400 " placeholder="Enter Halqa" readOnly defaultValue={user ? user.data[0].zone_name : ''} />
+                <input id="halqa" type="text" name="reciever-name" className="form-input text-gray-400 " placeholder="Enter Halqa" readOnly defaultValue={user ? user.member_data[0].zone_name : ''} />
             </div>
             <div className="flex flex-col items-start mt-4 gap-2 w-full">
                 <label htmlFor="gender" className="ltr:mr-2 rtl:ml-2 w-1/3 mb-0">
                     Gender
                 </label>
-                <input id="halqa" type="text" name="reciever-name" className="form-input text-gray-400 " placeholder="Enter Gender" readOnly defaultValue={user ? user.data[0].gender : ''} />
+                <input id="halqa" type="text" name="reciever-name" className="form-input text-gray-400 " placeholder="Enter Gender" readOnly defaultValue={user ? user.member_data[0].gender : ''} />
             </div>
             <div className="mt-4 flex flex-col items-start w-full gap-1">
                 <label htmlFor="dob" className="ml-1 w-1/3 mb-0">

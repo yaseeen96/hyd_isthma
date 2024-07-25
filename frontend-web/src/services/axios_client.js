@@ -6,5 +6,6 @@ export const axiosAuthenticatedClient = axios.create({
     headers: {
         Authorization: `Bearer ${localStorage.getItem(localStorageConstant.token)}`,
         'Content-Type': 'application/json',
+        accept: 'application/json',
     },
 });
