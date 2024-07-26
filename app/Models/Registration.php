@@ -24,6 +24,7 @@ class Registration extends Model
         "health_concern",
         "management_experience",
         "comments",
+        "fees_paid_to_ameer"
     ];
 
     protected $casts = [
