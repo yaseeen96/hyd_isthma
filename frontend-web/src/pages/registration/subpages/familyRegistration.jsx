@@ -13,15 +13,17 @@ const validationSchema = Yup.object().shape({
     accompanying: Yup.string().required('Required'),
     adults: Yup.array().of(
         Yup.object().shape({
+            id: Yup.string().nullable(),
             name: Yup.string().required('Required'),
-            age: Yup.number().min(15, 'Must be at least 15').required('Required'),
+            age: Yup.number().min(8, 'Must be at least 8').required('Required'),
             gender: Yup.string().required('Required'),
         })
     ),
     children: Yup.array().of(
         Yup.object().shape({
+            id: Yup.string().nullable(),
             name: Yup.string().required('Required'),
-            age: Yup.number().max(14, 'Must be at most 14').required('Required'),
+            age: Yup.number().max(7, 'Must be at most 7').required('Required'),
             gender: Yup.string().required('Required'),
         })
     ),
@@ -38,16 +40,20 @@ const FamilyRegistrationPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user && user.member_reg_data && user.member_reg_data.length > 0) {
-            const familyDetails = user.member_reg_data[0].family_details;
+        console.log('user data:', user);
+        if (user && user.member_reg_data) {
+            const familyDetails = user.member_reg_data.family_details || [];
+            console.log('familyDetails:', familyDetails);
             const accompanying = familyDetails.length > 0 ? 'yes' : 'no';
             const adults = familyDetails.filter((detail) => detail.type === 'mehram');
             const children = familyDetails.filter((detail) => detail.type === 'children');
-            setInitialValues({
+            const newInitialValues = {
                 accompanying,
-                adults: adults.map((adult) => ({ name: adult.name, age: adult.age, gender: adult.gender })),
-                children: children.map((child) => ({ name: child.name, age: child.age, gender: child.gender })),
-            });
+                adults: adults.map((adult) => ({ id: adult.id || null, name: adult.name, age: adult.age, gender: adult.gender })),
+                children: children.map((child) => ({ id: child.id || null, name: child.name, age: child.age, gender: child.gender })),
+            };
+            console.log('newInitialValues:', newInitialValues);
+            setInitialValues(newInitialValues);
         }
     }, [user]);
 
@@ -60,7 +66,7 @@ const FamilyRegistrationPage = () => {
     };
 
     const addPerson = (field, values, setFieldValue) => {
-        const newArray = [...values[field], { name: '', age: '', gender: '' }];
+        const newArray = [...values[field], { id: null, name: '', age: '', gender: '' }];
         setFieldValue(field, newArray);
     };
 
@@ -72,7 +78,7 @@ const FamilyRegistrationPage = () => {
     const renderPersonFields = (values, field, setFieldValue) =>
         values[field].map((_, index) => (
             <div key={index} className="grid grid-cols-12 justify-start items-center gap-4">
-                <div className="flex flex-col gap-2 mt-2 w-full relative col-span-10 ">
+                <div className="flex flex-col gap-2 mt-2 w-full relative col-span-10 border-b border-gray-300 pb-4">
                     <Field type="text" name={`${field}[${index}].name`} placeholder={`${field === 'adults' ? 'Adult' : 'Child'} ${index + 1} Name`} className="form-input flex-grow mr-2" />
                     <ErrorMessage name={`${field}[${index}].name`} component="div" className="text-red-500" />
 
@@ -81,8 +87,8 @@ const FamilyRegistrationPage = () => {
                         name={`${field}[${index}].age`}
                         placeholder={`${field === 'adults' ? 'Adult' : 'Child'} ${index + 1} Age`}
                         className="form-input"
-                        min={field === 'adults' ? 15 : 0}
-                        max={field === 'children' ? 14 : undefined}
+                        min={field === 'adults' ? 8 : 0}
+                        max={field === 'children' ? 7 : undefined}
                     />
                     <ErrorMessage name={`${field}[${index}].age`} component="div" className="text-red-500" />
 
@@ -135,7 +141,7 @@ const FamilyRegistrationPage = () => {
                         {values.accompanying === 'yes' && (
                             <>
                                 <div className="flex flex-col items-start gap-2 w-full">
-                                    <label className="w-full mb-2">Accompanying Adults (Above age 14):</label>
+                                    <label className="w-full mb-2">Accompanying Adults (Age must be at least 8 and above):</label>
                                     {renderPersonFields(values, 'adults', setFieldValue)}
                                     <button type="button" onClick={() => addPerson('adults', values, setFieldValue)} className="btn btn-info mt-2 self-start">
                                         Add Adult
@@ -145,7 +151,7 @@ const FamilyRegistrationPage = () => {
                                 <div className="w-full bg-gray-300 h-[1px] my-2"></div>
 
                                 <div className="flex flex-col items-start gap-2 w-full">
-                                    <label className="w-full mb-2">Accompanying Children (Below age 14):</label>
+                                    <label className="w-full mb-2">Accompanying Children (Age must be 7 and below):</label>
                                     {renderPersonFields(values, 'children', setFieldValue)}
                                     <button type="button" onClick={() => addPerson('children', values, setFieldValue)} className="btn btn-info mt-2 self-start">
                                         Add Child

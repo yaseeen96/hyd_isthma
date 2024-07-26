@@ -1,6 +1,8 @@
 import { lazy } from 'react';
 import HomeWrapper from '../pages/home/HomeWrapper';
 import FamilyRegistrationPage from '../pages/registration/subpages/familyRegistration';
+import FinancialRegistration from '../pages/registration/subpages/financialRegistration';
+import AdditionalDetailsRegistration from '../pages/registration/subpages/additionalDetailsRegistration';
 
 const ArrivalRegistrationPage = lazy(() => import('../pages/registration/subpages/arrivalRegistrationPage'));
 const Otp = lazy(() => import('../pages/Authentication/Otp'));
@@ -15,6 +17,8 @@ export const ROUTES = {
     register: '/home/register',
     rsvpRegistration: '/home/register/arrival',
     familyRegistration: '/home/register/family',
+    financialRegistration: '/home/register/finance',
+    additionalRegistration: '/home/register/additional',
 };
 
 const routes = [
@@ -51,6 +55,17 @@ const routes = [
     {
         path: ROUTES.familyRegistration,
         element: <FamilyRegistrationPage />,
+        layout: 'blank',
+    },
+
+    {
+        path: ROUTES.financialRegistration,
+        element: <FinancialRegistration />,
+        layout: 'blank',
+    },
+    {
+        path: ROUTES.additionalRegistration,
+        element: <AdditionalDetailsRegistration />,
         layout: 'blank',
     },
 ];

@@ -10,11 +10,13 @@ import { registrationDetailsAtom } from '../../../store/atoms/registrationDetail
 import { useLoading } from '../../../utils/hooks/useLoading';
 import LoadingComponent from '../../../components/common/loadingComponent';
 import { localStorageConstant } from '../../../utils/constants/localStorageConstants';
+import { analyticsState } from '../../../store/atoms/analyticsAtom';
 
 const ArrivalRegistrationPage = () => {
     const user = useRecoilValue(registrationDetailsAtom);
     const navigate = useNavigate();
     const { loading, setLoading } = useLoading();
+    const analytics = useRecoilValue(analyticsState);
     const [userDetails, setUserDetails] = useState({
         date_of_birth: { startDate: null, endDate: null },
         confirmArrival: '1',
@@ -60,7 +62,6 @@ const ArrivalRegistrationPage = () => {
             const isSuccess = await confirmRegistrationService(userDetails);
 
             if (isSuccess) {
-                localStorage.setItem(localStorageConstant.arrivalConfirmed, 1);
                 toast.success(
                     <div>
                         Thanks for completing the first phase of registration for Arkan Ijtema. Here are the next steps:

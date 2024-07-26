@@ -51,3 +51,14 @@ export const getRegistrationDetails = async () => {
         console.error(error);
     }
 };
+
+export const updateFinancialDetails = async (fees) => {
+    try {
+        const response = axiosAuthenticatedClient.post('user/financialDetails', {
+            fees_paid_to_ameer: fees,
+        });
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};

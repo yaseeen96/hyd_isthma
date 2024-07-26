@@ -49,10 +49,10 @@ const RegisterPage = () => {
                 navigate(ROUTES.familyRegistration);
                 break;
             case 3:
-                console.log('to navigate payment details');
+                navigate(ROUTES.financialRegistration);
                 break;
             case 4:
-                console.log('to navigate travel details');
+                navigate(ROUTES.additionalRegistration);
                 break;
             default:
                 toast.error('invalid selection');
