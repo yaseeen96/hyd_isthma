@@ -17,6 +17,8 @@ export const sendOtpService = async (phone) => {
 
         return response.data;
     } catch (error) {
+        console.log(error.response.data);
+        console.log(error.response.data.message.phone[0]);
         throw new Error(error.response.data.message.phone[0]);
     }
 };

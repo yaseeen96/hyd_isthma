@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { HttpStatusCode } from 'axios';
 import { axiosAuthenticatedClient } from './axios_client';
 import { toast } from 'react-toastify';
 export const confirmRegistrationService = async (data) => {
@@ -60,5 +60,19 @@ export const updateFinancialDetails = async (fees) => {
         return response.data;
     } catch (error) {
         console.error(error);
+    }
+};
+
+export const updateAdditionalDetails = async (data) => {
+    try {
+        const response = await axiosAuthenticatedClient.post('user/additionalDetails', data);
+        if (response.status == HttpStatusCode.Ok) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (err) {
+        console.error(err.response.data);
+        return false;
     }
 };

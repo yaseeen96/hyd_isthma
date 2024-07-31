@@ -2,44 +2,70 @@ import React from 'react';
 import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import RegistrationLayout from '../layout/registrationLayout';
-import Datepicker from 'react-tailwindcss-datepicker';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import 'tailwindcss/tailwind.css';
+import { updateAdditionalDetails } from '../../../services/registration_service';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useRecoilValue } from 'recoil';
+import { registrationDetailsAtom } from '../../../store/atoms/registrationDetailsAtom';
+import { useLoading } from '../../../utils/hooks/useLoading';
+import LoadingComponent from '../../../components/common/loadingComponent';
 
 const AdditionalDetailsRegistration = () => {
+    const { loading, setLoading } = useLoading();
+    const navigate = useNavigate();
+    const registrationDetails = useRecoilValue(registrationDetailsAtom);
+
     const initialValues = {
         arrival_details: {
-            datetime: '',
-            mode: '',
-            mode_identifier: '',
-            start_point: '',
-            end_point: '',
+            datetime: registrationDetails.member_reg_data?.arrival_details?.datetime ? new Date(registrationDetails.member_reg_data.arrival_details.datetime) : null,
+            mode: registrationDetails.member_reg_data?.arrival_details?.mode || '',
+            mode_identifier: registrationDetails.member_reg_data?.arrival_details?.mode_identifier || '',
+            start_point: registrationDetails.member_reg_data?.arrival_details?.start_point || '',
+            end_point: registrationDetails.member_reg_data?.arrival_details?.end_point || '',
         },
         departure_details: {
-            datetime: '',
-            mode: '',
-            mode_identifier: '',
-            start_point: '',
-            end_point: '',
+            datetime: registrationDetails.member_reg_data?.departure_details?.datetime ? new Date(registrationDetails.member_reg_data.departure_details.datetime) : null,
+            mode: registrationDetails.member_reg_data?.departure_details?.mode || '',
+            mode_identifier: registrationDetails.member_reg_data?.departure_details?.mode_identifier || '',
+            start_point: registrationDetails.member_reg_data?.departure_details?.start_point || '',
+            end_point: registrationDetails.member_reg_data?.departure_details?.end_point || '',
         },
-        hotel_required: 'no',
+        hotel_required: registrationDetails.member_reg_data?.hotel_required || 'no',
         special_considerations: {
-            food_preferences: '',
-            need_attendant: '',
-            cot_or_bed: '',
+            food_preferences: registrationDetails.member_reg_data?.special_considerations?.food_preferences || '',
+            need_attendant: registrationDetails.member_reg_data?.special_considerations?.need_attendant || '',
+            cot_or_bed: registrationDetails.member_reg_data?.special_considerations?.cot_or_bed || '',
         },
         sight_seeing: {
-            required: 'no',
-            members_count: '',
+            required: registrationDetails.member_reg_data?.sight_seeing?.required || 'no',
+            members_count: registrationDetails.member_reg_data?.sight_seeing?.members_count || '',
         },
-        health_concern: '',
-        management_experience: 'no',
-        purchases_required: [
-            { name: 'Bed', qty: '' },
-            { name: 'Cot', qty: '' },
-            { name: 'Plate', qty: '' },
-            { name: 'Spoons', qty: '' },
-            { name: 'Carpet', qty: '' },
-        ],
-        comments: '',
+        health_concern: registrationDetails.member_reg_data?.health_concern || '',
+        management_experience: registrationDetails.member_reg_data?.management_experience || 'no',
+        purchases_required:
+            registrationDetails.member_reg_data?.purchase_details.length > 0
+                ? registrationDetails.member_reg_data.purchase_details.map((item) => ({
+                      name: item.type,
+                      qty: item.qty || '0',
+                  }))
+                : [
+                      { name: 'Bed', qty: '0' },
+                      { name: 'Cot', qty: '0' },
+                      { name: 'Plate', qty: '0' },
+                      { name: 'Spoons', qty: '0' },
+                      { name: 'Carpet', qty: '0' },
+                  ],
+        comments: registrationDetails.member_reg_data?.comments || '',
+    };
+
+    const transportOptions = {
+        BUS: ['Mg Bus Station, Imlibun, Gowliguda, Hyderabad', 'Jubilee Bus Station, Gandhi Nagar', 'L. B. Nagar, Hyderabad', 'Aramghar Bus Stop', 'Other'],
+        TRAIN: ['Secunderabad Railway Station', 'Kacheguda Railway Station', 'Lingampally Railway Station', 'Hyderabad Deccan (Nampally) Railway Station', 'Other'],
+        FLIGHT: ['Rajiv Gandhi International Airport, Shamshabad', 'Other'],
+        OTHER: ['Other'],
     };
 
     const validationSchema = Yup.object().shape({
@@ -63,12 +89,33 @@ const AdditionalDetailsRegistration = () => {
         ),
     });
 
-    const handleSubmit = (values) => {
-        // Log the result in JSON format
-        console.log(JSON.stringify(values, null, 2));
+    const handleSubmit = async (values) => {
+        // Format dates to 'YYYY-MM-DD' before logging the result
+        const formattedValues = {
+            ...values,
+            arrival_details: {
+                ...values.arrival_details,
+                datetime: values.arrival_details.datetime instanceof Date ? values.arrival_details.datetime.toISOString().split('T')[0] : '',
+            },
+            departure_details: {
+                ...values.departure_details,
+                datetime: values.departure_details.datetime instanceof Date ? values.departure_details.datetime.toISOString().split('T')[0] : '',
+            },
+        };
+        setLoading(true);
+        const isSuccess = await updateAdditionalDetails(formattedValues);
+        if (isSuccess) {
+            navigate(-1);
+            toast.success('Registration Successful. You are all done');
+        } else {
+            toast.error('Something seems to be wrong. Please come back later');
+        }
+        setLoading(false);
     };
 
-    return (
+    return loading ? (
+        <LoadingComponent />
+    ) : (
         <RegistrationLayout>
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ values, setFieldValue }) => (
@@ -77,13 +124,12 @@ const AdditionalDetailsRegistration = () => {
                             <h2 className="text-lg font-semibold mb-2">Arrival Details</h2>
                             <div className="w-full mb-4">
                                 <label>Exact Date and Time of Arrival</label>
-                                <Datepicker
-                                    asSingle={true}
-                                    useRange={false}
-                                    value={values.arrival_details.datetime}
-                                    onChange={(value) => setFieldValue('arrival_details.datetime', value)}
-                                    displayFormat="YYYY-MM-DD HH:mm:ss"
-                                    inputClassName="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
+                                <DatePicker
+                                    selected={values.arrival_details.datetime ? new Date(values.arrival_details.datetime) : null}
+                                    onChange={(date) => setFieldValue('arrival_details.datetime', date)}
+                                    showTimeSelect
+                                    dateFormat="Pp"
+                                    className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
                                 />
                                 <ErrorMessage name="arrival_details.datetime" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
@@ -93,43 +139,45 @@ const AdditionalDetailsRegistration = () => {
                                     name="arrival_details.mode"
                                     as="select"
                                     className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
+                                    onChange={(e) => {
+                                        const { value } = e.target;
+                                        setFieldValue('arrival_details.mode', value);
+                                        setFieldValue('arrival_details.end_point', '');
+                                    }}
                                 >
                                     <option value="">Select</option>
-                                    <option value="Air">Air</option>
-                                    <option value="Government RTC Bus">Government RTC Bus</option>
-                                    <option value="Train">Train</option>
-                                    <option value="Private bus hired by your Jamat">Private bus hired by your Jamat</option>
-                                    <option value="Own car">Own car</option>
-                                    <option value="Own bike">Own bike</option>
-                                    <option value="Any other own mode of transport">Any other own mode of transport</option>
+                                    <option value="BUS">Bus</option>
+                                    <option value="TRAIN">Train</option>
+                                    <option value="FLIGHT">Flight</option>
+                                    <option value="OTHER">Other</option>
                                 </Field>
                                 <ErrorMessage name="arrival_details.mode" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
-                                <label>Flight Number/Train Number etc.</label>
-                                <Field
-                                    name="arrival_details.mode_identifier"
-                                    type="text"
-                                    placeholder="Enter Flight/Train Number"
-                                    className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
-                                />
-                                <ErrorMessage name="arrival_details.mode_identifier" component="div" className="text-red-500 text-sm mt-1" />
-                            </div>
-                            <div className="w-full mb-4">
-                                <label>Station Start Point and End Point</label>
+                                <label>Station Start Point</label>
                                 <Field
                                     name="arrival_details.start_point"
                                     type="text"
                                     placeholder="Start Point"
-                                    className="w-full mb-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
-                                />
-                                <Field
-                                    name="arrival_details.end_point"
-                                    type="text"
-                                    placeholder="End Point"
                                     className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
                                 />
                                 <ErrorMessage name="arrival_details.start_point" component="div" className="text-red-500 text-sm mt-1" />
+                            </div>
+                            <div className="w-full mb-4">
+                                <label>Station End Point</label>
+                                <Field
+                                    name="arrival_details.end_point"
+                                    as="select"
+                                    className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
+                                    disabled={!transportOptions[values.arrival_details.mode] || transportOptions[values.arrival_details.mode].length === 0}
+                                >
+                                    <option value="">Select</option>
+                                    {transportOptions[values.arrival_details.mode]?.map((option, index) => (
+                                        <option key={index} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </Field>
                                 <ErrorMessage name="arrival_details.end_point" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                         </div>
@@ -138,13 +186,12 @@ const AdditionalDetailsRegistration = () => {
                             <h2 className="text-lg font-semibold mb-2">Departure Details</h2>
                             <div className="w-full mb-4">
                                 <label>Exact Date and Time of Departure</label>
-                                <Datepicker
-                                    asSingle={true}
-                                    useRange={false}
-                                    value={values.departure_details.datetime}
-                                    onChange={(value) => setFieldValue('departure_details.datetime', value)}
-                                    displayFormat="YYYY-MM-DD HH:mm:ss"
-                                    inputClassName="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
+                                <DatePicker
+                                    selected={values.departure_details.datetime ? new Date(values.departure_details.datetime) : null}
+                                    onChange={(date) => setFieldValue('departure_details.datetime', date)}
+                                    showTimeSelect
+                                    dateFormat="Pp"
+                                    className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
                                 />
                                 <ErrorMessage name="departure_details.datetime" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
@@ -154,36 +201,39 @@ const AdditionalDetailsRegistration = () => {
                                     name="departure_details.mode"
                                     as="select"
                                     className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
+                                    onChange={(e) => {
+                                        const { value } = e.target;
+                                        setFieldValue('departure_details.mode', value);
+                                        setFieldValue('departure_details.start_point', '');
+                                    }}
                                 >
                                     <option value="">Select</option>
-                                    <option value="Air">Air</option>
-                                    <option value="Government RTC Bus">Government RTC Bus</option>
-                                    <option value="Train">Train</option>
-                                    <option value="Private bus hired by your Jamat">Private bus hired by your Jamat</option>
-                                    <option value="Own car">Own car</option>
-                                    <option value="Own bike">Own bike</option>
-                                    <option value="Any other own mode of transport">Any other own mode of transport</option>
+                                    <option value="BUS">Bus</option>
+                                    <option value="TRAIN">Train</option>
+                                    <option value="FLIGHT">Flight</option>
+                                    <option value="OTHER">Other</option>
                                 </Field>
                                 <ErrorMessage name="departure_details.mode" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
-                                <label>Flight Number/Train Number etc.</label>
-                                <Field
-                                    name="departure_details.mode_identifier"
-                                    type="text"
-                                    placeholder="Enter Flight/Train Number"
-                                    className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
-                                />
-                                <ErrorMessage name="departure_details.mode_identifier" component="div" className="text-red-500 text-sm mt-1" />
-                            </div>
-                            <div className="w-full mb-4">
-                                <label>Station Start Point and End Point</label>
+                                <label>Station Start Point</label>
                                 <Field
                                     name="departure_details.start_point"
-                                    type="text"
-                                    placeholder="Start Point"
-                                    className="w-full mb-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
-                                />
+                                    as="select"
+                                    className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
+                                    disabled={!transportOptions[values.departure_details.mode] || transportOptions[values.departure_details.mode].length === 0}
+                                >
+                                    <option value="">Select</option>
+                                    {transportOptions[values.departure_details.mode]?.map((option, index) => (
+                                        <option key={index} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </Field>
+                                <ErrorMessage name="departure_details.start_point" component="div" className="text-red-500 text-sm mt-1" />
+                            </div>
+                            <div className="w-full mb-4">
+                                <label>Station End Point</label>
                                 <Field
                                     name="departure_details.end_point"
                                     type="text"
@@ -256,6 +306,13 @@ const AdditionalDetailsRegistration = () => {
                                     name="sight_seeing.required"
                                     as="select"
                                     className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
+                                    onChange={(e) => {
+                                        const { value } = e.target;
+                                        setFieldValue('sight_seeing.required', value);
+                                        if (value !== 'yes') {
+                                            setFieldValue('sight_seeing.members_count', '');
+                                        }
+                                    }}
                                 >
                                     <option value="">Select</option>
                                     <option value="yes">Yes</option>
@@ -263,17 +320,19 @@ const AdditionalDetailsRegistration = () => {
                                 </Field>
                                 <ErrorMessage name="sight_seeing.required" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
-                            <div className="w-full mb-4">
-                                <label>Number of Members for Sight Seeing</label>
-                                <Field
-                                    name="sight_seeing.members_count"
-                                    type="number"
-                                    min="1"
-                                    placeholder="Enter number of members"
-                                    className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
-                                />
-                                <ErrorMessage name="sight_seeing.members_count" component="div" className="text-red-500 text-sm mt-1" />
-                            </div>
+                            {values.sight_seeing.required === 'yes' && (
+                                <div className="w-full mb-4">
+                                    <label>Number of Members for Sight Seeing</label>
+                                    <Field
+                                        name="sight_seeing.members_count"
+                                        type="number"
+                                        min="1"
+                                        placeholder="Enter number of members"
+                                        className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
+                                    />
+                                    <ErrorMessage name="sight_seeing.members_count" component="div" className="text-red-500 text-sm mt-1" />
+                                </div>
+                            )}
                         </div>
 
                         <div className="border-b border-gray-300 pb-4">
