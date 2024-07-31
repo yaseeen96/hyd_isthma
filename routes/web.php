@@ -4,6 +4,8 @@ use App\Helpers\SmsHelper;
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,7 +33,7 @@ Route::middleware('auth')->group(function () {
         Route::get('arrivalReport', 'ReportsController@arrivalReport')->name('arrival-report');
         Route::get('departureReport`', 'ReportsController@departureReport')->name('departure-report');
     });
-   
+
     Route::resource('notifications', 'NotificationsController');
     Route::resource('permissions', 'PermissionsController');
     Route::resource('user', 'UserController');

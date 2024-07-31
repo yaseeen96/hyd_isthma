@@ -1,19 +1,66 @@
  $apiKey = urlencode('V9YcUuFH/wg-6TVbDCVtNPZnaNfoxqly54A9BhCpY4');
-        // Message details
-        $numbers = array(916361375923);
-        $sender = urlencode('Jihhrd');
-        $msgTemp = "Dear kk, Your OTP for login to the JIH portal is 1234. Valid for 30 minutes. Please do not share this OTP. Regards, JIHHRD.com";
-        $message = rawurlencode($msgTemp);
+ // Message details
+ $numbers = array(916361375923);
+ $sender = urlencode('Jihhrd');
+ $msgTemp = "Dear kk, Your OTP for login to the JIH portal is 1234. Valid for 30 minutes. Please do not share this OTP.
+ Regards, JIHHRD.com";
+ $message = rawurlencode($msgTemp);
 
-        $numbers = implode(',', $numbers);
+ $numbers = implode(',', $numbers);
 
-        // Prepare data for POST request
-        $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
-        // Send the POST request with cURL
-        $ch = curl_init('https://api.textlocal.in/send/');
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        dd($response);
-        curl_close($ch);
+ // Prepare data for POST request
+ $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+ // Send the POST request with cURL
+ $ch = curl_init('https://api.textlocal.in/send/');
+ curl_setopt($ch, CURLOPT_POST, true);
+ curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+ $response = curl_exec($ch);
+ dd($response);
+ curl_close($ch);
+
+
+ public function updateFamilyDetails(Request $request) {
+ $user = auth()->user();
+ $mehrams = $request->get('mehrams', []);
+ $childrens = $request->get('childrens', []);
+ $state = $user->zone_name;
+
+ $stateBasedFees = config('fees.state_based_fees');
+ $mehramFees = config('fees.mehram_fees');
+
+ $baseFee = in_array($state, $stateBasedFees['special_states'])
+ ? $stateBasedFees['special_fee']
+ : $stateBasedFees['default_fee'];
+
+ $member = Registration::updateOrCreate(
+ ['member_id' => $user->id],
+ ['member_fees' => $baseFee]
+ );
+
+ if(isset($mehrams) && count($mehrams) > 0) {
+ foreach($mehrams as $mehram) {
+ $mehramFee = $mehramFees[strtolower($mehram['gender'])];
+ RegFamilyDetail::updateOrCreate(['registration_id' => $user->registration->id, 'type' => 'mehram', 'name' =>
+ $mehram['name']],array_merge($mehram, ['fees' => $mehramFee]));
+ }
+ }
+ if(isset($childrens) && count($childrens) > 0) {
+
+ foreach($childrens as $children) {
+
+ if ($children['age'] <= 7) { $childrenFee=$mehramFees['children_below_7']; } elseif ($children['age']> 7) {
+     $childrenFee = $mehramFees['children_above_7'];
+     } else {
+     $childrenFee = 0;
+     }
+
+     RegFamilyDetail::updateOrCreate(['registration_id' => $user->registration->id, 'type' => 'children', 'name' =>
+     $children['name']],array_merge($children, ['fees' => $childrenFee]));
+     }
+     }
+     return response()->json([
+     'status' => 'success',
+     'message' => 'Family details updated successfully',
+     ], Response::HTTP_OK);
+     }

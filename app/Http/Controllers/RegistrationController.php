@@ -70,9 +70,9 @@ class RegistrationController extends Controller
      */
     public function show(string $id)
     {
-        if ( auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('Show Registrations')){
-            abort(403);
-        }
+        // if ( auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('View Registrations')){
+        //     abort(403);
+        // }
 
         $member = Registration::with('member')->where('id', $id)->get()->first();
         $registration = Registration::with(['familyDetails', 'purchaseDetails'])->find($id);

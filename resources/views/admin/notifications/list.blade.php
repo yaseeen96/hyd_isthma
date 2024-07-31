@@ -26,22 +26,29 @@
 @endsection
 @push('scripts')
     <script type="text/javascript">
-        // const notificationsTable = $("#notifications-table").DataTable({
-        //     columns: [
-        //         dtIndexCol(),
-        //         {
-        //             name: 'title',
-        //         },
-        //         {
-        //             name: 'message'
-        //         },
-        //         {
-        //             name: 'image'
-        //         },
-        //         {
-        //             name: 'youtube_url'
-        //         }
-        //     ]
-        // })
+        const notificationsTable = $("#notifications-table").DataTable({
+            ajax: {
+                url: "{{ route('notifications.index') }}",
+            },
+            columns: [
+                dtIndexCol(),
+                {
+                    name: 'title',
+                    data: 'title',
+                },
+                {
+                    name: 'message',
+                    data: 'message'
+                },
+                {
+                    name: 'image',
+                    data: 'image',
+                },
+                {
+                    name: 'youtube_url',
+                    data: 'youtube_url'
+                }
+            ]
+        })
     </script>
 @endpush

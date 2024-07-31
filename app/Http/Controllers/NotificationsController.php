@@ -5,19 +5,32 @@ namespace App\Http\Controllers;
 use App\Helpers\PushNotificationHelper;
 use App\Models\Member;
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Plank\Mediable\Facades\MediaUploader;
+use Yajra\DataTables\DataTables;
 
 class NotificationsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, DataTables $dataTables)
     {
-        if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('View Notifications')){
+        $user = User::find(auth()->user()->id);
+        if (auth()->user()->id != 1 && !$user->hasPermissionTo('View Notifications')){
             abort(403);
+        }
+        if($request->ajax())
+        {
+            $query = Notification::query();
+            return $dataTables->eloquent($query)->addColumn('image', function (Notification $notification) {
+                return '<img src="'.$notification->getMedia('notification_image')->first()->getUrl().'" width="100px" height="100px">';
+            })->rawColumns(['image'])->makeHidden(['criteria'])
+                ->addIndexColumn()
+                ->make(true);
+
         }
         return view('admin.notifications.list');
     }
@@ -56,12 +69,12 @@ class NotificationsController extends Controller
         $ytUrl = $request->input('youtube_url');
         $regStatus = $request->input('reg_status');
         $gender = $request->input('gender');
-        
+
         // Query to fetch data with selected criteria
         $query = Member::with('registration')->whereHas('registration', function ($q) use ($regStatus) {
              (!empty($regStatus) && $regStatus === 1) ? $q->where('confirm_arrival', $regStatus) : $q ;
         })->where($region . '_name' , $regionValue);
-        
+
         if(!empty($gender)) {
             $query->where('gender', $gender);
         }
@@ -71,7 +84,7 @@ class NotificationsController extends Controller
         if (empty($tokens)) {
             return back()->with(['error' => 'No Users with registered tokens found with provided condition']);
         }
-        // preparing 
+        // preparing
         $notificationData = array(
             'title' => $title,
             'message' => $message,
@@ -83,14 +96,14 @@ class NotificationsController extends Controller
             ),
             'youtube_url' => $ytUrl
             );
-        // Storing notificaiton
-        $notificaiton = Notification::create($notificationData);
+        // Storing notification
+        $notification = Notification::create($notificationData);
         // Uploading image to server
         $imgUrl = '';
         if(!empty($request->file('notification_image'))) {
             $media = MediaUploader::fromSource($request->file('notification_image'))->toDestination('public', 'images/notification_image')->upload();
-            $notificaiton->attachMedia($media, ['notification_image']);
-            $imgUrl = $notificaiton->getMedia('notification_image')->first()->getUrl();
+            $notification->attachMedia($media, ['notification_image']);
+            $imgUrl = $notification->getMedia('notification_image')->first()->getUrl();
         }
         // Sending Push Notification.
         $is_send = PushNotificationHelper::sendNotification([
@@ -100,7 +113,7 @@ class NotificationsController extends Controller
             'imgUrl' => $imgUrl,
             'ytUrl' => $ytUrl,
         ]);
-        return back()->with('success', 'Notificaiton Send Successfully');
+        return back()->with('success', 'Notification Send Successfully');
     }
 
     /**

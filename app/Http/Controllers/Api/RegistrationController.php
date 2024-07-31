@@ -36,7 +36,7 @@ class RegistrationController extends Controller
             'data' => [
                 'member_data' => $memberData,
                 'member_reg_data' => !empty($memberRegData) ? $memberRegData : [],
-                'total_fees' =>  $totMehramsChildrensFee + ($memberRegData ? (int) $memberRegData['member_fees']: 0), 
+                'total_fees' =>  $totMehramsChildrensFee + ($memberRegData ? (int) $memberRegData['member_fees']: 0),
             ],
         ], Response::HTTP_OK);
     }
@@ -51,13 +51,13 @@ class RegistrationController extends Controller
             "ameer_permission_taken" => $request->get('ameer_permission_taken'),
             "emergency_contact" => $request->get('emergency_contact'),
         ];
+        $user = Member::find($user->id);
         if (!empty($request->input('dob'))) {
             $user->update(['dob' => $request->get('dob')]);
         }
          if (!empty($request->input('email'))) {
             $user->update(['email' => $request->get('email')]);
         }
-
         Registration::updateOrCreate(['member_id' => $user->id], $regsData);
         $data = Member::with('registration')->where('id', $user->id)->get();
         return response()->json([
@@ -71,7 +71,7 @@ class RegistrationController extends Controller
         $user = auth()->user();
         $mehrams = $request->get('mehrams', []);
         $childrens = $request->get('childrens', []);
-        
+
         $member_fee = in_array($user->zone_name, config('fees.special_states')) ? 3000 : 2000;
         $user->registration->update(['member_fees' => $member_fee]);
         // Mehrams

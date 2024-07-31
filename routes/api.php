@@ -33,7 +33,6 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('financialDetails', 'RegistrationController@updateFinancialDetails');
             Route::post('additionalDetails', 'RegistrationController@updateAdditionalDetails');
         });
-
         Route::post('logout', 'AuthController@logout');
         Route::post('deleteAccount', 'AuthController@deleteAccount');
     });
