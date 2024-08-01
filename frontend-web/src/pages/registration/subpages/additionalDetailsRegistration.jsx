@@ -168,6 +168,16 @@ const AdditionalDetailsRegistration = () => {
                                 <ErrorMessage name="arrival_details.mode" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
+                                <label>Bus Number / Flight Number</label>
+                                <Field
+                                    name="arrival_details.mode_identifier"
+                                    type="text"
+                                    placeholder="Enter bus or flight number"
+                                    className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
+                                />
+                                <ErrorMessage name="arrival_details.mode_identifier" component="div" className="text-red-500 text-sm mt-1" />
+                            </div>
+                            <div className="w-full mb-4">
                                 <label>Station Start Point</label>
                                 <Field
                                     name="arrival_details.start_point"
@@ -228,6 +238,16 @@ const AdditionalDetailsRegistration = () => {
                                     <option value="OTHER">Other</option>
                                 </Field>
                                 <ErrorMessage name="departure_details.mode" component="div" className="text-red-500 text-sm mt-1" />
+                            </div>
+                            <div className="w-full mb-4">
+                                <label>Bus Number / Flight Number</label>
+                                <Field
+                                    name="departure_details.mode_identifier"
+                                    type="text"
+                                    placeholder="Enter bus or flight number"
+                                    className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
+                                />
+                                <ErrorMessage name="departure_details.mode_identifier" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
                                 <label>Station Start Point</label>
