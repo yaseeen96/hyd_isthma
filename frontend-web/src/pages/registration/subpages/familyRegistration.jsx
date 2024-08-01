@@ -17,6 +17,7 @@ const validationSchema = Yup.object().shape({
             name: Yup.string().required('Required'),
             age: Yup.number().min(8, 'Must be at least 8').required('Required'),
             gender: Yup.string().required('Required'),
+            interested_in_volunteering: Yup.string().oneOf(['yes', 'no']).required('Required'), // Adding validation for interested_in_volunteering field
         })
     ),
     children: Yup.array().of(
@@ -49,7 +50,13 @@ const FamilyRegistrationPage = () => {
             const children = familyDetails.filter((detail) => detail.type === 'children');
             const newInitialValues = {
                 accompanying,
-                adults: adults.map((adult) => ({ id: adult.id || null, name: adult.name, age: adult.age, gender: adult.gender })),
+                adults: adults.map((adult) => ({
+                    id: adult.id || null,
+                    name: adult.name,
+                    age: adult.age,
+                    gender: adult.gender,
+                    interested_in_volunteering: adult.interested_in_volunteering || 'no', // Adding initial value for interested_in_volunteering field
+                })),
                 children: children.map((child) => ({ id: child.id || null, name: child.name, age: child.age, gender: child.gender })),
             };
             console.log('newInitialValues:', newInitialValues);
@@ -66,13 +73,17 @@ const FamilyRegistrationPage = () => {
     };
 
     const addPerson = (field, values, setFieldValue) => {
-        const newArray = [...values[field], { id: null, name: '', age: '', gender: '' }];
+        const newArray = [...values[field], { id: null, name: '', age: '', gender: '', interested_in_volunteering: 'no' }];
         setFieldValue(field, newArray);
     };
 
     const removePerson = (field, index, values, setFieldValue) => {
         const newArray = values[field].filter((_, idx) => idx !== index);
         setFieldValue(field, newArray);
+    };
+
+    const handleVolunteeringChange = (field, index, setFieldValue, checked) => {
+        setFieldValue(`${field}[${index}].interested_in_volunteering`, checked ? 'yes' : 'no');
     };
 
     const renderPersonFields = (values, field, setFieldValue) =>
@@ -98,6 +109,20 @@ const FamilyRegistrationPage = () => {
                         <option value="female">Female</option>
                     </Field>
                     <ErrorMessage name={`${field}[${index}].gender`} component="div" className="text-red-500" />
+
+                    {field === 'adults' && (
+                        <div className="flex items-center mt-2">
+                            <label className="mr-2">Interested in Volunteering?</label>
+                            <Field
+                                type="checkbox"
+                                name={`${field}[${index}].interested_in_volunteering`}
+                                checked={values[field][index].interested_in_volunteering === 'yes'}
+                                onChange={(e) => handleVolunteeringChange(field, index, setFieldValue, e.target.checked)}
+                                className="form-checkbox"
+                            />
+                        </div>
+                    )}
+                    <ErrorMessage name={`${field}[${index}].interested_in_volunteering`} component="div" className="text-red-500" />
                 </div>
                 <button type="button" onClick={() => removePerson(field, index, values, setFieldValue)} className="btn btn-danger col-span-2 p-2">
                     <MdDelete size={1000} />
@@ -107,10 +132,29 @@ const FamilyRegistrationPage = () => {
 
     const handleSubmit = async (values) => {
         setLoading(true);
+
         const result = {
-            mehrams: values.accompanying === 'yes' ? values.adults : [],
-            childrens: values.accompanying === 'yes' ? values.children : [],
+            mehrams:
+                values.accompanying === 'yes'
+                    ? values.adults.map((adult) => ({
+                          id: adult.id,
+                          interested_in_volunteering: adult.interested_in_volunteering,
+                          name: adult.name,
+                          age: adult.age,
+                          gender: adult.gender,
+                      }))
+                    : [],
+            childrens:
+                values.accompanying === 'yes'
+                    ? values.children.map((child) => ({
+                          id: child.id,
+                          name: child.name,
+                          age: child.age,
+                          gender: child.gender,
+                      }))
+                    : [],
         };
+        console.log(result);
 
         const success = await updateFamilyDetails(result);
 
