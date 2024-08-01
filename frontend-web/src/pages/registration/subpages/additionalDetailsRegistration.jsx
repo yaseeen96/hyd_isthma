@@ -384,7 +384,7 @@ const AdditionalDetailsRegistration = () => {
                         </div>
 
                         <div className="border-b border-gray-300 pb-4">
-                            <h2 className="text-lg font-semibold mb-2">Management Experience</h2>
+                            <h2 className="text-lg font-semibold mb-2">Do you have past experience of involvement in management any big Ijtema event?</h2>
                             <div className="w-full mb-4">
                                 <label>Management Experience</label>
                                 <Field
