@@ -1,4 +1,7 @@
 /* custom css */
+.custom-table tr td {
+    font-size: 22px !important;
+}
 :root {
     --color-purple: blueviolet;
 }
@@ -37,7 +40,8 @@
 .page-link{
     color: var(--color-purple);
 }
-
+/* class for toggeling hide mode */
 .hide {
     display: none !important;
 }
+

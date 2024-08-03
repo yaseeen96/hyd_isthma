@@ -7,9 +7,11 @@ use App\Models\Member;
 use App\Models\RegFamilyDetail;
 use App\Models\Registration;
 use App\Models\RegPurchasesDetail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 
 class RegistrationController extends Controller
 {
@@ -53,7 +55,10 @@ class RegistrationController extends Controller
         ];
         $user = Member::find($user->id);
         if (!empty($request->input('dob'))) {
-            $user->update(['dob' => $request->get('dob')]);
+            $dob = $request->input('dob');
+            if(Str::contains($request->input('dob'), '/'))
+                $dob = str_replace('/', '-', $request->input('dob'));
+            $user->update(['age' => Carbon::parse($dob)->age, 'dob' => $dob]);
         }
          if (!empty($request->input('email'))) {
             $user->update(['email' => $request->get('email')]);

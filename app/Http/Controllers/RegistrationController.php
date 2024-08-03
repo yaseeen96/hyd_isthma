@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Registration;
 use App\Models\RegFamilyDetail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -14,7 +15,8 @@ class RegistrationController extends Controller
      */
     public function index(Request $request, DataTables $dataTables)
     {
-        if ( !(auth()->user()->hasPermissionTo('View Registrations')) && auth()->user()->id != 1){
+        $user = User::find(auth()->user()->id);
+        if ( !($user->hasPermissionTo('View Registrations')) && auth()->user()->id != 1){
                 abort(403);
         }
 
@@ -80,11 +82,12 @@ class RegistrationController extends Controller
 
         $mehramDetails = $registration->familyDetails->where('type', 'mehram');
         $childrenDetails = $registration->familyDetails->where('type', 'children');
-
-        $data['member'] = $member;
-        $data['mehramDetails'] = $mehramDetails;
-        $data['childrenDetails'] = $childrenDetails;
-        $data['purchaseDetails'] = $purchaseDetails;
+        $data = [
+            'member' => $member,
+            'mehramDetails' => $mehramDetails,
+            'childrenDetails' => $childrenDetails,
+            'purchaseDetails' => $purchaseDetails
+        ];
         return view('admin.registrations.show', $data);
     }
 

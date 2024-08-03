@@ -21,24 +21,29 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes(['register' => false]);
 Route::middleware('auth')->group(function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
+    // Members
     Route::resource('members', 'MembersController');
+    // Registration
     Route::resource('registrations', 'RegistrationController', ['only' => ['index', 'show']]);
-    Route::get('getDivisions', 'DashboardController@getDivisions')->name('getDivisions');
-    Route::get('getUnits', 'DashboardController@getUnits')->name('getUnits');
-
+    // Notifications
+    Route::resource('notifications', 'NotificationsController');
+    // Permissions
+    Route::resource('permissions', 'PermissionsController');
+    // Users
+    Route::resource('user', 'UserController');
     // Reports
     Route::prefix('reports')->group(function () {
         Route::get('healthReport', 'ReportsController@healthReport')->name('health-report');
         Route::get('tourReport', 'ReportsController@tourReport')->name('tour-report');
         Route::get('arrivalReport', 'ReportsController@arrivalReport')->name('arrival-report');
         Route::get('departureReport`', 'ReportsController@departureReport')->name('departure-report');
+        Route::get('familyDetailsReport', 'ReportsController@familyDetailsReport')->name('family-details-report');
+        Route::get('paymentDetailsReport', 'ReportsController@paymentDetailsReport')->name('payment-details-report');
     });
-
-    Route::resource('notifications', 'NotificationsController');
-    Route::resource('permissions', 'PermissionsController');
-    Route::resource('user', 'UserController');
+    // filter helpers
+    Route::get('getDivisions', 'DashboardController@getDivisions')->name('getDivisions');
+    Route::get('getUnits', 'DashboardController@getUnits')->name('getUnits');
 });
-Route::get('testing', 'ReportsController@testing');
 // temp routes
 Route::prefix('delete')->group(function () {
     Route::get('account', 'DeleteAccountController@index')->name('delete-account');

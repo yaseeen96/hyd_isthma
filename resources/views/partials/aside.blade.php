@@ -72,6 +72,24 @@
                       </li>
                   @endif
                   <li class="nav-header">REPORTS</li>
+                  <li class="nav-item">
+                      <a href="{{ route('family-details-report') }}"
+                          class="nav-link {{ request()->route()->getName() === 'family-details-report' ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-users"></i>
+                          <p>
+                              Family Details Report
+                          </p>
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="{{ route('payment-details-report') }}"
+                          class="nav-link {{ request()->route()->getName() === 'payment-details-report' ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-rupee-sign"></i>
+                          <p>
+                              Payment Details Report
+                          </p>
+                      </a>
+                  </li>
                   @if (auth()->user()->can('View TravelReport') || auth()->user()->id == 1)
                       <li
                           class="nav-item  {{ in_array(request()->route()->getName(), ['arrival-report', 'departure-report']) ? 'menu-open' : '' }}">

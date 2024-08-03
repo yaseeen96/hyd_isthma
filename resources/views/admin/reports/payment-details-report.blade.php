@@ -1,8 +1,8 @@
-@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Registrations'])
+@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Payment Details Report'])
 @section('content')
     <x-content-wrapper>
         <x-slot:title>
-            Registrations
+            Payment Details Report
         </x-slot>
         <div class="card-body">
             <div class="row">
@@ -46,19 +46,18 @@
                                 <div class="form-group">
                                     <label>UNIT NAME</label>
                                     <select class="form-control select2bs4" style="width: 100%;" id="unit_name"
-                                        placeholder="Select Unit Name" onchange="setFilter('unit_name')">
+                                        placeholder="Select Unit Name" onchange="setFilter()">
                                         <option value="">All</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Confirm Arrival</label>
-                                    <select class="form-control w-full" id="confirm_arrival"
-                                        onchange="setFilter('confirm_arrival')">
-                                        <option value="">-Select Filter-</option>
-                                        <option value="1">Yes</option>
-                                        <option value="0">No</option>
+                                    <label>PAID STATUS</label>
+                                    <select class="form-control w-full" id="paid_status" onchange="setFilter()">
+                                        <option value="">-Select Paid Status-</option>
+                                        <option value="yes">Paid</option>
+                                        <option value="no">Un Paid</option>
                                     </select>
                                 </div>
                             </div>
@@ -66,101 +65,114 @@
                     </div>
                 </div>
             </div>
-            <x-table id="registrations-table">
-                <th>Sl No </th>
-                <th>Name</th>
+            <x-table id="payment-details-report-table">
+                <th>SL.No </th>
+                <th>Name Of Rukun</th>
                 <th>Rukun ID</th>
-                <th>Email</th>
                 <th>Phone</th>
-                <th>Unit Name</th>
-                <th>Zone Name</th>
-                <th>Division Name</th>
+                <th>Unit</th>
+                <th>Division</th>
+                <th>Zone</th>
                 <th>Gender</th>
-                <th>Age</th>
-                <th>Confirm Arrival</th>
-                <th>Non Availibility Reason</th>
-                <th>Ammer Permission Taken</th>
-                <th>Emergency Contact</th>
-                <th>Action</th>
+                <th>Total Fees</th>
+                <th>Fees Paid</th>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
             </x-table>
         </div>
     </x-content-wrapper>
-    <!-- /.content -->
 @endsection
 @push('scripts')
     <script type="text/javascript">
-        // clear filters data
+        // clear filters
         function clearFilters() {
             $('#zone_name').val('').trigger('change');
             $('#division_name').val('').trigger('change');
             $('#unit_name').val('').trigger('change');
+            $('#paid_status').val('').trigger('change');
         }
         $(function() {
-            regTable = $('#registrations-table').DataTable({
+            paymentDtlsTable = $('#payment-details-report-table').DataTable({
                 ajax: {
-                    url: "{{ route('registrations.index') }}",
+                    url: "{{ route('payment-details-report') }}",
                     data: function(d) {
-                        const queryParams = new URLSearchParams(window.location.search);
-                        d.confirm_arrival = $("#confirm_arrival").val() == '' ? queryParams.has(
-                            'confirm_arrival') ? queryParams.get('confirm_arrival') : '' : $(
-                            "#confirm_arrival").val();
                         d.unit_name = $("#unit_name").val()
                         d.zone_name = $("#zone_name").val()
                         d.division_name = $("#division_name").val()
+                        d.paid_status = $("#paid_status").val()
                     }
                 },
                 columns: [
                     dtIndexCol(),
                     {
-                        data: 'member.name',
+                        data: 'name',
                     },
                     {
-                        data: 'member.user_number',
+                        data: 'user_number',
                     },
                     {
-                        data: 'member.email',
+                        data: 'phone',
                     },
                     {
-                        data: 'member.phone',
+                        data: 'unit_name'
                     },
                     {
-                        data: 'member.unit_name',
+                        data: 'division_name'
                     },
                     {
-                        data: 'member.zone_name',
+                        data: 'zone_name'
                     },
                     {
-                        data: 'member.division_name',
+                        data: 'gender'
                     },
                     {
-                        data: 'member.gender',
+                        data: 'member_fees'
                     },
                     {
-                        data: 'member.age',
-                    },
-                    {
-                        data: 'confirm_arrival'
-                    },
-                    {
-                        data: 'reason_for_not_coming'
-                    },
-                    {
-                        data: 'ameer_permission_taken',
-                    },
-                    {
-                        data: 'emergency_contact',
-                    },
-                    {
-                        data: 'action'
+                        data: 'fees_paid_to_ameer'
                     }
                 ],
-
+                "footerCallback": function(row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // converting to interger to find total
+                    var intVal = function(i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                            i : 0;
+                    };
+                    var total_fees = api.column(8, {
+                        page: 'current'
+                    }).data().reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+                    var total_fees_paid = api.column(9, {
+                        page: 'current'
+                    }).data().reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+                    $(api.column(7).footer()).html('Total');
+                    $(api.column(8).footer()).html(total_fees);
+                    $(api.column(9).footer()).html(total_fees_paid);
+                }
             });
+        })
 
-        });
-
-        function setFilter(type) {
-            regTable.draw();
+        function setFilter() {
+            paymentDtlsTable.draw();
         }
     </script>
 @endpush

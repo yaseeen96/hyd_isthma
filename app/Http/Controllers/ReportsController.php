@@ -175,6 +175,107 @@ class ReportsController extends Controller
         }
         return view('admin.reports.departure-report');
     }
+    public function familyDetailsReport(Request $request, DataTables $datatables)
+    {
+        // if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('View FamilyDetailsReport')){
+        //     abort(403);
+        // }
+        if($request->ajax())
+        {
+            $query = RegFamilyDetail::with('registration')->where(function ($query) use ($request) {
+                if (isset($request->gender))
+                    $query->where('gender', $request->gender);
+                if (isset($request->age_group))
+                    $query->where('type', $request->age_group);
+                if (isset($request->interested_in_volunteering))
+                    $query->where('interested_in_volunteering', $request->interested_in_volunteering);
+            })->where(function ($query) use($request) {
+                if(isset($request->zone_name)){
+                    $query->whereHas('registration.member', function ($q) use ($request) {
+                        $q->where('zone_name', $request->zone_name);
+                    });
+                }
+                if(isset($request->division_name)){
+                    $query->whereHas('registration.member', function ($q) use ($request) {
+                        $q->where('division_name', $request->division_name);
+                    });
+                }
+                if(isset($request->unit_name)){
+                    $query->whereHas('registration.member', function ($q) use ($request) {
+                        $q->where('unit_name', $request->unit_name);
+                    });
+                }
+            })->orderBy('id', 'asc');
+            return $datatables->eloquent($query)
+                    ->addColumn('name_of_rukun', function (RegFamilyDetail $familyDetail) {
+                        return $familyDetail->registration->member->name;
+                    })
+                    ->addColumn('rukun_id', function (RegFamilyDetail $familyDetail) {
+                        return $familyDetail->registration->member->user_number;
+                    })
+                    ->addColumn('phone', function(RegFamilyDetail $familyDetail) {
+                        return $familyDetail->registration->member->phone;
+                    })
+                    ->addColumn('unit_name', function(RegFamilyDetail $familyDetail) {
+                        return $familyDetail->registration->member->unit_name;
+                    })
+                    ->addColumn('division_name', function(RegFamilyDetail $familyDetail) {
+                        return $familyDetail->registration->member->division_name;
+                    })
+                    ->addColumn('zone_name', function(RegFamilyDetail $familyDetail) {
+                        return $familyDetail->registration->member->zone_name;
+                    })
+                    ->editColumn('interested_in_volunteering', function(RegFamilyDetail $familyDetail) {
+                    return $familyDetail->interested_in_volunteering == 'yes' ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>';
+                    })
+                    ->rawColumns(['name_of_rukun', 'rukun_id', 'phone', 'unit_name', 'division_name', 'zone_name', 'interested_in_volunteering'])->addIndexColumn()->make(true);
+
+        }
+        return view('admin.reports.family-details-report');
+    }
+
+    public function paymentDetailsReport(Request $request, DataTables $datatable)
+    {
+        if($request->ajax())
+        {
+            $query = Registration::with('member')->where(function ($query) use($request) {
+                    if(isset($request->paid_status)) {
+                        $condition = $request->paid_status == 'no' ? '=' : '!=';
+                        $query->where('fees_paid_to_ameer', $condition, null);
+                    }
+             });
+            return $datatable->eloquent($query)
+                ->addColumn('name', function (Registration $registration) {
+                    return $registration->member->name;
+                })
+                ->addColumn('user_number', function (Registration $registration) {
+                    return $registration->member->user_number;
+                })
+                ->addColumn('phone', function (Registration $registration) {
+                    return $registration->member->phone;
+                })
+                ->addColumn('unit_name', function (Registration $registration) {
+                    return $registration->member->unit_name;
+                })
+                ->addColumn('division_name', function (Registration $registration) {
+                    return $registration->member->division_name;
+                })
+                ->addColumn('zone_name', function (Registration $registration) {
+                    return $registration->member->zone_name;
+                })
+                ->addColumn('gender', function (Registration $registration) {
+                    return $registration->member->gender;
+                })
+                ->addColumn('member_fees', function (Registration $registration) {
+                        $memberFee = $registration->member_fees ?? 0;
+                        $familyFee = RegFamilyDetail::where('registration_id', $registration->id)->sum('fees');
+                        return $memberFee + $familyFee;
+                    })
+                ->rawColumns(['name', 'user_number', 'phone', 'unit_name', 'division_name', 'zone_name', 'gender', 'total_fees'])
+                ->with('sum_total_fees', $query->sum('member_fees'))->addIndexColumn()->make(true);
+        }
+        return view('admin.reports.payment-details-report');
+    }
     public function testing(Request $request) {
         $token = $request->get('token');
         if (isset($token)){
