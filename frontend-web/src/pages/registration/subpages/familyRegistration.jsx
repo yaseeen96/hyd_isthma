@@ -16,7 +16,7 @@ const validationSchema = Yup.object().shape({
             name: Yup.string().required('Required'),
             age: Yup.number().min(8, 'Must be at least 8').required('Required'),
             gender: Yup.string().required('Required'),
-            interested_in_volunteering: Yup.string().oneOf(['yes', 'no']).required('Required'), // Adding validation for interested_in_volunteering field
+            interested_in_volunteering: Yup.string().oneOf(['yes', 'no']).required('Required'),
         })
     ),
     children: Yup.array().of(
@@ -54,7 +54,7 @@ const FamilyRegistrationPage = () => {
                     name: adult.name,
                     age: adult.age,
                     gender: adult.gender,
-                    interested_in_volunteering: adult.interested_in_volunteering || 'no', // Adding initial value for interested_in_volunteering field
+                    interested_in_volunteering: adult.interested_in_volunteering || 'no',
                 })),
                 children: children.map((child) => ({ id: child.id || null, name: child.name, age: child.age, gender: child.gender })),
             };
@@ -79,10 +79,6 @@ const FamilyRegistrationPage = () => {
     const removePerson = (field, index, values, setFieldValue) => {
         const newArray = values[field].filter((_, idx) => idx !== index);
         setFieldValue(field, newArray);
-    };
-
-    const handleVolunteeringChange = (field, index, setFieldValue, checked) => {
-        setFieldValue(`${field}[${index}].interested_in_volunteering`, checked ? 'yes' : 'no');
     };
 
     const renderPersonFields = (values, field, setFieldValue) =>
@@ -111,20 +107,17 @@ const FamilyRegistrationPage = () => {
 
                     {field === 'adults' && (
                         <div className="flex items-center mt-2">
-                            <label className="mr-2">Interested in Volunteering?</label>
-                            <Field
-                                type="checkbox"
-                                name={`${field}[${index}].interested_in_volunteering`}
-                                checked={values[field][index].interested_in_volunteering === 'yes'}
-                                onChange={(e) => handleVolunteeringChange(field, index, setFieldValue, e.target.checked)}
-                                className="form-checkbox"
-                            />
+                            <label className="mr-2"> Interested in volunteering during Ijtema?</label>
+                            <Field as="select" name={`${field}[${index}].interested_in_volunteering`} className="form-select">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </Field>
                         </div>
                     )}
                     <ErrorMessage name={`${field}[${index}].interested_in_volunteering`} component="div" className="text-red-500" />
                 </div>
                 <button type="button" onClick={() => removePerson(field, index, values, setFieldValue)} className="btn btn-danger col-span-2 p-2">
-                    <MdDelete size={1000} />
+                    <MdDelete size={24} />
                 </button>
             </div>
         ));
