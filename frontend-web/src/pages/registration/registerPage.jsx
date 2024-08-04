@@ -37,6 +37,10 @@ const RegisterPage = () => {
         if (financialDetails) step = 3;
         if (arrivalDetails) step = 4;
 
+        if (arrivalConfirmed && familyDetails && financialDetails && arrivalDetails) {
+            step = steps.length; // Set to the length of the steps array when all are completed
+        }
+
         setActiveStep(step);
     }, []);
 
