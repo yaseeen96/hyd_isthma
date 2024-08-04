@@ -320,7 +320,7 @@ const AdditionalDetailsRegistration = () => {
                                 <ErrorMessage name="special_considerations.need_attendant" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
-                                <label>Bed or Cot?</label>
+                                <label>Bed or Cot? 🛏️</label>
                                 <Field
                                     name="special_considerations.cot_or_bed"
                                     as="select"
@@ -388,7 +388,6 @@ const AdditionalDetailsRegistration = () => {
                         <div className="border-b border-gray-300 pb-4">
                             <h2 className="text-lg font-semibold mb-2">Do you have past experience of involvement in management of any big Ijtema event?</h2>
                             <div className="w-full mb-4">
-                                <label>Management Experience</label>
                                 <Field
                                     name="management_experience"
                                     as="select"
