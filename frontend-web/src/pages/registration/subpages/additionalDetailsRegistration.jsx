@@ -441,7 +441,7 @@ const AdditionalDetailsRegistration = () => {
                         </div>
 
                         <div className="w-full mb-4">
-                            <label>Comments</label>
+                            <label>Any suggestions for Ijtema management or program?</label>
                             <Field
                                 name="comments"
                                 as="textarea"
