@@ -320,7 +320,7 @@ const AdditionalDetailsRegistration = () => {
                                 <ErrorMessage name="special_considerations.need_attendant" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
-                                <label>Bed or Cot? 🛏️</label>
+                                <label>Bed or Cot?</label>
                                 <Field
                                     name="special_considerations.cot_or_bed"
                                     as="select"
@@ -328,7 +328,7 @@ const AdditionalDetailsRegistration = () => {
                                 >
                                     <option value="">Select</option>
                                     <option value="bed">Bed</option>
-                                    <option value="cot">Cot</option>
+                                    <option value="cot">🛏️Cot</option>
                                 </Field>
                                 <ErrorMessage name="special_considerations.cot_or_bed" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
