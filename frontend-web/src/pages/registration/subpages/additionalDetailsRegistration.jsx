@@ -77,7 +77,7 @@ const AdditionalDetailsRegistration = () => {
             'Other',
         ],
         FLIGHT: ['Rajiv Gandhi International Airport, Shamshabad (11 KM, 20 Mins from venue)', 'Other'],
-        OTHER: ['Other'],
+        SELF: ['Wadi e Huda', 'Other'],
     };
 
     console.log(transportOptions);
@@ -163,7 +163,7 @@ const AdditionalDetailsRegistration = () => {
                                     <option value="BUS">Bus</option>
                                     <option value="TRAIN">Train</option>
                                     <option value="FLIGHT">Flight</option>
-                                    <option value="OTHER">Other</option>
+                                    <option value="SELF">Own Car/Bike/Vehicle</option>
                                 </Field>
                                 <ErrorMessage name="arrival_details.mode" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
@@ -235,7 +235,7 @@ const AdditionalDetailsRegistration = () => {
                                     <option value="BUS">Bus</option>
                                     <option value="TRAIN">Train</option>
                                     <option value="FLIGHT">Flight</option>
-                                    <option value="OTHER">Other</option>
+                                    <option value="SELF">Own Car/Bike/Vehicle</option>
                                 </Field>
                                 <ErrorMessage name="departure_details.mode" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
