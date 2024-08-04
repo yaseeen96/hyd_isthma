@@ -168,7 +168,7 @@ const AdditionalDetailsRegistration = () => {
                                 <ErrorMessage name="arrival_details.mode" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
-                                <label>Bus Number / Flight Number</label>
+                                <label>Bus/Flight/Train/Own vehicle number</label>
                                 <Field
                                     name="arrival_details.mode_identifier"
                                     type="text"
@@ -240,7 +240,7 @@ const AdditionalDetailsRegistration = () => {
                                 <ErrorMessage name="departure_details.mode" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
-                                <label>Bus Number / Flight Number</label>
+                                <label>Bus/Flight/Train/Own vehicle number</label>
                                 <Field
                                     name="departure_details.mode_identifier"
                                     type="text"
