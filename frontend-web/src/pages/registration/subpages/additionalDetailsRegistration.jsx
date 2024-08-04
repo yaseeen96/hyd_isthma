@@ -372,7 +372,7 @@ const AdditionalDetailsRegistration = () => {
                         </div>
 
                         <div className="border-b border-gray-300 pb-4">
-                            <h2 className="text-lg font-semibold mb-2">Health Concern</h2>
+                            <h2 className="text-lg font-semibold mb-2">Are you suffering from any serious illness or weakness that we need to know to serve you better?</h2>
                             <div className="w-full mb-4">
                                 <label>Health Concern</label>
                                 <Field
