@@ -9,7 +9,6 @@ import { useRecoilValue } from 'recoil';
 import { registrationDetailsAtom } from '../../../store/atoms/registrationDetailsAtom';
 import { useLoading } from '../../../utils/hooks/useLoading';
 import LoadingComponent from '../../../components/common/loadingComponent';
-import { localStorageConstant } from '../../../utils/constants/localStorageConstants';
 import { analyticsState } from '../../../store/atoms/analyticsAtom';
 
 const ArrivalRegistrationPage = () => {

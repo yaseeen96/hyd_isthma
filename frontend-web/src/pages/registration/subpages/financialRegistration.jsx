@@ -7,7 +7,6 @@ import { registrationDetailsAtom } from '../../../store/atoms/registrationDetail
 import { toast } from 'react-toastify';
 import { updateFinancialDetails } from '../../../services/registration_service';
 import { useNavigate } from 'react-router-dom';
-import { localStorageConstant } from '../../../utils/constants/localStorageConstants';
 
 const FinancialRegistration = () => {
     const navigate = useNavigate();
@@ -28,7 +27,6 @@ const FinancialRegistration = () => {
         console.log(`Amount Paid: ${values.amountPaid}`);
         try {
             await updateFinancialDetails(values.amountPaid);
-            localStorage.setItem(localStorageConstant.financialDetails, '1');
             navigate(-1);
             toast.success('Thank you. Please complete the next steps');
         } catch (error) {

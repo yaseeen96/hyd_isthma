@@ -3,7 +3,6 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import RegistrationLayout from '../layout/registrationLayout';
 import { updateFamilyDetails } from '../../../services/registration_service';
-import { localStorageConstant } from '../../../utils/constants/localStorageConstants';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { registrationDetailsAtom } from '../../../store/atoms/registrationDetailsAtom';
@@ -160,7 +159,6 @@ const FamilyRegistrationPage = () => {
 
         setLoading(false);
         if (success) {
-            localStorage.setItem(localStorageConstant.familyDetails, '1');
             navigate(-1);
         } else {
             console.error('Failed to update family details.');
