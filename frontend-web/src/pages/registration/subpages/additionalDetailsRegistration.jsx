@@ -76,7 +76,7 @@ const AdditionalDetailsRegistration = () => {
             'Hyderabad Deccan (Nampally) Railway Station (14 KM, 35 Mins from venue)',
             'Other',
         ],
-        FLIGHT: ['Rajiv Gandhi International Airport, Shamshabad (11 KM, 20 Mins from venue)', 'Other'],
+        FLIGHT: ['Rajiv Gandhi International Airport, Shamshabad (11 KM, 20 Mins from venue)', 'Wadi e Huda'],
         SELF: ['Wadi e Huda', 'Other'],
     };
 
