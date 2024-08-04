@@ -402,7 +402,7 @@ const AdditionalDetailsRegistration = () => {
                         </div>
 
                         <div className="border-b border-gray-300 pb-4">
-                            <h2 className="text-lg font-semibold mb-2">Would you like to purchase anything post Ijtema. If yes then mention approx numbers</h2>
+                            <h2 className="text-lg font-semibold mb-2">would you like to purchase any of below items at discounted price after ijtema?</h2>
                             <FieldArray
                                 name="purchases_required"
                                 render={(arrayHelpers) => (
