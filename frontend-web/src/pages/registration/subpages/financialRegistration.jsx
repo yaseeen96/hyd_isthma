@@ -47,7 +47,7 @@ const FinancialRegistration = () => {
                         {familyDetails.map((member, index) => (
                             <li key={index} className="flex justify-between">
                                 <span>
-                                    {member.name} ({member.type === 'mehram' ? 'Adult' : 'Child'})
+                                    {member.name} ({member.type === 'mehram' ? 'Above 14' : 'Below 14'})
                                 </span>
                                 <span>₹{member.fees}</span>
                             </li>
