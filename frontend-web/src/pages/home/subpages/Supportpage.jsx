@@ -1,8 +1,6 @@
-import { useNavigate } from 'react-router-dom';
 import HomeLayout from '../layout/Homelayout';
 
 const SupportPage = () => {
-    const navigate = useNavigate();
     return (
         <HomeLayout>
             <div className="w-full flex flex-col justify-center items-center">

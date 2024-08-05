@@ -1,5 +1,6 @@
-import axios from 'axios';
+import axios, { HttpStatusCode } from 'axios';
 import { axiosAuthenticatedClient } from './axios_client';
+import { toast } from 'react-toastify';
 export const confirmRegistrationService = async (data) => {
     try {
         console.log(data);
@@ -21,12 +22,57 @@ export const confirmRegistrationService = async (data) => {
     }
 };
 
+export const updateFamilyDetails = async (data) => {
+    try {
+        const response = await axiosAuthenticatedClient.post('/user/familyDetails', data);
+        console.log(`success: response: ${response.data}`);
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+};
+
 export const getUserDetails = async () => {
     try {
-        const response = await axiosAuthenticatedClient.get('user/getUserDetails', {});
+        const response = await axiosAuthenticatedClient.get('user/getUserDetails');
         return response.data;
     } catch (error) {
         console.error(error);
         return null;
+    }
+};
+
+export const getRegistrationDetails = async () => {
+    try {
+        const response = await axiosAuthenticatedClient.get('user/getUserDetailsTest');
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const updateFinancialDetails = async (fees) => {
+    try {
+        const response = axiosAuthenticatedClient.post('user/financialDetails', {
+            fees_paid_to_ameer: fees,
+        });
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const updateAdditionalDetails = async (data) => {
+    try {
+        const response = await axiosAuthenticatedClient.post('user/additionalDetails', data);
+        if (response.status == HttpStatusCode.Ok) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (err) {
+        console.error(err.response.data);
+        return false;
     }
 };

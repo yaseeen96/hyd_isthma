@@ -130,7 +130,8 @@ class _MyAppState extends ConsumerState<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),
-      home: UpgradeAlert(child: const HomeScreen()),
+      home: UpgradeAlert(
+          child: const HomeScreen(initialUrl: "https://ijtema.jihhrd.com/")),
     );
   }
 }

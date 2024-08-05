@@ -6,6 +6,10 @@ import { useRecoilState } from 'recoil';
 import { userStateAtom } from '../../store/atoms/userStateAtom';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { localStorageConstant } from '../../utils/constants/localStorageConstants';
+import { ROUTES } from '../../router/routes';
+
+import { isUserLoggedIn } from '../../services/check_token_validity_service';
 
 const Otp = () => {
     const navigate = useNavigate();
@@ -20,9 +24,17 @@ const Otp = () => {
             const response = await verifyOtpService(userState.phone, otp);
             setUserState((prev) => ({ ...prev, token: response.data.token, name: response.data.name, halqa: response.data.halqa }));
             toast.success('Your login is successful');
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('name', response.data.user.name);
-            navigate('/home');
+            localStorage.setItem(localStorageConstant.token, response.data.token);
+            localStorage.setItem(localStorageConstant.name, response.data.user.name);
+            const { user, isLoggedIn } = await isUserLoggedIn();
+            if (isLoggedIn) {
+                localStorage.setItem(localStorageConstant.name, user.name);
+                localStorage.setItem(localStorageConstant.arrivalConfirmed, user.registration.confirm_arrival);
+                localStorage.setItem(localStorageConstant.arrivalDetails, user.registration.arrival_dtls);
+                localStorage.setItem(localStorageConstant.familyDetails, user.registration.family_dtls);
+                localStorage.setItem(localStorageConstant.financialDetails, user.registration.financial_dtls);
+            }
+            navigate(ROUTES.home, { replace: true });
         } catch (error) {
             toast.error(`${error}`);
         } finally {

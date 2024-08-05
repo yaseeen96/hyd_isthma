@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { localStorageConstant } from '../utils/constants/localStorageConstants';
 
 export const sendOtpService = async (phone) => {
     try {
@@ -16,6 +17,8 @@ export const sendOtpService = async (phone) => {
 
         return response.data;
     } catch (error) {
+        console.log(error.response.data);
+        console.log(error.response.data.message.phone[0]);
         throw new Error(error.response.data.message.phone[0]);
     }
 };
@@ -48,11 +51,11 @@ export const verifyOtpService = async (phone, otp) => {
 export const logoutService = async () => {
     try {
         const response = await axios.post('https://jihapi.kkshan.amlc.in/api/v1/logout', null, {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, 'Content-Type': 'application/json' },
+            headers: { Authorization: `Bearer ${localStorage.getItem(localStorageConstant.token)}`, 'Content-Type': 'application/json' },
         });
 
         if (response.status === 204) {
-            localStorage.removeItem('token');
+            localStorage.removeItem(localStorageConstant.token);
             window.location.reload();
             return true;
         } else {

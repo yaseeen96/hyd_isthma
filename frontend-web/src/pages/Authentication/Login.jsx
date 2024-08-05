@@ -6,6 +6,7 @@ import { sendOtpService } from '../../services/login_service';
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { userStateAtom } from '../../store/atoms/userStateAtom';
+import { ROUTES } from '../../router/routes';
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
@@ -21,7 +22,7 @@ const Login = () => {
 
             setUserState((prev) => ({ ...prev, phone: phone }));
             toast.success(response.message);
-            navigate('/verifyOtp');
+            navigate(ROUTES.verifyOtp);
         } catch (error) {
             toast.error(`${error}`);
         } finally {

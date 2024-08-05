@@ -6,7 +6,6 @@ import { useRecoilState } from 'recoil';
 import { bottomBarIndex } from '../../../store/atoms/activeBottomNavBarAtom';
 
 const BottomBar = () => {
-    const navigate = useNavigate();
     const [activeIndex, setActiveIndex] = useRecoilState(bottomBarIndex);
 
     const onSupportPress = () => {

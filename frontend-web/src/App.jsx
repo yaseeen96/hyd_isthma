@@ -14,6 +14,8 @@ import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { useLoading } from './utils/hooks/useLoading';
 import LoadingComponent from './components/common/loadingComponent';
+import { localStorageConstant } from './utils/constants/localStorageConstants';
+import { ROUTES } from './router/routes';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -45,13 +47,17 @@ function App({ children }) {
         setLoading(true);
         const { user, isLoggedIn } = await isUserLoggedIn();
         if (isLoggedIn) {
-            localStorage.setItem('name', user.name);
-            localStorage.setItem('arrivalConfirmed', user.confirm_arrival);
+            localStorage.setItem(localStorageConstant.name, user.name);
+            localStorage.setItem(localStorageConstant.arrivalConfirmed, user.registration.confirm_arrival);
+            localStorage.setItem(localStorageConstant.arrivalDetails, user.registration.arrival_dtls);
+            localStorage.setItem(localStorageConstant.familyDetails, user.registration.family_dtls);
+            localStorage.setItem(localStorageConstant.financialDetails, user.registration.financial_dtls);
+
             if (location.pathname === '/') {
-                navigate('/home');
+                navigate(ROUTES.home, { replace: true });
             }
         } else {
-            navigate('/login');
+            navigate(ROUTES.login, { replace: true });
         }
         setLoading(false);
     }, []);

@@ -5,7 +5,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:jih_ijtema_app/src/utils/logger.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key});
+  final String initialUrl;
+
+  const HomeScreen({super.key, required this.initialUrl});
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
@@ -14,7 +16,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late String? _fcmToken;
   bool _isReady = false;
-  String initialUrl = "https://ijtema.jihhrd.com/";
   late InAppWebViewController _webViewController;
 
   @override
@@ -22,6 +23,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     super.initState();
     fetchFcmToken();
     handleNotificationOpened();
+    handleForegroundNotification();
   }
 
   Future<void> fetchFcmToken() async {
@@ -37,9 +39,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       logger.i("Notification clicked!");
 
       if (message.data.containsKey('url')) {
-        setState(() {
-          initialUrl = message.data['url'];
-        });
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(initialUrl: message.data['url']),
+          ),
+        );
       }
     });
 
@@ -47,9 +51,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         .getInitialMessage()
         .then((RemoteMessage? message) {
       if (message != null && message.data.containsKey('url')) {
-        setState(() {
-          initialUrl = message.data['url'];
-        });
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(initialUrl: message.data['url']),
+          ),
+        );
+      }
+    });
+  }
+
+  void handleForegroundNotification() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      logger.i("Foreground notification received!");
+
+      if (message.data.containsKey('url')) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(initialUrl: message.data['url']),
+          ),
+        );
       }
     });
   }
@@ -70,7 +90,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       child: Scaffold(
         body: _isReady
             ? InAppWebView(
-                initialUrlRequest: URLRequest(url: WebUri(initialUrl)),
+                initialUrlRequest: URLRequest(url: WebUri(widget.initialUrl)),
                 initialSettings: InAppWebViewSettings(
                   javaScriptEnabled: true,
                   supportZoom: false,
