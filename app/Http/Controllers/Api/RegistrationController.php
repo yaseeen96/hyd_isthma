@@ -123,6 +123,7 @@ class RegistrationController extends Controller
         $healthConcern = $request->get('health_concern');
         $managementExperience = $request->get('management_experience');
         $purchasesRequired = $request->get('purchases_required');
+        $yearOfRukuniyat = $request->get('year_of_rukniyat');
         if(isset($purchasesRequired) && count($purchasesRequired) > 0) {
             foreach($purchasesRequired as $purchase) {
                 RegPurchasesDetail::updateOrCreate(['registration_id' => $user->registration->id, 'type' => $purchase['name']], $purchase);
@@ -139,8 +140,8 @@ class RegistrationController extends Controller
             "health_concern" => $healthConcern,
             "management_experience" => $managementExperience,
             "comments" => $comments,
+            "year_of_rukniyat" => $yearOfRukuniyat
         ]);
-
         return response()->json([
             'status' => 'success',
             'message' => 'details updated successfully',

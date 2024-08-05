@@ -121,6 +121,7 @@
                 <th>Health Concern</th>
                 <th>Management Experience</th>
                 <th>Comments</th>
+                <th>Year of Rukuniyat</th>
             </x-table>
         </div>
     </x-content-wrapper>
@@ -197,7 +198,10 @@
                     },
                     {
                         data: 'comments'
-                    }
+                    },
+                    {
+                        data: 'member.year_of_rukniyat',
+                    },
                 ],
             });
         })

@@ -81,6 +81,7 @@
                 <th>Non Availibility Reason</th>
                 <th>Ammer Permission Taken</th>
                 <th>Emergency Contact</th>
+                <th>Year of Rukuniyat</th>
                 <th>Action</th>
             </x-table>
         </div>
@@ -151,12 +152,13 @@
                         data: 'emergency_contact',
                     },
                     {
+                        data: 'member.year_of_rukniyat',
+                    },
+                    {
                         data: 'action'
-                    }
+                    },
                 ],
-
             });
-
         });
 
         function setFilter(type) {
