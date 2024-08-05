@@ -72,24 +72,28 @@
                       </li>
                   @endif
                   <li class="nav-header">REPORTS</li>
-                  <li class="nav-item">
-                      <a href="{{ route('family-details-report') }}"
-                          class="nav-link {{ request()->route()->getName() === 'family-details-report' ? 'active' : '' }}">
-                          <i class="nav-icon fas fa-users"></i>
-                          <p>
-                              Family Details Report
-                          </p>
-                      </a>
-                  </li>
-                  <li class="nav-item">
-                      <a href="{{ route('payment-details-report') }}"
-                          class="nav-link {{ request()->route()->getName() === 'payment-details-report' ? 'active' : '' }}">
-                          <i class="nav-icon fas fa-rupee-sign"></i>
-                          <p>
-                              Payment Details Report
-                          </p>
-                      </a>
-                  </li>
+                  @if (auth()->user()->can('View FamilyDetailsReport') || auth()->user()->id == 1)
+                      <li class="nav-item">
+                          <a href="{{ route('family-details-report') }}"
+                              class="nav-link {{ request()->route()->getName() === 'family-details-report' ? 'active' : '' }}">
+                              <i class="nav-icon fas fa-users"></i>
+                              <p>
+                                  Family Details Report
+                              </p>
+                          </a>
+                      </li>
+                  @endif
+                  @if (auth()->user()->can('View PaymentDetailsReport') || auth()->user()->id == 1)
+                      <li class="nav-item">
+                          <a href="{{ route('payment-details-report') }}"
+                              class="nav-link {{ request()->route()->getName() === 'payment-details-report' ? 'active' : '' }}">
+                              <i class="nav-icon fas fa-rupee-sign"></i>
+                              <p>
+                                  Payment Details Report
+                              </p>
+                          </a>
+                      </li>
+                  @endif
                   @if (auth()->user()->can('View TravelReport') || auth()->user()->id == 1)
                       <li
                           class="nav-item  {{ in_array(request()->route()->getName(), ['arrival-report', 'departure-report']) ? 'menu-open' : '' }}">
@@ -123,24 +127,35 @@
                           </ul>
                       </li>
                   @endif
-                  @if (auth()->user()->can('View HealthReport') || auth()->user()->id == 1)
+                  @if (auth()->user()->can('View CommonDataReport') || auth()->user()->id == 1)
                       <li class="nav-item">
-                          <a href="{{ route('health-report') }}"
-                              class="nav-link {{ request()->route()->getName() === 'health-report' ? 'active' : '' }}">
-                              <i class="nav-icon fas fa-book-medical"></i>
+                          <a href="{{ route('common-data-report') }}"
+                              class="nav-link {{ request()->route()->getName() === 'common-data-report' ? 'active' : '' }}">
+                              <i class="nav-icon fas fa-file"></i>
                               <p>
-                                  Health Report
+                                  Common Details Report
                               </p>
                           </a>
                       </li>
                   @endif
-                  @if (auth()->user()->can('View TourReport') || auth()->user()->id == 1)
+                  @if (auth()->user()->can('View PurchaseDataReport') || auth()->user()->id == 1)
                       <li class="nav-item">
-                          <a href="{{ route('tour-report') }}"
-                              class="nav-link {{ request()->route()->getName() === 'tour-report' ? 'active' : '' }}">
-                              <i class="nav-icon fas fa-shopping-bag"></i>
+                          <a href="{{ route('purchase-data-report') }}"
+                              class="nav-link {{ request()->route()->getName() === 'purchase-data-report' ? 'active' : '' }}">
+                              <i class="nav-icon fas fa-shopping-basket"></i>
                               <p>
-                                  Tour Report
+                                  Purchase Details Report
+                              </p>
+                          </a>
+                      </li>
+                  @endif
+                  @if (auth()->user()->can('View SightSeeingReport') || auth()->user()->id == 1)
+                      <li class="nav-item">
+                          <a href="{{ route('sight-seeing-details-report') }}"
+                              class="nav-link {{ request()->route()->getName() === 'sight-seeing-details-report' ? 'active' : '' }}">
+                              <i class="nav-icon fas fa-camera"></i>
+                              <p>
+                                  Sight Seeing Report
                               </p>
                           </a>
                       </li>

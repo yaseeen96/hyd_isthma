@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -10,7 +11,8 @@ class MembersController extends Controller
 {
     public function index(Request $request, DataTables $dataTables)
     {
-        if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('View Members')){
+        $user = User::find(auth()->user()->id);
+        if ($user->id != 1 && !$user->hasPermissionTo('View Members')){
             abort(403);
         }
         // \Log::info('Request data:', $request->all());
@@ -29,14 +31,23 @@ class MembersController extends Controller
                     });
                 }
             }
+            if (!empty($request->unit_name)) {
+                    $query->where('unit_name', $request->unit_name);
+                }
+            if (!empty($request->zone_name)) {
+                $query->where('zone_name', $request->zone_name);
+            }
+            if (!empty($request->division_name)) {
+                $query->where('division_name', $request->division_name);
+            }
             $query->select('members.*')->orderBy('name', 'asc');
 
             return $dataTables->eloquent($query)
                 ->editColumn('dob', function (Member $member) {
                     return date('d-m-Y', strtotime($member->dob));
                 })
-                ->addColumn('action', function (Member $member) {
-                    return auth()->user()->id == 1 || auth()->user()->hasPermissionTo('Edit Members') ? '<a href="' . route('members.edit', $member->id) . '" class="btn btn-sm btn-purple btn-clean btn-icon" title="Edit"><i class="fas fa-edit"></i></a>' : '';
+                ->addColumn('action', function (Member $member) use($user) {
+                    return $user->id == 1 || $user->hasPermissionTo('Edit Members') ? '<a href="' . route('members.edit', $member->id) . '" class="btn btn-sm btn-purple btn-clean btn-icon" title="Edit"><i class="fas fa-edit"></i></a>' : '';
                 })
                 ->rawColumns(['dob', 'action'])
                 ->addIndexColumn()
@@ -49,7 +60,8 @@ class MembersController extends Controller
 
     public function create()
     {
-        if(auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('Create Members')) {
+        $user = User::find(auth()->user()->id);
+        if( $user->id != 1 && ! $user->hasPermissionTo('Create Members')) {
             abort(403);
         }
         return view('admin.members.form')->with([
@@ -83,7 +95,8 @@ class MembersController extends Controller
 
     public function edit(Member $member)
     {
-        if(auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('Edit Members')) {
+        $user = User::find(auth()->user()->id);
+        if( $user->id != 1 && ! $user->hasPermissionTo('Edit Members')) {
             abort(403);
         }
 

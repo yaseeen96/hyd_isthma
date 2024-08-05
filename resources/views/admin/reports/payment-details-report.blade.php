@@ -102,6 +102,7 @@
             $('#division_name').val('').trigger('change');
             $('#unit_name').val('').trigger('change');
             $('#paid_status').val('').trigger('change');
+            setFilter();
         }
         $(function() {
             paymentDtlsTable = $('#payment-details-report-table').DataTable({

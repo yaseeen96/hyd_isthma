@@ -1,8 +1,8 @@
-@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Arrival Report'])
+@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Common Data Report'])
 @section('content')
     <x-content-wrapper>
         <x-slot:title>
-            Arrival Report
+            Common Data Report
         </x-slot>
         <div class="card-body">
             <div class="row">
@@ -53,40 +53,59 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Date & Time</label>
-                                    <input type="date" class="form-control" id="date_time" onchange="setFilter()">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Travel Mode</label>
-                                    <select class="form-control w-full" id="travel_mode" onchange="setFilter()">
+                                    <label>Hotel Required</label>
+                                    <select class="form-control w-full" id="hotel_required" onchange="setFilter()">
                                         <option value="">-Select Option-</option>
-                                        <option value="bus">Bus</option>
-                                        <option value="train">Train</option>
-                                        <option value="plane">Plane</option>
-                                        <option value="car">Car</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Station Name(End Point)</label>
-                                    <input type="text" class="form-control w-full" id="end_point" onchange="setFilter()">
+                                    <label>Need Attendant</label>
+                                    <select class="form-control w-full" id="need_attendant" onchange="setFilter()">
+                                        <option value="">-Select Option-</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Bus / Train Number</label>
-                                    <input type="text" class="form-control w-full" id="mode_identifier"
-                                        onchange="setFilter()">
+                                    <label>Cot/Bed</label>
+                                    <select class="form-control w-full" id="cot_or_bed" onchange="setFilter()">
+                                        <option value="">-Select Option-</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Health Concerns</label>
+                                    <select class="form-control w-full" id="health_concern" onchange="setFilter()">
+                                        <option value="">-Select Option-</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Management Experience</label>
+                                    <select class="form-control w-full" id="management_experience" onchange="setFilter()">
+                                        <option value="">-Select Option-</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <x-table id="arrival-report-table">
+            <x-table id="common-data-report-table">
                 <th>SL.No </th>
                 <th>Name Of Rukun</th>
                 <th>Rukun ID</th>
@@ -96,11 +115,12 @@
                 <th>Zone</th>
                 <th>Gender</th>
                 <th>Age</th>
-                <th>No. Family Members Accompanying</th>
-                <th>Travel Mode</th>
-                <th>Date & TIme </th>
-                <th>Station Name (End Point)</th>
-                <th>Bus/Train Number</th>
+                <th>Hotel Required</th>
+                <th>Need Attendent</th>
+                <th>Bed/Cot</th>
+                <th>Health Concern</th>
+                <th>Management Experience</th>
+                <th>Comments</th>
             </x-table>
         </div>
     </x-content-wrapper>
@@ -112,30 +132,26 @@
             $('#zone_name').val('').trigger('change');
             $('#division_name').val('').trigger('change');
             $('#unit_name').val('').trigger('change');
-            $('#date_time').val(null);
-            $('#travel_mode').val('').trigger('change');
-            $('#end_point').val('');
-            $('#mode_identifier').val('');
+            $('#hotel_required').val('').trigger('change');
+            $('#need_attendant').val('').trigger('change');
+            $('#cot_or_bed').val('').trigger('change');
+            $('#health_concern').val('').trigger('change');
+            $('#management_experience').val('').trigger('change');
             setFilter();
         }
-        // $('#end_point').on('keyup', function() {
-        //     const value = $(this).val();
-        //     if (value.length >= 3) {
-        //         setFilter();
-        //     }
-        // })
         $(function() {
-            arrivalReportTable = $('#arrival-report-table').DataTable({
+            commonDataReportTable = $('#common-data-report-table').DataTable({
                 ajax: {
-                    url: "{{ route('arrival-report') }}",
+                    url: "{{ route('common-data-report') }}",
                     data: function(d) {
                         d.unit_name = $("#unit_name").val()
                         d.zone_name = $("#zone_name").val()
                         d.division_name = $("#division_name").val()
-                        d.date_time = $("#date_time").val()
-                        d.travel_mode = $('#travel_mode').val()
-                        d.end_point = $('#end_point').val()
-                        d.mode_identifier = $('#mode_identifier').val()
+                        d.hotel_required = $('#hotel_required').val();
+                        d.need_attendant = $('#need_attendant').val();
+                        d.cot_or_bed = $('#cot_or_bed').val();
+                        d.health_concern = $('#health_concern').val();
+                        d.management_experience = $('#management_experience').val();
                     }
                 },
                 columns: [
@@ -165,26 +181,29 @@
                         data: 'member.age',
                     },
                     {
-                        data: 'total_family_members'
+                        data: 'hotel_required'
                     },
                     {
-                        data: 'travel_mode'
+                        data: 'need_attendant'
                     },
                     {
-                        data: 'date_time'
+                        data: 'cot_or_bed'
                     },
                     {
-                        data: 'end_point'
+                        data: 'health_concern'
                     },
                     {
-                        data: 'mode_identifier'
+                        data: 'management_experience'
+                    },
+                    {
+                        data: 'comments'
                     }
                 ],
             });
         })
 
         function setFilter() {
-            arrivalReportTable.draw();
+            commonDataReportTable.draw();
         }
     </script>
 @endpush

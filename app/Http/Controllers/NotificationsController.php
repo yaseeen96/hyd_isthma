@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Plank\Mediable\Facades\MediaUploader;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Str;
 
 class NotificationsController extends Controller
 {
@@ -101,7 +102,7 @@ class NotificationsController extends Controller
         // Uploading image to server
         $imgUrl = '';
         if(!empty($request->file('notification_image'))) {
-            $media = MediaUploader::fromSource($request->file('notification_image'))->toDestination('public', 'images/notification_image')->upload();
+            $media = MediaUploader::fromSource($request->file('notification_image'))->toDestination('public', 'images/notification_image')->useFilename(Str::uuid())->upload();
             $notification->attachMedia($media, ['notification_image']);
             $imgUrl = $notification->getMedia('notification_image')->first()->getUrl();
         }

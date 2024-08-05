@@ -113,6 +113,7 @@
             $('#gender').val('').trigger('change');
             $('#age_group').val('').trigger('change');
             $('#interested_in_volunteering').val('').trigger('change');
+            setFilter()
         }
         $(function() {
             familyDtlsTable = $('#family-details-report-table').DataTable({

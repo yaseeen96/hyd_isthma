@@ -23,6 +23,39 @@
                 <div class="collapse container" id="regFilters">
                     <div class="card card-body shadow-none">
                         <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>ZONE NAME</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="zone_name"
+                                        onchange="getLocations('zone_name', 'division_name')">
+                                        @isset($locationsList['distnctZoneName'])
+                                            <option value="">All</option>
+                                            @foreach ($locationsList['distnctZoneName'] as $name)
+                                                <option value="{{ $name->zone_name }}"> {{ $name->zone_name }}</option>
+                                            @endforeach
+                                        @endisset
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>DISTRICT NAME</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="division_name"
+                                        onchange="getLocations('division_name', 'unit_name')">
+                                        <option value="">All</option>
+                                        {{-- data will be dynamically filled --}}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>UNIT NAME</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="unit_name"
+                                        placeholder="Select Unit Name" onchange="setFilter('unit_name')">
+                                        <option value="">All</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Register / Not reigister</label>
@@ -34,7 +67,6 @@
                                     </select>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -50,6 +82,7 @@
                 <th>Division Name</th>
                 <th>Date Of Birth</th>
                 <th>Gender</th>
+                <th>Age</th>
                 <th>Action</th>
             </x-table>
         </div>
@@ -58,16 +91,21 @@
 @push('scripts')
     <script type="text/javascript">
         function clearFilters() {
+            $('#zone_name').val('').trigger('change');
+            $('#division_name').val('').trigger('change');
+            $('#unit_name').val('').trigger('change');
             $('#register_noregister').val('').trigger('change');
-            memberTable.draw();
+            setFilter();
         }
-
         $(function() {
             memberTable = $('#members-table').DataTable({
                 ajax: {
                     url: "{{ route('members.index') }}",
                     data: function(d) {
                         d.register_noregister = $("#register_noregister").val();
+                        d.unit_name = $("#unit_name").val()
+                        d.zone_name = $("#zone_name").val()
+                        d.division_name = $("#division_name").val()
                     }
                 },
                 columns: [
@@ -108,6 +146,10 @@
                     {
                         data: 'gender',
                         name: 'gender'
+                    },
+                    {
+                        data: 'age',
+                        name: 'age'
                     },
                     {
                         data: 'action',

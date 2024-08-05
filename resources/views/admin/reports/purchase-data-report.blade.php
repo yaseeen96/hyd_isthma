@@ -1,8 +1,8 @@
-@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Arrival Report'])
+@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Purchase Details Report'])
 @section('content')
     <x-content-wrapper>
         <x-slot:title>
-            Arrival Report
+            Purchase Details Report
         </x-slot>
         <div class="card-body">
             <div class="row">
@@ -53,40 +53,30 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Date & Time</label>
-                                    <input type="date" class="form-control" id="date_time" onchange="setFilter()">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Travel Mode</label>
-                                    <select class="form-control w-full" id="travel_mode" onchange="setFilter()">
-                                        <option value="">-Select Option-</option>
-                                        <option value="bus">Bus</option>
-                                        <option value="train">Train</option>
-                                        <option value="plane">Plane</option>
-                                        <option value="car">Car</option>
+                                    <label>Gender</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="gender"
+                                        placeholder="Select Gender" onchange="setFilter()">
+                                        <option value="">All</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Station Name(End Point)</label>
-                                    <input type="text" class="form-control w-full" id="end_point" onchange="setFilter()">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Bus / Train Number</label>
-                                    <input type="text" class="form-control w-full" id="mode_identifier"
-                                        onchange="setFilter()">
+                                    <label>Purchase Type</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="purchase_type"
+                                        placeholder="Select Type" onchange="setFilter()">
+                                        <option value="">All</option>
+                                        <option value="bed">Bed</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <x-table id="arrival-report-table">
+            <x-table id="purchase-report-table">
                 <th>SL.No </th>
                 <th>Name Of Rukun</th>
                 <th>Rukun ID</th>
@@ -95,12 +85,20 @@
                 <th>Division</th>
                 <th>Zone</th>
                 <th>Gender</th>
-                <th>Age</th>
-                <th>No. Family Members Accompanying</th>
-                <th>Travel Mode</th>
-                <th>Date & TIme </th>
-                <th>Station Name (End Point)</th>
-                <th>Bus/Train Number</th>
+                <th>Type</th>
+                <th>Quantity</th>
+                <tfoot>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tfoot>
             </x-table>
         </div>
     </x-content-wrapper>
@@ -112,79 +110,76 @@
             $('#zone_name').val('').trigger('change');
             $('#division_name').val('').trigger('change');
             $('#unit_name').val('').trigger('change');
-            $('#date_time').val(null);
-            $('#travel_mode').val('').trigger('change');
-            $('#end_point').val('');
-            $('#mode_identifier').val('');
+            $('#gender').val('').trigger('change');
+            $('#purchase_type').val('').trigger('change');
             setFilter();
         }
-        // $('#end_point').on('keyup', function() {
-        //     const value = $(this).val();
-        //     if (value.length >= 3) {
-        //         setFilter();
-        //     }
-        // })
         $(function() {
-            arrivalReportTable = $('#arrival-report-table').DataTable({
+            purchaseReportTable = $('#purchase-report-table').DataTable({
                 ajax: {
-                    url: "{{ route('arrival-report') }}",
+                    url: "{{ route('purchase-data-report') }}",
                     data: function(d) {
                         d.unit_name = $("#unit_name").val()
                         d.zone_name = $("#zone_name").val()
                         d.division_name = $("#division_name").val()
-                        d.date_time = $("#date_time").val()
-                        d.travel_mode = $('#travel_mode').val()
-                        d.end_point = $('#end_point').val()
-                        d.mode_identifier = $('#mode_identifier').val()
+                        d.gender = $("#gender").val()
+                        d.purchase_type = $("#purchase_type").val()
                     }
                 },
                 columns: [
                     dtIndexCol(),
                     {
-                        data: 'member.name',
+                        data: 'name_of_rukun',
                     },
                     {
-                        data: 'member.user_number',
+                        data: 'rukun_id',
                     },
                     {
-                        data: 'member.phone',
+                        data: 'phone',
                     },
                     {
-                        data: 'member.unit_name',
+                        data: 'unit_name',
                     },
                     {
-                        data: 'member.division_name',
+                        data: 'division_name',
                     },
                     {
-                        data: 'member.zone_name',
+                        data: 'zone_name',
                     },
                     {
-                        data: 'member.gender',
+                        data: 'gender',
                     },
                     {
-                        data: 'member.age',
+                        data: 'type',
                     },
                     {
-                        data: 'total_family_members'
+                        data: 'qty'
                     },
-                    {
-                        data: 'travel_mode'
-                    },
-                    {
-                        data: 'date_time'
-                    },
-                    {
-                        data: 'end_point'
-                    },
-                    {
-                        data: 'mode_identifier'
-                    }
                 ],
+                "footerCallback": function(row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // converting to interger to find total
+                    var intVal = function(i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                            i : 0;
+                    };
+                    var total_qty = api.column(9, {
+                        page: 'current'
+                    }).data().reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                    $(api.column(8).footer()).html('Total');
+                    $(api.column(9).footer()).html(total_qty);
+                }
             });
         })
 
         function setFilter() {
-            arrivalReportTable.draw();
+            purchaseReportTable.draw();
         }
     </script>
 @endpush

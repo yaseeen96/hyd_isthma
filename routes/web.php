@@ -33,12 +33,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('user', 'UserController');
     // Reports
     Route::prefix('reports')->group(function () {
-        Route::get('healthReport', 'ReportsController@healthReport')->name('health-report');
-        Route::get('tourReport', 'ReportsController@tourReport')->name('tour-report');
-        Route::get('arrivalReport', 'ReportsController@arrivalReport')->name('arrival-report');
-        Route::get('departureReport`', 'ReportsController@departureReport')->name('departure-report');
         Route::get('familyDetailsReport', 'ReportsController@familyDetailsReport')->name('family-details-report');
         Route::get('paymentDetailsReport', 'ReportsController@paymentDetailsReport')->name('payment-details-report');
+        Route::get('arrivalReport', 'ReportsController@arrivalReport')->name('arrival-report');
+        Route::get('departureReport', 'ReportsController@departureReport')->name('departure-report');
+        Route::get('commonDataReport', 'ReportsController@commonDataReport')->name('common-data-report');
+        Route::get('purchaseDataReport', 'ReportsController@purchaseDataReport')->name('purchase-data-report');
+        Route::get('sightSeeingDetailsReport', 'ReportsController@sightSeeingDetailsReport')->name('sight-seeing-details-report');
     });
     // filter helpers
     Route::get('getDivisions', 'DashboardController@getDivisions')->name('getDivisions');

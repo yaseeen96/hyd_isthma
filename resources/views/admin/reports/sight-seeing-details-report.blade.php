@@ -1,8 +1,8 @@
-@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Arrival Report'])
+@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Sight Seeing Details Report'])
 @section('content')
     <x-content-wrapper>
         <x-slot:title>
-            Arrival Report
+            Sight Seeing Details Report
         </x-slot>
         <div class="card-body">
             <div class="row">
@@ -53,40 +53,19 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Date & Time</label>
-                                    <input type="date" class="form-control" id="date_time" onchange="setFilter()">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Travel Mode</label>
-                                    <select class="form-control w-full" id="travel_mode" onchange="setFilter()">
+                                    <label>Gender</label>
+                                    <select class="form-control w-full" id="gender" onchange="setFilter()">
                                         <option value="">-Select Option-</option>
-                                        <option value="bus">Bus</option>
-                                        <option value="train">Train</option>
-                                        <option value="plane">Plane</option>
-                                        <option value="car">Car</option>
+                                        <option value="female">Female</option>
+                                        <option value="male">Male</option>
                                     </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Station Name(End Point)</label>
-                                    <input type="text" class="form-control w-full" id="end_point" onchange="setFilter()">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Bus / Train Number</label>
-                                    <input type="text" class="form-control w-full" id="mode_identifier"
-                                        onchange="setFilter()">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <x-table id="arrival-report-table">
+            <x-table id="sight-seeing-report-table">
                 <th>SL.No </th>
                 <th>Name Of Rukun</th>
                 <th>Rukun ID</th>
@@ -95,12 +74,7 @@
                 <th>Division</th>
                 <th>Zone</th>
                 <th>Gender</th>
-                <th>Age</th>
-                <th>No. Family Members Accompanying</th>
-                <th>Travel Mode</th>
-                <th>Date & TIme </th>
-                <th>Station Name (End Point)</th>
-                <th>Bus/Train Number</th>
+                <th>Number of Members</th>
             </x-table>
         </div>
     </x-content-wrapper>
@@ -112,30 +86,18 @@
             $('#zone_name').val('').trigger('change');
             $('#division_name').val('').trigger('change');
             $('#unit_name').val('').trigger('change');
-            $('#date_time').val(null);
-            $('#travel_mode').val('').trigger('change');
-            $('#end_point').val('');
-            $('#mode_identifier').val('');
+            $('#gender').val('').trigger('change');
             setFilter();
         }
-        // $('#end_point').on('keyup', function() {
-        //     const value = $(this).val();
-        //     if (value.length >= 3) {
-        //         setFilter();
-        //     }
-        // })
         $(function() {
-            arrivalReportTable = $('#arrival-report-table').DataTable({
+            sightSeeingDtlsReport = $('#sight-seeing-report-table').DataTable({
                 ajax: {
-                    url: "{{ route('arrival-report') }}",
+                    url: "{{ route('sight-seeing-details-report') }}",
                     data: function(d) {
                         d.unit_name = $("#unit_name").val()
                         d.zone_name = $("#zone_name").val()
                         d.division_name = $("#division_name").val()
-                        d.date_time = $("#date_time").val()
-                        d.travel_mode = $('#travel_mode').val()
-                        d.end_point = $('#end_point').val()
-                        d.mode_identifier = $('#mode_identifier').val()
+                        d.gender = $("#gender").val()
                     }
                 },
                 columns: [
@@ -162,29 +124,14 @@
                         data: 'member.gender',
                     },
                     {
-                        data: 'member.age',
+                        data: 'total_members'
                     },
-                    {
-                        data: 'total_family_members'
-                    },
-                    {
-                        data: 'travel_mode'
-                    },
-                    {
-                        data: 'date_time'
-                    },
-                    {
-                        data: 'end_point'
-                    },
-                    {
-                        data: 'mode_identifier'
-                    }
                 ],
             });
         })
 
         function setFilter() {
-            arrivalReportTable.draw();
+            sightSeeingDtlsReport.draw();
         }
     </script>
 @endpush

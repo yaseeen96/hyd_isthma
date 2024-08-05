@@ -29,7 +29,7 @@ class PushNotificationHelper {
             try {
                 // sending push notificaiton message
                 $result = $messaging->sendMulticast($message, $tokens);
-                dd($result);
+                // dd($result);
                 return true;
             } catch(MessagingException $e) {
                 throw new Exception($e);

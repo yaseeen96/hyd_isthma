@@ -2,10 +2,12 @@
 return [
     "Registrations",
     "Members",
+    "FamilyDetailsReport",
+    "PaymentDetailsReport",
     "TravelReport",
-    "HealthReport",
-    "TourReport",
-    "FinancialsReport",
+    "CommonDataReport",
+    "PurchaseDataReport",
+    "SightSeeingReport",
     "Notifications",
     "Permissions",
     "Users"
