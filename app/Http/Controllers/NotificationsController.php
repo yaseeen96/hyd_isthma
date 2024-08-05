@@ -27,7 +27,8 @@ class NotificationsController extends Controller
         {
             $query = Notification::query();
             return $dataTables->eloquent($query)->addColumn('image', function (Notification $notification) {
-                return '<img src="'.$notification->getMedia('notification_image')->first()->getUrl().'" width="100px" height="100px">';
+                $imageSrc = !empty($notification->getMedia('notification_image')) ? $notification->getMedia('notification_image')->first()->getUrl() : '/assets/img/no-image.jpg';
+                return '<img src="'.$imageSrc.'" width="100px" height="100px">';
             })->rawColumns(['image'])->makeHidden(['criteria'])
                 ->addIndexColumn()
                 ->make(true);

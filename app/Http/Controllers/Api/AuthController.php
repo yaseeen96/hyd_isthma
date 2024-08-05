@@ -181,7 +181,8 @@ class AuthController extends Controller
 
     // get tiles information
     public function getProfileProgress(Member $member) {
-        $familyDetails = isset($member->registration) ?  RegFamilyDetail::where(['registration_id' => $member->registration->id])->count() : 0;
+        // $familyDetails = isset($member->registration) ?  RegFamilyDetail::where(['registration_id' => $member->registration->id])->count() : 0;
+        $familyDetails = (isset($member->registration) && !empty($member->registration->member_fees)) ?  1 : 0;
         $financialDetails = isset($member->registration) ?  $member->registration->member_fees : 0;
         $arrivalDetails = isset($member->registration) ?  $member->registration->arrival_details : 0;
         return [

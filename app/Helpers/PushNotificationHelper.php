@@ -25,7 +25,8 @@ class PushNotificationHelper {
             // Android push notification configurations
             // preparing message
             $message = CloudMessage::new()
-                ->withNotification($notification);
+                ->withNotification($notification)
+                ->withData(['url' => $ytUrl]);
             try {
                 // sending push notificaiton message
                 $result = $messaging->sendMulticast($message, $tokens);
