@@ -19,7 +19,6 @@ const Login = () => {
         try {
             setLoading(true);
             const response = await sendOtpService(phone);
-
             setUserState((prev) => ({ ...prev, phone: phone }));
             toast.success(response.message);
             navigate(ROUTES.verifyOtp);

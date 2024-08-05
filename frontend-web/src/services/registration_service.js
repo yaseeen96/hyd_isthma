@@ -1,5 +1,6 @@
 import axios, { HttpStatusCode } from 'axios';
 import { axiosAuthenticatedClient } from './axios_client';
+import { localStorageConstant } from '../utils/constants/localStorageConstants';
 import { toast } from 'react-toastify';
 export const confirmRegistrationService = async (data) => {
     try {
@@ -45,7 +46,13 @@ export const getUserDetails = async () => {
 
 export const getRegistrationDetails = async () => {
     try {
-        const response = await axiosAuthenticatedClient.get('user/getUserDetailsTest');
+        const response = await axiosAuthenticatedClient.get('user/getUserDetailsTest', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem(localStorageConstant.token)}`,
+                'Content-Type': 'application/json',
+                accept: 'application/json',
+            },
+        });
         return response.data;
     } catch (error) {
         console.error(error);

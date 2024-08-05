@@ -2,7 +2,7 @@ import AuthLayout from './Layout/AuthLayout';
 import IconPhone from '../../components/Icon/IconPhone';
 import { useNavigate } from 'react-router-dom';
 import { verifyOtpService } from '../../services/login_service';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userStateAtom } from '../../store/atoms/userStateAtom';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -28,7 +28,6 @@ const Otp = () => {
             localStorage.setItem(localStorageConstant.name, response.data.user.name);
             const { user, isLoggedIn } = await isUserLoggedIn();
             if (isLoggedIn) {
-                localStorage.setItem(localStorageConstant.name, user.name);
                 localStorage.setItem(localStorageConstant.arrivalConfirmed, user.registration.confirm_arrival);
                 localStorage.setItem(localStorageConstant.arrivalDetails, user.registration.arrival_dtls);
                 localStorage.setItem(localStorageConstant.familyDetails, user.registration.family_dtls);
