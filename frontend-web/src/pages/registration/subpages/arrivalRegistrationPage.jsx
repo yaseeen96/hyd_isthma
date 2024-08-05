@@ -28,12 +28,13 @@ const ArrivalRegistrationPage = () => {
     useEffect(() => {
         if (user && user.member_data && user.member_data.length > 0) {
             const userData = user.member_data[0];
+            const memberRegData = user.member_reg_data || {};
             setUserDetails({
                 date_of_birth: { startDate: userData.dob, endDate: userData.dob },
-                confirmArrival: userData.confirmArrival ?? '1',
-                reason_for_not_coming: userData.reason_for_not_coming ?? '',
-                emergency_contact: userData.emergency_contact ?? '',
-                ameer_permission_taken: userData.ameer_permission_taken ?? '1',
+                confirmArrival: memberRegData.confirmArrival ?? '1',
+                reason_for_not_coming: memberRegData.reason_for_not_coming ?? '',
+                emergency_contact: memberRegData.emergency_contact ?? '',
+                ameer_permission_taken: memberRegData.ameer_permission_taken ?? '1',
                 email: userData.email ?? '',
             });
         }
