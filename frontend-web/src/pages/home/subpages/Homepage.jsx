@@ -1,17 +1,34 @@
 import ActionCard from '../../../components/common/actionCard';
 import HomeLayout from '../layout/Homelayout';
 import { useNavigate } from 'react-router-dom';
-import { RiAlertFill, RiProfileFill } from 'react-icons/ri';
-import TileCard from '../components/tileCard';
+import { RiProfileFill } from 'react-icons/ri';
+
 import LoadingTileCard from '../components/loadingTileCard';
 import { localStorageConstant } from '../../../utils/constants/localStorageConstants';
 import { ROUTES } from '../../../router/routes';
+import useAsyncEffect from 'use-async-effect';
+import { useLoading } from '../../../utils/hooks/useLoading';
+import { isUserLoggedIn } from '../../../services/check_token_validity_service';
+import LoadingComponent from '../../../components/common/loadingComponent';
 
 const HomePage = () => {
+    const { loading, setLoading } = useLoading();
     const navigate = useNavigate();
     const onRegisterIjtema = () => {
         navigate(ROUTES.register);
     };
+
+    useAsyncEffect(async () => {
+        setLoading(true);
+        const { user, isLoggedIn } = isUserLoggedIn();
+        if (isLoggedIn) {
+            localStorage.setItem(localStorageConstant.arrivalConfirmed, user.registration.confirm_arrival);
+            localStorage.setItem(localStorageConstant.arrivalDetails, user.registration.arrival_dtls);
+            localStorage.setItem(localStorageConstant.familyDetails, user.registration.family_dtls);
+            localStorage.setItem(localStorageConstant.financialDetails, user.registration.financial_dtls);
+        }
+        setLoading(false);
+    }, []);
 
     // Retrieve values from localStorage
     const arrivalConfirmed = localStorage.getItem(localStorageConstant.arrivalConfirmed);
@@ -24,11 +41,14 @@ const HomePage = () => {
 
     const progress = (completedSteps / 4) * 100; // Percentage of completion
 
+    if (loading) {
+        return <LoadingComponent />;
+    }
     return (
         <HomeLayout>
             <ActionCard
                 message={progress === 100 ? 'Thank you. Your registration is 100% complete' : 'Your registration is not yet completed, click below & complete all steps'}
-                buttonText={'Register now'}
+                buttonText={progress === 100 ? `Registration completed (View/Edit)` : ' Register now'}
                 onButtonClick={onRegisterIjtema}
             />
 
