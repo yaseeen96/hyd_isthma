@@ -59,8 +59,9 @@ const AdditionalDetailsRegistration = () => {
                       { name: 'Carpet', qty: '0' },
                   ],
         comments: registrationDetails.member_reg_data?.comments || '',
-        year_of_rukniyat: registrationDetails.member_reg_data?.year_of_rukniyat || '',
+        year_of_rukniyat: registrationDetails.member_data[0]?.year_of_rukniyat || '',
     };
+    console.log(registrationDetails);
 
     const transportOptions = {
         BUS: [

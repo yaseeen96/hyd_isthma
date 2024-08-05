@@ -20,6 +20,7 @@ export const registrationDetailsAtom = atom({
                 push_token: null,
                 created_at: null,
                 updated_at: null,
+                year_of_rukniyat: null,
             },
         ],
         member_reg_data: [
@@ -43,7 +44,6 @@ export const registrationDetailsAtom = atom({
                 comments: null,
                 family_details: [],
                 purchase_details: [],
-                year_of_rukniyat: null,
             },
         ],
     },

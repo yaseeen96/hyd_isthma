@@ -27,7 +27,7 @@ const HomePage = () => {
     return (
         <HomeLayout>
             <ActionCard
-                message={progress === 100 ? 'Thank you.Your registration is 100% complete' : 'Your registration is not yet completed, click below & complete all steps'}
+                message={progress === 100 ? 'Thank you. Your registration is 100% complete' : 'Your registration is not yet completed, click below & complete all steps'}
                 buttonText={'Register now'}
                 onButtonClick={onRegisterIjtema}
             />
