@@ -140,8 +140,9 @@ class RegistrationController extends Controller
             "health_concern" => $healthConcern,
             "management_experience" => $managementExperience,
             "comments" => $comments,
-            "year_of_rukniyat" => $yearOfRukuniyat
         ]);
+        $user = Member::find($user->id);
+        $user->update(['year_of_rukniyat' => $yearOfRukuniyat]);
         return response()->json([
             'status' => 'success',
             'message' => 'details updated successfully',
