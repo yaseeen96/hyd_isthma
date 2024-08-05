@@ -38,7 +38,7 @@ const FinancialRegistration = () => {
         <RegistrationLayout>
             <div className="container mx-auto my-8 rounded-lg">
                 <div className="mb-4">
-                    <h2 className="text-xl font-semibold mb-2">Prices</h2>
+                    <h2 className="text-xl font-semibold mb-2">Delegate Fees</h2>
                     <ul className="list-disc list-inside">
                         <li className="flex justify-between">
                             <span>Individual Registration</span>
@@ -54,7 +54,7 @@ const FinancialRegistration = () => {
                         ))}
                     </ul>
                     <div className="flex justify-between mt-2 font-bold">
-                        <span>Total Price</span>
+                        <span>Total Delegate fees</span>
                         <span>₹{user.total_fees}</span>
                     </div>
                 </div>
