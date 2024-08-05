@@ -25,7 +25,8 @@ class Member extends Authenticatable
         "gender",
         "status",
         "push_token",
-        "age"
+        "age",
+        "year_of_rukniyat"
     ];
 
 
