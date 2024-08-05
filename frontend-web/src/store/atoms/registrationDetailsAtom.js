@@ -43,6 +43,7 @@ export const registrationDetailsAtom = atom({
                 comments: null,
                 family_details: [],
                 purchase_details: [],
+                year_of_rukniyat: null,
             },
         ],
     },

@@ -59,6 +59,7 @@ const AdditionalDetailsRegistration = () => {
                       { name: 'Carpet', qty: '0' },
                   ],
         comments: registrationDetails.member_reg_data?.comments || '',
+        year_of_rukniyat: registrationDetails.member_reg_data?.year_of_rukniyat || '',
     };
 
     const transportOptions = {
@@ -80,8 +81,6 @@ const AdditionalDetailsRegistration = () => {
         SELF: ['Wadi e Huda', 'Other'],
     };
 
-    console.log(transportOptions);
-
     const validationSchema = Yup.object().shape({
         hotel_required: Yup.string().required('Required'),
         sight_seeing: Yup.object().shape({
@@ -101,6 +100,7 @@ const AdditionalDetailsRegistration = () => {
                 qty: Yup.number().required('Required').min(0, 'Cannot be negative'),
             })
         ),
+        year_of_rukniyat: Yup.number().required('Required').min(1900, 'Year must be greater than or equal to 1900').max(new Date().getFullYear(), 'Year cannot be in the future'),
     });
 
     const handleSubmit = async (values) => {
@@ -212,8 +212,8 @@ const AdditionalDetailsRegistration = () => {
                             <div className="w-full mb-4">
                                 <label>Exact Date and Time of Departure</label>
                                 <DatePicker
-                                    selected={values.arrival_details.datetime ? new Date(values.arrival_details.datetime) : null}
-                                    onChange={(date) => setFieldValue('arrival_details.datetime', date)}
+                                    selected={values.departure_details.datetime ? new Date(values.departure_details.datetime) : null}
+                                    onChange={(date) => setFieldValue('departure_details.datetime', date)}
                                     showTimeSelect
                                     timeIntervals={15} // Set time intervals to 15 minutes
                                     dateFormat="Pp"
@@ -402,7 +402,7 @@ const AdditionalDetailsRegistration = () => {
                         </div>
 
                         <div className="border-b border-gray-300 pb-4">
-                            <h2 className="text-lg font-semibold mb-2">would you like to purchase any of below items at discounted price after ijtema?</h2>
+                            <h2 className="text-lg font-semibold mb-2">Would you like to purchase any of the below items at a discounted price after Ijtema?</h2>
                             <FieldArray
                                 name="purchases_required"
                                 render={(arrayHelpers) => (
@@ -448,6 +448,17 @@ const AdditionalDetailsRegistration = () => {
                                 className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
                             />
                             <ErrorMessage name="comments" component="div" className="text-red-500 text-sm mt-1" />
+                        </div>
+
+                        <div className="w-full mb-4">
+                            <label>Year of Rukniyat</label>
+                            <Field
+                                name="year_of_rukniyat"
+                                type="number"
+                                placeholder="Enter year"
+                                className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
+                            />
+                            <ErrorMessage name="year_of_rukniyat" component="div" className="text-red-500 text-sm mt-1" />
                         </div>
 
                         <button type="submit" className="px-6 py-3 btn-primary w-full rounded-lg">
