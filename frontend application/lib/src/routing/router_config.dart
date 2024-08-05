@@ -27,11 +27,11 @@ CustomTransitionPage buildPageWithDefaultTransition({
 final customRouter = GoRouter(
   initialLocation: "/",
   routes: [
-    GoRoute(
-      path: "/",
-      pageBuilder: (context, state) => buildPageWithDefaultTransition(
-          context: context, state: state, child: const HomeScreen()),
-    )
+    // GoRoute(
+    //   path: "/",
+    //   pageBuilder: (context, state) => buildPageWithDefaultTransition(
+    //       context: context, state: state, child: const HomeScreen()),
+    // )
   ],
   errorBuilder: (context, state) => const PageNotFound(),
 );
