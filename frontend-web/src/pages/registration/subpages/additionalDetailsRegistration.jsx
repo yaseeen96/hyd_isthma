@@ -138,9 +138,10 @@ const AdditionalDetailsRegistration = () => {
                     <Form className="w-full space-y-6">
                         <div className="border-b border-gray-300 pb-4">
                             <h2 className="text-lg font-semibold mb-2">Arrival Details</h2>
-                            <div className="w-full mb-4">
+                            <div className="mb-4">
                                 <label>Exact Date and Time of Arrival</label>
                                 <DatePicker
+                                    wrapperClassName="w-full"
                                     selected={values.arrival_details.datetime ? new Date(values.arrival_details.datetime) : null}
                                     onChange={(date) => setFieldValue('arrival_details.datetime', date)}
                                     showTimeSelect
@@ -214,6 +215,7 @@ const AdditionalDetailsRegistration = () => {
                             <div className="w-full mb-4">
                                 <label>Exact Date and Time of Departure</label>
                                 <DatePicker
+                                    wrapperClassName="w-full"
                                     selected={values.departure_details.datetime ? new Date(values.departure_details.datetime) : null}
                                     onChange={(date) => setFieldValue('departure_details.datetime', date)}
                                     showTimeSelect
