@@ -10,6 +10,8 @@ import useAsyncEffect from 'use-async-effect';
 import { useLoading } from '../../../utils/hooks/useLoading';
 import { isUserLoggedIn } from '../../../services/check_token_validity_service';
 import LoadingComponent from '../../../components/common/loadingComponent';
+import TileCard from '../components/tileCard';
+import { MdNotifications } from 'react-icons/md';
 
 const HomePage = () => {
     const { loading, setLoading } = useLoading();
@@ -59,13 +61,13 @@ const HomePage = () => {
                     onClick={onRegisterIjtema}
                     percentage={progress} // Pass calculated progress
                 />
-                {/* <TileCard
-                    icon={<RiAlertFill size={32} />}
-                    title={'Other Card'}
+                <TileCard
+                    icon={<MdNotifications size={32} />}
+                    title={'Notification Testing'}
                     onClick={() => {
-                        console.log('clicked');
+                        navigate(ROUTES.notificationDetails);
                     }}
-                /> */}
+                />
             </div>
             {/* 
             <TileButton
