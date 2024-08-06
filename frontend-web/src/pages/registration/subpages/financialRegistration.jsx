@@ -7,6 +7,7 @@ import { registrationDetailsAtom } from '../../../store/atoms/registrationDetail
 import { toast } from 'react-toastify';
 import { updateFinancialDetails } from '../../../services/registration_service';
 import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../../router/routes';
 
 const FinancialRegistration = () => {
     const navigate = useNavigate();
@@ -27,7 +28,7 @@ const FinancialRegistration = () => {
         console.log(`Amount Paid: ${values.amountPaid}`);
         try {
             await updateFinancialDetails(values.amountPaid);
-            navigate(-1);
+            navigate(ROUTES.register, { replace: true });
             toast.success('Thank you. Please complete the next steps');
         } catch (error) {
             toast.error('Something went wrong. Please come back later');

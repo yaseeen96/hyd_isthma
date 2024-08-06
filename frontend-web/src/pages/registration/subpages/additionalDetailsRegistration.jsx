@@ -12,6 +12,7 @@ import { useRecoilValue } from 'recoil';
 import { registrationDetailsAtom } from '../../../store/atoms/registrationDetailsAtom';
 import { useLoading } from '../../../utils/hooks/useLoading';
 import LoadingComponent from '../../../components/common/loadingComponent';
+import { ROUTES } from '../../../router/routes';
 
 const AdditionalDetailsRegistration = () => {
     const { loading, setLoading } = useLoading();
@@ -120,7 +121,7 @@ const AdditionalDetailsRegistration = () => {
         setLoading(true);
         const isSuccess = await updateAdditionalDetails(formattedValues);
         if (isSuccess) {
-            navigate(-1);
+            navigate(ROUTES.register, { replace: true });
             toast.success('Registration Successful. You are all done');
         } else {
             toast.error('Something seems to be wrong. Please come back later');

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { registrationDetailsAtom } from '../../../store/atoms/registrationDetailsAtom';
 import { MdDelete } from 'react-icons/md';
+import { ROUTES } from '../../../router/routes';
 
 const validationSchema = Yup.object().shape({
     accompanying: Yup.string().required('Required'),
@@ -152,7 +153,7 @@ const FamilyRegistrationPage = () => {
 
         setLoading(false);
         if (success) {
-            navigate(-1);
+            navigate(ROUTES.register, { replace: true });
         } else {
             console.error('Failed to update family details.');
         }

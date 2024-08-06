@@ -10,6 +10,7 @@ import { registrationDetailsAtom } from '../../../store/atoms/registrationDetail
 import { useLoading } from '../../../utils/hooks/useLoading';
 import LoadingComponent from '../../../components/common/loadingComponent';
 import { analyticsState } from '../../../store/atoms/analyticsAtom';
+import { ROUTES } from '../../../router/routes';
 
 const ArrivalRegistrationPage = () => {
     const user = useRecoilValue(registrationDetailsAtom);
@@ -77,7 +78,7 @@ const ArrivalRegistrationPage = () => {
                         hideProgressBar: false,
                     }
                 );
-                navigate(-1);
+                navigate(ROUTES.register, { replace: true });
                 if (analytics) {
                     trackSelectContent(analytics, 'button', 'register-ijtema', 'Register for Ijtema');
                 }
