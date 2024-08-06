@@ -153,7 +153,7 @@ const FamilyRegistrationPage = () => {
 
         setLoading(false);
         if (success) {
-            navigate(ROUTES.register, { replace: true });
+            navigate(-1);
         } else {
             console.error('Failed to update family details.');
         }

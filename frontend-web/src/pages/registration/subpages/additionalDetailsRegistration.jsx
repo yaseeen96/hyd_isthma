@@ -121,7 +121,7 @@ const AdditionalDetailsRegistration = () => {
         setLoading(true);
         const isSuccess = await updateAdditionalDetails(formattedValues);
         if (isSuccess) {
-            navigate(ROUTES.register, { replace: true });
+            navigate(-1);
             toast.success('Registration Successful. You are all done');
         } else {
             toast.error('Something seems to be wrong. Please come back later');

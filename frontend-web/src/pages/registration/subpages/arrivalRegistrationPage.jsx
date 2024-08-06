@@ -78,7 +78,7 @@ const ArrivalRegistrationPage = () => {
                         hideProgressBar: false,
                     }
                 );
-                navigate(ROUTES.register, { replace: true });
+                navigate(-1);
                 if (analytics) {
                     trackSelectContent(analytics, 'button', 'register-ijtema', 'Register for Ijtema');
                 }

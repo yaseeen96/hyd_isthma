@@ -28,7 +28,7 @@ const FinancialRegistration = () => {
         console.log(`Amount Paid: ${values.amountPaid}`);
         try {
             await updateFinancialDetails(values.amountPaid);
-            navigate(ROUTES.register, { replace: true });
+            navigate(-1);
             toast.success('Thank you. Please complete the next steps');
         } catch (error) {
             toast.error('Something went wrong. Please come back later');
