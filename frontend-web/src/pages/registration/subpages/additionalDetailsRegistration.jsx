@@ -19,6 +19,20 @@ const AdditionalDetailsRegistration = () => {
     const navigate = useNavigate();
     const registrationDetails = useRecoilValue(registrationDetailsAtom);
 
+    const defaultItems = [
+        { name: 'Bed', qty: '0' },
+        { name: 'Cot', qty: '0' },
+        { name: 'Plate', qty: '0' },
+        { name: 'Spoons', qty: '0' },
+        { name: 'Carpet', qty: '0' },
+    ];
+
+    const mergePurchaseDetails = (existingDetails, defaultItems) => {
+        const existingNames = existingDetails.map((item) => item.name);
+        const mergedItems = [...existingDetails, ...defaultItems.filter((item) => !existingNames.includes(item.name))];
+        return mergedItems;
+    };
+
     const initialValues = {
         arrival_details: {
             datetime: registrationDetails.member_reg_data?.arrival_details?.datetime ? new Date(registrationDetails.member_reg_data.arrival_details.datetime) : null,
@@ -46,23 +60,18 @@ const AdditionalDetailsRegistration = () => {
         },
         health_concern: registrationDetails.member_reg_data?.health_concern || '',
         management_experience: registrationDetails.member_reg_data?.management_experience || 'no',
-        purchases_required:
+        purchases_required: mergePurchaseDetails(
             registrationDetails.member_reg_data?.purchase_details.length > 0
                 ? registrationDetails.member_reg_data.purchase_details.map((item) => ({
                       name: item.type,
                       qty: item.qty || '0',
                   }))
-                : [
-                      { name: 'Bed', qty: '0' },
-                      { name: 'Cot', qty: '0' },
-                      { name: 'Plate', qty: '0' },
-                      { name: 'Spoons', qty: '0' },
-                      { name: 'Carpet', qty: '0' },
-                  ],
+                : [],
+            defaultItems
+        ),
         comments: registrationDetails.member_reg_data?.comments || '',
         year_of_rukniyat: registrationDetails.member_data[0]?.year_of_rukniyat || '',
     };
-    console.log(registrationDetails);
 
     const transportOptions = {
         BUS: [
@@ -433,9 +442,6 @@ const AdditionalDetailsRegistration = () => {
                                                     />
                                                     <ErrorMessage name={`purchases_required.${index}.qty`} component="div" className="text-red-500 text-sm mt-1" />
                                                 </div>
-                                                <button type="button" onClick={() => arrayHelpers.remove(index)} className="px-4 py-2 bg-red-500 text-white rounded-md">
-                                                    Remove
-                                                </button>
                                             </div>
                                         ))}
                                     </div>
