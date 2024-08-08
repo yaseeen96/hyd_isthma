@@ -1,21 +1,49 @@
+// components/NotificationList.js
 import React from 'react';
-import HomeLayout from '../layout/Homelayout';
+import { useQuery } from 'react-query';
+import { getNotifications } from '../../../services/notification_service';
 import SingleNotificationCard from '../components/singleNotificationCard';
+import HomeLayout from '../layout/Homelayout';
+import LoadingComponent from '../../../components/common/loadingComponent';
+import BottomBar from '../components/bottomBar';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../../router/routes';
 
-const NotificationPage = () => {
-    let notifications = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+const NotificationList = () => {
+    const { data, error, isLoading } = useQuery('notifications', getNotifications);
+    const navigate = useNavigate();
+
+    if (isLoading)
+        return (
+            <div className="h-screen flex flex-col">
+                <LoadingComponent />;
+                <BottomBar />
+            </div>
+        );
+    if (error) return <div>Error loading notifications</div>;
+
     return (
         <HomeLayout>
-            {notifications.map((value, index) => (
-                <SingleNotificationCard
-                    title={'Notification Title'}
-                    subtitle={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur ad doloribus laudantium? Enim odio vero illo magnam repellendus quaerat commodi deleniti dicta ad, cupiditate a in quasi autem, accusamus vel.`}
-                    imageUrl={'/assets/images/cover.jpg'}
-                    time={'2 days ago'}
-                />
-            ))}
+            <h1 className="text-2xl font-bold my-2 mx-2">My Notifications</h1>
+
+            {data.data.length === 0 ? (
+                <div className=" w-full h-[80vh] flex items-center justify-center text-gray-500 my-4">No notifications</div>
+            ) : (
+                data.data.map((notification) => (
+                    <SingleNotificationCard
+                        key={notification.id}
+                        title={notification.title}
+                        subtitle={notification.message}
+                        imageUrl={notification.image}
+                        time={notification.created_at}
+                        onButtonPress={() => {
+                            navigate(`${ROUTES.notificationDetails}?id=${notification.id}`);
+                        }}
+                    />
+                ))
+            )}
         </HomeLayout>
     );
 };
 
-export default NotificationPage;
+export default NotificationList;
