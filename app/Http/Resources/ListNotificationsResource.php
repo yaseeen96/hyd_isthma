@@ -14,17 +14,37 @@ class ListNotificationsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $imageSrc = !empty($this->getMedia('notification_image')->first()) ? $this->getMedia('notification_image')->first()->getUrl() : '/assets/img/no-image.jpg';
-        $docSrc = !empty($this->getMedia('notification_doc')->first()) ? $this->getMedia('notification_doc')->first()->getUrl() : '';
-        $data = [
-            'id' => $this->id,
-            'title' => $this->title,
-            'message' => $this->message,
-            'image' => $imageSrc,
-            'document' => $docSrc,
-            'youtube_url' => $this->youtube_url,
-            'created_at' => date('d-m-Y', strtotime($this->created_at)),
-        ];
+        $include = false;
+        $user = auth()->user();
+        $confirmArrival = !empty($user->registration) ? $user->registration->confirm_arrival : 0;
+        if($this->criteria['region_type']  == 'unit' &&  $user->unit_name == $this->criteria['region_value']) {
+            $include = true;
+        }
+        if($this->criteria['region_type']  == 'zone' &&  $user->unit_name == $this->criteria['region_value']) {
+            $include = true;
+        }
+        if($this->criteria['region_type']  == 'division' &&  $user->unit_name == $this->criteria['region_value']) {
+            $include = true;
+        }
+        if(empty($this->criteria['reg_status']) || ($this->criteria['reg_status'] ==  $confirmArrival && $include)) {
+            $include = true;
+        }
+        if(empty($this->criteria['gender']) || ($this->criteria['gender'] == $user->gender && $include)) {
+            $include = true;
+        }
+        if($include) {
+            $imageSrc = !empty($this->getMedia('notification_image')->first()) ? $this->getMedia('notification_image')->first()->getUrl() : '/assets/img/no-image.jpg';
+            $docSrc = !empty($this->getMedia('notification_doc')->first()) ? $this->getMedia('notification_doc')->first()->getUrl() : '';
+            $data = [
+                'id' => $this->id,
+                'title' => $this->title,
+                'message' => $this->message,
+                'image' => $imageSrc,
+                'document' => $docSrc,
+                'youtube_url' => $this->youtube_url,
+                'created_at' => date('d-m-Y', strtotime($this->created_at)),
+            ];
+        }
         return $data;
     }
 }
