@@ -27,8 +27,10 @@ class ReportsController extends Controller
                     $query->where('gender', $request->gender);
                 if (isset($request->age_group))
                     $query->where('type', $request->age_group);
-                if (isset($request->interested_in_volunteering))
+                if (isset($request->interested_in_volunteering)) {
+                    $request->interested_in_volunteering = $request->interested_in_volunteering == 'null' ? null : $request->interested_in_volunteering;
                     $query->where('interested_in_volunteering', $request->interested_in_volunteering);
+                }
             })->where(function ($query) use($request) {
                 if(isset($request->zone_name)){
                     $query->whereHas('registration.member', function ($q) use ($request) {
@@ -66,7 +68,7 @@ class ReportsController extends Controller
                         return $familyDetail->registration->member->zone_name;
                     })
                     ->editColumn('interested_in_volunteering', function(RegFamilyDetail $familyDetail) {
-                    return $familyDetail->interested_in_volunteering == 'yes' ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>';
+                    return ($familyDetail->interested_in_volunteering == null ? '' : ($familyDetail->interested_in_volunteering == 'yes' ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>'));
                     })
                     ->rawColumns(['name_of_rukun', 'rukun_id', 'phone', 'unit_name', 'division_name', 'zone_name', 'interested_in_volunteering'])->addIndexColumn()->make(true);
 
@@ -86,7 +88,17 @@ class ReportsController extends Controller
                         $condition = $request->paid_status == 'no' ? '=' : '!=';
                         $query->where('fees_paid_to_ameer', $condition, null);
                     }
-             });
+             })->whereHas('member', function ($query) use ($request) {
+                if (isset($request->unit_name)) {
+                    $query->where('unit_name', $request->unit_name);
+                }
+                if (isset($request->zone_name)) {
+                    $query->where('zone_name', $request->zone_name);
+                }
+                if (isset($request->division_name)) {
+                    $query->where('division_name', $request->division_name);
+                }
+            });
             return $datatable->eloquent($query)
                 ->addColumn('name', function (Registration $registration) {
                     return $registration->member->name;
@@ -294,7 +306,7 @@ class ReportsController extends Controller
             abort(403);
         }
         if($request->ajax()) {
-            $query = RegPurchasesDetail::with('registration')->where(function ($query) use ($request) {
+            $query = RegPurchasesDetail::with('registration')->where('qty', '>', 0)->where(function ($query) use ($request) {
                 if (isset($request->purchase_type))
                     $query->where('type', $request->purchase_type);
             })->where(function ($query) use($request) {

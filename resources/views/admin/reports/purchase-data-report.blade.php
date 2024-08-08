@@ -69,6 +69,11 @@
                                         placeholder="Select Type" onchange="setFilter()">
                                         <option value="">All</option>
                                         <option value="bed">Bed</option>
+                                        <option value="cot">Cot</option>
+                                        <option value="plate">Plate</option>
+                                        <option value="spoons">Spoons</option>
+                                        <option value="carpet">Carpet</option>
+                                        <option value="bed">Bed</option>
                                     </select>
                                 </div>
                             </div>

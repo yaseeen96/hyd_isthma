@@ -137,6 +137,7 @@
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     {{-- datables global configs --}}
     <script src="{{ asset('assets/dist/js/app-global-config.js') }}"></script>
     <script type="text/javascript">
@@ -148,7 +149,14 @@
             theme: 'bootstrap4',
             placeholder: "Select a value",
             allowClear: true
-        })
+        });
+        $(function() {
+            bsCustomFileInput.init();
+        });
+        // $('#datetimepicker1').datetimepicker({
+        //     sideBySide: true,
+        //     debug: true
+        // });
     </script>
     @stack('scripts')
 

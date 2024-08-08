@@ -183,6 +183,19 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="notificaiton_doc">Notification Document</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="notificaiton_doc"
+                                            name="notificaiton_doc">
+                                        <label class="custom-file-label" for="notificaiton_doc">Choose file</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Upload</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="youtube_url">Youtube URL</label>
                                 <input type="text" name="youtube_url" class="form-control">
                             </div>

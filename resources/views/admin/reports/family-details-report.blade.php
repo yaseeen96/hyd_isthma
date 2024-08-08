@@ -65,7 +65,7 @@
                                 <div class="form-group">
                                     <label>Age Group</label>
                                     <select class="form-control w-full" id="age_group" onchange="setFilter()">
-                                        <option value="">-Select Age Group-</option>
+                                        <option value="">-Select Type of Accompanying person-</option>
                                         <option value="mehram">Mehram</option>
                                         <option value="children">Children</option>
                                     </select>
@@ -79,6 +79,7 @@
                                         <option value="">-Select Option-</option>
                                         <option value="yes">Yes</option>
                                         <option value="no">No</option>
+                                        <option value="null">Not Specified</option>
                                     </select>
                                 </div>
                             </div>
@@ -141,6 +142,9 @@
                     },
                     {
                         data: 'type',
+                        render: function(data, type, row, meta) {
+                            return data.charAt(0).toUpperCase() + data.slice(1);
+                        }
                     },
                     {
                         data: 'name_of_rukun',

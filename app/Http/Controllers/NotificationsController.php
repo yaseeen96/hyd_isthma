@@ -26,10 +26,14 @@ class NotificationsController extends Controller
         if($request->ajax())
         {
             $query = Notification::query();
-            return $dataTables->eloquent($query)->addColumn('image', function (Notification $notification) {
-                $imageSrc = !empty($notification->getMedia('notification_image')) ? $notification->getMedia('notification_image')->first()->getUrl() : '/assets/img/no-image.jpg';
+            return $dataTables->eloquent($query)
+            ->addColumn('image', function (Notification $notification) {
+                $imageSrc = !empty($notification->getMedia('notification_image')->first()) ? $notification->getMedia('notification_image')->first()->getUrl() : '/assets/img/no-image.jpg';
                 return '<img src="'.$imageSrc.'" width="100px" height="100px">';
-            })->rawColumns(['image'])->makeHidden(['criteria'])
+            }) ->addColumn('document', function (Notification $notification) {
+                $docLink = !empty($notification->getMedia('notificaiton_doc')->first()) ? $notification->getMedia('notificaiton_doc')->first()->getUrl() : '';
+                return !empty($docLink) ? '<span class="badge badge-primary text-white"><a target="_blank" href="'.$docLink.'"><i class="fas fa-eye text-white"></i></a></span>' : '';
+            })->rawColumns(['image', 'document'])->makeHidden(['criteria'])
                 ->addIndexColumn()
                 ->make(true);
 
@@ -106,6 +110,11 @@ class NotificationsController extends Controller
             $media = MediaUploader::fromSource($request->file('notification_image'))->toDestination('public', 'images/notification_image')->useFilename(Str::uuid())->upload();
             $notification->attachMedia($media, ['notification_image']);
             $imgUrl = $notification->getMedia('notification_image')->first()->getUrl();
+        }
+        // upload document to server
+        if(!empty($request->file('notificaiton_doc'))) {
+            $media = MediaUploader::fromSource($request->file('notificaiton_doc'))->toDestination('public', 'images/notificaiton_doc')->useFilename(Str::uuid())->upload();
+            $notification->attachMedia($media, ['notificaiton_doc']);
         }
         // Sending Push Notification.
         $is_send = PushNotificationHelper::sendNotification([

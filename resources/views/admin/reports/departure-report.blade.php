@@ -71,9 +71,16 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Station Name(Start Point)</label>
-                                    <input type="text" class="form-control w-full" id="start_point"
+                                    <label>Station Name</label>
+                                    <select class="form-control select2bs4 " style="width: 100%;" id="start_point"
                                         onchange="setFilter()">
+                                        <option value="">All</option>
+                                        @if (count(config('stationslist')) > 0)
+                                            @foreach (config('stationslist') as $station)
+                                                <option value="{{ $station }}"> {{ $station }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -100,7 +107,7 @@
                 <th>No. Family Members Accompanying</th>
                 <th>Travel Mode</th>
                 <th>Date & TIme </th>
-                <th>Station Name (Start Point)</th>
+                <th>Station Name</th>
                 <th>Bus/Train Number</th>
             </x-table>
         </div>

@@ -19,6 +19,7 @@
                 <th>Title</th>
                 <th>Message</th>
                 <th>Image</th>
+                <th>Document</th>
                 <th>Youtube Url</th>
             </x-table>
         </div>
@@ -33,19 +34,18 @@
             columns: [
                 dtIndexCol(),
                 {
-                    name: 'title',
                     data: 'title',
                 },
                 {
-                    name: 'message',
                     data: 'message'
                 },
                 {
-                    name: 'image',
                     data: 'image',
                 },
                 {
-                    name: 'youtube_url',
+                    data: 'document',
+                },
+                {
                     data: 'youtube_url'
                 }
             ]

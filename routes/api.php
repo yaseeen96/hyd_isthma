@@ -33,6 +33,10 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('financialDetails', 'RegistrationController@updateFinancialDetails');
             Route::post('additionalDetails', 'RegistrationController@updateAdditionalDetails');
         });
+        Route::group(['prefix' => 'notifications'], function () {
+            Route::get('listNotifications', 'NotificationsController@listNotifications');
+            Route::get('getNotification/{id}', 'NotificationsController@getNotification');
+        });
         Route::post('logout', 'AuthController@logout');
         Route::post('deleteAccount', 'AuthController@deleteAccount');
     });

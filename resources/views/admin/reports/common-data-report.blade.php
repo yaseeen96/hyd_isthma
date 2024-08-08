@@ -73,11 +73,11 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Cot/Bed</label>
+                                    <label>Cot or Bed</label>
                                     <select class="form-control w-full" id="cot_or_bed" onchange="setFilter()">
                                         <option value="">-Select Option-</option>
-                                        <option value="yes">Yes</option>
-                                        <option value="no">No</option>
+                                        <option value="bed">Bed</option>
+                                        <option value="cot">Cot</option>
                                     </select>
                                 </div>
                             </div>
@@ -117,7 +117,7 @@
                 <th>Age</th>
                 <th>Hotel Required</th>
                 <th>Need Attendent</th>
-                <th>Bed/Cot</th>
+                <th>Bed or Cot</th>
                 <th>Health Concern</th>
                 <th>Management Experience</th>
                 <th>Comments</th>
@@ -177,24 +177,39 @@
                     },
                     {
                         data: 'member.gender',
+                        render: function(data, type, row, meta) {
+                            return data ? data.charAt(0).toUpperCase() + data.slice(1) : '';
+                        }
                     },
                     {
                         data: 'member.age',
                     },
                     {
-                        data: 'hotel_required'
+                        data: 'hotel_required',
+                        render: function(data, type, row, meta) {
+                            return data ? data.charAt(0).toUpperCase() + data.slice(1) : '';
+                        }
                     },
                     {
-                        data: 'need_attendant'
+                        data: 'need_attendant',
+                        render: function(data, type, row, meta) {
+                            return data ? data.charAt(0).toUpperCase() + data.slice(1) : '';
+                        }
                     },
                     {
-                        data: 'cot_or_bed'
+                        data: 'cot_or_bed',
+                        render: function(data, type, row, meta) {
+                            return data ? data.charAt(0).toUpperCase() + data.slice(1) : '';
+                        }
                     },
                     {
                         data: 'health_concern'
                     },
                     {
-                        data: 'management_experience'
+                        data: 'management_experience',
+                        render: function(data, type, row, meta) {
+                            return data ? data.charAt(0).toUpperCase() + data.slice(1) : '';
+                        }
                     },
                     {
                         data: 'comments'
