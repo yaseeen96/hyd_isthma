@@ -10,8 +10,6 @@ import useAsyncEffect from 'use-async-effect';
 import { useLoading } from '../../../utils/hooks/useLoading';
 import { isUserLoggedIn } from '../../../services/check_token_validity_service';
 import LoadingComponent from '../../../components/common/loadingComponent';
-import TileCard from '../components/tileCard';
-import { MdNotifications } from 'react-icons/md';
 
 const HomePage = () => {
     const { loading, setLoading } = useLoading();

@@ -27,7 +27,7 @@ const NotificationList = () => {
             <h1 className="text-2xl font-bold my-2 mx-2">My Notifications</h1>
 
             {data.data.length === 0 ? (
-                <div className=" w-full h-[80vh] flex items-center justify-center text-gray-500 my-4">No notifications</div>
+                <div className=" w-full h-[80vh] flex items-center justify-center text-gray-500 my-4">No notifications yet. Please stay tuned</div>
             ) : (
                 data.data.map((notification) => (
                     <SingleNotificationCard
