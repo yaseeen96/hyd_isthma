@@ -12,11 +12,12 @@ use Kreait\Firebase\Exception\MessagingException;
 class PushNotificationHelper {
 
     public static function sendNotification($data) {
+        $notificationUrl = env('JIH_APP_URL') . 'notification?id='.$data['id'];
         $tokens = $data['tokens'];
         $title = $data['title'];
         $message = $data['message'];
         $ytUrl = $data['ytUrl'];
-        $imgUrl = !empty($data['imgUrl']) ? $data['imgUrl'] : 'https://jihapi.kkshan.amlc.in/storage/images/notification_image/ST-Transparent-Logo-Final-2-4.png';
+        $imgUrl = !empty($data['imgUrl']) ? $data['imgUrl'] : env('APP_URL').'assets/img/no-image.png';
         $factory = (new Factory)->withServiceAccount(storage_path(env('FIREBASE_CREDENTIALS')),);
         $messaging = $factory->createMessaging();
         if(isset($tokens)) {
@@ -26,7 +27,7 @@ class PushNotificationHelper {
             // preparing message
             $message = CloudMessage::new()
                 ->withNotification($notification)
-                ->withData(['url' => $ytUrl]);
+                ->withData(['url' => $notificationUrl]);
             try {
                 // sending push notificaiton message
                 $result = $messaging->sendMulticast($message, $tokens);

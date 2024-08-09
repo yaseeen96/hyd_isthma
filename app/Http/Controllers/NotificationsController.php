@@ -123,6 +123,7 @@ class NotificationsController extends Controller
             'message' => $message,
             'imgUrl' => $imgUrl,
             'ytUrl' => $ytUrl,
+            'id' => $notification->id
         ]);
         return back()->with('success', 'Notification Send Successfully');
     }
