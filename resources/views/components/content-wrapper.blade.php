@@ -22,7 +22,10 @@
              const val = $(`#${actionType}`).val();
              $.ajax({
                  url: dataName === "division_name" ? "{{ route('getDivisions') }}" : "{{ route('getUnits') }}",
-                 type: 'GET',
+                 type: 'POST',
+                 headers: {
+                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                 },
                  data: {
                      [actionType]: val
                  },

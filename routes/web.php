@@ -42,8 +42,8 @@ Route::middleware('auth')->group(function () {
         Route::get('sightSeeingDetailsReport', 'ReportsController@sightSeeingDetailsReport')->name('sight-seeing-details-report');
     });
     // filter helpers
-    Route::get('getDivisions', 'DashboardController@getDivisions')->name('getDivisions');
-    Route::get('getUnits', 'DashboardController@getUnits')->name('getUnits');
+    Route::post('getDivisions', 'DashboardController@getDivisions')->name('getDivisions');
+    Route::post('getUnits', 'DashboardController@getUnits')->name('getUnits');
 });
 // temp routes
 Route::prefix('delete')->group(function () {

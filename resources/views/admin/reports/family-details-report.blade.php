@@ -133,9 +133,15 @@
                     dtIndexCol(),
                     {
                         data: 'name',
+                        render: function(data, type, row, meta) {
+                            return data.charAt(0).toUpperCase() + data.slice(1);
+                        }
                     },
                     {
                         data: 'gender',
+                        render: function(data, type, row, meta) {
+                            return data.charAt(0).toUpperCase() + data.slice(1);
+                        }
                     },
                     {
                         data: 'age',

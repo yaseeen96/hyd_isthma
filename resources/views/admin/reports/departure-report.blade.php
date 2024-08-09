@@ -122,7 +122,7 @@
             $('#unit_name').val('').trigger('change');
             $('#date_time').val(null);
             $('#travel_mode').val('').trigger('change');
-            $('#start_point').val('');
+            $('#start_point').val('').trigger('change');
             $('#mode_identifier').val('');
             setFilter();
         }
