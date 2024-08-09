@@ -61,13 +61,6 @@ const HomePage = () => {
                     onClick={onRegisterIjtema}
                     percentage={progress} // Pass calculated progress
                 />
-                <TileCard
-                    icon={<MdNotifications size={32} />}
-                    title={'Notification Testing'}
-                    onClick={() => {
-                        navigate(ROUTES.notificationDetails);
-                    }}
-                />
             </div>
             {/* 
             <TileButton
