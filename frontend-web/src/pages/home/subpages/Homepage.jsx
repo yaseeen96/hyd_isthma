@@ -59,13 +59,6 @@ const HomePage = () => {
                     onClick={onRegisterIjtema}
                     percentage={progress} // Pass calculated progress
                 />
-                {/* <TileCard
-                    icon={<RiAlertFill size={32} />}
-                    title={'Other Card'}
-                    onClick={() => {
-                        console.log('clicked');
-                    }}
-                /> */}
             </div>
             {/* 
             <TileButton

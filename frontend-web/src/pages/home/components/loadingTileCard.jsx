@@ -30,7 +30,7 @@ const LoadingTileCard = ({ icon, title, onClick, percentage }) => {
             >
                 {icon}
                 <h3 className="text-xl">{title}</h3>
-                <p className="absolute top-2 right-2 text-lg text-gray-400">{percentage}%</p> {/* Progress text */}
+                <p className="absolute top-2 right-2 text-lg text-gray-600">{percentage}%</p> {/* Progress text */}
             </div>
             <div className="absolute top-0 left-0 w-full h-full rounded-lg overflow-hidden pointer-events-none z-0">
                 <div ref={progressRef} className="absolute bottom-0 w-full transition-all duration-500 ease-in-out"></div>

@@ -3,6 +3,7 @@ import HomeWrapper from '../pages/home/HomeWrapper';
 import FamilyRegistrationPage from '../pages/registration/subpages/familyRegistration';
 import FinancialRegistration from '../pages/registration/subpages/financialRegistration';
 import AdditionalDetailsRegistration from '../pages/registration/subpages/additionalDetailsRegistration';
+import NotificationDetailPage from '../pages/Notification/NotificationDetailPage';
 
 const ArrivalRegistrationPage = lazy(() => import('../pages/registration/subpages/arrivalRegistrationPage'));
 const Otp = lazy(() => import('../pages/Authentication/Otp'));
@@ -19,6 +20,7 @@ export const ROUTES = {
     familyRegistration: '/home/register/family',
     financialRegistration: '/home/register/finance',
     additionalRegistration: '/home/register/additional',
+    notificationDetails: '/notification',
 };
 
 const routes = [
@@ -66,6 +68,11 @@ const routes = [
     {
         path: ROUTES.additionalRegistration,
         element: <AdditionalDetailsRegistration />,
+        layout: 'blank',
+    },
+    {
+        path: ROUTES.notificationDetails,
+        element: <NotificationDetailPage />,
         layout: 'blank',
     },
 ];
