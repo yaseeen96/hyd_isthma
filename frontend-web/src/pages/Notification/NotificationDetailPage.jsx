@@ -69,7 +69,7 @@ const NotificationDetailPage = () => {
                 {notification.document && (
                     <>
                         <h1 className="text-xl my-4 font-bold">File</h1>
-                        <iframe className="my-4" src={pdfUrl} width="100%" height="600" frameBorder="0" title="Notification PDF"></iframe>
+                        <iframe className="my-4" src={pdfUrl} width="100%" height="600" title="Notification PDF"></iframe>
                     </>
                 )}
             </section>
