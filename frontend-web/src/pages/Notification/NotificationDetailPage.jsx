@@ -29,7 +29,7 @@ const NotificationDetailPage = () => {
     let videoId = null;
     let videoUrl = null;
     if (notification.youtube_url) {
-        videoId = notification.youtube_url.split('v=')[1] || 'LfaMVlDaQ24';
+        videoId = notification.youtube_url.split('v=')[1] || '4nrUGLYviG0';
         videoUrl = `https://www.youtube.com/embed/${videoId}`;
     }
     const pdfUrl = notification.document;
