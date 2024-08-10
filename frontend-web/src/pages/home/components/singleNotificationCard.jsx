@@ -9,7 +9,9 @@ const SingleNotificationCard = ({ title, subtitle, imageUrl, time, onButtonPress
                     <p className="overflow-hidden whitespace-nowrap text-ellipsis text-md text-gray-700">{subtitle}</p>
                     <p className="text-gray-500">{time}</p>
                 </div>
-                <img src={imageUrl} alt="" className="col-span-4 object-cover w-full" />
+                <div className="flex justify-center items-center col-span-4">
+                    <img src={imageUrl} alt="" className=" object-cover w-full" />
+                </div>
             </div>
         </button>
     );
