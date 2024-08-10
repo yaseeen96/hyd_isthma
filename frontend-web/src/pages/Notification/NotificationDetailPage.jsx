@@ -26,8 +26,8 @@ const NotificationDetailPage = () => {
     if (!data) return <div className="h-screen flex flex-col justify-center items-center">No notification data</div>;
 
     const notification = data.data;
-    const videoId = null;
-    const videoUrl = null;
+    let videoId = null;
+    let videoUrl = null;
     if (notification.youtube_url) {
         videoId = notification.youtube_url.split('v=')[1] || 'LfaMVlDaQ24';
         videoUrl = `https://www.youtube.com/embed/${videoId}`;
