@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -89,28 +90,39 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       onWillPop: _onWillPop,
       child: Scaffold(
         body: _isReady
-            ? InAppWebView(
-                initialUrlRequest: URLRequest(url: WebUri(widget.initialUrl)),
-                initialSettings: InAppWebViewSettings(
-                  javaScriptEnabled: true,
-                  supportZoom: false,
-                  javaScriptCanOpenWindowsAutomatically: true,
-                  useHybridComposition: false,
-                ),
-                onWebViewCreated: (controller) {
-                  _webViewController = controller;
-                },
-                onLoadStop: (controller, url) async {
-                  if (_fcmToken != null) {
-                    await controller.evaluateJavascript(source: '''
+            ? SafeArea(
+                child: InAppWebView(
+                  initialUrlRequest: URLRequest(url: WebUri(widget.initialUrl)),
+                  initialSettings: InAppWebViewSettings(
+                    javaScriptEnabled: true,
+                    supportZoom: false,
+                    javaScriptCanOpenWindowsAutomatically: true,
+                    useHybridComposition: true,
+                    allowFileAccessFromFileURLs: true,
+                    allowFileAccess: true,
+                    allowUniversalAccessFromFileURLs: true,
+                    allowContentAccess: true,
+                    mixedContentMode:
+                        MixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+                    useOnLoadResource: true,
+                    selectionGranularity: SelectionGranularity.CHARACTER,
+                  ),
+                  onWebViewCreated: (controller) {
+                    _webViewController = controller;
+                  },
+                  onLoadStop: (controller, url) async {
+                    if (_fcmToken != null) {
+                      await controller.evaluateJavascript(source: '''
                       localStorage.setItem("fcmtoken", "$_fcmToken");
-                    ''');
-                  }
-                },
-                onReceivedError: (controller, request, error) {
-                  logger
-                      .e("Failed to load ${request.url}: ${error.description}");
-                },
+                      ''');
+                      FlutterNativeSplash.remove();
+                    }
+                  },
+                  onReceivedError: (controller, request, error) {
+                    logger.e(
+                        "Failed to load ${request.url}: ${error.description}");
+                  },
+                ),
               )
             : const Center(child: CircularProgressIndicator()),
       ),
