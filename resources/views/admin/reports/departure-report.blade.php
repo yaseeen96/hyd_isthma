@@ -54,7 +54,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Date & Time</label>
-                                    <input type="date" class="form-control" id="date_time" onchange="setFilter()">
+                                    <input type="date" class="form-control" id="date_time" data-target="#date_time"
+                                        onchange="setFilter()">
                                 </div>
                             </div>
                             <div class="col-md-6">

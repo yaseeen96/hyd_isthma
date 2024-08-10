@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AppHelperFunctions;
+use App\Models\Member;
 use Illuminate\Http\Request;
 use App\Models\Registration;
 use App\Models\RegFamilyDetail;
 use App\Models\RegPurchasesDetail;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
-use Kreait\Firebase\Messaging\CloudMessage;
-use Kreait\Firebase\Messaging\Notification;
-use Kreait\Firebase\Exception\MessagingException;
 
 class ReportsController extends Controller
 {
@@ -22,14 +22,14 @@ class ReportsController extends Controller
         }
         if($request->ajax())
         {
-            $query = RegFamilyDetail::with('registration')->where(function ($query) use ($request) {
+            $query = RegFamilyDetail::with('registration', 'registration.member')->where(function ($query) use ($request) {
                 if (isset($request->gender))
                     $query->where('gender', $request->gender);
                 if (isset($request->age_group))
                     $query->where('type', $request->age_group);
                 if (isset($request->interested_in_volunteering)) {
-                    $request->interested_in_volunteering = $request->interested_in_volunteering == 'null' ? null : $request->interested_in_volunteering;
-                    $query->where('interested_in_volunteering', $request->interested_in_volunteering);
+                    $interested_in_volunteering = $request->interested_in_volunteering == 'null' ? null : $request->interested_in_volunteering;
+                    $query->where('interested_in_volunteering', $interested_in_volunteering);
                 }
             })->where(function ($query) use($request) {
                 if(isset($request->zone_name)){
@@ -49,29 +49,10 @@ class ReportsController extends Controller
                 }
             })->orderBy('id', 'asc');
             return $datatables->eloquent($query)
-                    ->addColumn('name_of_rukun', function (RegFamilyDetail $familyDetail) {
-                        return $familyDetail->registration->member->name;
-                    })
-                    ->addColumn('rukun_id', function (RegFamilyDetail $familyDetail) {
-                        return $familyDetail->registration->member->user_number;
-                    })
-                    ->addColumn('phone', function(RegFamilyDetail $familyDetail) {
-                        return $familyDetail->registration->member->phone;
-                    })
-                    ->addColumn('unit_name', function(RegFamilyDetail $familyDetail) {
-                        return $familyDetail->registration->member->unit_name;
-                    })
-                    ->addColumn('division_name', function(RegFamilyDetail $familyDetail) {
-                        return $familyDetail->registration->member->division_name;
-                    })
-                    ->addColumn('zone_name', function(RegFamilyDetail $familyDetail) {
-                        return $familyDetail->registration->member->zone_name;
-                    })
                     ->editColumn('interested_in_volunteering', function(RegFamilyDetail $familyDetail) {
-                    return ($familyDetail->interested_in_volunteering == null ? '' : ($familyDetail->interested_in_volunteering == 'yes' ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>'));
+                    return ($familyDetail->interested_in_volunteering == null ? '' : ($familyDetail->interested_in_volunteering == 'yes' ? AppHelperFunctions::getGreenBadge('Yes') : AppHelperFunctions::getRedBadge('No')));
                     })
-                    ->rawColumns(['name_of_rukun', 'rukun_id', 'phone', 'unit_name', 'division_name', 'zone_name', 'interested_in_volunteering'])->addIndexColumn()->make(true);
-
+                    ->rawColumns(['interested_in_volunteering'])->addIndexColumn()->make(true);
         }
         return view('admin.reports.family-details-report');
     }
@@ -100,33 +81,12 @@ class ReportsController extends Controller
                 }
             });
             return $datatable->eloquent($query)
-                ->addColumn('name', function (Registration $registration) {
-                    return $registration->member->name;
-                })
-                ->addColumn('user_number', function (Registration $registration) {
-                    return $registration->member->user_number;
-                })
-                ->addColumn('phone', function (Registration $registration) {
-                    return $registration->member->phone;
-                })
-                ->addColumn('unit_name', function (Registration $registration) {
-                    return $registration->member->unit_name;
-                })
-                ->addColumn('division_name', function (Registration $registration) {
-                    return $registration->member->division_name;
-                })
-                ->addColumn('zone_name', function (Registration $registration) {
-                    return $registration->member->zone_name;
-                })
-                ->addColumn('gender', function (Registration $registration) {
-                    return $registration->member->gender;
-                })
                 ->addColumn('member_fees', function (Registration $registration) {
                         $memberFee = $registration->member_fees ?? 0;
                         $familyFee = RegFamilyDetail::where('registration_id', $registration->id)->sum('fees');
                         return $memberFee + $familyFee;
                     })
-                ->rawColumns(['name', 'user_number', 'phone', 'unit_name', 'division_name', 'zone_name', 'gender', 'total_fees'])
+                ->rawColumns(['member_fees'])
                 ->with('sum_total_fees', $query->sum('member_fees'))->addIndexColumn()->make(true);
         }
         return view('admin.reports.payment-details-report');
@@ -272,15 +232,12 @@ class ReportsController extends Controller
                     if(!empty($request->hotel_required)){
                         $query->where('hotel_required', $request->hotel_required);
                     }
-
                     if(!empty($request->need_attendant)) {
                         $query->where('special_considerations->need_attendant', $request->need_attendant);
                     }
-
                     if(!empty($request->cot_or_bed)){
                         $query->where('special_considerations->cot_or_bed', $request->cot_or_bed);
                     }
-
                     if(!empty($request->health_concern)) {
                         $condition = $request->health_concern == 'yes' ? '!=' : '=';
                         $query->where('health_concern', $condition, null);
@@ -306,7 +263,7 @@ class ReportsController extends Controller
             abort(403);
         }
         if($request->ajax()) {
-            $query = RegPurchasesDetail::with('registration')->where('qty', '>', 0)->where(function ($query) use ($request) {
+            $query = RegPurchasesDetail::with('registration', 'registration.member')->where('qty', '>', 0)->where(function ($query) use ($request) {
                 if (isset($request->purchase_type))
                     $query->where('type', $request->purchase_type);
             })->where(function ($query) use($request) {
@@ -331,29 +288,7 @@ class ReportsController extends Controller
                     });
                 }
             })->orderBy('id', 'asc');
-            return $datatables->eloquent($query)
-                    ->addColumn('name_of_rukun', function (RegPurchasesDetail $regPurchaseDtls) {
-                        return $regPurchaseDtls->registration->member->name;
-                    })
-                    ->addColumn('rukun_id', function (RegPurchasesDetail $regPurchaseDtls) {
-                        return $regPurchaseDtls->registration->member->user_number;
-                    })
-                    ->addColumn('phone', function(RegPurchasesDetail $regPurchaseDtls) {
-                        return $regPurchaseDtls->registration->member->phone;
-                    })
-                    ->addColumn('unit_name', function(RegPurchasesDetail $regPurchaseDtls) {
-                        return $regPurchaseDtls->registration->member->unit_name;
-                    })
-                    ->addColumn('division_name', function(RegPurchasesDetail $regPurchaseDtls) {
-                        return $regPurchaseDtls->registration->member->division_name;
-                    })
-                    ->addColumn('zone_name', function(RegPurchasesDetail $regPurchaseDtls) {
-                        return $regPurchaseDtls->registration->member->zone_name;
-                    })
-                    ->editColumn('gender', function(RegPurchasesDetail $regPurchaseDtls) {
-                        return $regPurchaseDtls->registration->member->gender;
-                    })
-                    ->rawColumns(['name_of_rukun', 'rukun_id', 'phone', 'unit_name', 'division_name', 'zone_name', 'gender'])->addIndexColumn()->make(true);
+            return $datatables->eloquent($query)->addIndexColumn()->make(true);
         }
         return view('admin.reports.purchase-data-report');
     }
@@ -388,21 +323,48 @@ class ReportsController extends Controller
         }
         return view('admin.reports.sight-seeing-details-report');
     }
-    public function testing(Request $request) {
-        $token = $request->get('token');
-        if (isset($token)){
-           $messaging = app('firebase.messaging');
-        // $deviceToken = 'duCncov_Qk6q4sTWflgLhe:APA91bFcDqy-iRBaIHuyNkZZto8AcnGRvgkLFKm3RDUpNqUl2NuvHseGy4s-bnkznbARlk6n32vMZIcC3LzuoHvQAvEj9ju-MxRGnfMKRihcuz8f9dTAB67Aa8KUfiuyamK-LGkuThLb';
-            $deviceToken = $token;
-            $message = CloudMessage::withTarget('token', $deviceToken)
-                ->withNotification(Notification::create('Jih Push Notification', 'Testing Jih Push Notification'));
-            try {
-                $res = $messaging->send($message);
-                dd($res);
-            } catch (MessagingException $e) {
-                echo $e->getMessage();
-                print_r($e->errors());
-            }
+    public function globalReport(Request $request, DataTables $dataTables) {
+        
+        $user = User::find(auth()->user()->id);
+        if ($user->id != 1 && !$user->hasPermissionTo('View GlobalReport')){
+            abort(403);
         }
+
+        $globalData = array_reduce($this->globalReportData(), 'array_merge', []);
+        if($request->ajax()) {
+            $query = Member::select(DB::raw('zone_name , count(*) as total_arkans'))->where(function($query) use($request) {
+                if(!empty($request->zone_name)) {
+                    $query->where('zone_name', $request->zone_name);
+                }
+            })->groupBy('zone_name')->orderBy('zone_name', 'asc');
+            return $dataTables->eloquent($query)->with('total_registered', $globalData)->addIndexColumn()->make(true);
+        }
+        return view('admin.reports.global-report');
+    }
+
+    public function globalReportData() {
+        $data = [];
+        $distinctZones = Member::select('zone_name')->distinct()->orderBy('zone_name', 'asc')->get();
+        foreach ($distinctZones as $zone) {
+            $zoneName = $zone->zone_name;
+            $totalArkans = Member::where('zone_name', $zoneName)->count();
+            $totalAttendees = Registration::with('member')->whereHas('member', function ($query) use ($zoneName) {
+                        $query->where('zone_name', $zoneName);
+                    })->where('confirm_arrival', 1)->count();
+            $sortedData= [
+                $zoneName => [
+                    'registered' => Registration::with('member')->whereHas('member', function ($query) use ($zoneName) {
+                        $query->where('zone_name', $zoneName);
+                    })->count(),
+                    'total_attendees' => $totalAttendees,
+                    'total_non_attendees' => Registration::with('member')->whereHas('member', function ($query) use ($zoneName) {
+                        $query->where('zone_name', $zoneName);
+                    })->where('confirm_arrival', 0)->count(),
+                    'percentage' => floatval($totalArkans > 0 ? round(($totalAttendees / $totalArkans) * 100, 2) : 0)
+                ]
+            ];
+            array_push($data, $sortedData);
+        }
+        return $data;
     }
 }

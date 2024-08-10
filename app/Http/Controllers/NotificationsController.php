@@ -14,9 +14,6 @@ use Illuminate\Support\Str;
 
 class NotificationsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request, DataTables $dataTables)
     {
         $user = User::find(auth()->user()->id);
@@ -28,8 +25,8 @@ class NotificationsController extends Controller
             $query = Notification::query();
             return $dataTables->eloquent($query)
             ->addColumn('image', function (Notification $notification) {
-                $imageSrc = !empty($notification->getMedia('notification_image')->first()) ? $notification->getMedia('notification_image')->first()->getUrl() : '/assets/img/no-image.jpg';
-                return '<img src="'.$imageSrc.'" width="100px" height="100px">';
+                $imageSrc = !empty($notification->getMedia('notification_image')->first()) ? $notification->getMedia('notification_image')->first()->getUrl() : '/assets/img/no-image.png';
+                return '<img src="'.$imageSrc.'" width="80px" height="80px">';
             }) ->addColumn('document', function (Notification $notification) {
                 $docLink = !empty($notification->getMedia('notificaiton_doc')->first()) ? $notification->getMedia('notificaiton_doc')->first()->getUrl() : '';
                 return !empty($docLink) ? '<span class="badge badge-primary text-white"><a target="_blank" href="'.$docLink.'"><i class="fas fa-eye text-white"></i></a></span>' : '';

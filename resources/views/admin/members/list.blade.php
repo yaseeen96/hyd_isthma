@@ -83,6 +83,7 @@
                 <th>Date Of Birth</th>
                 <th>Gender</th>
                 <th>Age</th>
+                <th>Registration Status</th>
                 <th>Action</th>
             </x-table>
         </div>
@@ -112,44 +113,37 @@
                     dtIndexCol(),
                     {
                         data: 'name',
-                        name: 'name'
                     },
                     {
                         data: 'email',
-                        name: 'email'
                     },
                     {
                         data: 'phone',
-                        name: 'phone'
                     },
                     {
                         data: 'user_number',
-                        name: 'user_number'
                     },
                     {
                         data: 'unit_name',
-                        name: 'unit_name'
                     },
                     {
                         data: 'zone_name',
-                        name: 'zone_name'
                     },
                     {
                         data: 'division_name',
-                        name: 'division_name'
                     },
                     {
                         data: 'dob',
-                        name: 'dob',
                         orderable: false
                     },
                     {
                         data: 'gender',
-                        name: 'gender'
                     },
                     {
                         data: 'age',
-                        name: 'age'
+                    },
+                    {
+                        data: 'reg_status',
                     },
                     {
                         data: 'action',

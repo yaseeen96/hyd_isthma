@@ -153,22 +153,22 @@
                         }
                     },
                     {
-                        data: 'name_of_rukun',
+                        data: 'registration.member.name',
                     },
                     {
-                        data: 'rukun_id'
+                        data: 'registration.member.user_number'
                     },
                     {
-                        data: 'phone'
+                        data: 'registration.member.phone'
                     },
                     {
-                        data: 'unit_name'
+                        data: '.registration.member.unit_name'
                     },
                     {
-                        data: 'division_name'
+                        data: 'registration.member.division_name'
                     },
                     {
-                        data: 'zone_name'
+                        data: 'registration.member.zone_name'
                     },
                     {
                         data: 'interested_in_volunteering'

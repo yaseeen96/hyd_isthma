@@ -8,6 +8,7 @@ return [
     "CommonDataReport",
     "PurchaseDataReport",
     "SightSeeingReport",
+    "GlobalReport",
     "Notifications",
     "Permissions",
     "Users"

@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes(['register' => false]);
 Route::middleware('auth')->group(function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
+    Route::post('/', 'DashboardController@index')->name('dashboard'); // for dashboard charts
     // Members
     Route::resource('members', 'MembersController');
     // Registration
@@ -40,6 +41,7 @@ Route::middleware('auth')->group(function () {
         Route::get('commonDataReport', 'ReportsController@commonDataReport')->name('common-data-report');
         Route::get('purchaseDataReport', 'ReportsController@purchaseDataReport')->name('purchase-data-report');
         Route::get('sightSeeingDetailsReport', 'ReportsController@sightSeeingDetailsReport')->name('sight-seeing-details-report');
+        Route::get('globalReport', 'ReportsController@globalReport')->name('global-report');
     });
     // filter helpers
     Route::post('getDivisions', 'DashboardController@getDivisions')->name('getDivisions');

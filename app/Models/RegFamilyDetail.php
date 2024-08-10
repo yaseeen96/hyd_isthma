@@ -23,5 +23,4 @@ class RegFamilyDetail extends Model
     {
         return $this->belongsTo(Registration::class, 'registration_id');
     }
-
 }

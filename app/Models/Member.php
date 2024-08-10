@@ -28,16 +28,16 @@ class Member extends Authenticatable
         "age",
         "year_of_rukniyat"
     ];
-
-
-
     public function registration()
     {
         return $this->HasOne(Registration::class, 'member_id', 'id');
     }
-
+    // public function regFamilyDetails()
+    // {
+    //     return $this->HasMany(RegFamilyDetail::class, 'registration_id', 'id');
+    // }
     public function regFamilyDetails()
     {
-        return $this->HasMany(RegFamilyDetail::class, 'registration_id', 'id');
+        return $this->hasManyThrough(RegFamilyDetail::class, Registration::class);
     }
 }

@@ -14,6 +14,7 @@ class ListNotificationsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         $include = false;
         $user = auth()->user();
         $confirmArrival = !empty($user->registration) ? $user->registration->confirm_arrival : 0;
@@ -28,9 +29,13 @@ class ListNotificationsResource extends JsonResource
         }
         if(empty($this->criteria['reg_status']) || ($this->criteria['reg_status'] ==  $confirmArrival && $include)) {
             $include = true;
+        } else {
+            $include = false;
         }
-        if(empty($this->criteria['gender']) || ($this->criteria['gender'] == $user->gender && $include)) {
+        if(empty($this->criteria['gender']) || ($this->criteria['gender'] == strtolower($user->gender) && $include)) {
             $include = true;
+        } else {
+            $include = false;
         }
         if($include) {
             $imageSrc = !empty($this->getMedia('notification_image')->first()) ? $this->getMedia('notification_image')->first()->getUrl() : env('APP_URL').'assets/img/no-image.png';
@@ -45,6 +50,6 @@ class ListNotificationsResource extends JsonResource
                 'created_at' => date('d-m-Y', strtotime($this->created_at)),
             ];
         }
-        return $data;
+        return $data ?? [];
     }
 }

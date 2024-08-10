@@ -200,9 +200,16 @@
             const zone_name = $("#zone_name").val();
             const division_name = $("#division_name").val();
             $.ajax({
-                url: "{{ route('dashboard') }}" +
-                    `?unit_name=${unit_name}&zone_name=${zone_name}&division_name=${division_name}`,
-                method: 'GET',
+                url: "{{ route('dashboard') }}",
+                type: 'POST',
+                headers: {
+                    'x-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    unit_name: unit_name,
+                    zone_name: zone_name,
+                    division_name: division_name
+                },
                 success: function(data) {
                     // updating registrations chart data
                     registrations.data.labels = data.filterData.registrations.labels;

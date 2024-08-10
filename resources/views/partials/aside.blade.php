@@ -71,7 +71,19 @@
                           </a>
                       </li>
                   @endif
+
                   <li class="nav-header">REPORTS</li>
+                  @if (auth()->user()->can('View GlobalReport') || auth()->user()->id == 1)
+                      <li class="nav-item">
+                          <a href="{{ route('global-report') }}"
+                              class="nav-link {{ in_array(request()->route()->getName(), ['global-report']) ? 'active' : '' }}">
+                              <i class="nav-icon fas fa-globe"></i>
+                              <p>
+                                  Global Report
+                              </p>
+                          </a>
+                      </li>
+                  @endif
                   @if (auth()->user()->can('View FamilyDetailsReport') || auth()->user()->id == 1)
                       <li class="nav-item">
                           <a href="{{ route('family-details-report') }}"

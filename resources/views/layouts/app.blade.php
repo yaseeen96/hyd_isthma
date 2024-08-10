@@ -153,10 +153,14 @@
         $(function() {
             bsCustomFileInput.init();
         });
-        // $('#datetimepicker1').datetimepicker({
-        //     sideBySide: true,
-        //     debug: true
-        // });
+        $('#date_time').datetimepicker({
+            icons: {
+                time: 'fas fa-clock'
+            },
+            formatTime: "h:i a",
+            format: 'YYYY-MM-DD hh:mm A',
+            useCurrent: false
+        });
     </script>
     @stack('scripts')
 

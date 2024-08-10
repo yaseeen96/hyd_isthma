@@ -54,7 +54,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Date & Time</label>
-                                    <input type="date" class="form-control" id="date_time" onchange="setFilter()">
+                                    <input type="text" class="form-control datetimepicker-input" id="date_time"
+                                        data-toggle="datetimepicker" data-target="#date_time" />
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -132,6 +133,9 @@
         //         setFilter();
         //     }
         // })
+        $('#date_time').on('change.datetimepicker', function() {
+            setFilter();
+        })
         $(function() {
             arrivalReportTable = $('#arrival-report-table').DataTable({
                 ajax: {

@@ -86,8 +86,8 @@
                         <th></th>
                         <th></th>
                         <th></th>
-                        <th></th>
-                        <th></th>
+                        <th class="bg-success"></th>
+                        <th class="bg-secondary"></th>
                     </tr>
                 </tfoot>
             </x-table>
@@ -118,25 +118,25 @@
                 columns: [
                     dtIndexCol(),
                     {
-                        data: 'name',
+                        data: 'member.name',
                     },
                     {
-                        data: 'user_number',
+                        data: 'member.user_number',
                     },
                     {
-                        data: 'phone',
+                        data: 'member.phone',
                     },
                     {
-                        data: 'unit_name'
+                        data: 'member.unit_name'
                     },
                     {
-                        data: 'division_name'
+                        data: 'member.division_name'
                     },
                     {
-                        data: 'zone_name'
+                        data: 'member.zone_name'
                     },
                     {
-                        data: 'gender'
+                        data: 'member.gender'
                     },
                     {
                         data: 'member_fees'

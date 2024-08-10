@@ -33,17 +33,14 @@ class Registration extends Model
         "special_considerations" => "array",
         "sight_seeing" => "array",
     ];
-    
     public function member()
     {
-        return $this->belongsTo(Member::class); 
+        return $this->belongsTo(Member::class);
     }
-
     public function familyDetails()
     {
         return $this->hasMany(RegFamilyDetail::class, 'registration_id');
     }
-
     public function purchaseDetails()
     {
         return $this->hasMany(RegPurchasesDetail::class, 'registration_id');

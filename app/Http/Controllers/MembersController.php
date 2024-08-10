@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AppHelperFunctions;
 use App\Models\Member;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Str;
 
 class MembersController extends Controller
 {
@@ -17,7 +20,7 @@ class MembersController extends Controller
         }
         // \Log::info('Request data:', $request->all());
         if ($request->ajax()) {
-            $query = Member::query();
+            $query = Member::query()->orderBy('name', 'asc');
 
             // filters for registered/non-registered
             if ($request->has('register_noregister') && $request->register_noregister !== '') {
@@ -46,10 +49,13 @@ class MembersController extends Controller
                 ->editColumn('dob', function (Member $member) {
                     return date('d-m-Y', strtotime($member->dob));
                 })
+                ->addColumn('reg_status', function (Member $member) {
+                    return $member->registration ? AppHelperFunctions::getGreenBadge('Registered') : AppHelperFunctions::getRedBadge('Not Registered');
+                })
                 ->addColumn('action', function (Member $member) use($user) {
                     return $user->id == 1 || $user->hasPermissionTo('Edit Members') ? '<a href="' . route('members.edit', $member->id) . '" class="btn btn-sm btn-purple btn-clean btn-icon" title="Edit"><i class="fas fa-edit"></i></a>' : '';
                 })
-                ->rawColumns(['dob', 'action'])
+                ->rawColumns(['dob', 'reg_status' ,'action'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -83,8 +89,10 @@ class MembersController extends Controller
         $member->update(
                 [
                     'status' => $member->status === 'on' ? 'Active' : 'Inactive',
-                    'dob' => date('Y-m-d', strtotime($request->dob))
+                    'dob' => date('Y-m-d', strtotime($request->dob)),
+                    'age' => $this->getAgeFromDOB($request->dob)
                 ]);
+
         return redirect()->route('members.index');
     }
 
@@ -127,7 +135,9 @@ class MembersController extends Controller
             "user_number" => $request->user_number,
             "gender" => $request->gender,
             "phone" => $request->phone,
+            "age" => $this->getAgeFromDOB($request->dob)
         ];
+
         $member->update($updateData);
         return redirect()->route('members.index');
     }
@@ -135,5 +145,14 @@ class MembersController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getAgeFromDOB($dob) {
+        if (!empty($dob)) {
+            if(Str::contains($dob, '/'))
+                $dob = str_replace('/', '-', $dob);
+            return  Carbon::parse($dob)->age;
+        }
+        return null;
     }
 }

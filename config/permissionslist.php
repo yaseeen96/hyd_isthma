@@ -14,6 +14,7 @@ return [
         "View CommonDataReport",
         "View PurchaseDataReport",
         "View SightSeeingReport",
+        "View GlobalReport",
         "Create Notifications",
         "Edit Notifications",
         "Delete Notifications",
