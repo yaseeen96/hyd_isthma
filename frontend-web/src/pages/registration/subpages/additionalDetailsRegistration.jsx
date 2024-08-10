@@ -120,11 +120,11 @@ const AdditionalDetailsRegistration = () => {
             ...values,
             arrival_details: {
                 ...values.arrival_details,
-                datetime: values.arrival_details.datetime instanceof Date ? values.arrival_details.datetime.toISOString() : '',
+                datetime: values.arrival_details.datetime instanceof Date ? format(values.arrival_details.datetime, 'yyyy-MM-dd hh:mm a') : '',
             },
             departure_details: {
                 ...values.departure_details,
-                datetime: values.departure_details.datetime instanceof Date ? values.departure_details.datetime.toISOString() : '',
+                datetime: values.departure_details.datetime instanceof Date ? format(values.departure_details.datetime, 'yyyy-MM-dd hh:mm a') : '',
             },
         };
         setLoading(true);
