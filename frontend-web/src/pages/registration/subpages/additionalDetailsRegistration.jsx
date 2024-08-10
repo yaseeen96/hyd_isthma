@@ -13,6 +13,7 @@ import { registrationDetailsAtom } from '../../../store/atoms/registrationDetail
 import { useLoading } from '../../../utils/hooks/useLoading';
 import LoadingComponent from '../../../components/common/loadingComponent';
 import { ROUTES } from '../../../router/routes';
+import { format } from 'date-fns';
 
 const AdditionalDetailsRegistration = () => {
     const { loading, setLoading } = useLoading();
