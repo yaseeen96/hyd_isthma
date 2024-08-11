@@ -16,7 +16,6 @@
         "firebase": "^10.12.3",
         "flowbite-react": "^0.9.0",
         "formik": "^2.4.6",
-        "pdfjs-dist": "^4.5.136",
         "react": "^18.2.0",
         "react-datepicker": "^7.3.0",
         "react-datetime-picker": "^6.0.1",
