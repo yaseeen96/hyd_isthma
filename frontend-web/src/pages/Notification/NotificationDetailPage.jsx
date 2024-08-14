@@ -26,8 +26,19 @@ const NotificationDetailPage = () => {
     const notification = data.data;
     const pdfUrl = notification.document;
 
-    // Construct the Google Drive embed URL
-    const embedUrl = `https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(pdfUrl)}`;
+    // Construct the Google Drive embed URL for the PDF
+    const embedUrl = pdfUrl ? `https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(pdfUrl)}` : null;
+
+    // Extract the YouTube video ID from the URL if present
+    const youtubeUrl = notification.youtube_url;
+    let videoId = null;
+    let videoEmbedUrl = null;
+
+    if (youtubeUrl) {
+        const urlParams = new URLSearchParams(new URL(youtubeUrl).search);
+        videoId = urlParams.get('v');
+        videoEmbedUrl = `https://www.youtube.com/embed/${videoId}`;
+    }
 
     return (
         <div className="w-full flex flex-col">
@@ -41,11 +52,33 @@ const NotificationDetailPage = () => {
                 <h1 className="text-2xl font-bold">{notification.title}</h1>
                 <hr className="my-4" />
                 <p className="text-gray-700">{notification.message}</p>
-                {notification.document && (
+
+                {/* PDF Viewer */}
+                {embedUrl && (
                     <>
                         <h1 className="text-xl my-4 font-bold">File</h1>
                         <PDFViewer embedUrl={embedUrl} />
                     </>
+                )}
+
+                {/* YouTube Video Embed */}
+                {videoEmbedUrl ? (
+                    <>
+                        <h1 className="text-xl my-4 font-bold">Video</h1>
+                        <div className="flex justify-center">
+                            <iframe
+                                width="100%"
+                                height="400"
+                                src={videoEmbedUrl}
+                                title="YouTube Video"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
+                    </>
+                ) : (
+                    <p className="text-gray-500">No video available.</p>
                 )}
             </section>
         </div>
