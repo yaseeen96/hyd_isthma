@@ -95,4 +95,17 @@ class DashboardController extends Controller
         return response()->json(['unit_name' => $unit_name]);
     }
 
+    /**
+     * Params: Request $request
+     * return array
+     */
+    public function getStationNames(Request $request) {
+        $travel_mode = $request->get('travel_mode');
+        if(empty($travel_mode)) {
+            return response()->json(['station_names' => []]);
+        }
+        $station_names = config('stationslist')[$travel_mode];
+        return response()->json(['station_names' => $station_names]);
+    }
+
 }

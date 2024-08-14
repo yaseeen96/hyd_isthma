@@ -32,12 +32,14 @@ class Member extends Authenticatable
     {
         return $this->HasOne(Registration::class, 'member_id', 'id');
     }
-    // public function regFamilyDetails()
-    // {
-    //     return $this->HasMany(RegFamilyDetail::class, 'registration_id', 'id');
-    // }
     public function regFamilyDetails()
     {
         return $this->hasManyThrough(RegFamilyDetail::class, Registration::class);
+    }
+    public function scopeFilterByZone($query)
+    {
+        if(!empty(auth()->user()->zone_name))
+             return $query->where('zone_name', auth()->user()->zone_name);
+        return $query;
     }
 }

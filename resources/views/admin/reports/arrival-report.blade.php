@@ -61,12 +61,11 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Travel Mode</label>
-                                    <select class="form-control w-full" id="travel_mode" onchange="setFilter()">
-                                        <option value="">-Select Option-</option>
-                                        <option value="bus">Bus</option>
-                                        <option value="train">Train</option>
-                                        <option value="plane">Plane</option>
-                                        <option value="car">Car</option>
+                                    <select class="form-control w-full" id="travel_mode">
+                                        <option value="">All</option>
+                                        @foreach (config('stationslist') as $key => $value)
+                                            <option value="{{ $key }}">{{ $key }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -75,12 +74,6 @@
                                     <label>Station Name</label>
                                     <select class="form-control select2bs4" style="width: 100%;" id="end_point"
                                         onchange="setFilter()">
-                                        <option value="">All</option>
-                                        @if (count(config('stationslist')) > 0)
-                                            @foreach (config('stationslist') as $station)
-                                                <option value="{{ $station }}"> {{ $station }}</option>
-                                            @endforeach
-                                        @endif
                                     </select>
                                 </div>
                             </div>
@@ -127,15 +120,34 @@
             $('#mode_identifier').val('');
             setFilter();
         }
-        // $('#end_point').on('keyup', function() {
-        //     const value = $(this).val();
-        //     if (value.length >= 3) {
-        //         setFilter();
-        //     }
-        // })
         $('#date_time').on('change.datetimepicker', function() {
             setFilter();
         })
+        $('#travel_mode').on('change', function() {
+            $('#end_point').empty();
+            $.ajax({
+                url: "{{ route('get-station-names') }}",
+                type: 'GET',
+                data: {
+                    travel_mode: $('#travel_mode').val()
+                },
+                success: function(data) {
+                    let el = document.createElement('option');
+                    el.text = 'All';
+                    el.value = '';
+                    $('#end_point').append(el);
+                    if (data.station_names.length > 0) {
+                        data.station_names.forEach(function(statation) {
+                            let el = document.createElement('option');
+                            el.text = statation;
+                            el.value = statation;
+                            $('#end_point').append(el);
+                        });
+                    }
+                }
+            });
+            setFilter();
+        });
         $(function() {
             arrivalReportTable = $('#arrival-report-table').DataTable({
                 ajax: {

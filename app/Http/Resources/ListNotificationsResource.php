@@ -39,7 +39,7 @@ class ListNotificationsResource extends JsonResource
         }
         if($include) {
             $imageSrc = !empty($this->getMedia('notification_image')->first()) ? $this->getMedia('notification_image')->first()->getUrl() : env('APP_URL').'assets/img/no-image.png';
-            $docSrc = !empty($this->getMedia('notification_doc')->first()) ? $this->getMedia('notification_doc')->first()->getUrl() : '';
+            $docSrc = !empty($this->getMedia('notificaiton_doc')->first()) ? $this->getMedia('notificaiton_doc')->first()->getUrl() : '';
             $data = [
                 'id' => $this->id,
                 'title' => $this->title,

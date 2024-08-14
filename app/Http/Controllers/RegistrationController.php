@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Registration;
-use App\Models\RegFamilyDetail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -31,6 +30,7 @@ class RegistrationController extends Controller
                 if (isset($request->division_name)) {
                     $query->where('division_name', $request->division_name);
                 }
+                $query->filterByZone();
             })->select('registrations.*')->where(function ($query) use ($request) {
                 if (isset($request->confirm_arrival)) {
                     $query->where('confirm_arrival', $request->confirm_arrival);

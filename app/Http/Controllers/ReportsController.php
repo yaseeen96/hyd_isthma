@@ -47,6 +47,9 @@ class ReportsController extends Controller
                         $q->where('unit_name', $request->unit_name);
                     });
                 }
+                $query->whereHas('registration.member', function ($q) use ($request) {
+                    $q->filterByZone();
+                });
             })->orderBy('id', 'asc');
             return $datatables->eloquent($query)
                     ->editColumn('interested_in_volunteering', function(RegFamilyDetail $familyDetail) {
@@ -79,6 +82,7 @@ class ReportsController extends Controller
                 if (isset($request->division_name)) {
                     $query->where('division_name', $request->division_name);
                 }
+                $query->filterByZone();
             });
             return $datatable->eloquent($query)
                 ->addColumn('member_fees', function (Registration $registration) {
@@ -97,7 +101,6 @@ class ReportsController extends Controller
         if (auth()->user()->id != 1 && !$user->hasPermissionTo('View TravelReport')){
             abort(403);
         }
-
         if($request->ajax()) {
             $query = Registration::with('member')->whereHas('member', function ($query) use ($request) {
                 if (!empty($request->unit_name)) {
@@ -109,6 +112,7 @@ class ReportsController extends Controller
                 if (!empty($request->division_name)) {
                     $query->where('division_name', $request->division_name);
                 }
+                $query->filterByZone();
             })->select('registrations.*')->where([['confirm_arrival', '=', 1], ['arrival_details', '!=', '']])
                 ->where(function ($query) use($request) {
                     if(!empty($request->date_time)){
@@ -169,6 +173,7 @@ class ReportsController extends Controller
                 if (!empty($request->division_name)) {
                     $query->where('division_name', $request->division_name);
                 }
+                $query->filterByZone();
             })->select('registrations.*')->where([['confirm_arrival', '=', 1], ['departure_details', '!=', '']])
                 ->where(function ($query) use($request) {
                     if(!empty($request->date_time)){
@@ -227,6 +232,7 @@ class ReportsController extends Controller
                 if (!empty($request->division_name)) {
                     $query->where('division_name', $request->division_name);
                 }
+                $query->filterByZone();
             })->select('registrations.*')->where([['confirm_arrival', '=', 1]])
                 ->where(function ($query) use($request) {
                     if(!empty($request->hotel_required)){
@@ -287,6 +293,9 @@ class ReportsController extends Controller
                         $q->where('gender', $request->gender);
                     });
                 }
+                $query->whereHas('registration.member', function ($q) use ($request) {
+                    $q->filterByZone();
+                });
             })->orderBy('id', 'asc');
             return $datatables->eloquent($query)->addIndexColumn()->make(true);
         }
@@ -312,6 +321,7 @@ class ReportsController extends Controller
                 if (!empty($request->gender)) {
                     $query->where('gender', $request->gender);
                 }
+                $query->filterByZone();
             })->select('registrations.*')->where([['confirm_arrival', '=', 1], ['sight_seeing->required', 'yes']])
                 ->orderBy('id', 'asc');
             return $dataTables->eloquent($query)
@@ -324,44 +334,72 @@ class ReportsController extends Controller
         return view('admin.reports.sight-seeing-details-report');
     }
     public function globalReport(Request $request, DataTables $dataTables) {
-        
+
         $user = User::find(auth()->user()->id);
         if ($user->id != 1 && !$user->hasPermissionTo('View GlobalReport')){
             abort(403);
         }
-
-        $globalData = array_reduce($this->globalReportData(), 'array_merge', []);
         if($request->ajax()) {
-            $query = Member::select(DB::raw('zone_name , count(*) as total_arkans'))->where(function($query) use($request) {
-                if(!empty($request->zone_name)) {
-                    $query->where('zone_name', $request->zone_name);
+            $zoneFilter = $request->zone_name;
+            if(!empty($user->zone_name)) 
+                $zoneFilter = $user->zone_name;
+
+            $queryBy = !empty($zoneFilter) ? 'division_name' : 'zone_name';
+            $globalData = array_reduce($this->globalReportData($zoneFilter), 'array_merge', []);
+            $query = Member::select(DB::raw("$queryBy , count(*) as total_arkans"))->where(function($query) use($zoneFilter, $queryBy) {
+                if(!empty($zoneFilter)) {
+                    $query->where('zone_name', $zoneFilter);
                 }
-            })->groupBy('zone_name')->orderBy('zone_name', 'asc');
-            return $dataTables->eloquent($query)->with('total_registered', $globalData)->addIndexColumn()->make(true);
+            })->groupBy($queryBy)->orderBy($queryBy, 'asc');
+            return $dataTables->eloquent($query)->addColumn('zone_name', function(Member $member) use($zoneFilter) {
+                return !empty($zoneFilter) ?  $member->division_name : $member->zone_name;
+            })->rawColumns(['zone_name'])->with('total_registered', $globalData)->addIndexColumn()->make(true);
         }
         return view('admin.reports.global-report');
     }
-
-    public function globalReportData() {
+    public function globalReportData($zoneFilter) {
         $data = [];
-        $distinctZones = Member::select('zone_name')->distinct()->orderBy('zone_name', 'asc')->get();
-        foreach ($distinctZones as $zone) {
-            $zoneName = $zone->zone_name;
-            $totalArkans = Member::where('zone_name', $zoneName)->count();
-            $totalAttendees = Registration::with('member')->whereHas('member', function ($query) use ($zoneName) {
-                        $query->where('zone_name', $zoneName);
+        $queryBy = !empty($zoneFilter) ? 'division_name' : 'zone_name';
+        $distinctData = Member::select('zone_name','division_name')->where(function($query) use($zoneFilter) {
+            if(!empty($zoneFilter)) {
+                $query->where('zone_name', $zoneFilter);
+            }
+        })->distinct()->orderBy($queryBy, 'asc')->get();
+        foreach ($distinctData as $item) {
+            $filterType = !empty($zoneFilter) ? $item->division_name : $item->zone_name;
+            $totalArkans = Member::where($queryBy, $filterType)->count();
+            $totalAttendees = Registration::with('member')->whereHas('member', function ($query) use ($filterType, $queryBy) {
+                        $query->where($queryBy, $filterType);
                     })->where('confirm_arrival', 1)->count();
+            $totaNonAttendees = Registration::with('member')->whereHas('member', function ($query) use ($filterType, $queryBy) {
+                        $query->where($queryBy, $filterType);
+                    })->where('confirm_arrival', 0)->count();
+            $totalRegistered = Registration::with('member')->whereHas('member', function ($query) use ($filterType, $queryBy) {
+                        $query->where($queryBy, $filterType);
+                    })->count();
             $sortedData= [
-                $zoneName => [
-                    'registered' => Registration::with('member')->whereHas('member', function ($query) use ($zoneName) {
-                        $query->where('zone_name', $zoneName);
-                    })->count(),
+                $filterType => [
+                    'registered' => $totalRegistered,
                     'total_attendees' => $totalAttendees,
-                    'total_non_attendees' => Registration::with('member')->whereHas('member', function ($query) use ($zoneName) {
-                        $query->where('zone_name', $zoneName);
-                    })->where('confirm_arrival', 0)->count(),
-                    'percentage' => floatval($totalArkans > 0 ? round(($totalAttendees / $totalArkans) * 100, 2) : 0)
-                ]
+                    'total_non_attendees' => $totaNonAttendees,
+                    'tot_attendees_percentage' => floatval($totalArkans > 0 ? round(($totalAttendees / $totalArkans) * 100, 2) : 0),
+                    'tot_registered_percentage' => floatval($totalArkans > 0 ? round(($totalRegistered / $totalArkans) * 100, 2) : 0)
+                ],
+                "total_non_attendees" => Registration::with('member')->whereHas('member', function($query) use($zoneFilter) {
+                    if(!empty($zoneFilter)) {
+                        $query->where('zone_name', $zoneFilter);
+                    }
+                })->where('confirm_arrival', 0)->count(),
+                "total_attendees" => Registration::with('member')->whereHas('member', function($query) use($zoneFilter) {
+                    if(!empty($zoneFilter)) {
+                        $query->where('zone_name', $zoneFilter);
+                    }
+                })->where('confirm_arrival', 1)->count(),
+                "total_registered" => Registration::with('member')->whereHas('member', function($query) use($zoneFilter) {
+                    if(!empty($zoneFilter)) {
+                        $query->where('zone_name', $zoneFilter);
+                    }
+                })->count(),
             ];
             array_push($data, $sortedData);
         }

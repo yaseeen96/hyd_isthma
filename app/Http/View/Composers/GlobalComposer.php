@@ -13,9 +13,9 @@ class GlobalComposer
     {
         // Fetch global data
         $this->locationsList = [
-            'distnctUnitName' => Member::select('unit_name')->distinct()->get(),
-            'distnctZoneName' => Member::select('zone_name')->distinct()->get(),
-            'distnctDivisionName' => Member::select('division_name')->distinct()->get(),
+            'distnctUnitName' => Member::select('unit_name')->filterByZone()->distinct()->get(),
+            'distnctZoneName' => Member::select('zone_name')->filterByZone()->distinct()->get(),
+            'distnctDivisionName' => Member::select('division_name')->filterByZone()->distinct()->get(),
         ];
     }
 

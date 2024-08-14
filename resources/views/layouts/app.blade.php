@@ -157,8 +157,9 @@
             icons: {
                 time: 'fas fa-clock'
             },
-            formatTime: "h:i a",
-            format: 'YYYY-MM-DD hh:mm A',
+            // formatTime: "h:i a",
+            // format: 'YYYY-MM-DD hh:mm A',
+            format: 'YYYY-MM-DD',
             useCurrent: false
         });
     </script>

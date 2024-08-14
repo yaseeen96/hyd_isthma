@@ -27,8 +27,8 @@ class UserController extends Controller
                     $link = (auth()->user()->id == 1 || auth()->user()->hasPermissionTo('Edit Users')) ?
                         '<a href="' . route('user.edit', $user->id) . '" class="btn-purple btn mr-1" ><i class="fas fa-edit"></i></a>'
                         : "";
-                    $link .= auth()->user()->id == 1 || auth()->user()->hasPermissionTo('Delete Users') ? 
-                            '<span data-href="'.route('user.destroy', $user->id).'" class="btn-purple user-delete btn"><i class="fas fa-trash"></i></span>' 
+                    $link .= auth()->user()->id == 1 || auth()->user()->hasPermissionTo('Delete Users') ?
+                            '<span data-href="'.route('user.destroy', $user->id).'" class="btn-purple user-delete btn"><i class="fas fa-trash"></i></span>'
                             : "";
                     return $link;
                 })
@@ -44,8 +44,8 @@ class UserController extends Controller
      */
     public function create()
     {
-
-        if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('Create Users')){
+        $user = User::find(auth()->user()->id);
+        if ($user->id != 1 && !$user->hasPermissionTo('Create Users')){
             abort(403);
         }
 
@@ -67,9 +67,9 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
             'role' => 'required',
-            
-        ]);
+            'zone_name' => 'required'
 
+        ]);
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -84,7 +84,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-       
+
     }
 
     /**
@@ -92,8 +92,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-
-        if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('Edit Users')){
+        $loggedInUser = User::find(auth()->user()->id);
+        if ($loggedInUser->id != 1 && !$loggedInUser->hasPermissionTo('Edit Users')){
             abort(403);
         }
 
@@ -101,7 +101,7 @@ class UserController extends Controller
         return view('admin.users.form')->with([
             'roles' => $roles,
             'user' =>  $user,
-            'user_role' => $user->getRoleNames()->first()
+            'user_role' => $user->getRoleNames()->first(),
         ]);
     }
 
@@ -114,6 +114,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required',
             'role' => 'required',
+            'zone_name' => 'required'
         ]);
         if(!empty($request->input('password'))) {
             $request->validate([
@@ -132,12 +133,10 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-
-        if (auth()->user()->id != 1 && !auth()->user()->hasPermissionTo('Delete Users')){
+        $user = User::find(auth()->user()->id);
+        if ($user->id != 1 && !$user->hasPermissionTo('Delete Users')){
             abort(403);
         }
-
-
         $user = User::where('id', $id)->first();
         $user->delete();
         return response()->noContent();

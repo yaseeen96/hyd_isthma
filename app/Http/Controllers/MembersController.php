@@ -18,10 +18,8 @@ class MembersController extends Controller
         if ($user->id != 1 && !$user->hasPermissionTo('View Members')){
             abort(403);
         }
-        // \Log::info('Request data:', $request->all());
         if ($request->ajax()) {
-            $query = Member::query()->orderBy('name', 'asc');
-
+            $query = Member::query()->filterByZone()->orderBy('name', 'asc');
             // filters for registered/non-registered
             if ($request->has('register_noregister') && $request->register_noregister !== '') {
                 if ($request->register_noregister == 'registered') {

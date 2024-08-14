@@ -1,5 +1,5 @@
 /**
- * Datatable Helper 
+ * Datatable Helper
  * -------------------
  * use this file to add all datatable global functions
 */
@@ -9,6 +9,7 @@ $.extend($.fn.dataTable.defaults, {
     "responsive": false,
     "lengthChange": false,
     "autoWidth": true,
+    pageLength: 100,
     processing: true,
     serverSide: true,
     buttons: [
@@ -38,7 +39,7 @@ $.extend($.fn.dataTable.defaults, {
         },
     'colvis',
     ],
-    "lengthMenu": [50, 100, 500, 1000, 2000, 5000, 10000, 20000],
+    "lengthMenu": [100, 500, 1000, 2000, 5000, 10000, 20000],
     dom: 'Bfrtip',
 });
 

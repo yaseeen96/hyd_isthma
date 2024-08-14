@@ -19,6 +19,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Zone Name</th>
                 <th>Action</th>
             </x-table>
         </div>
@@ -35,15 +36,15 @@
                     dtIndexCol(),
                     {
                         data: 'name',
-                        name: 'name'
                     },
                     {
                         data: 'email',
-                        name: 'email'
                     },
                     {
                         data: "role",
-                        name: "role",
+                    },
+                    {
+                        data: "zone_name",
                     },
                     {
                         data: 'action',

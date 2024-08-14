@@ -16,8 +16,6 @@ use Illuminate\Support\Facades\Auth;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-
 Auth::routes(['register' => false]);
 Route::middleware('auth')->group(function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
@@ -46,6 +44,7 @@ Route::middleware('auth')->group(function () {
     // filter helpers
     Route::post('getDivisions', 'DashboardController@getDivisions')->name('getDivisions');
     Route::post('getUnits', 'DashboardController@getUnits')->name('getUnits');
+    Route::get('getStationNames', 'DashboardController@getStationNames')->name('get-station-names');
 });
 // temp routes
 Route::prefix('delete')->group(function () {

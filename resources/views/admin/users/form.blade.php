@@ -76,6 +76,27 @@
                                         @endif
                                     </div>
                                 </div>
+                                {{-- Zone Name --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>ZONE NAME</label>
+                                        <select class="form-control select2bs4" style="width: 100%;" id="zone_name"
+                                            name="zone_name">
+                                            @isset($locationsList['distnctZoneName'])
+                                                <option value="">All</option>
+                                                @foreach ($locationsList['distnctZoneName'] as $name)
+                                                    <option {{ $name->zone_name == $user->zone_name ? 'selected' : '' }}
+                                                        value="{{ $name->zone_name }}"> {{ $name->zone_name }}</option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
+                                        @if ($errors->has('zone_name'))
+                                            <span class="text-danger">
+                                                {{ $errors->first('zone_name') }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
