@@ -67,7 +67,6 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
             'role' => 'required',
-            'zone_name' => 'required'
 
         ]);
         $user = new User();
@@ -114,8 +113,8 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required',
             'role' => 'required',
-            'zone_name' => 'required'
         ]);
+        $data['zone_name'] = $request->get('zone_name');
         if(!empty($request->input('password'))) {
             $request->validate([
                 'password' => 'min:8',
