@@ -341,7 +341,7 @@ class ReportsController extends Controller
         }
         if($request->ajax()) {
             $zoneFilter = $request->zone_name;
-            if(!empty($user->zone_name)) 
+            if(!empty($user->zone_name))
                 $zoneFilter = $user->zone_name;
 
             $queryBy = !empty($zoneFilter) ? 'division_name' : 'zone_name';
@@ -360,7 +360,7 @@ class ReportsController extends Controller
     public function globalReportData($zoneFilter) {
         $data = [];
         $queryBy = !empty($zoneFilter) ? 'division_name' : 'zone_name';
-        $distinctData = Member::select('zone_name','division_name')->where(function($query) use($zoneFilter) {
+        $distinctData = Member::select($queryBy)->where(function($query) use($zoneFilter) {
             if(!empty($zoneFilter)) {
                 $query->where('zone_name', $zoneFilter);
             }
@@ -377,13 +377,21 @@ class ReportsController extends Controller
             $totalRegistered = Registration::with('member')->whereHas('member', function ($query) use ($filterType, $queryBy) {
                         $query->where($queryBy, $filterType);
                     })->count();
+            $totalCompletedPayment = Registration::with('member')->whereHas('member', function($query) use($filterType, $queryBy) {
+                        $query->where($queryBy, $filterType);
+                    })->where('member_fees', '!=', null)->count();
+            $totalCompletedLastStep = Member::where('year_of_rukniyat', '!=', null)->where(function($query) use($filterType, $queryBy) {
+                        $query->where($queryBy, $filterType);
+                    })->count();
             $sortedData= [
                 $filterType => [
                     'registered' => $totalRegistered,
                     'total_attendees' => $totalAttendees,
                     'total_non_attendees' => $totaNonAttendees,
                     'tot_attendees_percentage' => floatval($totalArkans > 0 ? round(($totalAttendees / $totalArkans) * 100, 2) : 0),
-                    'tot_registered_percentage' => floatval($totalArkans > 0 ? round(($totalRegistered / $totalArkans) * 100, 2) : 0)
+                    'tot_registered_percentage' => floatval($totalArkans > 0 ? round(($totalRegistered / $totalArkans) * 100, 2) : 0),
+                    "percentage_completed_payment"  => floatval( $totalCompletedPayment > 0 ? round(($totalCompletedPayment / $totalRegistered) * 100, 2) : 0),
+                    "completed_last_step" => floatval($totalCompletedLastStep > 0 ? round($totalCompletedLastStep / $totalRegistered * 100,  2): 0),
                 ],
                 "total_non_attendees" => Registration::with('member')->whereHas('member', function($query) use($zoneFilter) {
                     if(!empty($zoneFilter)) {
@@ -400,6 +408,7 @@ class ReportsController extends Controller
                         $query->where('zone_name', $zoneFilter);
                     }
                 })->count(),
+
             ];
             array_push($data, $sortedData);
         }

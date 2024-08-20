@@ -27,15 +27,11 @@ class ListNotificationsResource extends JsonResource
         if($this->criteria['region_type']  == 'division' &&  $user->unit_name == $this->criteria['region_value']) {
             $include = true;
         }
-        if(empty($this->criteria['reg_status']) || ($this->criteria['reg_status'] ==  $confirmArrival && $include)) {
-            $include = true;
-        } else {
-            $include = false;
+        if(!empty($this->criteria['reg_status'])){
+            $include = ($this->criteria['reg_status'] ==  $confirmArrival && $include) ? true : false;
         }
-        if(empty($this->criteria['gender']) || ($this->criteria['gender'] == strtolower($user->gender) && $include)) {
-            $include = true;
-        } else {
-            $include = false;
+        if(!empty($this->criteria['gender'])){
+            $include = ($this->criteria['gender'] == strtolower($user->gender) && $include) ? true: false;
         }
         if($include) {
             $imageSrc = !empty($this->getMedia('notification_image')->first()) ? $this->getMedia('notification_image')->first()->getUrl() : env('APP_URL').'assets/img/no-image.png';
