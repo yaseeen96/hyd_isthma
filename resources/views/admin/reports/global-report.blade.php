@@ -45,10 +45,12 @@
                 <th>Registered</th>
                 <th>Percentage Attendees</th>
                 <th>Percentage Registered</th>
-                <th>completed payment</th>
+                <th>Completed Family Details</th>
+                <th>Completed Full/half Payment</th>
                 <th>Completed Last Section</th>
                 <tfoot>
                     <tr class="bg-purple">
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -146,7 +148,19 @@
                         data: null,
                         render: function(data, type, row) {
                             if (totalRegistered[row.zone_name]) {
-                                return totalRegistered[row.zone_name].percentage_completed_payment +
+                                return totalRegistered[row.zone_name]
+                                    .percentage_family_details_completed +
+                                    '%';
+                            }
+                            return 0 + '%';
+                        }
+                    },
+                    {
+                        data: null,
+                        render: function(data, type, row) {
+                            if (totalRegistered[row.zone_name]) {
+                                return totalRegistered[row.zone_name]
+                                    .percentage_full_half_payment_done +
                                     '%';
                             }
                             return 0 + '%';

@@ -377,9 +377,12 @@ class ReportsController extends Controller
             $totalRegistered = Registration::with('member')->whereHas('member', function ($query) use ($filterType, $queryBy) {
                         $query->where($queryBy, $filterType);
                     })->count();
-            $totalCompletedPayment = Registration::with('member')->whereHas('member', function($query) use($filterType, $queryBy) {
+            $totalMembersCompletedFamilyDtls = Registration::with('member')->whereHas('member', function($query) use($filterType, $queryBy) {
                         $query->where($queryBy, $filterType);
                     })->where('member_fees', '!=', null)->count();
+            $totalMembersPartialsHalfPayment = Registration::with('member')->whereHas('member', function($query) use($filterType, $queryBy) {
+                        $query->where($queryBy, $filterType);
+                    })->where('fees_paid_to_ameer', '!=', null)->where('fees_paid_to_ameer', '>', 0)->count();
             $totalCompletedLastStep = Member::where('year_of_rukniyat', '!=', null)->where(function($query) use($filterType, $queryBy) {
                         $query->where($queryBy, $filterType);
                     })->count();
@@ -390,7 +393,8 @@ class ReportsController extends Controller
                     'total_non_attendees' => $totaNonAttendees,
                     'tot_attendees_percentage' => floatval($totalArkans > 0 ? round(($totalAttendees / $totalArkans) * 100, 2) : 0),
                     'tot_registered_percentage' => floatval($totalArkans > 0 ? round(($totalRegistered / $totalArkans) * 100, 2) : 0),
-                    "percentage_completed_payment"  => floatval( $totalCompletedPayment > 0 ? round(($totalCompletedPayment / $totalRegistered) * 100, 2) : 0),
+                    "percentage_family_details_completed"  => floatval( $totalMembersCompletedFamilyDtls > 0 ? round(($totalMembersCompletedFamilyDtls / $totalRegistered) * 100, 2) : 0),
+                    'percentage_full_half_payment_done' => floatval($totalMembersPartialsHalfPayment > 0 ? round(($totalMembersPartialsHalfPayment / $totalRegistered) * 100, 2) : 0),
                     "completed_last_step" => floatval($totalCompletedLastStep > 0 ? round($totalCompletedLastStep / $totalRegistered * 100,  2): 0),
                 ],
                 "total_non_attendees" => Registration::with('member')->whereHas('member', function($query) use($zoneFilter) {
@@ -408,7 +412,6 @@ class ReportsController extends Controller
                         $query->where('zone_name', $zoneFilter);
                     }
                 })->count(),
-
             ];
             array_push($data, $sortedData);
         }
