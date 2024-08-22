@@ -11,6 +11,7 @@ use App\Models\RegPurchasesDetail;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Http;
 
 class ReportsController extends Controller
 {
@@ -416,5 +417,23 @@ class ReportsController extends Controller
             array_push($data, $sortedData);
         }
         return $data;
+    }
+
+    public function syncRukunData(Request $request) {
+        $request = Http::get('https://jih-app-server-prod.azurewebsites.net/api/v1/users/getAllUsersForIjtema');
+        $response = $request->json();
+        $data  = $response['data'];
+        $active_rids = [];
+        foreach($data as $item) {
+            array_push($active_rids, (string) $item['userNumber']);
+        }
+        $existing_rids = Member::all()->pluck('user_number')->toArray();
+        $inActiveList = array_diff($existing_rids, $active_rids);
+        foreach($inActiveList as $item) {
+            $member = Member::where('user_number', $item)->first();
+            $member->status = 'InActive';
+            $member->save();
+        }
+        // return view('admin.sync-rukun-data');
     }
 }

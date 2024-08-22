@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::post('getUnits', 'DashboardController@getUnits')->name('getUnits');
     Route::get('getStationNames', 'DashboardController@getStationNames')->name('get-station-names');
 });
+// Route::get('syncrukundata', 'ReportsController@syncRukunData')->name('sync-rukun-data');
 // temp routes
 Route::prefix('delete')->group(function () {
     Route::get('account', 'DeleteAccountController@index')->name('delete-account');
