@@ -21,7 +21,7 @@ const AdditionalDetailsRegistration = () => {
     const registrationDetails = useRecoilValue(registrationDetailsAtom);
 
     const defaultItems = [
-        { name: 'Bed', qty: '0' },
+        { name: 'Mattress', qty: '0' },
         { name: 'Cot', qty: '0' },
         { name: 'Plate', qty: '0' },
         { name: 'Spoons', qty: '0' },
