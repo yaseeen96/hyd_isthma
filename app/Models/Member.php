@@ -51,4 +51,11 @@ class Member extends Authenticatable
              return $query->where('zone_name', auth()->user()->zone_name);
         return $query;
     }
+
+    public function scopeFilterByRegionType($query, $type, $value) {
+        if(!empty($value)) {
+            return $query->where($type, $value);
+        }
+        return $query;
+    }
 }

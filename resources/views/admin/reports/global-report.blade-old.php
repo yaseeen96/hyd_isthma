@@ -22,7 +22,7 @@
                                 <div class="form-group">
                                     <label>ZONE NAME</label>
                                     <select class="form-control select2bs4" style="width: 100%;" id="zone_name"
-                                        onchange="filterReport('zone_name', 'division_name')">
+                                        onchange="setFilter()">
                                         @isset($locationsList['distnctZoneName'])
                                             <option value="">All</option>
                                             @foreach ($locationsList['distnctZoneName'] as $name)
@@ -36,9 +36,18 @@
                                 <div class="form-group">
                                     <label>DISTRICT NAME</label>
                                     <select class="form-control select2bs4" style="width: 100%;" id="division_name"
-                                        onchange="filterReport('division_name', 'unit_name')">
+                                        onchange="getLocations('division_name', 'unit_name')">
                                         <option value="">All</option>
                                         {{-- data will be dynamically filled --}}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>UNIT NAME</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="unit_name"
+                                        placeholder="Select Unit Name" onchange="setFilter()">
+                                        <option value="">All</option>
                                     </select>
                                 </div>
                             </div>
@@ -82,14 +91,10 @@
         function clearFilters() {
             $('#zone_name').val('').trigger('change');
             $('#division_name').val('').trigger('change');
+            $('#unit_name').val('').trigger('change');
             setFilter();
         }
-
-        function filterReport($arg1, $arg2) {
-            getLocations($arg1, $arg2);
-            setFilter();
-        }
-        let globalData;
+        let totalRegistered;
         $(function() {
             globalReportTable = $('#global-report-table').DataTable({
                 searching: false,
@@ -98,17 +103,18 @@
                     data: function(d) {
                         d.zone_name = $("#zone_name").val()
                         d.division_name = $("#division_name").val()
+                        d.unit_name = $("#unit_name").val()
                     },
                     dataSrc: function(json) {
-                        globalData = json.global_data;
-                        console.log(globalData);
+                        totalRegistered = json.total_registered;
+                        console.log(totalRegistered);
                         return json.data;
                     }
                 },
                 columns: [
                     dtIndexCol(),
                     {
-                        data: 'region_name',
+                        data: 'zone_name',
                     },
                     {
                         data: 'total_arkans',
@@ -117,8 +123,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name].total_attendees;
+                            if (totalRegistered[row.zone_name]) {
+                                return totalRegistered[row.zone_name].total_attendees;
                             }
                             return 0;
                         }
@@ -126,8 +132,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name].total_non_attendees;
+                            if (totalRegistered[row.zone_name]) {
+                                return totalRegistered[row.zone_name].total_non_attendees;
                             }
                             return 0;
                         }
@@ -135,8 +141,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name].registered;
+                            if (totalRegistered[row.zone_name]) {
+                                return totalRegistered[row.zone_name].registered;
                             }
                             return 0;
                         }
@@ -144,8 +150,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name].tot_attendees_percentage +
+                            if (totalRegistered[row.zone_name]) {
+                                return totalRegistered[row.zone_name].tot_attendees_percentage +
                                     '%';
                             }
                             return 0 + '%';
@@ -154,8 +160,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name].tot_registered_percentage +
+                            if (totalRegistered[row.zone_name]) {
+                                return totalRegistered[row.zone_name].tot_registered_percentage +
                                     '%';
                             }
                             return 0 + '%';
@@ -164,8 +170,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name]
+                            if (totalRegistered[row.zone_name]) {
+                                return totalRegistered[row.zone_name]
                                     .percentage_family_details_completed +
                                     '%';
                             }
@@ -175,8 +181,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name]
+                            if (totalRegistered[row.zone_name]) {
+                                return totalRegistered[row.zone_name]
                                     .percentage_full_half_payment_done +
                                     '%';
                             }
@@ -186,8 +192,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name].completed_last_step +
+                            if (totalRegistered[row.zone_name]) {
+                                return totalRegistered[row.zone_name].completed_last_step +
                                     '%';
                             }
                             return 0 + '%';
@@ -209,9 +215,9 @@
                     }, 0);
                     $(api.column(1).footer()).html('Total');
                     $(api.column(2).footer()).html(total_arkans);
-                    $(api.column(3).footer()).html(globalData['sum_total_attendees']);
-                    $(api.column(4).footer()).html(globalData['sum_total_non_attendees']);
-                    $(api.column(5).footer()).html(globalData['sum_total_registered']);
+                    $(api.column(3).footer()).html(totalRegistered['total_attendees']);
+                    $(api.column(4).footer()).html(totalRegistered['total_non_attendees']);
+                    $(api.column(5).footer()).html(totalRegistered['total_registered']);
                 }
             });
         });
