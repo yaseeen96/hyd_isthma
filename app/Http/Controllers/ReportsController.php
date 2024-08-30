@@ -367,9 +367,7 @@ class ReportsController extends Controller
                             ->orderBy($selector, 'asc');
 
             $globalData = array_reduce($this->globalReportData($query, $queryBy, $queryByValue, $selector), 'array_merge', []);
-            $globalData['sum_total_attendees'] = array_sum(array_column($globalData, 'total_attendees'));
-            $globalData['sum_total_non_attendees'] = array_sum(array_column($globalData, 'total_non_attendees'));
-            $globalData['sum_total_registered'] = array_sum(array_column($globalData, 'total_registered'));
+            
             return $dataTables->eloquent($query)
                 ->addColumn('region_name', function (Member $member) use ($selector, $queryByValue) {
                     if (empty($queryByValue))
@@ -392,6 +390,9 @@ class ReportsController extends Controller
     public function globalReportData($query, $queryBy, $queryByValue, $selector) {
         $data = [];
         $distinctRegions = $query->get();
+        $sum_total_attendees = 0;
+        $sum_total_non_attendees = 0;
+        $sum_total_registered = 0;
         // This is the data specific for each region type
         foreach ($distinctRegions as $region) {
             $totalArkans = $region->total_arkans;
@@ -432,8 +433,19 @@ class ReportsController extends Controller
                     "completed_last_step" => floatval($totalCompletedLastStep > 0 ? round($totalCompletedLastStep / $totalRegistered * 100,  2): 0),
                 ],
             ];
+            $sum_total_attendees += $totalAttendees;
+            $sum_total_non_attendees += $totaNonAttendees;
+            $sum_total_registered += $totalRegistered;
             array_push($data, $sortedData);
         }
+        $footer_toals = [
+            "footer_totals" => [
+                'sum_total_attendees' => $sum_total_attendees,
+                'sum_total_non_attendees' => $sum_total_non_attendees,
+                'sum_total_registered' => $sum_total_registered,
+            ]
+            ];
+        array_push($data, $footer_toals);    
         return $data;
     }
     public function globalReportOld(Request $request, DataTables $dataTables) {

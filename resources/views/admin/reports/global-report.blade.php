@@ -101,7 +101,6 @@
                     },
                     dataSrc: function(json) {
                         globalData = json.global_data;
-                        console.log(globalData);
                         return json.data;
                     }
                 },
@@ -117,8 +116,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name].total_attendees;
+                            if (globalData[row.region_name]) {
+                                return globalData[row.region_name].total_attendees;
                             }
                             return 0;
                         }
@@ -126,8 +125,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name].total_non_attendees;
+                            if (globalData[row.region_name]) {
+                                return globalData[row.region_name].total_non_attendees;
                             }
                             return 0;
                         }
@@ -135,8 +134,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name].registered;
+                            if (globalData[row.region_name]) {
+                                return globalData[row.region_name].registered;
                             }
                             return 0;
                         }
@@ -144,8 +143,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name].tot_attendees_percentage +
+                            if (globalData[row.region_name]) {
+                                return globalData[row.region_name].tot_attendees_percentage +
                                     '%';
                             }
                             return 0 + '%';
@@ -154,8 +153,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name].tot_registered_percentage +
+                            if (globalData[row.region_name]) {
+                                return globalData[row.region_name].tot_registered_percentage +
                                     '%';
                             }
                             return 0 + '%';
@@ -164,8 +163,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name]
+                            if (globalData[row.region_name]) {
+                                return globalData[row.region_name]
                                     .percentage_family_details_completed +
                                     '%';
                             }
@@ -175,8 +174,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name]
+                            if (globalData[row.region_name]) {
+                                return globalData[row.region_name]
                                     .percentage_full_half_payment_done +
                                     '%';
                             }
@@ -186,8 +185,8 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                            if (globalData[row.zone_name]) {
-                                return globalData[row.zone_name].completed_last_step +
+                            if (globalData[row.region_name]) {
+                                return globalData[row.region_name].completed_last_step +
                                     '%';
                             }
                             return 0 + '%';
@@ -209,9 +208,11 @@
                     }, 0);
                     $(api.column(1).footer()).html('Total');
                     $(api.column(2).footer()).html(total_arkans);
-                    $(api.column(3).footer()).html(globalData['sum_total_attendees']);
-                    $(api.column(4).footer()).html(globalData['sum_total_non_attendees']);
-                    $(api.column(5).footer()).html(globalData['sum_total_registered']);
+                    $(api.column(3).footer()).html(globalData['footer_totals']['sum_total_attendees']);
+                    $(api.column(4).footer()).html(globalData['footer_totals'][
+                        'sum_total_non_attendees'
+                    ]);
+                    $(api.column(5).footer()).html(globalData['footer_totals']['sum_total_registered']);
                 }
             });
         });

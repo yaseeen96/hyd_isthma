@@ -46,9 +46,9 @@ class Registration extends Model
         return $this->hasMany(RegPurchasesDetail::class, 'registration_id');
     }
     public function scopeConfirmArrival($query, $value) {
-        if (empty($value))
-            return $query;
+        if ($value == 1 || $value == 0)
+           $query->where('confirm_arrival', $value);
 
-        $query->where('confirm_arrival', $value);
+        return $query;
     }
 }
