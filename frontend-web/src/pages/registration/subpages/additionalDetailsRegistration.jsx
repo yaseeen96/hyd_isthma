@@ -334,14 +334,14 @@ const AdditionalDetailsRegistration = () => {
                                 <ErrorMessage name="special_considerations.need_attendant" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
-                                <label>Bed or Cot?</label>
+                                <label>floor mattress or Cot?</label>
                                 <Field
                                     name="special_considerations.cot_or_bed"
                                     as="select"
                                     className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
                                 >
                                     <option value="">Select</option>
-                                    <option value="bed">Bed</option>
+                                    <option value="floor mattress">Floor Mattress</option>
                                     <option value="cot">🛏️Cot</option>
                                 </Field>
                                 <ErrorMessage name="special_considerations.cot_or_bed" component="div" className="text-red-500 text-sm mt-1" />
