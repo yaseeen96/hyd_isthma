@@ -60,7 +60,7 @@ const FinancialRegistration = () => {
                     </div>
                 </div>
                 <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit} enableReinitialize>
-                    {({ values, handleChange }) => (
+                    {({ values, handleChange, isValid }) => (
                         <Form>
                             <div className="mb-4">
                                 <label htmlFor="amountPaid" className="block text-sm font-medium text-gray-700">
@@ -76,12 +76,18 @@ const FinancialRegistration = () => {
                                     required
                                 />
                                 <ErrorMessage name="amountPaid" component="div" className="text-red-500 text-sm mt-1" />
+                                <div className="text-gray-600 text-sm mt-2">
+                                    {values.amountPaid === 0 ? 'Please make sure to enter the amount paid to proceed.' : 'Thank you for entering the payment details.'}
+                                </div>
                             </div>
                             <button
                                 type="submit"
-                                className="w-full py-2 px-4 bg-primary-600 text-white font-semibold rounded-md shadow-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50"
+                                className={`w-full py-2 px-4 font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50 ${
+                                    !isValid || values.amountPaid <= 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary-600 text-white hover:bg-primary-700'
+                                }`}
+                                disabled={!isValid || values.amountPaid <= 0}
                             >
-                                Submit
+                                {values.amountPaid <= 0 ? 'You need to pay some amount to complete this step' : 'Submit'}
                             </button>
                         </Form>
                     )}
