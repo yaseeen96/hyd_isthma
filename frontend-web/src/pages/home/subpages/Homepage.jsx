@@ -1,49 +1,67 @@
+import React, { useState, useEffect } from 'react';
+import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import ActionCard from '../../../components/common/actionCard';
 import HomeLayout from '../layout/Homelayout';
-import { useNavigate } from 'react-router-dom';
-import { RiProfileFill } from 'react-icons/ri';
-
 import LoadingTileCard from '../components/loadingTileCard';
 import { localStorageConstant } from '../../../utils/constants/localStorageConstants';
 import { ROUTES } from '../../../router/routes';
-import useAsyncEffect from 'use-async-effect';
-import { useLoading } from '../../../utils/hooks/useLoading';
 import { isUserLoggedIn } from '../../../services/check_token_validity_service';
 import LoadingComponent from '../../../components/common/loadingComponent';
 
+import { RiProfileFill } from 'react-icons/ri';
+
 const HomePage = () => {
-    const { loading, setLoading } = useLoading();
+    const [isRefetching, setIsRefetching] = useState(false); // State to manage refetch indicator
     const navigate = useNavigate();
-    const onRegisterIjtema = () => {
-        navigate(ROUTES.register);
-    };
 
-    useAsyncEffect(async () => {
-        setLoading(true);
-        const { user, isLoggedIn } = isUserLoggedIn();
-        if (isLoggedIn) {
-            localStorage.setItem(localStorageConstant.arrivalConfirmed, user.registration.confirm_arrival);
-            localStorage.setItem(localStorageConstant.arrivalDetails, user.registration.arrival_dtls);
-            localStorage.setItem(localStorageConstant.familyDetails, user.registration.family_dtls);
-            localStorage.setItem(localStorageConstant.financialDetails, user.registration.financial_dtls);
-        }
-        setLoading(false);
-    }, []);
+    // Fetch user details with react-query
+    const { isLoading, isError, data, error, refetch } = useQuery('userDetails', isUserLoggedIn, {
+        onSettled: () => setIsRefetching(false),
+        refetchOnWindowFocus: true,
+        refetchOnMount: true,
+        staleTime: 0,
+    });
 
-    // Retrieve values from localStorage
+    useEffect(() => {
+        setIsRefetching(true);
+        refetch().then(() => {
+            if (data?.isLoggedIn) {
+                const { user } = data;
+                localStorage.setItem(localStorageConstant.arrivalConfirmed, user.registration.confirm_arrival);
+                localStorage.setItem(localStorageConstant.arrivalDetails, user.registration.arrival_dtls);
+                localStorage.setItem(localStorageConstant.familyDetails, user.registration.family_dtls);
+                localStorage.setItem(localStorageConstant.financialDetails, user.registration.financial_dtls);
+            }
+        });
+    }, [refetch, data]);
+
+    // Calculate progress based on localStorage values
     const arrivalConfirmed = localStorage.getItem(localStorageConstant.arrivalConfirmed);
     const familyDetails = localStorage.getItem(localStorageConstant.familyDetails);
     const financialDetails = localStorage.getItem(localStorageConstant.financialDetails);
     const arrivalDetails = localStorage.getItem(localStorageConstant.arrivalDetails);
 
-    // Calculate progress
     const completedSteps = [arrivalConfirmed === '1', familyDetails === '1', financialDetails === '1', arrivalDetails === '1'].filter(Boolean).length;
-
     const progress = (completedSteps / 4) * 100; // Percentage of completion
 
-    if (loading) {
+    const onRegisterIjtema = () => {
+        navigate(ROUTES.register);
+    };
+
+    if (isLoading || isRefetching) {
         return <LoadingComponent />;
     }
+
+    if (isError) {
+        return (
+            <div className="flex flex-col justify-center items-center h-screen">
+                <h3>An Error Occurred. Please come back later</h3>
+                <h2>Error: {error.message}</h2>
+            </div>
+        );
+    }
+
     return (
         <HomeLayout>
             <ActionCard
@@ -60,13 +78,6 @@ const HomePage = () => {
                     percentage={progress} // Pass calculated progress
                 />
             </div>
-            {/* 
-            <TileButton
-                title={arrivalConfirmed === '1' ? 'Registered Successfully' : 'Register for Ijtema'}
-                isCompleted={arrivalConfirmed === '1'}
-                onClick={onRegisterIjtema}
-                icon={<MdEventNote color="black" size={30} />}
-            /> */}
         </HomeLayout>
     );
 };

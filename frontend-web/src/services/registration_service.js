@@ -43,6 +43,7 @@ export const updateFamilyDetails = async (data) => {
             },
         });
         console.log(`success: response: ${response.data}`);
+        localStorage.setItem(localStorageConstant.familyDetails, '1');
         return true;
     } catch (error) {
         console.error(error);
@@ -96,6 +97,7 @@ export const updateFinancialDetails = async (fees) => {
                 },
             }
         );
+        localStorage.setItem(localStorageConstant.financialDetails, '1');
         return response.data;
     } catch (error) {
         console.error(error);
@@ -112,6 +114,7 @@ export const updateAdditionalDetails = async (data) => {
             },
         });
         if (response.status == HttpStatusCode.Ok) {
+            localStorage.setItem(localStorageConstant.arrivalDetails, '1');
             return true;
         } else {
             return false;
