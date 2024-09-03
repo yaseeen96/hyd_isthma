@@ -26,6 +26,7 @@ export const confirmRegistrationService = async (data) => {
             }
         );
         console.log(response.data);
+        localStorage.setItem(localStorageConstant.arrivalConfirmed, 1);
         return response.data.status === 'success';
     } catch (error) {
         console.error(error);
