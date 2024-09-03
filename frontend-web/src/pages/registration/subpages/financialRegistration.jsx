@@ -29,7 +29,8 @@ const FinancialRegistration = () => {
         try {
             await updateFinancialDetails(values.amountPaid);
             navigate(-1);
-            toast.success('Thank you. Please complete the next steps');
+
+            toast.success('Registration Successful. You are all done');
         } catch (error) {
             toast.error('Something went wrong. Please come back later');
         }
@@ -64,7 +65,7 @@ const FinancialRegistration = () => {
                         <Form>
                             <div className="mb-4">
                                 <label htmlFor="amountPaid" className="block text-sm font-medium text-gray-700">
-                                    Amount Paid to Ameer-e-Muqami
+                                    Pay above amount to your Ameer-e-Muqami or local office bearer and mention the amount here. If you have paid partially then please mention the amount paid so far
                                 </label>
                                 <Field
                                     type="number"
