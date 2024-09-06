@@ -164,7 +164,7 @@ const FamilyRegistrationPage = () => {
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit} enableReinitialize>
                 {({ values, setFieldValue }) => (
                     <Form className="flex flex-col items-start mt-4 gap-2 w-full">
-                        <label className="w-full mb-2">Will anyone be accompanying you?</label>
+                        <label className="w-full mb-2">Is anyone in your family accompanying you, mention the details. Do not add those family members names who are also Arkan-e-Jamat</label>
                         <Field as="select" name="accompanying" className="form-select" onChange={(e) => handleAccompanyingChange(e.target.value, setFieldValue)}>
                             <option value="no">No</option>
                             <option value="yes">Yes</option>

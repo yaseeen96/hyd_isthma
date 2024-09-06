@@ -132,7 +132,8 @@ const AdditionalDetailsRegistration = () => {
         const isSuccess = await updateAdditionalDetails(formattedValues);
         if (isSuccess) {
             navigate(-1);
-            toast.success('Registration Successful. You are all done');
+            toast.success('Thank you. Please complete the next steps');
+            // toast.success('Registration Successful. You are all done');
         } else {
             toast.error('Something seems to be wrong. Please come back later');
         }
@@ -149,7 +150,7 @@ const AdditionalDetailsRegistration = () => {
                         <div className="border-b border-gray-300 pb-4">
                             <h2 className="text-lg font-semibold mb-2">Arrival Details</h2>
                             <div className="mb-4">
-                                <label>Exact Date and Time of Arrival</label>
+                                <label>Provide your exact date and time of arrival to Hyderabad. Ijtema to begin on 15th Nov Morning</label>
                                 <DatePicker
                                     wrapperClassName="w-full"
                                     selected={values.arrival_details.datetime ? new Date(values.arrival_details.datetime) : new Date(2024, 11, 1)}
@@ -193,7 +194,7 @@ const AdditionalDetailsRegistration = () => {
                                 <ErrorMessage name="arrival_details.mode_identifier" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
-                                <label>Station Start Point</label>
+                                <label>Mention the station or place from where you are coming</label>
                                 <Field
                                     name="arrival_details.start_point"
                                     type="text"
@@ -203,7 +204,7 @@ const AdditionalDetailsRegistration = () => {
                                 <ErrorMessage name="arrival_details.start_point" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
-                                <label>Station End Point</label>
+                                <label>Mention station name where you will arrive</label>
                                 <Field
                                     name="arrival_details.end_point"
                                     as="select"
@@ -224,7 +225,7 @@ const AdditionalDetailsRegistration = () => {
                         <div className="border-b border-gray-300 pb-4">
                             <h2 className="text-lg font-semibold mb-2">Departure Details</h2>
                             <div className="w-full mb-4">
-                                <label>Exact Date and Time of Departure</label>
+                                <label>Provide your exact date and time of departure from Hyderabad. Ijtema to end on 17th Nov evening.</label>
                                 <DatePicker
                                     startDate={new Date(2024, 11, 1)}
                                     wrapperClassName="w-full"
@@ -268,7 +269,7 @@ const AdditionalDetailsRegistration = () => {
                                 <ErrorMessage name="departure_details.mode_identifier" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
-                                <label>Station Start Point</label>
+                                <label>Mention station name from where you will depart</label>
                                 <Field
                                     name="departure_details.start_point"
                                     as="select"
@@ -285,7 +286,7 @@ const AdditionalDetailsRegistration = () => {
                                 <ErrorMessage name="departure_details.start_point" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
-                                <label>Station End Point</label>
+                                <label>Mention the station or place where you will be going</label>
                                 <Field
                                     name="departure_details.end_point"
                                     type="text"
@@ -299,7 +300,10 @@ const AdditionalDetailsRegistration = () => {
                         <div className="border-b border-gray-300 pb-4">
                             <h2 className="text-lg font-semibold mb-2">Hotel & Special Considerations</h2>
                             <div className="w-full mb-4">
-                                <label>Do you require a hotel?</label>
+                                <label>
+                                    In case you need separate hotel accommodation for health or any other reason then mention here. The hotel will be at your own expenses and you need to arrange to
+                                    and fro travel to Ijtema hall
+                                </label>
                                 <Field
                                     name="hotel_required"
                                     as="select"
@@ -313,7 +317,7 @@ const AdditionalDetailsRegistration = () => {
                             </div>
 
                             <div className="w-full mb-4">
-                                <label>Special Considerations</label>
+                                <label>If there are any special considerations then mention here</label>
                                 <Field
                                     name="special_considerations.food_preferences"
                                     type="text"
@@ -323,7 +327,7 @@ const AdditionalDetailsRegistration = () => {
                                 <ErrorMessage name="special_considerations.food_preferences" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
-                                <label>Do you need an attendant?</label>
+                                <label>In case you need special care from any volunteer during the Ijtema then mention here</label>
                                 <Field
                                     name="special_considerations.need_attendant"
                                     as="select"
@@ -336,7 +340,7 @@ const AdditionalDetailsRegistration = () => {
                                 <ErrorMessage name="special_considerations.need_attendant" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
                             <div className="w-full mb-4">
-                                <label>floor mattress or Cot?</label>
+                                <label>Which sleep mode do you prefer Floor Mattress (گدا) or Bed (پلنگ یا چارپائی)</label>
                                 <Field
                                     name="special_considerations.cot_or_bed"
                                     as="select"
@@ -353,7 +357,10 @@ const AdditionalDetailsRegistration = () => {
                         <div className="border-b border-gray-300 pb-4">
                             <h2 className="text-lg font-semibold mb-2">Sight Seeing</h2>
                             <div className="w-full mb-4">
-                                <label>Do you require Sight Seeing?</label>
+                                <label>
+                                    Are you interested in sight seeing of Hyderabad city after Ijtema. It will be paid service and fees will be informed later. If yes, then also mention how many of
+                                    your family members (Non Arkan) will accompany you.
+                                </label>
                                 <Field
                                     name="sight_seeing.required"
                                     as="select"
@@ -464,7 +471,7 @@ const AdditionalDetailsRegistration = () => {
                         </div>
 
                         <div className="w-full mb-4">
-                            <label>Year of Rukniyat</label>
+                            <label>Please mention the year when you became Rukn-e-Jamat. If you don't remember exact year then mention approximate year</label>
                             <Field
                                 name="year_of_rukniyat"
                                 type="number"
