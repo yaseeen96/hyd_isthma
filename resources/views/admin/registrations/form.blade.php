@@ -64,9 +64,13 @@
                                             <select class="form-control select2bs4" name="member_id" id="member_id">
                                                 <option value="">Select Member</option>
                                                 @foreach ($members as $member)
+                                                    @php
+                                                        $name = preg_replace('/[0-9]+/', '', $member->name); // removing numbers from name
+                                                        $name = preg_replace('/\([^)]*\)/', '', $member->name); // removing any brackets () from name
+                                                    @endphp
                                                     <option value="{{ $member->id }}"
                                                         {{ $reg->member_id == $member->id ? 'selected' : '' }}>
-                                                        {{ $member->name }}</option>
+                                                        {{ $name . '-' . $member->user_number }}</option>
                                                 @endforeach
                                             </select>
                                             @if ($errors->has('member_id'))
@@ -74,6 +78,13 @@
                                                     {{ $errors->first('member_id') }}
                                                 </span>
                                             @endif
+                                        </div>
+                                        {{-- Year Of Rukuniyat --}}
+                                        <div class="form-group">
+                                            <label for="year_of_rukniyat">Year of rukniyat</label>
+                                            <input type="text" placeholder="Enter year of rukuniyat" class="form-control"
+                                                name="year_of_rukniyat"
+                                                value="{{ old('year_of_rukniyat', $year_of_rukniyat) }}" />
                                         </div>
                                         {{-- Confirm Arrival --}}
                                         <div class="form-group">
@@ -108,9 +119,13 @@
                                         {{-- Reason for not coming --}}
                                         <div class="form-group reason_for_not_coming_input">
                                             <label for="reason_for_not_coming">Reason for not coming</label>
-                                            <input type="text" class="form-control" id="reason_for_not_coming"
-                                                name="reason_for_not_coming" placeholder="Reason for not coming"
-                                                value="{{ old('reason_for_not_coming', $reg->reason_for_not_coming) }}">
+                                            <select class="form-control" name="reason_for_not_coming">
+                                                <option value="">Select Reason</option>
+                                                @foreach ($reasonForNotComingList as $reason)
+                                                    <option {{ $reg->reason_for_not_coming == $reason ? 'selected' : '' }}
+                                                        value="{{ $reason }}">{{ $reason }}</option>
+                                                @endforeach
+                                            </select>
                                             @if ($errors->has('reason_for_not_coming'))
                                                 <span class="text-danger">
                                                     {{ $errors->first('reason_for_not_coming') }}
@@ -589,6 +604,15 @@
                                                                 {{ $reg->management_experience == 'no' ? 'selected' : '' }}
                                                                 value="No">No</option>
                                                         </select>
+                                                    </div>
+                                                </div>
+                                                {{-- Fees Paid to Ameer Jamat --}}
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="hotel_required">Fees paid to ameer jamat?</label>
+                                                        <input type="number" class="form-control"
+                                                            name="fees_paid_to_ameer"
+                                                            value="{{ old('fees_paid_to_ameer', $reg->fees_paid_to_ameer) }}">
                                                     </div>
                                                 </div>
                                                 {{-- Comments --}}

@@ -158,18 +158,23 @@
         $(function() {
             bsCustomFileInput.init();
         });
-        $('#date_time').datetimepicker({
+        $('.date_time').datetimepicker({
             icons: {
                 time: 'fas fa-clock'
             },
             // formatTime: "h:i a",
             // format: 'YYYY-MM-DD hh:mm A',
+            viewDate: '2024-11-01',
+            useCurrent: false,
             format: 'YYYY-MM-DD',
             useCurrent: false
         });
 
         $('.datetime').datetimepicker({
             format: 'YYYY-MM-DD hh:mm A',
+            viewDate: '2024-11-01',
+            useCurrent: false,
+
             icons: {
                 time: 'fa fa-clock',
             }

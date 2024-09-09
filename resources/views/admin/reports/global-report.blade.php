@@ -48,16 +48,16 @@
             </div>
             <x-table id="global-report-table">
                 <th>SL.No </th>
-                <th>ZONE NAME</th>
-                <th>Total Arkans</th>
+                <th id="region_column">ZONE NAME</th>
+                <th>Total</th>
                 <th>Confirmed</th>
                 <th>Non Attendees</th>
                 <th>Registered</th>
-                <th>Percentage Attendees</th>
-                <th>Percentage Registered</th>
-                <th>Completed Family Details</th>
-                <th>Completed Full/half Payment</th>
-                <th>Completed Last Section</th>
+                <th>% Attendees</th>
+                <th>% Registered</th>
+                <th>Completed Family detail</th>
+                <th>Completed payment (Full/Partial)</th>
+                <th>Completed last section</th>
                 <tfoot>
                     <tr class="bg-purple">
                         <th></th>
@@ -101,6 +101,7 @@
                     },
                     dataSrc: function(json) {
                         globalData = json.global_data;
+                        $('#region_column').html(globalData['region_column_header']);
                         return json.data;
                     }
                 },

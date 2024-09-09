@@ -12,6 +12,12 @@ use Yajra\DataTables\DataTables;
 class RegistrationController extends Controller
 {
     public $stationsList;
+    public $reasonForNotComingList = [
+        "Health problem",
+        "Emergency",
+        "Financial problem",
+        "No Reason"
+    ];
     public function __construct() {
        $this->stationsList = [
             'Mg Bus Station, Imlibun, Gowliguda, Hyderabad',
@@ -84,9 +90,11 @@ class RegistrationController extends Controller
             'reg' => new Registration(),
             'members' => Member::doesntHave('registration')->get(),
             'stationslist' => $this->stationsList,
+            'reasonForNotComingList' => $this->reasonForNotComingList,
             'mehramDetails' => [],
             'childrenDetails' => [],
-            'purchaseDetails' => []
+            'purchaseDetails' => [],
+            'year_of_rukniyat' => '',
         ]);
     }
 
@@ -126,7 +134,7 @@ class RegistrationController extends Controller
         $regData['comments'] = $request->get('comments');
         $memberState = Member::find($request->get('member_id'))->pluck('zone_name')->first();
         $regData['member_fees'] = in_array($memberState, config('fees.special_states')) ? 3000 : 2000;
-
+        $regData['fees_paid_to_ameer'] = $request->get('fees_paid_to_ameer');
         return $regData;
     }
 
@@ -166,6 +174,10 @@ class RegistrationController extends Controller
                 'qty' => $value,
             ];
             $regis->purchaseDetails()->create($data);
+        }
+        if(!empty($request->get('year_of_rukniyat'))) {
+            $member = Member::find($regData['member_id']);
+            $member->update(['year_of_rukniyat' => $request->get('year_of_rukniyat')])->where('id', $regData['member_id']);
         }
         $is_family_dtls_exists = $request->get('is_family_dtls_exists');
         // Family Details
@@ -246,9 +258,11 @@ class RegistrationController extends Controller
             'reg' => $registration,
             'members' => Member::all(),
             'stationslist' => $this->stationsList,
+            'reasonForNotComingList' => $this->reasonForNotComingList,
             'mehramDetails' => $mehramDetails,
             'childrenDetails' => $childrenDetails,
-            'purchaseDetails' => $purchaseDetails
+            'purchaseDetails' => $purchaseDetails,
+            'year_of_rukniyat' => $registration->member->year_of_rukniyat,
         ]);
 
     }
@@ -274,6 +288,10 @@ class RegistrationController extends Controller
                 'qty' => $value,
             ];
             $regis->purchaseDetails()->updateOrCreate(['type' => $key, 'registration_id' => $id], $data);
+        }
+        if(!empty($request->get('year_of_rukniyat'))) {
+            $member = Member::find($regData['member_id']);
+            $member->update(['year_of_rukniyat' => $request->get('year_of_rukniyat')]);
         }
         // Family Details
         $is_family_dtls_exists = $request->get('is_family_dtls_exists');

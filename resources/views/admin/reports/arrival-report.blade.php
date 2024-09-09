@@ -53,9 +53,16 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Date & Time</label>
-                                    <input type="text" class="form-control datetimepicker-input" id="date_time"
+                                    <label>From Date & Time</label>
+                                    <input type="text" class="form-control datetimepicker-input datetime" id="from_date"
                                         data-toggle="datetimepicker" data-target="#date_time" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>To Date & Time</label>
+                                    <input type="text" class="form-control datetimepicker-input datetime" id="to_date"
+                                        data-toggle="datetimepicker" data-target="#timepicker" />
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -114,7 +121,8 @@
             $('#zone_name').val('').trigger('change');
             $('#division_name').val('').trigger('change');
             $('#unit_name').val('').trigger('change');
-            $('#date_time').val(null);
+            $('#from_date').val(null);
+            $('#to_date').val(null);
             $('#travel_mode').val('').trigger('change');
             $('#end_point').val('').trigger('change');
             $('#mode_identifier').val('');
@@ -156,8 +164,9 @@
                         d.unit_name = $("#unit_name").val()
                         d.zone_name = $("#zone_name").val()
                         d.division_name = $("#division_name").val()
-                        d.date_time = $("#date_time").val()
                         d.travel_mode = $('#travel_mode').val()
+                        d.from_date = $('#from_date').val()
+                        d.to_date = $('#to_date').val()
                         d.end_point = $('#end_point').val()
                         d.mode_identifier = $('#mode_identifier').val()
                     }

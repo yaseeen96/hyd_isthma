@@ -10,6 +10,7 @@ use App\Models\RegFamilyDetail;
 use App\Models\RegPurchasesDetail;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Http;
 
@@ -114,20 +115,23 @@ class ReportsController extends Controller
                     $query->where('division_name', $request->division_name);
                 }
                 $query->filterByZone();
-            })->select('registrations.*')->where([['confirm_arrival', '=', 1], ['arrival_details', '!=', '']])
+            })->select('registrations.*')->where([['confirm_arrival', '=', 1], ['arrival_details', '!=', ''], ['arrival_details->datetime', '!=', null]])
                 ->where(function ($query) use($request) {
-                    if(!empty($request->date_time)){
-                        $query->where('arrival_details->datetime', 'like', "%{$request->date_time}%");
+                    if(!empty($request->from_date) && !empty($request->to_date)){
+                        $query->whereBetween('arrival_details->datetime', [$request->from_date, $request->to_date]);
                     }
-
+                    if(!empty($request->from_date) && empty($request->to_date)){
+                        $query->where('arrival_details->datetime', 'like', "%{$request->from_date}%");
+                    }
+                    if(empty($request->from_date) && !empty($request->to_date)){
+                        $query->where('arrival_details->datetime', 'like', "%{$request->to_date}%");
+                    }
                     if(!empty($request->travel_mode)) {
                         $query->where('arrival_details->mode', 'like', "%{$request->travel_mode}%");
                     }
-
                     if(!empty($request->end_point)){
                         $query->where('arrival_details->end_point', 'like', "%{$request->end_point}%");
                     }
-
                     if(!empty($request->mode_identifier)) {
                         $query->where('arrival_details->mode_identifier', 'like', "%{$request->mode_identifier}%");
                     }
@@ -138,7 +142,7 @@ class ReportsController extends Controller
                 })
                 ->addColumn('date_time', function (Registration $registration) {
                     return $registration->arrival_details['datetime'] ?
-                        '<span class="badge badge-success">' . date('Y-m-d', strtotime($registration->arrival_details['datetime'])) . '</span>' : 'NA';
+                        '<span class="badge badge-success">' . date('Y-m-d h:s:a', strtotime($registration->arrival_details['datetime'])) . '</span>' : 'NA';
                     })
                 ->addColumn('end_point', function (Registration $registration) {
                     return $registration->arrival_details['end_point'] ?
@@ -175,20 +179,23 @@ class ReportsController extends Controller
                     $query->where('division_name', $request->division_name);
                 }
                 $query->filterByZone();
-            })->select('registrations.*')->where([['confirm_arrival', '=', 1], ['departure_details', '!=', '']])
+            })->select('registrations.*')->where([['confirm_arrival', '=', 1], ['departure_details', '!=', ''], ['departure_details->datetime', '!=', null]])
                 ->where(function ($query) use($request) {
-                    if(!empty($request->date_time)){
-                        $query->where('departure_details->datetime', 'like', "%{$request->date_time}%");
+                    if(!empty($request->from_date) && !empty($request->to_date)){
+                        $query->whereBetween('departure_details->datetime', [$request->from_date, $request->to_date]);
                     }
-
+                    if(!empty($request->from_date) && empty($request->to_date)){
+                        $query->where('departure_details->datetime', 'like', "%{$request->from_date}%");
+                    }
+                    if(empty($request->from_date) && !empty($request->to_date)){
+                        $query->where('departure_details->datetime', 'like', "%{$request->to_date}%");
+                    }
                     if(!empty($request->travel_mode)) {
                         $query->where('departure_details->mode', 'like', "%{$request->travel_mode}%");
                     }
-
                     if(!empty($request->start_point)){
                         $query->where('departure_details->start_point', 'like', "%{$request->start_point}%");
                     }
-
                     if(!empty($request->mode_identifier)) {
                         $query->where('departure_details->mode_identifier', 'like', "%{$request->mode_identifier}%");
                     }
@@ -199,7 +206,7 @@ class ReportsController extends Controller
                 })
                 ->addColumn('date_time', function (Registration $registration) {
                     return $registration->departure_details['datetime'] ?
-                        '<span class="badge badge-success">' . date('Y-m-d', strtotime($registration->departure_details['datetime'])) . '</span>' : 'NA';
+                        '<span class="badge badge-success">' . date('Y-m-d h:s:a', strtotime($registration->departure_details['datetime'])) . '</span>' : 'NA';
                     })
                 ->addColumn('start_point', function (Registration $registration) {
                     return $registration->departure_details['start_point'] ?? 'NA';
@@ -362,12 +369,12 @@ class ReportsController extends Controller
             }
 
             $query = Member::select(DB::raw("$selector , count(*) as total_arkans"))
-                            ->filterByRegionType($queryBy, $queryByValue, $zoneFilter)
+                            ->filterByRegionType($queryBy, $queryByValue, $zoneFilter, $divisionFilter)
                             ->groupBy($selector)
                             ->orderBy($selector, 'asc');
 
-            $globalData = array_reduce($this->globalReportData($query, $selector, $zoneFilter), 'array_merge', []);
-
+            $globalData = array_reduce($this->globalReportData($query, $selector, $zoneFilter, $divisionFilter), 'array_merge', []);
+            $globalData['region_column_header'] = str_replace('_', ' ', Str::upper($selector));
             return $dataTables->eloquent($query)
                 ->addColumn('region_name', function (Member $member) use ($selector, $queryByValue) {
                     if (empty($queryByValue))
@@ -386,8 +393,7 @@ class ReportsController extends Controller
         }
         return view('admin.reports.global-report');
     }
-
-    public function globalReportData($query, $selector, $zoneFilter = null) {
+    public function globalReportData($query, $selector, $zoneFilter = null, $divisionFilter = null) {
         $data = [];
         $distinctRegions = $query->get();
         $sum_total_attendees = 0;
@@ -397,28 +403,28 @@ class ReportsController extends Controller
         foreach ($distinctRegions as $region) {
             $totalArkans = $region->total_arkans;
 
-            $totalAttendees = Registration::with('member')->whereHas('member', function ($query) use ($region, $selector, $zoneFilter) {
-                $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter);
+            $totalAttendees = Registration::with('member')->whereHas('member', function ($query) use ($region, $selector, $zoneFilter, $divisionFilter) {
+                $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter, $divisionFilter);
             })->confirmArrival(1)->count();
 
-            $totaNonAttendees = Registration::with('member')->whereHas('member', function ($query) use ($region, $selector, $zoneFilter) {
-                $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter);
+            $totaNonAttendees = Registration::with('member')->whereHas('member', function ($query) use ($region, $selector, $zoneFilter, $divisionFilter) {
+                $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter, $divisionFilter);
             })->confirmArrival(0)->count();
 
-            $totalRegistered = Registration::with('member')->whereHas('member', function ($query) use ($region, $selector) {
-                        $query->where($selector, $region->{$selector});
+            $totalRegistered = Registration::with('member')->whereHas('member', function ($query) use ($region, $selector, $zoneFilter, $divisionFilter) {
+                        $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter, $divisionFilter);
                     })->count();
 
-            $totalMembersCompletedFamilyDtls = Registration::with('member')->whereHas('member', function($query) use($region, $selector, $zoneFilter) {
-                        $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter);
+            $totalMembersCompletedFamilyDtls = Registration::with('member')->whereHas('member', function($query) use($region, $selector, $zoneFilter, $divisionFilter) {
+                        $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter, $zoneFilter, $divisionFilter);
                     })->where('member_fees', '!=', null)->count();
 
-            $totalMembersPartialsHalfPayment = Registration::with('member')->whereHas('member', function($query) use($region, $selector, $zoneFilter) {
-                       $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter);
+            $totalMembersPartialsHalfPayment = Registration::with('member')->whereHas('member', function($query) use($region, $selector, $zoneFilter, $divisionFilter) {
+                       $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter, $divisionFilter);
                     })->where('fees_paid_to_ameer', '!=', null)->where('fees_paid_to_ameer', '>', 0)->count();
 
-            $totalCompletedLastStep = Member::where('year_of_rukniyat', '!=', null)->where(function($query) use($region, $selector, $zoneFilter) {
-                       $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter);
+            $totalCompletedLastStep = Member::where('year_of_rukniyat', '!=', null)->where(function($query) use($region, $selector, $zoneFilter, $divisionFilter) {
+                       $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter, $divisionFilter);
                     })->count();
 
             $sortedData = [

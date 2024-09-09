@@ -256,7 +256,7 @@
                       </ul>
                   </li>
                   {{-- SETTINGS --}}
-                  @if (auth()->user()->can('View Notificaitons') ||
+                  @if (auth()->user()->can('View Notifications') ||
                           auth()->user()->can('View Permissions') ||
                           auth()->user()->can('View Users') ||
                           auth()->user()->id == 1)
