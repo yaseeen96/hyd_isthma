@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('programs', 'ProgramsController');
     // Users
     Route::resource('user', 'UserController');
+    // Audio Processing
+    Route::resource('audioProcessing', 'AudioProcessingController');
     // Reports
     Route::prefix('reports')->group(function () {
         Route::get('familyDetailsReport', 'ReportsController@familyDetailsReport')->name('family-details-report');

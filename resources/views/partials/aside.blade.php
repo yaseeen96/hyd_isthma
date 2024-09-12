@@ -319,6 +319,15 @@
                           </ul>
                       </li>
                   @endif
+                  <li class="nav-item">
+                      <a href="{{ route('audioProcessing.index') }}"
+                          class="nav-link {{ in_array(request()->route()->getName(), ['audioProcessing.index']) ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-microphone-alt"></i>
+                          <p>
+                              Audio Processing
+                          </p>
+                      </a>
+                  </li>
               </ul>
           </nav>
           <!-- /.sidebar-menu -->

@@ -21,10 +21,10 @@ class ListNotificationsResource extends JsonResource
         if($this->criteria['region_type']  == 'unit' &&  $user->unit_name == $this->criteria['region_value']) {
             $include = true;
         }
-        if($this->criteria['region_type']  == 'zone' &&  $user->unit_name == $this->criteria['region_value']) {
+        if($this->criteria['region_type']  == 'zone' &&  $user->zone_name == $this->criteria['region_value']) {
             $include = true;
         }
-        if($this->criteria['region_type']  == 'division' &&  $user->unit_name == $this->criteria['region_value']) {
+        if($this->criteria['region_type']  == 'division' &&  $user->division_name == $this->criteria['region_value']) {
             $include = true;
         }
         if(!empty($this->criteria['reg_status'])){

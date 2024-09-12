@@ -11,11 +11,11 @@
                         <a href="{{ route('notifications.create') }}" class="btn btn-purple float-right"><i
                                 class="fas fa-plus mr-2"></i>Create</a>
                     </div>
-
                 </div>
             </div>
             <x-table id="notifications-table">
                 <th>SL.No </th>
+                <th>Notification Criteria</th>
                 <th>Title</th>
                 <th>Message</th>
                 <th>Image</th>
@@ -35,6 +35,9 @@
                 dtIndexCol(),
                 {
                     data: 'title',
+                },
+                {
+                    data: 'notificaiton_criteria'
                 },
                 {
                     data: 'message'

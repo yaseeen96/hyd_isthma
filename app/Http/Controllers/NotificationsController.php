@@ -24,13 +24,18 @@ class NotificationsController extends Controller
         {
             $query = Notification::query();
             return $dataTables->eloquent($query)
-            ->addColumn('image', function (Notification $notification) {
-                $imageSrc = !empty($notification->getMedia('notification_image')->first()) ? $notification->getMedia('notification_image')->first()->getUrl() : '/assets/img/no-image.png';
-                return '<img src="'.$imageSrc.'" width="80px" height="80px">';
-            }) ->addColumn('document', function (Notification $notification) {
-                $docLink = !empty($notification->getMedia('notificaiton_doc')->first()) ? $notification->getMedia('notificaiton_doc')->first()->getUrl() : '';
-                return !empty($docLink) ? '<span class="badge badge-primary text-white"><a target="_blank" href="'.$docLink.'"><i class="fas fa-eye text-white"></i></a></span>' : '';
-            })->rawColumns(['image', 'document'])->makeHidden(['criteria'])
+                ->addColumn('image', function (Notification $notification) {
+                    $imageSrc = !empty($notification->getMedia('notification_image')->first()) ? $notification->getMedia('notification_image')->first()->getUrl() : '/assets/img/no-image.png';
+                    return '<img src="' . $imageSrc . '" width="80px" height="80px">';
+                })->addColumn('document', function (Notification $notification) {
+                    $docLink = !empty($notification->getMedia('notificaiton_doc')->first()) ? $notification->getMedia('notificaiton_doc')->first()->getUrl() : '';
+                    return !empty($docLink) ? '<span class="badge badge-primary text-white"><a target="_blank" href="' . $docLink . '"><i class="fas fa-eye text-white"></i></a></span>' : '';
+                })
+                ->addColumn('notificaiton_criteria', function (Notification $notification) {
+                    return '<p><b>Gender</b>: <span class="badge badge-primary">' . (ucfirst($notification->criteria['gender'] ) == null ? 'NA' : ucfirst($notification->criteria['gender'])) . '</span></p>'
+                           .'<p><b>Region-</b>' . ucfirst($notification->criteria['region_type']) . ' - <span class="badge badge-secondary">' . $notification->criteria['region_value'] . '</span></p>'
+                           .'<p><b>Registration Status</b>:<span class="badge badge-warning">' . ($notification->criteria['reg_status'] == 1 ? 'Confirmed' : 'Not Confirmed') . '</span></p>';
+            })->rawColumns(['image', 'document', 'notificaiton_criteria'] )->makeHidden(['criteria'])
                 ->addIndexColumn()
                 ->make(true);
 
@@ -114,7 +119,7 @@ class NotificationsController extends Controller
             $notification->attachMedia($media, ['notificaiton_doc']);
         }
         // Sending Push Notification.
-        $is_send = PushNotificationHelper::sendNotification([
+        $notificationData = PushNotificationHelper::sendNotification([
             'tokens' => $tokens,
             'title' => $title,
             'message' => $message,
@@ -122,6 +127,7 @@ class NotificationsController extends Controller
             'ytUrl' => $ytUrl,
             'id' => $notification->id
         ]);
+        $notification->update($notificationData);
         return back()->with('success', 'Notification Send Successfully');
     }
 

@@ -141,10 +141,14 @@
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+    {{-- Jquery Form Validations --}}
+    <script src="{{ asset('assets/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jquery-validation/additional-methods.min.js') }}"></script>
     {{-- datables global configs --}}
     <script src="{{ asset('assets/plugins/bs-stepper/js/bs-stepper.min.js') }}"></script>
     {{-- BS strepper --}}
     <script src="{{ asset('assets/dist/js/app-global-config.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">
         //Initialize Select2 Elements
         $('.select2').select2()
@@ -178,6 +182,12 @@
             icons: {
                 time: 'fa fa-clock',
             }
+        });
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
         });
     </script>
     @stack('scripts')
