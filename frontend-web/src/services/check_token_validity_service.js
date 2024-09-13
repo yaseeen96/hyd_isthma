@@ -9,7 +9,7 @@ export const isUserLoggedIn = async () => {
     }
     try {
         const response = await axios.post(
-            'https://jihapi.kkshan.amlc.in/api/v1/auth/verifyToken',
+            'https://admin-ijtema.jihhrd.com/api/v1/auth/verifyToken',
             { token: token, push_token: fcmToken },
             {
                 headers: {

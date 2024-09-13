@@ -4,7 +4,7 @@ import { localStorageConstant } from '../utils/constants/localStorageConstants';
 export const sendOtpService = async (phone) => {
     try {
         const response = await axios.post(
-            'https://jihapi.kkshan.amlc.in/api/v1/auth/login',
+            'https://admin-ijtema.jihhrd.com/api/v1/auth/login',
             {
                 phone: `${phone}`,
             },
@@ -26,7 +26,7 @@ export const sendOtpService = async (phone) => {
 export const verifyOtpService = async (phone, otp) => {
     try {
         const response = await axios.post(
-            'https://jihapi.kkshan.amlc.in/api/v1/auth/verifyOtp',
+            'https://admin-ijtema.jihhrd.com/api/v1/auth/verifyOtp',
             {
                 phone: `${phone}`,
                 otp: otp,
@@ -50,7 +50,7 @@ export const verifyOtpService = async (phone, otp) => {
 
 export const logoutService = async () => {
     try {
-        const response = await axios.post('https://jihapi.kkshan.amlc.in/api/v1/logout', null, {
+        const response = await axios.post('https://admin-ijtema.jihhrd.com/api/v1/logout', null, {
             headers: { Authorization: `Bearer ${localStorage.getItem(localStorageConstant.token)}`, 'Content-Type': 'application/json' },
         });
 
