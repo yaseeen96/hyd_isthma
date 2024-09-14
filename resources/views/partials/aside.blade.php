@@ -321,7 +321,7 @@
                   @endif
                   <li class="nav-item">
                       <a href="{{ route('audioProcessing.index') }}"
-                          class="nav-link {{ in_array(request()->route()->getName(), ['audioProcessing.index']) ? 'active' : '' }}">
+                          class="nav-link {{ in_array(request()->route()->getName(), ['audioProcessing.index', 'audioProcessing.create', 'audioProcessing.edit']) ? 'active' : '' }}">
                           <i class="nav-icon fas fa-microphone-alt"></i>
                           <p>
                               Audio Processing
