@@ -18,7 +18,7 @@ class UserController extends Controller
             abort(403);
         }
         if($request->ajax()) {
-            $query = User::query()->where('id', '!=', 1);
+            $query = User::query()->where('id', '!=', 1)->role(['Admin', 'Staff']);
             return $datatable->eloquent($query)
                 ->addColumn('role', function (User $user) {
                     return $user->getRoleNames()->first();

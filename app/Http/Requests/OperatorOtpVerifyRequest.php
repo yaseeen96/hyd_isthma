@@ -5,10 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class VerifyTokenRequest extends FormRequest
+class OperatorOtpVerifyRequest extends FormRequest
 {
+    public function __construct(Request $request)
+    {
+    }
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -24,16 +28,25 @@ class VerifyTokenRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'token' => 'required',
+        $rules = [
+            'otp' => 'required|min:4|max:4',
+            'phone_number' => 'required|min:10|max:10|exists:users,phone_number'
         ];
+        return $rules;
     }
 
     public function messages()
     {
-        return [
-            'token.required' => 'The :attribute field is required.',
+        $messages = [
+            'otp.required' => 'The :attribute field is required.',
+            'otp.min' => 'The :attribute must be at least :min characters.',
+            'otp.max' => 'The :attribute must be at most :max characters.',
+            'phone_number' => 'The :attribute field is required.',
+            'phone_number.min' => 'The :attribute must be at least :min characters.',
+            'phone_number.max' => 'The :attribute must be at most :max characters.',
+            'phone_number.exists' => 'The :attribute Number does not exists in our system.'
         ];
+        return $messages;
     }
 
     protected function failedValidation(Validator $validator)

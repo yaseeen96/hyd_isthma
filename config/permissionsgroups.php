@@ -14,5 +14,7 @@ return [
     "GlobalReport",
     "Notifications",
     "Permissions",
-    "Users"
+    "Users",
+    "QrOperators",
+    "CheckInOutPlaces"
 ];

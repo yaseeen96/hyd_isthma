@@ -17,7 +17,7 @@ class PermissionsController extends Controller
             abort(403);
         }
 
-        $roles = Role::where('name', '!=', 'Super Admin')->get();
+        $roles = Role::where('name', '!=', 'Super Admin')->where('name','!=', 'QR Operator')->get();
         return view('admin.permissions.list')->with(['roles' => $roles]);
     }
 

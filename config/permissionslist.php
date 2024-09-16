@@ -47,4 +47,16 @@ return [
         "Edit Users",
         "Delete Users",
         "View Users",
+
+        "Create QrOperators",
+        "Edit QrOperators",
+        "Delete QrOperators",
+        "View QrOperators",
+
+        "Create CheckInOutPlaces",
+        "Edit CheckInOutPlaces",
+        "Delete CheckInOutPlaces",
+        "View CheckInOutPlaces",
+
+
 ];

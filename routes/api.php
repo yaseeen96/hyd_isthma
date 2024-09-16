@@ -23,6 +23,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('verifyOtp', 'AuthController@verifyOtp');
         Route::post('verifyToken', 'AuthController@verifyToken');
     });
+    Route::group(['prefix' => 'auth/operator'], function () {
+        Route::post('login', 'QrCodeOperatorController@login');
+        Route::post('verifyOtp', 'QrCodeOperatorController@verifyOtp');
+        Route::post('verifyToken', 'QrCodeOperatorController@verifyToken');
+    });
     /* protected routes */
     Route::middleware('auth:sanctum')->group(function () {
         Route::group(['prefix' => 'user'], function () {

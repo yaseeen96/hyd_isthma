@@ -38,6 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('user', 'UserController');
     // Audio Processing
     Route::resource('audioProcessing', 'AudioProcessingController');
+    // QR Code Operators
+    Route::resource('qrOperators', 'QrCodeOperatorController');
+    // Check In Out Places
+    Route::resource('checkInOutPlaces', 'CheckInOutPlaceController');
     // Reports
     Route::prefix('reports')->group(function () {
         Route::get('familyDetailsReport', 'ReportsController@familyDetailsReport')->name('family-details-report');
