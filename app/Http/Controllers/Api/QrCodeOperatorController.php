@@ -76,6 +76,7 @@ class QrCodeOperatorController extends Controller
             'data' => [
                 'token' => $token,
                 'user' => $user,
+                'places' => CheckInOutPlace::all()
             ]
         ], Response::HTTP_OK);
     }
@@ -90,10 +91,13 @@ class QrCodeOperatorController extends Controller
                 "status" => "failure"
             ], Response::HTTP_UNAUTHORIZED);
         }
+        $user = $isTokenExists->tokenable;
         return response()->json([
             "status" => "success",
             "message" => "Token exists",
             "data" => [
+                'id' => $user->id,
+                'name' => $user->name,
                 "places" => CheckInOutPlace::all()
             ]
         ], Response::HTTP_OK);
