@@ -48,6 +48,7 @@ Route::group(['prefix' => 'v1'], function () {
         });
         Route::post('logout', 'AuthController@logout');
         Route::post('deleteAccount', 'AuthController@deleteAccount');
+        Route::post('bulkUpload', 'checkInOutEntiresController@bulkUpload');
     });
     Route::get('fetchUsers', 'DataFetchController@index');
     Route::get('getZones', 'AdminDataFetchController@getZoneNames');
