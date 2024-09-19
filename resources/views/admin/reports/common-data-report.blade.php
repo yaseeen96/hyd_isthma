@@ -101,6 +101,17 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="gender"
+                                        onchange="setFilter()">
+                                        <option value="">All</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -138,6 +149,7 @@
             $('#cot_or_bed').val('').trigger('change');
             $('#health_concern').val('').trigger('change');
             $('#management_experience').val('').trigger('change');
+            $('#gender').val('').trigger('change');
             setFilter();
         }
         $(function() {
@@ -153,6 +165,7 @@
                         d.cot_or_bed = $('#cot_or_bed').val();
                         d.health_concern = $('#health_concern').val();
                         d.management_experience = $('#management_experience').val();
+                        d.gender = $('#gender').val();
                     }
                 },
                 columns: [

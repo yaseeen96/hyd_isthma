@@ -240,6 +240,9 @@ class ReportsController extends Controller
                 if (!empty($request->division_name)) {
                     $query->where('division_name', $request->division_name);
                 }
+                if(!empty($request->gender)) {
+                    $query->where('gender', $request->gender);
+                }
                 $query->filterByZone();
             })->select('registrations.*')->where([['confirm_arrival', '=', 1]])
                 ->where(function ($query) use($request) {

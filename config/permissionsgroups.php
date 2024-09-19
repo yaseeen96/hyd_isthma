@@ -16,5 +16,6 @@ return [
     "Permissions",
     "Users",
     "QrOperators",
-    "CheckInOutPlaces"
+    "CheckInOutPlaces",
+    "ProgramRegistrations"
 ];

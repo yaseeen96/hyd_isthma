@@ -45,6 +45,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'programs'], function () {
             Route::get('listPrograms', 'ProgramsController@listPrograms');
             Route::get('getProgram/{id}', 'ProgramsController@getProgram');
+            Route::post('registerProgram', 'ProgramsController@registerProgram');
         });
         Route::post('logout', 'AuthController@logout');
         Route::post('deleteAccount', 'AuthController@deleteAccount');

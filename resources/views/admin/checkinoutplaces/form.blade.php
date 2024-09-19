@@ -75,7 +75,8 @@
                                             @isset($locationsList['distnctZoneName'])
                                                 <option value="">All</option>
                                                 @foreach ($locationsList['distnctZoneName'] as $name)
-                                                    <option {{ in_array($name, $place->zone_names ?? []) ? 'selected' : '' }}
+                                                    <option
+                                                        {{ in_array($name->zone_name, $place->zone_names ?? []) ? 'selected' : '' }}
                                                         value="{{ $name->zone_name }}"> {{ $name->zone_name }}</option>
                                                 @endforeach
                                             @endisset

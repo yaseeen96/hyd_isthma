@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('qrOperators', 'QrCodeOperatorController');
     // Check In Out Places
     Route::resource('checkInOutPlaces', 'CheckInOutPlaceController');
+    // Program Registration
+    Route::resource('programRegistration', 'ProgramRegistrationController');
     // Reports
     Route::prefix('reports')->group(function () {
         Route::get('familyDetailsReport', 'ReportsController@familyDetailsReport')->name('family-details-report');

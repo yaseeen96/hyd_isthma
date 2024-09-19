@@ -58,5 +58,9 @@ return [
         "Delete CheckInOutPlaces",
         "View CheckInOutPlaces",
 
+        "Create ProgramRegistrations",
+        "Edit ProgramRegistrations",
+        "Delete ProgramRegistrations",
+        "View ProgramRegistrations"
 
 ];
