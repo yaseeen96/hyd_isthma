@@ -9,6 +9,7 @@ use App\Models\Registration;
 use App\Models\RegFamilyDetail;
 use App\Models\RegPurchasesDetail;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
@@ -471,6 +472,15 @@ class ReportsController extends Controller
             $member = Member::where('user_number', $item)->first();
             $member->status = 'InActive';
             $member->save();
+        }
+    }
+    public function updateRukunAge(Request $request) {
+        $members = Member::all();
+        foreach($members as $member) {
+            $dob = $member->dob;
+            if(Str::contains( $dob, '/'))
+                $dob = str_replace('/', '-', $request->input('dob'));
+            $member->update(['age' => Carbon::parse($dob)->age, 'dob' => $dob]);
         }
     }
 }

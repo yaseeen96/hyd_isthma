@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\ProgramRegistration;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,6 +24,7 @@ class ProgramListResource extends JsonResource
             'speaker_name' => $this->programSpeaker->name,
             'speaker_bio' => $this->programSpeaker->bio,
             'speaker_image' => $this->programSpeaker->getMedia('speaker_image')->first() ? $this->programSpeaker->getMedia('speaker_image')->first()->getUrl() : '/assets/img/no-image.png',
+            'enrolled' => ProgramRegistration::where('program_id', $this->id)->where('member_id', auth()->id())->exists()
         ];
 
         return $data;

@@ -79,11 +79,12 @@
                   @if (auth()->user()->can('View SessionThemes') ||
                           auth()->user()->can('View programSpeakers') ||
                           auth()->user()->can('View Programs') ||
+                          auth()->user()->can('View Enrollments') ||
                           auth()->user()->id == 1)
                       <li
-                          class="nav-item  {{ str_contains('sessiontheme programSpeakers programs', $urlsegment) ? 'menu-open' : '' }}">
+                          class="nav-item  {{ str_contains('sessiontheme programSpeakers programs programRegistration', $urlsegment) ? 'menu-open' : '' }}">
                           <a href="#"
-                              class="nav-link  {{ str_contains('sessiontheme programSpeakers programs', $urlsegment) ? 'active' : '' }}">
+                              class="nav-link  {{ str_contains('sessiontheme programSpeakers programs programRegistration', $urlsegment) ? 'active' : '' }}">
                               <i class="nav-icon fas fa-microphone-alt"></i>
                               <p>
                                   Programs
@@ -135,6 +136,18 @@
                                           <i class="nav-icon fas fa-user"></i>
                                           <p>
                                               Programs
+                                          </p>
+                                      </a>
+                                  </li>
+                              @endif
+                              {{-- Program Enrollments --}}
+                              @if (auth()->user()->can('View Enrollments') || auth()->user()->id == 1)
+                                  <li class="nav-item">
+                                      <a href="{{ route('programRegistration.index') }}"
+                                          class="nav-link {{ in_array(request()->route()->getName(), ['programRegistration.index', 'programRegistration.edit', 'programRegistration.create']) ? 'active' : '' }}">
+                                          <i class="nav-icon fas fa-user"></i>
+                                          <p>
+                                              Enrollments
                                           </p>
                                       </a>
                                   </li>

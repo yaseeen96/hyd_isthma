@@ -13,4 +13,11 @@ class ProgramRegistration extends Model
         'member_id',
         'program_id'
     ];
+
+    public function program() {
+        return $this->belongsTo(Program::class);
+    }
+    public function member() {
+        return $this->belongsTo(Member::class);
+    }
 }

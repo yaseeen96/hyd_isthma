@@ -24,4 +24,8 @@ class Program extends Model
     {
         return $this->belongsTo(SessionTheme::class);
     }
+    public function programRegistrations()
+    {
+        return $this->hasMany(ProgramRegistration::class);
+    }
 }

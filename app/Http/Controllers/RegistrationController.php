@@ -250,7 +250,7 @@ class RegistrationController extends Controller
         // if ( !($user->hasPermissionTo('View Registrations')) && auth()->user()->id != 1){
         //         abort(403);
         // }
-        $registration = Registration::with(['familyDetails', 'purchaseDetails'])->find($id);
+        $registration = Registration::with(['familyDetails', 'purchaseDetails','member'])->find($id);
         $purchaseDetails =   $registration->purchaseDetails->keyBy('type')->pluck('qty', 'type')->toArray();
         $mehramDetails = $registration->familyDetails->where('type', 'mehram');
         $childrenDetails = $registration->familyDetails->where('type', 'children');

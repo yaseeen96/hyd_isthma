@@ -61,18 +61,23 @@
                                         <div class="form-group">
                                             {{-- Member ID --}}
                                             <label for="member_id">Member</label>
-                                            <select class="form-control select2bs4" name="member_id" id="member_id">
-                                                <option value="">Select Member</option>
-                                                @foreach ($members as $member)
-                                                    @php
-                                                        $name = preg_replace('/[0-9]+/', '', $member->name); // removing numbers from name
-                                                        $name = preg_replace('/\([^)]*\)/', '', $member->name); // removing any brackets () from name
-                                                    @endphp
-                                                    <option value="{{ $member->id }}"
-                                                        {{ $reg->member_id == $member->id ? 'selected' : '' }}>
-                                                        {{ $name . '-' . $member->user_number }}</option>
-                                                @endforeach
-                                            </select>
+                                            @if ($reg->id)
+                                                <input type="hidden" value="{{ $reg->member->id }}" name="mmeber_id" />
+                                                <span class="form-control">{{ $reg->member->name }}</span>
+                                            @else
+                                                <select class="form-control select2bs4" name="member_id" id="member_id">
+                                                    <option value="">Select Member</option>
+                                                    @foreach ($members as $member)
+                                                        @php
+                                                            $name = preg_replace('/[0-9]+/', '', $member->name); // removing numbers from name
+                                                            $name = preg_replace('/\([^)]*\)/', '', $member->name); // removing any brackets () from name
+                                                        @endphp
+                                                        <option value="{{ $member->id }}"
+                                                            {{ $reg->member_id == $member->id ? 'selected' : '' }}>
+                                                            {{ $name . '-' . $member->user_number }}</option>
+                                                    @endforeach
+                                                </select>
+                                            @endif
                                             @if ($errors->has('member_id'))
                                                 <span class="text-danger">
                                                     {{ $errors->first('member_id') }}
@@ -83,7 +88,7 @@
                                         <div class="form-group">
                                             <label for="year_of_rukniyat">Year of rukniyat</label>
                                             <input type="text" placeholder="Enter year of rukuniyat" class="form-control"
-                                                name="year_of_rukniyat"
+                                                name="year_of_rukniyat" id="year_of_rukniyat"
                                                 value="{{ old('year_of_rukniyat', $year_of_rukniyat) }}" />
                                         </div>
                                         {{-- Confirm Arrival --}}
@@ -119,7 +124,8 @@
                                         {{-- Reason for not coming --}}
                                         <div class="form-group reason_for_not_coming_input">
                                             <label for="reason_for_not_coming">Reason for not coming</label>
-                                            <select class="form-control" name="reason_for_not_coming">
+                                            <select class="form-control" name="reason_for_not_coming"
+                                                id="reason_for_not_coming">
                                                 <option value="">Select Reason</option>
                                                 @foreach ($reasonForNotComingList as $reason)
                                                     <option {{ $reg->reason_for_not_coming == $reason ? 'selected' : '' }}
@@ -135,7 +141,8 @@
                                         {{-- Ameer Permission Taken --}}
                                         <div class="form-group  ameer_permission_taken_input">
                                             <label for="ameer_permission_taken">Ameer Permisison Token</label>
-                                            <select class="form-control" name="ameer_permission_taken">
+                                            <select class="form-control" name="ameer_permission_taken"
+                                                id="ameer_permission_taken">
                                                 <option value="">Select Option</option>
                                                 <option {{ $reg->ameer_permission_taken == 1 ? 'selected' : '' }}
                                                     {{ old('ameer_permission_taken') == 1 ? 'selected' : '' }}
@@ -175,20 +182,21 @@
                                                     <label for="purchase_details_matress">Matress</label>
                                                     <input type="text" class="form-control"
                                                         id="purchase_details_matress" name="purchase_details_matress"
-                                                        placeholder="Matress"
+                                                        placeholder="Matress" id="purchase_details_matress"
                                                         value="{{ old('purchase_details_matress', !empty($purchaseDetails) ? $purchaseDetails['Mattress'] : 0) }}">
                                                 </div>
                                                 <div class="col-md-6 mb-2">
                                                     <label for="purchase_details_cot">Cot</label>
                                                     <input type="text" class="form-control" id="purchase_details_cot"
-                                                        name="purchase_details_cot" placeholder="Matress"
+                                                        name="purchase_details_cot" id="purchase_details_cot"
+                                                        placeholder="Matress"
                                                         value="{{ old('purchase_details_cot', !empty($purchaseDetails) ? $purchaseDetails['Cot'] : 0) }}">
                                                 </div>
                                                 <div class="col-md-6 mb-2">
                                                     <label for="purchase_details_plate">Plate</label>
                                                     <input type="text" class="form-control"
                                                         id="purchase_details_plate" name="purchase_details_plate"
-                                                        placeholder="Plates"
+                                                        id="purchase_details_plate" placeholder="Plates"
                                                         value="{{ old('purchase_details_plate', !empty($purchaseDetails) ? $purchaseDetails['Plate'] : 0) }}">
                                                 </div>
                                                 <div class="col-md-6 mb-2">
@@ -217,7 +225,8 @@
                                         <div class="form-group mb-5">
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label>Is anyone in your family acompanying you?</label>
+                                                    <label for="is_family_dtls_exists">Is anyone in your family acompanying
+                                                        you?</label>
                                                     <select class="form-control" id="is_family_dtls_exists"
                                                         name="is_family_dtls_exists">
                                                         <option value="">Select Option</option>
@@ -334,7 +343,7 @@
                                                 {{-- date & time --}}
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="bio">Date & Time</label>
+                                                        <label>Date & Time</label>
                                                         <input type="text"
                                                             class="form-control datetimepicker-input datetime"
                                                             data-toggle="datetimepicker" name="arrival_dtls_datetime"
@@ -416,7 +425,7 @@
                                                 {{-- date & time --}}
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="bio">Date & Time</label>
+                                                        <label>Date & Time</label>
                                                         <input type="text"
                                                             class="form-control datetimepicker-input datetime "
                                                             data-toggle="datetimepicker" name="departure_dtls_datetime"
@@ -545,7 +554,8 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="hotel_required">Hotel Required</label>
-                                                        <select class="form-control" name="hotel_required">
+                                                        <select class="form-control" name="hotel_required"
+                                                            id="hotel_required">
                                                             <option value="Yes">Yes</option>
                                                             <option value="No">No</option>
                                                         </select>
@@ -559,8 +569,9 @@
                                                                 ? $reg->sight_seeing['required']
                                                                 : '';
                                                         @endphp
-                                                        <label for="hotel_required">Sight Seeing</label>
-                                                        <select class="form-control" name="sightseeing_required">
+                                                        <label for="sightseeing_required">Sight Seeing</label>
+                                                        <select class="form-control" name="sightseeing_required"
+                                                            id="sightseeing_required">
                                                             <option {{ $sightSeeing == 'yes' ? 'selected' : '' }}
                                                                 value="Yes">Yes</option>
                                                             <option {{ $sightSeeing == 'no' ? 'selected' : '' }}
@@ -596,7 +607,8 @@
                                                     <div class="form-group">
                                                         <label for="management_experience">Management
                                                             Experience</label>
-                                                        <select class="form-control" name="management_experience">
+                                                        <select class="form-control" name="management_experience"
+                                                            id="management_experience">
                                                             <option
                                                                 {{ $reg->management_experience == 'yes' ? 'selected' : '' }}
                                                                 value="Yes">Yes</option>
@@ -609,9 +621,9 @@
                                                 {{-- Fees Paid to Ameer Jamat --}}
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="hotel_required">Fees paid to ameer jamat?</label>
+                                                        <label for="fees_paid_to_ameer">Fees paid to ameer jamat?</label>
                                                         <input type="number" class="form-control"
-                                                            name="fees_paid_to_ameer"
+                                                            name="fees_paid_to_ameer" id="fees_paid_to_ameer"
                                                             value="{{ old('fees_paid_to_ameer', $reg->fees_paid_to_ameer) }}">
                                                     </div>
                                                 </div>
