@@ -132,17 +132,19 @@ class RegistrationController extends Controller
         $regData['health_concern'] = $request->get('health_concern');
         $regData['management_experience'] = $request->get('health_concern');
         $regData['comments'] = $request->get('comments');
-        $memberState = Member::find($request->get('member_id'))->pluck('zone_name')->first();
+        $memberState = Member::find($request->get(key: 'member_id'))->pluck('zone_name')->first();
         $regData['member_fees'] = in_array($memberState, config('fees.special_states')) ? 3000 : 2000;
         $regData['fees_paid_to_ameer'] = $request->get('fees_paid_to_ameer');
         return $regData;
     }
 
-    public function regFormValidations(Request $request) {
+    public function regFormValidations(Request $request, $id = null) {
         $validations = [
-            'member_id' => 'required',
             'confirm_arrival' => 'required',
         ];
+        if(empty($id)) {
+            $validations['member_id'] = 'required|unique:registrations,member_id';
+        }
         $confirm_arraival = $request->get('confirm_arrival');
         if( $confirm_arraival == 0) {
             $validations['reason_for_not_coming'] = 'required';
@@ -271,7 +273,7 @@ class RegistrationController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate($this->regFormValidations($request));
+        $request->validate($this->regFormValidations($request, $id));
         $regData = $this->prepareRegData($request);
 
         // Purchases Details

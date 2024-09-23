@@ -62,7 +62,7 @@
                                             {{-- Member ID --}}
                                             <label for="member_id">Member</label>
                                             @if ($reg->id)
-                                                <input type="hidden" value="{{ $reg->member->id }}" name="mmeber_id" />
+                                                <input type="hidden" value="{{ $reg->member->id }}" name="member_id" />
                                                 <span class="form-control">{{ $reg->member->name }}</span>
                                             @else
                                                 <select class="form-control select2bs4" name="member_id" id="member_id">

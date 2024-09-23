@@ -61,6 +61,11 @@ return [
         "Create Enrollments",
         "Edit Enrollments",
         "Delete Enrollments",
-        "View Enrollments"
+        "View Enrollments",
+
+        "Create ScannEntires",
+        "Edit ScannEntires",
+        "Delete ScannEntires",
+        "View ScannEntires"
 
 ];

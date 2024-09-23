@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('qrOperators', 'QrCodeOperatorController');
     // Check In Out Places
     Route::resource('checkInOutPlaces', 'CheckInOutPlaceController');
+    // Check In Out Entries
+    Route::resource('checkInOutEntries', 'CheckInOutEntiresController');
     // Program Registration
     Route::resource('programRegistration', 'ProgramRegistrationController');
     // Reports

@@ -11,7 +11,6 @@
                         <a href="{{ route('members.create') }}" class="btn btn-purple float-right"><i
                                 class="fas fa-plus mr-2"></i>Create</a>
                     @endif
-
                     <button class="btn btn-purple float-right mr-2" type="button" data-toggle="collapse"
                         data-target="#regFilters" aria-expanded="false" aria-controls="regFilters">
                         <i class="fas fa-filter"></i> Filter

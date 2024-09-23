@@ -26,4 +26,13 @@ class checkInOutEntires extends Model
         'mode',
         'operator_id'
     ];
+
+    public function checkInOutPlace()
+    {
+        return $this->belongsTo(CheckInOutPlace::class, 'place_id', 'id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'operator_id', 'id');
+    }
 }

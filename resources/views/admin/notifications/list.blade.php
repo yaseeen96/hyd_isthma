@@ -21,6 +21,7 @@
                 <th>Image</th>
                 <th>Document</th>
                 <th>Youtube Url</th>
+                <th>Actions</th>
             </x-table>
         </div>
     </x-content-wrapper>
@@ -50,8 +51,36 @@
                 },
                 {
                     data: 'youtube_url'
+                },
+                {
+                    data: 'action'
                 }
             ]
         })
+
+        $('table').on('click', '.notification-delete', function(e) {
+            $.ajax({
+                url: $(this).data('href'),
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'JSON',
+                success: function(data) {
+                    if (data.status == 200) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Successfully.'
+                        })
+                    } else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Encountered an error while deleting the notificaitons.'
+                        })
+                    }
+                    notificationsTable.draw();
+                }
+            })
+        });
     </script>
 @endpush

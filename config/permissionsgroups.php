@@ -17,5 +17,6 @@ return [
     "Users",
     "QrOperators",
     "CheckInOutPlaces",
-    "Enrollments"
+    "Enrollments",
+    "ScannEntires"
 ];

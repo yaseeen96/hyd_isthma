@@ -22,7 +22,7 @@ class NotificationsController extends Controller
         }
         if($request->ajax())
         {
-            $query = Notification::query();
+            $query = Notification::query()->orderBy('id', 'desc');
             return $dataTables->eloquent($query)
                 ->addColumn('image', function (Notification $notification) {
                     $imageSrc = !empty($notification->getMedia('notification_image')->first()) ? $notification->getMedia('notification_image')->first()->getUrl() : '/assets/img/no-image.png';
@@ -35,7 +35,13 @@ class NotificationsController extends Controller
                     return '<p><b>Gender</b>: <span class="badge badge-primary">' . (ucfirst($notification->criteria['gender'] ) == null ? 'NA' : ucfirst($notification->criteria['gender'])) . '</span></p>'
                            .'<p><b>Region-</b>' . ucfirst($notification->criteria['region_type']) . ' - <span class="badge badge-secondary">' . $notification->criteria['region_value'] . '</span></p>'
                            .'<p><b>Registration Status</b>:<span class="badge badge-warning">' . ($notification->criteria['reg_status'] == 1 ? 'Confirmed' : 'Not Confirmed') . '</span></p>';
-            })->rawColumns(['image', 'document', 'notificaiton_criteria'] )->makeHidden(['criteria'])
+                })
+                ->addColumn('action', function (Notification $notification) use($user) {
+                    $link = $user->id == 1 || $user->hasPermissionTo('Delete Notifications') ?
+                            '<span data-href="'.route('notifications.destroy', $notification->id).'" class="btn-purple notification-delete btn"><i class="fas fa-trash"></i></span>'
+                            : "";
+                    return $link;
+                })->rawColumns(['image', 'document', 'notificaiton_criteria', 'action'] )->makeHidden(['criteria'])
                 ->addIndexColumn()
                 ->make(true);
 
@@ -160,6 +166,17 @@ class NotificationsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::find(auth()->user()->id);
+        if ($user->id != 1 && !$user->hasPermissionTo('Delete Notifications')){
+            abort(403);
+        }
+        $notification = Notification::find($id);
+        $notification->getMedia('notification_image')->each->delete();
+        $notification->getMedia('notificaiton_doc')->each->delete();
+        $notification->delete();
+        return response()->json([
+            'message' => 'Notifications Updated Successfully',
+            'status' => 200
+        ], 200);
     }
 }

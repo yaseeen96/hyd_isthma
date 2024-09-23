@@ -268,6 +268,64 @@
                           @endif
                       </ul>
                   </li>
+                  {{-- QR CODES --}}
+                  @if (auth()->user()->can('View QrOperators') ||
+                          auth()->user()->can('View CheckInOutPlaces') ||
+                          auth()->user()->can('View ScannEntires') ||
+                          auth()->user()->id == 1)
+                      <li
+                          class="nav-item  {{ str_contains('qrOperators checkInOutPlaces checkInOutEntries ', $urlsegment) ? 'menu-open' : '' }}">
+                          <a href="#"
+                              class="nav-link  {{ str_contains('qrOperators checkInOutPlaces checkInOutEntries', $urlsegment) ? 'active' : '' }}">
+                              <i class="nav-icon fas fa-qrcode"></i>
+                              <p>
+                                  QR Codes
+                                  <i class="fas fa-angle-left right"></i>
+                              </p>
+                          </a>
+                          <ul class="nav nav-treeview">
+                              <li class="nav-item">
+                                  <a href="{{ route('qrOperators.index') }}"
+                                      class="nav-link {{ in_array(request()->route()->getName(), ['qrOperators.index']) ? 'active' : '' }}">
+                                      <i class="nav-icon fas fa-users"></i>
+                                      <p>
+                                          Operators
+                                      </p>
+                                  </a>
+                              </li>
+                              @if (auth()->user()->can('View CheckInOutPlaces') ||
+                                      auth()->user()->can('Edit CheckInOutPlaces') ||
+                                      auth()->user()->can('Create CheckInOutPlaces') ||
+                                      auth()->user()->can('Delete CheckInOutPlaces') ||
+                                      auth()->user()->id == 1)
+                                  <li class="nav-item">
+                                      <a href="{{ route('checkInOutPlaces.index') }}"
+                                          class="nav-link {{ in_array(request()->route()->getName(), ['checkInOutPlaces.index', 'checkInOutPlaces.create', 'checkInOutPlaces.edit', 'checkInOutPlaces.delete']) ? 'active' : '' }}">
+                                          <i class="nav-icon fas fa-door-open"></i>
+                                          <p>
+                                              CheckInOut Places
+                                          </p>
+                                      </a>
+                                  </li>
+                              @endif
+                              @if (auth()->user()->can('View ScannEntires') ||
+                                      auth()->user()->can('Edit ScannEntires') ||
+                                      auth()->user()->can('Create ScannEntires') ||
+                                      auth()->user()->can('Delete ScannEntires') ||
+                                      auth()->user()->id == 1)
+                                  <li class="nav-item">
+                                      <a href="{{ route('checkInOutEntries.index') }}"
+                                          class="nav-link {{ in_array(request()->route()->getName(), ['checkInOutEntries.index', 'checkInOutEntries.create', 'checkInOutEntries.edit', 'checkInOutEntries.delete']) ? 'active' : '' }}">
+                                          <i class="nav-icon fas fa-door-open"></i>
+                                          <p>
+                                              CheckInOut Entires
+                                          </p>
+                                      </a>
+                                  </li>
+                              @endif
+                          </ul>
+                      </li>
+                  @endif
                   {{-- SETTINGS --}}
                   @if (auth()->user()->can('View Notifications') ||
                           auth()->user()->can('View Permissions') ||
@@ -342,47 +400,7 @@
                           </p>
                       </a>
                   </li> --}}
-                  {{-- QR CODES --}}
-                  @if (auth()->user()->can('View QrOperators') || auth()->user()->can('View CheckInOutPlaces') || auth()->user()->id == 1)
-                      <li
-                          class="nav-item  {{ str_contains('qrOperators checkInOutPlaces', $urlsegment) ? 'menu-open' : '' }}">
-                          <a href="#"
-                              class="nav-link  {{ str_contains('qrOperators checkInOutPlaces', $urlsegment) ? 'active' : '' }}">
-                              <i class="nav-icon fas fa-qrcode"></i>
-                              <p>
-                                  QR Codes
-                                  <i class="fas fa-angle-left right"></i>
-                              </p>
-                          </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="{{ route('qrOperators.index') }}"
-                                      class="nav-link {{ in_array(request()->route()->getName(), ['qrOperators.index']) ? 'active' : '' }}">
-                                      <i class="nav-icon fas fa-users"></i>
-                                      <p>
-                                          Operators
-                                      </p>
-                                  </a>
-                              </li>
-                              @if (auth()->user()->can('View CheckInOutPlaces') ||
-                                      auth()->user()->can('Edit CheckInOutPlaces') ||
-                                      auth()->user()->can('Create CheckInOutPlaces') ||
-                                      auth()->user()->can('Delete CheckInOutPlaces') ||
-                                      auth()->user()->id == 1)
-                                  <li class="nav-item">
-                                      <a href="{{ route('checkInOutPlaces.index') }}"
-                                          class="nav-link {{ in_array(request()->route()->getName(), ['checkInOutPlaces.index', 'checkInOutPlaces.create', 'checkInOutPlaces.edit', 'checkInOutPlaces.delete']) ? 'active' : '' }}">
-                                          <i class="nav-icon fas fa-door-open"></i>
-                                          <p>
-                                              CheckInOut Places
-                                          </p>
-                                      </a>
-                                  </li>
-                              @endif
-                          </ul>
-                      </li>
-                  @endif
-                  {{-- Check In Out Places --}}
+
               </ul>
           </nav>
           <!-- /.sidebar-menu -->

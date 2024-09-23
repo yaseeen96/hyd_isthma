@@ -3,16 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\checkInOutEntires;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class CheckInOutEntiresController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, DataTables $datatables)
     {
-        //
+        $user = User::find(auth()->user()->id);
+        if ($user->id != 1 && !$user->hasPermissionTo('View ScannEntires')){
+            abort(403);
+        }
+        if($request->ajax()) {
+            $query = checkInOutEntires::with('checkInOutPlace', 'user')->orderBy('id', 'desc');
+            return $datatables->eloquent($query)
+                ->editColumn('datetime', function(checkInOutEntires $checkInOutEntires){
+                    return $checkInOutEntires->datetime != null ? date('Y-m-d h:s a', strtotime($checkInOutEntires->datetime)) : 'NA';
+                })
+                ->addColumn('place', function(checkInOutEntires $checkInOutEntires){
+                    return $checkInOutEntires->checkInOutPlace->place_name;
+                })
+                ->addColumn('user', function(checkInOutEntires $checkInOutEntires){
+                    return $checkInOutEntires->user->name;
+                })
+                ->addIndexColumn()
+                ->rawColumns(['place', 'user', 'datetime'])
+                ->make(true);
+        }
+        return view('admin.checkinoutentries.list');
     }
 
     /**
