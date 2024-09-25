@@ -5,7 +5,9 @@ import HomeLayout from '../layout/Homelayout';
 const PollsPage = () => {
     return (
         <HomeLayout>
-            <p>No polls yet</p>
+            <div className="flex flex-col h-[80vh] justify-center items-center">
+                <p>No polls yet</p>
+            </div>
         </HomeLayout>
     );
 };

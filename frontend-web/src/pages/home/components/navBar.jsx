@@ -31,7 +31,7 @@ const StickyNavBar = () => {
     useEffect(() => {}, [isSticky]);
 
     return (
-        <div ref={navbarRef} className={`sticky-navbar bg-gray-50 dark:bg-black  w-screen min-h-16 max-h-32 pt-8 sticky top-[-1px] ${isSticky ? 'backdrop-blur-md' : ''}`}>
+        <div ref={navbarRef} className={`sticky-navbar bg-gray-50 dark:bg-black w-screen min-h-16 max-h-32 pt-8 sticky top-[-1px] ${isSticky ? 'backdrop-blur-md' : ''}`}>
             <div className={`mt-4 flex flex-row items-center ${isSticky ? 'justify-center' : 'justify-between'} h-full px-7 py-2`}>
                 {isSticky ? (
                     <div className="flex justify-center items-center mt-4">

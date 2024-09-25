@@ -36,16 +36,6 @@ module.exports = {
                 progress: 'progress 2s ease-in-out forwards',
             },
             colors: {
-                gray: {
-                    100: '#E5E5E5',
-                    200: '#CCCCCC',
-                    300: '#B2B2B2',
-                    400: '#999999',
-                    500: '#7F7F7F',
-                    600: '#666666',
-                    700: '#4C4C4C',
-                    800: '#1A1A1A',
-                },
                 primary: {
                     DEFAULT: '#5C0099',
                     100: '#F4F0F7',

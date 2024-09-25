@@ -81,12 +81,4 @@ function App({ children }) {
     );
 }
 
-function Root({ children }) {
-    return (
-        <RecoilRoot>
-            <App>{children}</App>
-        </RecoilRoot>
-    );
-}
-
-export default Root;
+export default App;

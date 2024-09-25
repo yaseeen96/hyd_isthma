@@ -1,29 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { localStorageConstant } from '../../utils/constants/localStorageConstants';
+import React from 'react';
 
-const ActionCard = ({ message, buttonText, onButtonClick }) => {
-    const [name, setName] = useState('');
-
-    useEffect(() => {
-        // Retrieve the name from localStorage
-        const storedName = localStorage.getItem(localStorageConstant.name) || 'Guest';
-        setName(storedName);
-    }, []);
-
+const ActionCard = ({ message, buttonText, onButtonClick, progress }) => {
     return (
-        <div className="w-full  p-6 bg-white dark:bg-gray-900 shadow-lg rounded-lg flex flex-col justify-between animate-slide-in">
-            <div className="flex flex-col items-start">
-                <h1 className="text-2xl text-black dark:text-white font-bold">
-                    Welcome <br /> <span className="text-primary dark:text-primary-500">{name}</span>
-                </h1>
-                <p className="text-lg text-black dark:text-white mt-2">{message}</p>
+        <div className="relative bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col justify-between items-center border border-gray-200">
+            {/* Top Progress Bar */}
+            <div className="absolute top-0 left-0 w-full h-2 bg-gray-200 rounded-t-lg">
+                <div className="h-full bg-primary rounded-t-lg transition-all duration-500" style={{ width: `${progress}%` }}></div>
             </div>
-            <button
-                onClick={onButtonClick}
-                className="mt-4 py-2 px-4 bg-primary text-white font-semibold rounded-lg shadow-md transition duration-3000 ease-in-out transform hover:scale-105 animate-grow-shrink flex justify-center items-center"
-            >
-                {buttonText}
-            </button>
+
+            {/* Message */}
+            <p className="text-gray-700 dark:text-gray-300 font-semibold text-lg text-center leading-relaxed">{message}</p>
+
+            {/* Action Button */}
+            <div className="w-full mt-4">
+                <button
+                    aria-label={buttonText}
+                    onClick={onButtonClick}
+                    className="relative w-full py-3 px-4 bg-primary text-white font-semibold rounded-lg shadow-md transition-transform duration-300 ease-in-out transform hover:scale-105 hover:bg-primary-dark"
+                >
+                    <span>{buttonText}</span>
+                </button>
+            </div>
         </div>
     );
 };

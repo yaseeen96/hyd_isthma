@@ -10,6 +10,9 @@ import { isUserLoggedIn } from '../../../services/check_token_validity_service';
 import LoadingComponent from '../../../components/common/loadingComponent';
 
 import { RiProfileFill } from 'react-icons/ri';
+import IjtemaBanner from '../components/Banner';
+import TileCard from '../components/tileCard';
+import { FiList } from 'react-icons/fi';
 
 const HomePage = () => {
     const [isRefetching, setIsRefetching] = useState(false); // State to manage refetch indicator
@@ -48,6 +51,9 @@ const HomePage = () => {
     const onRegisterIjtema = () => {
         navigate(ROUTES.register);
     };
+    const onTimelineSelect = () => {
+        navigate(ROUTES.timeline);
+    };
 
     if (isLoading || isRefetching) {
         return <LoadingComponent />;
@@ -64,19 +70,22 @@ const HomePage = () => {
 
     return (
         <HomeLayout>
+            <IjtemaBanner />
             <ActionCard
                 message={progress === 100 ? 'Thank you. Your registration is 100% complete' : 'Your registration is not yet completed, click below & complete all steps'}
-                buttonText={progress === 100 ? `Registration completed (View/Edit)` : ' Register now'}
+                buttonText={progress === 100 ? `Program Details` : ' Register now'}
                 onButtonClick={onRegisterIjtema}
+                progress={progress}
             />
 
-            <div className="mt-6 grid grid-cols-2 w-full h-32 gap-4 animate-slide-in">
-                <LoadingTileCard
+            <div className="my-6 grid grid-cols-2 w-full h-32 gap-4 animate-slide-in">
+                <TileCard
                     icon={<RiProfileFill size={32} />}
-                    title={'Registration Progress'}
+                    title={'Register'}
                     onClick={onRegisterIjtema}
-                    percentage={progress} // Pass calculated progress
+                    // percentage={progress} // Pass calculated progress
                 />
+                <TileCard icon={<FiList size={32} />} title={'Program Details'} onClick={onTimelineSelect} />
             </div>
         </HomeLayout>
     );
