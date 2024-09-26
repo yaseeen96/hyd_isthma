@@ -74,7 +74,7 @@ const HomePage = () => {
             <ActionCard
                 message={progress === 100 ? 'Thank you. Your registration is 100% complete' : 'Your registration is not yet completed, click below & complete all steps'}
                 buttonText={progress === 100 ? `Program Details` : ' Register now'}
-                onButtonClick={onRegisterIjtema}
+                onButtonClick={progress === 100 ? onTimelineSelect : onRegisterIjtema}
                 progress={progress}
             />
 
