@@ -4,19 +4,37 @@
     <!-- Main content -->
     <section class="content">
         <div class="container mt-3 px-3 rounded-2 row">
-            <div class="card shadow-sm col-lg-6">
+            <div class="card shadow-sm col-lg-12">
                 <div class="card-header">
                     <h3 class="card-title">
                         {{ $program->id ? 'Edit' : 'Add' }} Programs
                     </h3>
                 </div>
                 <form action="{{ $program->id ? route('programs.update', $program->id) : route('programs.store') }}"
-                    method="post" enctype="multipart/form-data">
+                    autocomplete="off" method="post" enctype="multipart/form-data">
                     @csrf
                     {{ $program->id ? method_field('PUT') : '' }}
                     <div class="card-body ">
                         <div class="row">
                             <div class="col-lg-12">
+                                @if (session('success'))
+                                    <div class="alert alert-success alert-dismissible fade show">
+                                        {{ session('success') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                                @if (session('warning'))
+                                    <div class="alert alert-warning alert-dismissible fade show">
+                                        {{ session('warning') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="col-lg-6">
                                 {{-- Name --}}
                                 <div class="form-group row">
                                     <div class="col-lg-12">
@@ -30,41 +48,8 @@
                                         @endif
                                     </div>
                                 </div>
-                                {{-- Date&time --}}
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <label for="bio">Date&Time</label>
-                                        <input type="text" class="form-control datetimepicker-input" id="datetime"
-                                            data-toggle="datetimepicker" name="datetime" data-target="#datetime"
-                                            value="{{ old('datetime', $program->datetime) }}" />
-                                        @if ($errors->has('datetime'))
-                                            <span class="text-danger">
-                                                {{ $errors->first('datetime') }}
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
-                                {{-- Session Theme --}}
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <label>Session Theme</label>
-                                        <select class="form-control select2bs4" style="width: 100%;" id="session_theme_id"
-                                            name="session_theme_id">
-                                            @isset($session_themes)
-                                                <option value="">All</option>
-                                                @foreach ($session_themes as $theme)
-                                                    <option {{ $theme->id == $program->session_theme_id ? 'selected' : '' }}
-                                                        value="{{ $theme->id }}"> {{ $theme->theme_name }}</option>
-                                                @endforeach
-                                            @endisset
-                                        </select>
-                                        @if ($errors->has('session_theme_id'))
-                                            <span class="text-danger">
-                                                {{ $errors->first('session_theme_id') }}
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="col-lg-6">
                                 {{-- Speaker Details --}}
                                 <div class="form-group row">
                                     <div class="col-lg-12">
@@ -75,7 +60,7 @@
                                                 <option value="">All</option>
                                                 @foreach ($program_speakers as $speaker)
                                                     <option
-                                                        {{ $speaker->id == $program->program_speaker_id ? 'selected' : '' }}
+                                                        {{ old('program_speaker_id', $program->program_speaker_id) == $speaker->id ? 'selected' : '' }}
                                                         value="{{ $speaker->id }}"> {{ $speaker->name }}</option>
                                                 @endforeach
                                             @endisset
@@ -87,16 +72,94 @@
                                         @endif
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-lg-6">
+                                {{-- Session Theme --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Session Theme</label>
+                                        <select class="form-control select2bs4" style="width: 100%;" id="session_theme_id"
+                                            name="session_theme_id">
+                                            @isset($session_themes)
+                                                <option value="">All</option>
+                                                @foreach ($session_themes as $theme)
+                                                    <option
+                                                        {{ old('session_theme_id', $program->session_theme_id) == $theme->id ? 'selected' : '' }}
+                                                        value="{{ $theme->id }}"> {{ $theme->theme_name }} |
+                                                        {{ \Carbon\Carbon::parse($theme->from_time)->format('h:m a') }} -
+                                                        {{ \Carbon\Carbon::parse($theme->to_time)->format('h:m a') }}
+                                                    </option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
+                                        @if ($errors->has('session_theme_id'))
+                                            <span class="text-danger">
+                                                {{ $errors->first('session_theme_id') }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                {{-- Date --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label for="date">Session Date</label>
+                                        <input type="text" name="date" id="date" class="form-control date_time"
+                                            data-toggle="datetimepicker" data-target="#date_time"
+                                            value="{{ old('date', $program->date) }}" />
+                                        @if ($errors->has('date'))
+                                            <span class="text-danger">
+                                                {{ $errors->first('date') }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                {{-- From Time --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label for="from_time">From time</label>
+                                        <input type="text" name="from_time" id="from_time" class="form-control time"
+                                            data-toggle="datetimepicker" data-target="#time"
+                                            value="{{ old('from_time', $program->from_time) }}">
+                                        @if ($errors->has('from_time'))
+                                            <span class="text-danger">
+                                                {{ $errors->first('from_time') }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                {{-- From Time --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label for="to_time">To time</label>
+                                        <input type="text" name="to_time" id="to_time" class="form-control time"
+                                            data-toggle="datetimepicker" data-target="#time"
+                                            value="{{ old('to_time', $program->to_time) }}">
+                                        @if ($errors->has('to_time'))
+                                            <span class="text-danger">
+                                                {{ $errors->first('to_time') }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
                                 {{-- Status --}}
                                 <div class="form-group row">
                                     <div class="col-lg-12">
                                         <label for="status">Status</label>
                                         <select class="form-control" name="status" id="status">
-                                            <option value="">-- Status --</option>
-                                            <option value="1" {{ $program->status == 1 ? 'selected' : '' }}>Active
-                                            </option>
-                                            <option value="0" {{ $program->status == 0 ? 'selected' : '' }}>In Active
-                                            </option>
+                                            @foreach (config('program-status') as $status)
+                                                <option value="{{ $status }}"
+                                                    {{ old('status', $program->status) == $status ? 'selected' : '' }}>
+                                                    {{ $status }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                         @if ($errors->has('status'))
                                             <span class="text-danger">

@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Http;
-
 class ReportsController extends Controller
 {
     public function familyDetailsReport(Request $request, DataTables $datatables)

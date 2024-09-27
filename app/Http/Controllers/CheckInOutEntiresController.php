@@ -25,10 +25,10 @@ class CheckInOutEntiresController extends Controller
                     return $checkInOutEntires->datetime != null ? date('Y-m-d h:s a', strtotime($checkInOutEntires->datetime)) : 'NA';
                 })
                 ->addColumn('place', function(checkInOutEntires $checkInOutEntires){
-                    return $checkInOutEntires->checkInOutPlace->place_name;
+                    return isset($checkInOutEntires->checkInOutPlace) ? $checkInOutEntires->checkInOutPlace->place_name : 'NA';
                 })
                 ->addColumn('user', function(checkInOutEntires $checkInOutEntires){
-                    return $checkInOutEntires->user->name;
+                    return isset($checkInOutEntires->user) ? $checkInOutEntires->user->name : 'NA';
                 })
                 ->addIndexColumn()
                 ->rawColumns(['place', 'user', 'datetime'])

@@ -22,6 +22,10 @@
     background-color: var(--color-purple);
     color: #fff;
 }
+.badge-purple {
+    background-color: var(--color-purple) !important;
+    color: #fff;
+}
 .btn-purple:hover{
     color: #fff;
 }

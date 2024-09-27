@@ -9,4 +9,7 @@ class AppHelperFunctions {
     public static function getGreenBadge($title) {
         return '<span class="badge badge-success">'.$title.'</span>';
     }
+    public static function getBadge($title, $color) {
+        return '<span class="badge badge-'.$color.'">'.$title.'</span>';
+    }
 }

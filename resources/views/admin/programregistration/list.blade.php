@@ -79,6 +79,7 @@
                 <th>Session Theme</th>
                 <th>Theme Type</th>
                 <th>Date&Time</th>
+                <th>Action</th>
             </x-table>
         </div>
     </x-content-wrapper>
@@ -128,11 +129,37 @@
                         data: 'theme_type'
                     },
                     {
-                        data: 'program.datetime'
+                        data: 'program_date_time'
+                    },
+                    {
+                        data: 'action'
                     }
                 ],
             });
         })
+        $('table').on('click', '.programRegistration-delete', function(e) {
+            $.ajax({
+                url: $(this).data('href'),
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'JSON',
+                success: function(data) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: data.message
+                    })
+                    setFilter();
+                },
+                error: function(error) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: error.responseJSON.message
+                    })
+                }
+            })
+        });
 
         function setFilter() {
             programRegistrationsTable.draw();

@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProgramSpeaker;
 use App\Models\SessionTheme;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Http\Response;
+use App\Helpers\AppHelperFunctions;
 
 class SessionThemeController extends Controller
 {
@@ -21,16 +25,25 @@ class SessionThemeController extends Controller
         if($request->ajax()) {
             $query = SessionTheme::query();
             return $datatable->eloquent($query)
-                ->editColumn('status', function (SessionTheme $theme) {
-                    return $theme->status ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">In Active</span>';
+                // ->editColumn('status', function (SessionTheme $theme) {
+                //     return $theme->status ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">In Active</span>';
+                // })
+                ->editColumn('date', function (SessionTheme $theme) {
+                    return AppHelperFunctions::getGreenBadge(date('d-m-Y', strtotime($theme->date)));
+                })
+                ->editColumn('from_to_time', function (SessionTheme $theme) {
+                    return AppHelperFunctions::getGreenBadge(date('h:i A', strtotime($theme->from_time))). '-'.AppHelperFunctions::getGreenBadge(date('h:i A', strtotime($theme->to_time)));
                 })
                 ->addColumn('action', function (SessionTheme $theme) use($user) {
                     $link = ($user->id == 1 || $user->hasPermissionTo('Edit SessionThemes')) ?
                         '<a href="' . route('sessiontheme.edit', $theme->id) . '" class="btn-purple btn mr-1" ><i class="fas fa-edit"></i></a>'
                         : "";
+                    $link .= ($user->id == 1 || $user->hasPermissionTo('Delete SessionThemes')) ?
+                        '<span data-href="'.route('sessiontheme.destroy', $theme->id).'" class="btn-purple sessiontheme-delete btn"><i class="fas fa-trash"></i></span>'
+                            : "";
                     return $link;
                 })
-                ->rawColumns([ 'status', 'action'])
+                ->rawColumns([  'action', 'date', 'from_to_time', 'to_time'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -48,6 +61,7 @@ class SessionThemeController extends Controller
         }
         return view('admin.sessiontheme.form')->with([
             'theme' => new SessionTheme(),
+            'conveners' => ProgramSpeaker::all()->pluck('name')
         ]);
     }
 
@@ -56,16 +70,21 @@ class SessionThemeController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'theme_name' => 'required',
             'theme_type' => 'required',
-            'status' => 'required',
+            'convener' => 'required',
+            'date' => 'required',
+            'from_time' => 'required',
+            'to_time' => 'required',
         ]);
-        $theme = new SessionTheme();
-        $theme->theme_name = $request->theme_name;
-        $theme->theme_type = $request->theme_type;
-        $theme->status = $request->status;
-        $theme->save();
+        if(strtotime($request->to_time) <= strtotime($request->from_time)) {
+           return redirect()->back()->with('warning', "To time can't be greater then From time")->withInput();
+        }
+        $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
+        $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');
+        $data['status'] = 1;
+        SessionTheme::create($data);
         return redirect()->route('sessiontheme.index')->with('success', 'Theme Session created successfully');
     }
 
@@ -87,7 +106,8 @@ class SessionThemeController extends Controller
             abort(403);
         }
         return view('admin.sessiontheme.form')->with([
-           'theme' => SessionTheme::find($id)
+           'theme' => SessionTheme::find($id),
+           'conveners' => ProgramSpeaker::all()->pluck('name')
         ]);
     }
 
@@ -100,8 +120,17 @@ class SessionThemeController extends Controller
         $data = $request->validate([
             'theme_name' => 'required',
             'theme_type' => 'required',
-            'status' => 'required',
+            'convener' => 'required',
+            'date' => 'required',
+            'from_time' => 'required',
+            'to_time' => 'required',
         ]);
+        if(strtotime($request->to_time) <= strtotime($request->from_time)) {
+           return redirect()->back()->with('warning', "To time can't be greater then From time")->withInput();
+        }
+        $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
+        $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');
+        $data['status'] = 1;
         $sessionTheme->update($data);
         return redirect()->route('sessiontheme.index')->with('success', 'Theme session updated successfully');
     }
@@ -109,8 +138,18 @@ class SessionThemeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SessionTheme $sessionTheme)
+    public function destroy(string $id)
     {
-        //
+        $sessionTheme = SessionTheme::find($id);
+        if($sessionTheme->programs()->count() > 0) {
+            return response()->json([
+                'message' => 'Theme session can not be deleted as it is associated with programs',
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            $sessionTheme->delete();
+            return response()->json([
+                'message' => 'Session theme deleted successfully!',
+            ], Response::HTTP_OK);
+        }
     }
 }

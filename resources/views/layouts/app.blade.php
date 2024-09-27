@@ -162,9 +162,15 @@
         $(function() {
             bsCustomFileInput.init();
         });
+        $('.time').datetimepicker({
+            icons: {
+                time: 'fas fa-clock text-primary'
+            },
+            format: 'LT'
+        });
         $('.date_time').datetimepicker({
             icons: {
-                time: 'fas fa-clock'
+                time: 'fas fa-clock text-primary'
             },
             // formatTime: "h:i a",
             // format: 'YYYY-MM-DD hh:mm A',
@@ -187,7 +193,12 @@
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-            timer: 3000
+            timer: 4000
+        });
+        $("body").click(function() {
+            var container = $('.bootstrap-datetimepicker-widget');
+            container.hide();
+            container.parent().datetimepicker('hide');
         });
     </script>
     @stack('scripts')

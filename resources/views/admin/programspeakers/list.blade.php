@@ -46,5 +46,28 @@
                 }
             ]
         })
+        $('table').on('click', '.programSpeaker-delete', function(e) {
+            $.ajax({
+                url: $(this).data('href'),
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'JSON',
+                success: function(data) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: data.message
+                    })
+                    speakersTable.draw();
+                },
+                error: function(error) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: error.responseJSON.message
+                    })
+                }
+            })
+        });
     </script>
 @endpush

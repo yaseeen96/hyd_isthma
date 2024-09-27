@@ -7,16 +7,15 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-12 mb-5">
-                    <a href="{{ route('programs.create') }}" class="btn btn-purple float-right"><i
-                            class="fas fa-plus mr-2"></i>Create</a>
-                    <button class="btn btn-purple float-right mr-2" type="button" data-toggle="collapse"
-                        data-target="#regFilters" aria-expanded="false" aria-controls="regFilters">
-                        <i class="fas fa-filter"></i> Filter
-                    </button>
                     <button class="btn btn-purple float-right mr-2" onclick="clearFilters()"> <i class="fas fa-filter "></i>
                         Clear
                         Filters</button>
-
+                    <button class="btn btn-purple float-right mx-2" type="button" data-toggle="collapse"
+                        data-target="#regFilters" aria-expanded="false" aria-controls="regFilters">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                    <a href="{{ route('programs.create') }}" class="btn btn-purple float-right"><i
+                            class="fas fa-plus mr-2"></i>Create</a>
                 </div>
             </div>
             <div class="collapse container" id="regFilters">
@@ -35,7 +34,8 @@
             <x-table id="programs-table">
                 <th>SL.No </th>
                 <th>Topic</th>
-                <th>Date & Time</th>
+                <th>Date</th>
+                <th>From-To Time</th>
                 <th>Session Name</th>
                 <th>Speaker Name</th>
                 <th>Speaker Image</th>
@@ -64,7 +64,10 @@
                     data: 'topic',
                 },
                 {
-                    data: 'datetime'
+                    data: 'date'
+                },
+                {
+                    data: 'from_to_time'
                 },
                 {
                     data: 'session_theme'
@@ -83,6 +86,29 @@
                 }
             ]
         })
+        $('table').on('click', '.program-delete', function(e) {
+            $.ajax({
+                url: $(this).data('href'),
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'JSON',
+                success: function(data) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: data.message
+                    })
+                    setFilter();
+                },
+                error: function(error) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: error.responseJSON.message
+                    })
+                }
+            })
+        });
 
         function setFilter() {
             programsTable.draw();

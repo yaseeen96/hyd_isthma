@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ProgramSpeaker;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Plank\Mediable\Facades\MediaUploader;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
@@ -30,6 +31,9 @@ class ProgramSpeakerController extends Controller
                 ->addColumn('action', function (ProgramSpeaker $speaker) use($user) {
                     $link = ($user->id == 1 || $user->hasPermissionTo('Edit ProgramSpeakers')) ?
                         '<a href="' . route('programSpeakers.edit', $speaker->id) . '" class="btn-purple btn mr-1" ><i class="fas fa-edit"></i></a>'
+                        : "";
+                    $link .= ($user->id == 1 || $user->hasPermissionTo('Delete ProgramSpeakers')) ?
+                        '<span data-href="' . route('programSpeakers.destroy', $speaker->id) . '" class="btn-purple programSpeaker-delete btn"><i class="fas fa-trash"></i></span>'
                         : "";
                     return $link;
                 })
@@ -123,8 +127,24 @@ class ProgramSpeakerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProgramSpeaker $programSpeaker)
+    public function destroy(String  $id)
     {
-        //
+        $user = User::find(auth()->user()->id);
+        if ($user->id != 1 && !$user->hasPermissionTo('Delete ProgramSpeakers')) {
+           return response()->json([
+                'message' => "You don't have permission to delete Speaker",
+            ], Response::HTTP_BAD_REQUEST);
+        }
+        $speaker = ProgramSpeaker::find($id);
+        if($speaker->programs->count() > 0) {
+            return response()->json([
+                'message' => "Speaker is associated with program(s). You can't delete this speaker",
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            $speaker->delete();
+            return response()->json([
+                'message' => "Speaker deleted successfully",
+            ], Response::HTTP_OK);
+        }
     }
 }

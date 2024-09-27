@@ -13,9 +13,17 @@ use Illuminate\Http\Response;
 class ProgramsController extends Controller
 {
     public function listPrograms() {
-        $programs = Program::with('sessionTheme', 'programSpeaker')->get();
+        $programs = Program::with('sessionTheme', 'programSpeaker')->paginate();
         return response()->json([
-            "data" => ProgramListResource::collection($programs)
+            "data" => ProgramListResource::collection($programs),
+            "meta" => [
+                "current_page" => $programs->currentPage(),
+                "last_page" => $programs->lastPage(),
+                "per_page" => $programs->perPage(),
+                "total" => $programs->total(),
+                "next_page_url" => $programs->nextPageUrl(),
+                "prev_page_url" => $programs->previousPageUrl(),
+            ]
         ]);
     }
     public function registerProgram(Request $request) {
@@ -31,5 +39,12 @@ class ProgramsController extends Controller
             'message' => 'Program registered successfully',
             'status' => 'success'
         ], Response::HTTP_OK);
+    }
+
+    public function getProgram(Request $request, $id) {
+        $program = Program::with('sessionTheme', 'programSpeaker')->find($id);
+        return response()->json([
+            'data' => new ProgramListResource($program)
+        ]);
     }
 }

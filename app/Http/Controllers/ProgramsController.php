@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AppHelperFunctions;
 use App\Models\Program;
 use App\Models\ProgramSpeaker;
 use App\Models\SessionTheme;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Http\Response;
 
 class ProgramsController extends Controller
 {
@@ -23,9 +26,11 @@ class ProgramsController extends Controller
         if($request->ajax()) {
             $query = Program::with('programSpeaker', 'sessionTheme');
             return $datatable->eloquent($query)
-                ->editColumn('datetime', function (Program $program) {
-                   return $program->datetime ?
-                        '<span class="badge badge-success">' . date('Y-m-d h:m:A', strtotime($program->datetime)) . '</span>' : 'NA';
+                ->editColumn('date', function (Program $program) {
+                    return AppHelperFunctions::getGreenBadge(date('d-m-Y', strtotime($program->date)));
+                })
+                ->editColumn('from_to_time', function (Program $program) {
+                    return AppHelperFunctions::getGreenBadge(date('h:i A', strtotime($program->from_time))). '-' .AppHelperFunctions::getGreenBadge(date('h:i A', strtotime($program->to_time)));
                 })
                 ->addColumn('session_theme', function (Program $program) {
                     return '<a href="' . route('sessiontheme.edit', $program->session_theme_id) . '">' . $program->sessionTheme->theme_name . '</a>';
@@ -38,15 +43,19 @@ class ProgramsController extends Controller
                     return '<img src="'.$imageSrc.'" width="80px" height="80px">';
                 })
                 ->editColumn('status', function (Program $program) {
-                    return $program->status ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">In Active</span>';
+                    $color = array_search($program->status, config('program-status'));
+                    return AppHelperFunctions::getBadge($program->status, $color);
                 })
-                ->addColumn('action', function (Program $program) use($user) {
+                ->addColumn('action', function (Program $program) use($user): string {
                     $link = ($user->id == 1 || $user->hasPermissionTo('Edit Programs')) ?
                         '<a href="' . route('programs.edit', $program->id) . '" class="btn-purple btn mr-1" ><i class="fas fa-edit"></i></a>'
                         : "";
+                    $link .= ($user->id == 1 || $user->hasPermissionTo('Delete Programs')) ?
+                        '<span data-href="'.route('programs.destroy', $program->id).'" class="btn-purple program-delete btn"><i class="fas fa-trash"></i></span>'
+                            : "";
                     return $link;
                 })
-                ->rawColumns([ 'datetime', 'session_theme' ,'speaker_image', 'speaker_name', 'status', 'action'])
+                ->rawColumns([ 'date', 'from_to_time', 'session_theme' ,'speaker_image', 'speaker_name', 'status', 'action'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -74,21 +83,28 @@ class ProgramsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'topic' => 'required',
-            'datetime' => 'required',
+            'date' => 'required',
+            'from_time' => 'required',
+            'to_time' => 'required',
             'program_speaker_id' => 'required',
             'session_theme_id' => 'required',
             'status' => 'required',
         ]);
-        $program = new Program();
-        $program->topic = $request->topic;
-        $program->datetime = date('Y-m-d H:i:s', strtotime($request->datetime));
-        $program->program_speaker_id = $request->program_speaker_id;
-        $program->session_theme_id = $request->session_theme_id;
-        $program->status = $request->status;
-        $program->save();
-        return redirect()->route('programs.index')->with('success', 'Program created successfully');
+        $sessionTheme = SessionTheme::find($request->session_theme_id);
+        if((strtotime($request->from_time) < strtotime($sessionTheme->from_time) ||
+            strtotime($request->from_time) > strtotime($sessionTheme->to_time))  &&
+            ((strtotime($request->to_time) > strtotime($sessionTheme->to_time)) ||
+             (strtotime($request->to_time) < strtotime($sessionTheme->from_time)))
+            ){
+            return redirect()->back()->with('warning', 'Program time should be within session theme time')->withInput();
+        }
+        $data['date'] = date('Y-m-d', strtotime($request->date));
+        $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
+        $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');
+        Program::create($data);
+        return redirect()->back()->with('success', 'Program created successfully');
     }
 
     /**
@@ -120,27 +136,50 @@ class ProgramsController extends Controller
      */
     public function update(Request $request, Program $program)
     {
-        $request->validate([
+        $data = $request->validate([
             'topic' => 'required',
-            'datetime' => 'required',
+            'date' => 'required',
+            'from_time' => 'required',
+            'to_time' => 'required',
             'program_speaker_id' => 'required',
             'session_theme_id' => 'required',
             'status' => 'required',
         ]);
-        $program->topic = $request->topic;
-        $program->datetime = date('Y-m-d H:i:s', strtotime($request->datetime));
-        $program->program_speaker_id = $request->program_speaker_id;
-        $program->session_theme_id = $request->session_theme_id;
-        $program->status = $request->status;
-        $program->save();
-        return redirect()->route('programs.index')->with('success', 'Program updated successfully');
+        $sessionTheme = SessionTheme::find($request->session_theme_id);
+        if((strtotime($request->from_time) < strtotime($sessionTheme->from_time) ||
+            strtotime($request->from_time) > strtotime($sessionTheme->to_time))  &&
+            ((strtotime($request->to_time) > strtotime($sessionTheme->to_time)) ||
+             (strtotime($request->to_time) < strtotime($sessionTheme->from_time)))
+            ){
+            return redirect()->back()->with('warning', 'Program time should be within session theme time')->withInput();
+        }
+        $data['date'] = date('Y-m-d', strtotime($request->date));
+        $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
+        $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');
+        $program->update($data);
+        return redirect()->back()->with('success', 'Program updated successfully');
     }
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Program $program)
+    public function destroy(String $id)
     {
-        //
+        $user = User::find(auth()->user()->id);
+        if ($user->id != 1 && !$user->hasPermissionTo('Delete Programs')){
+           return response()->json([
+                'message' => "You don't have permission to delete program",
+            ], Response::HTTP_BAD_REQUEST);
+        }
+        $program = Program::find($id);
+        if($program->programRegistrations()->count() > 0) {
+            return response()->json([
+                'message' => "Program can not be deleted as it is associated with registrations",
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            $program->delete();
+            return response()->json([
+                'message' => 'Program deleted successfully',
+            ], Response::HTTP_OK);
+        }
     }
 }

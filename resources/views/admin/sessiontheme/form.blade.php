@@ -11,11 +11,29 @@
                     </h3>
                 </div>
                 <form action="{{ $theme->id ? route('sessiontheme.update', $theme->id) : route('sessiontheme.store') }}"
-                    method="post" enctype="multipart/form-data">
+                    autocomplete="off" method="post" enctype="multipart/form-data">
                     @csrf
                     {{ $theme->id ? method_field('PUT') : '' }}
-                    <div class="card-body ">
+                    <div class="card-body">
                         <div class="row">
+                            <div class="col-lg-12">
+                                @if (session('success'))
+                                    <div class="alert alert-success alert-dismissible fade show">
+                                        {{ session('success') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                                @if (session('warning'))
+                                    <div class="alert alert-warning alert-dismissible fade show">
+                                        {{ session('warning') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
                             <div class="col-lg-6">
                                 {{-- Name --}}
                                 <div class="form-group row">
@@ -30,16 +48,21 @@
                                         @endif
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="col-lg-6">
                                 {{-- Session Type --}}
                                 <div class="form-group row">
                                     <div class="col-lg-12">
                                         <label for="theme_type">Session Type</label>
                                         <select class="form-control" name="theme_type" id="theme_type">
                                             <option value="">-- Theme Role --</option>
-                                            <option value="fixed" {{ $theme->theme_type == 'fixed' ? 'selected' : '' }}>
+                                            <option value="fixed"
+                                                {{ old('theme_type', $theme->theme_type) == 'fixed' ? 'selected' : '' }}>
                                                 Fixed</option>
                                             <option value="parallel"
-                                                {{ $theme->theme_type == 'parallel' ? 'selected' : '' }}>Parallel</option>
+                                                {{ old('theme_type', $theme->theme_type) == 'parallel' ? 'selected' : '' }}>
+                                                Parallel</option>
                                         </select>
                                         @if ($errors->has('theme_type'))
                                             <span class="text-danger">
@@ -48,15 +71,86 @@
                                         @endif
                                     </div>
                                 </div>
-                                {{-- Status --}}
+                            </div>
+                            <div class="col-lg-6">
+                                {{--  Convener --}}
                                 <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label for="convener">Convener</label>
+                                        <select class="form-control" name="convener" id="convener">
+                                            <option value=""> Select convener </option>
+                                            @foreach ($conveners as $convener)
+                                                <option
+                                                    {{ old('convener', $theme->convener) == $convener ? 'selected' : '' }}
+                                                    value="{{ $convener }}">{{ $convener }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('convener'))
+                                            <span class="text-danger">
+                                                {{ $errors->first('convener') }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                {{-- Date --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label for="date">Session Date</label>
+                                        <input type="text" name="date" id="date" class="form-control date_time"
+                                            data-toggle="datetimepicker" data-target="#date_time"
+                                            value="{{ old('date', $theme->date) }}" />
+                                        @if ($errors->has('date'))
+                                            <span class="text-danger">
+                                                {{ $errors->first('date') }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                {{-- From Time --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label for="from_time">From time</label>
+                                        <input type="text" name="from_time" id="from_time" class="form-control time"
+                                            data-toggle="datetimepicker" data-target="#time"
+                                            value="{{ old('from_time', $theme->from_time) }}">
+                                        @if ($errors->has('from_time'))
+                                            <span class="text-danger">
+                                                {{ $errors->first('from_time') }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                {{-- From Time --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label for="to_time">To time</label>
+                                        <input type="text" name="to_time" id="to_time" class="form-control time"
+                                            data-toggle="datetimepicker" data-target="#time"
+                                            value="{{ old('to_time', $theme->to_time) }}">
+                                        @if ($errors->has('to_time'))
+                                            <span class="text-danger">
+                                                {{ $errors->first('to_time') }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- <div class="col-lg-6"> --}}
+                            {{-- Status --}}
+                            {{-- <div class="form-group row">
                                     <div class="col-lg-12">
                                         <label for="status">Status</label>
                                         <select class="form-control" name="status" id="status">
                                             <option value="">-- Status --</option>
                                             <option value="1" {{ $theme->status == 1 ? 'selected' : '' }}>Active
                                             </option>
-                                            <option value="0" {{ $theme->status == 0 ? 'selected' : '' }}>In Active
+                                            <option value="0" {{ $theme->status === 0 ? 'selected' : '' }}>In Active
                                             </option>
                                         </select>
                                         @if ($errors->has('status'))
@@ -65,8 +159,8 @@
                                             </span>
                                         @endif
                                     </div>
-                                </div>
-                            </div>
+                                </div> --}}
+                            {{-- </div> --}}
                         </div>
                     </div>
                     <div class="card-footer">

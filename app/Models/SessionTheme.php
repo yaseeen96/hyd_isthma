@@ -11,6 +11,14 @@ class SessionTheme extends Model
     protected $fillable = [
         'theme_name',
         'status',
-        'theme_type'
+        'theme_type',
+        'convener',
+        'date',
+        'from_time',
+        'to_time'
     ];
+
+    public function programs() {
+        return $this->hasMany(Program::class);
+    }
 }

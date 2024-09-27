@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('programs', function (Blueprint $table) {
             $table->id();
             $table->string('topic');
-            $table->datetime('datetime');
-            $table->foreignId('program_speaker_id')->constrained();
-            $table->foreignId('session_theme_id')->constrained();
-            $table->boolean('status')->default(1);
+            $table->datetime('date');
+            $table->time('from_time');
+            $table->time('to_time');
+            $table->foreignId('program_speaker_id')->constrained('program_speakers');
+            $table->foreignId('session_theme_id')->constrained('session_themes');
+            $table->string('status')->default('Yet to Start');
             $table->timestamps();
         });
     }

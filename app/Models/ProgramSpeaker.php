@@ -11,4 +11,9 @@ class ProgramSpeaker extends Model
     use HasFactory, Mediable;
 
     protected $fillable = ['name', 'bio'];
+
+    public function programs()
+    {
+        return $this->hasMany(Program::class);
+    }
 }

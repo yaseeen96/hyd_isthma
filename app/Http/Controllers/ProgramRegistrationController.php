@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AppHelperFunctions;
 use App\Models\Program;
 use App\Models\ProgramRegistration;
 use App\Models\ProgramSpeaker;
@@ -9,6 +10,7 @@ use App\Models\SessionTheme;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Http\Response;
 
 class ProgramRegistrationController extends Controller
 {
@@ -46,8 +48,16 @@ class ProgramRegistrationController extends Controller
                 ->addColumn('theme_type', function (ProgramRegistration $programRegistration) {
                     return $programRegistration->program->sessionTheme->theme_type;
                 })
+                ->addColumn('program_date_time', function (ProgramRegistration $programRegistration) {
+                    return AppHelperFunctions::getGreenBadge(date('Y-m-d', strtotime($programRegistration->program->date))). ' ' .AppHelperFunctions::getGreenBadge(date('h:i A', strtotime($programRegistration->program->from_time))). ' - ' .AppHelperFunctions::getGreenBadge(date('h:i A', strtotime($programRegistration->program->to_time)));
+                })
+                ->addColumn('action', function (ProgramRegistration $programRegistration) use ($user) {
+                    return $link = ($user->id == 1 || $user->hasPermissionTo('Delete Enrollments')) ?
+                        '<span data-href="'.route('programRegistration.destroy', $programRegistration->id).'" class="btn-purple programRegistration-delete btn"><i class="fas fa-trash"></i></span>'
+                            : "";
+                })
                 ->addIndexColumn()
-                ->rawColumns(['speaker', 'speaker_image'])
+                ->rawColumns(['speaker', 'speaker_image', 'program_date_time', 'action'])
                 ->make(true);
         }
         return view('admin.programregistration.list')->with(
@@ -104,6 +114,15 @@ class ProgramRegistrationController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::find(auth()->user()->id);
+        if ($user->id != 1 && !$user->hasPermissionTo('Delete Enrollments')) {
+            return response()->json([
+                'message' => "You don't have permission to delete Enrollment",
+            ], Response::HTTP_BAD_REQUEST);
+        }
+        ProgramRegistration::find($id)->delete();
+        return response()->json([
+                'message' => 'Program enrollment deleted successfully',
+            ], Response::HTTP_OK);
     }
 }

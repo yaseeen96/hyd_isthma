@@ -11,7 +11,9 @@ class Program extends Model
 
     protected $fillable = [
         'topic',
-        'datetime',
+        'date',
+        'from_time',
+        'to_time',
         'program_speaker_id',
         'session_theme_id',
         'status',

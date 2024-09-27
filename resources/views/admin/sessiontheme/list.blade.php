@@ -18,7 +18,9 @@
                 <th>SL.No</th>
                 <th>Session Name</th>
                 <th>Type</th>
-                <th>Status</th>
+                <th>Date</th>
+                <th>From-To Time</th>
+                {{-- <th>Status</th> --}}
                 <th>Action</th>
             </x-table>
         </div>
@@ -40,14 +42,43 @@
                         data: 'theme_type',
                     },
                     {
-                        data: "status",
+                        data: 'date'
                     },
+                    {
+                        data: 'from_to_time'
+                    },
+                    // {
+                    //     data: "status",
+                    // },
                     {
                         data: 'action',
                         orderable: false
                     },
                 ],
             });
+        });
+        $('table').on('click', '.sessiontheme-delete', function(e) {
+            $.ajax({
+                url: $(this).data('href'),
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'JSON',
+                success: function(data) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: data.message
+                    })
+                    sessionthemeTable.draw();
+                },
+                error: function(error) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: error.responseJSON.message
+                    })
+                }
+            })
         });
     </script>
 @endpush
