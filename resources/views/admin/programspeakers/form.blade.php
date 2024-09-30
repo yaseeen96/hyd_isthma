@@ -54,9 +54,6 @@
                                                 <label class="custom-file-label" for="speaker_image">Choose
                                                     file</label>
                                             </div>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">Upload</span>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

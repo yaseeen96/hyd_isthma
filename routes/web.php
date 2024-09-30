@@ -46,6 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('checkInOutEntries', 'CheckInOutEntiresController');
     // Program Registration
     Route::resource('programRegistration', 'ProgramRegistrationController');
+    // QR Batch Registrations
+    Route::resource('qrBatchRegistrations',  'QrBatchRegistrationController');
     // Reports
     Route::prefix('reports')->group(function () {
         Route::get('familyDetailsReport', 'ReportsController@familyDetailsReport')->name('family-details-report');
@@ -64,6 +66,7 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('syncrukundata', 'ReportsController@syncRukunData')->name('sync-rukun-data');
 Route::get('updateRukunAge', 'ReportsController@updateRukunAge')->name('update-rukun-age');
+Route::get('importQrBatchRegistrationData',  'QrBatchRegistrationController@import');
 // temp routes
 Route::prefix('delete')->group(function () {
     Route::get('account', 'DeleteAccountController@index')->name('delete-account');

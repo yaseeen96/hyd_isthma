@@ -71,7 +71,6 @@ class ProgramSpeakerController extends Controller
         $speaker->name = $request->name;
         $speaker->bio = $request->bio;
         $speaker->save();
-
         if(!empty($request->file('speaker_image'))) {
             $media = MediaUploader::fromSource($request->file('speaker_image'))->toDestination('public', 'images/speaker_image')->useFilename(Str::uuid())->upload();
             $speaker->attachMedia($media, ['speaker_image']);
@@ -136,6 +135,7 @@ class ProgramSpeakerController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         }
         $speaker = ProgramSpeaker::find($id);
+        $speaker->getMedia('speaker_image')->each->delete();
         if($speaker->programs->count() > 0) {
             return response()->json([
                 'message' => "Speaker is associated with program(s). You can't delete this speaker",

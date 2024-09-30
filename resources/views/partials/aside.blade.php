@@ -390,6 +390,22 @@
                           </ul>
                       </li>
                   @endif
+                  {{-- QR Batch Registrations --}}
+                  @if (auth()->user()->can('View BatchesManagement') ||
+                          auth()->user()->can('Edit BatchesManagement') ||
+                          auth()->user()->can('Create BatchesManagement') ||
+                          auth()->user()->can('Delete BatchesManagement') ||
+                          auth()->user()->id == 1)
+                      <li class="nav-item">
+                          <a href="{{ route('qrBatchRegistrations.index') }}"
+                              class="nav-link {{ in_array(request()->route()->getName(), ['qrBatchRegistrations.index', 'qrBatchRegistrations.create', 'qrBatchRegistrations.edit', 'qrBatchRegistrations.delete']) ? 'active' : '' }}">
+                              <i class="nav-icon fas fa-qrcode"></i>
+                              <p>
+                                  QR Batches
+                              </p>
+                          </a>
+                      </li>
+                  @endif
                   {{-- AUDO PROCESSING --}}
                   {{-- <li class="nav-item">
                       <a href="{{ route('audioProcessing.index') }}"

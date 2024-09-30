@@ -66,6 +66,11 @@ return [
         "Create ScannEntires",
         "Edit ScannEntires",
         "Delete ScannEntires",
-        "View ScannEntires"
+        "View ScannEntires",
+
+        "Create BatchesManagement",
+        "Edit BatchesManagement",
+        "Delete BatchesManagement",
+        "View BatchesManagement",
 
 ];
