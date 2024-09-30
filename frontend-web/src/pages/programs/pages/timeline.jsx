@@ -9,7 +9,7 @@ import { FiArrowLeft } from 'react-icons/fi'; // Import a back arrow icon from r
 // Helper function to group events by date
 const groupEventsByDate = (events) => {
     return events.reduce((groupedEvents, event) => {
-        const eventDate = dayjs(event.datetime).format('YYYY-MM-DD');
+        const eventDate = dayjs(event.datetime.split(' ')[0]).format('YYYY-MM-DD');
         if (!groupedEvents[eventDate]) {
             groupedEvents[eventDate] = [];
         }
@@ -19,10 +19,14 @@ const groupEventsByDate = (events) => {
 };
 
 // Generate an array of days for a week (or more)
-const generateCalendarDates = (numDays = 7) => {
+const generateCalendarDates = (events) => {
+    // Find the earliest event date
+    const firstEventDate = dayjs(events[0].datetime.split(' ')[0]); // Assuming datetime format includes the date at the beginning
+
+    // Create an array starting 2 days before and ending 5 days after the first event date
     const dates = [];
-    for (let i = 0; i < numDays; i++) {
-        dates.push(dayjs().add(i, 'day').format('YYYY-MM-DD'));
+    for (let i = -5; i <= 10; i++) {
+        dates.push(firstEventDate.add(i, 'day').format('YYYY-MM-DD'));
     }
     return dates;
 };
@@ -67,7 +71,7 @@ const Timeline = () => {
     const groupedEvents = groupEventsByDate(data.data);
 
     // Generate dates for the next 7 days
-    const calendarDates = generateCalendarDates(7);
+    const calendarDates = generateCalendarDates(data.data);
 
     // Function to open the confirmation modal
     const openModal = (eventId) => {
@@ -95,30 +99,30 @@ const Timeline = () => {
     };
 
     return (
-        <div className="container mx-auto p-6">
+        <div className="container mx-auto p-4">
             {/* Back Button */}
             <button
                 onClick={() => navigate(-1)} // Navigate back to the previous page
-                className="flex items-center text-primary mb-6"
+                className="flex items-center text-primary mb-4"
             >
-                <FiArrowLeft className="mr-2" size={24} />
-                <span className="text-lg font-semibold">Back</span>
+                <FiArrowLeft className="mr-2" size={20} />
+                <span className="text-base font-semibold">Back</span>
             </button>
 
-            <h1 className="text-3xl font-bold text-primary mb-8">Programs Timeline</h1>
+            <h1 className="text-2xl font-bold text-primary mb-6">Programs Timeline</h1>
 
             {/* Show enroll message */}
-            {enrollMessage && <div className="text-center p-4 mb-6 bg-green-100 text-green-700 rounded-md">{enrollMessage}</div>}
+            {enrollMessage && <div className="text-center p-3 mb-4 bg-green-100 text-green-700 rounded-md">{enrollMessage}</div>}
 
             {/* Horizontally scrollable list of dates */}
-            <div className="overflow-x-auto mb-8">
-                <div className="flex space-x-4">
+            <div className="overflow-x-auto mb-6">
+                <div className="flex space-x-2">
                     {calendarDates.map((date) => (
                         <button
                             key={date}
                             onClick={() => setSelectedDate(date)}
                             disabled={!groupedEvents[date]} // Disable if no events on this date
-                            className={`py-2 px-4 rounded-lg ${
+                            className={`py-2 px-3 rounded-lg ${
                                 selectedDate === date
                                     ? 'bg-primary text-white'
                                     : !groupedEvents[date]
@@ -133,52 +137,57 @@ const Timeline = () => {
                 </div>
             </div>
 
-            {/* Display events for the selected date */}
-            {groupedEvents[selectedDate] ? (
-                groupedEvents[selectedDate].map((event) => (
-                    <div key={event.id} className="timeline-item bg-gray-100 p-6 rounded-lg shadow-md relative mb-6">
-                        {/* Time */}
-                        <div className="absolute left-0 top-0 p-4 bg-primary text-white font-bold text-center w-24 h-24 rounded-md">
-                            <span className="text-lg">{dayjs(event.datetime).format('h:mm A')}</span>
-                        </div>
+            {/* Timeline Layout */}
+            <div className="timeline">
+                {groupedEvents[selectedDate] ? (
+                    groupedEvents[selectedDate].map((event) => {
+                        const [startTime, endTime] = event.datetime.split('-').map((time) => time.trim());
+                        return (
+                            <div key={event.id} className="timeline-item flex flex-col mb-4 bg-white p-4 rounded-lg shadow-md">
+                                {/* Time Display */}
+                                <div className="flex items-center mb-2">
+                                    <div className="time-badge bg-primary text-white text-sm font-semibold rounded-full py-1 px-2 mr-2">{dayjs(startTime, 'YYYY-MM-DD h:mm A').format('h:mm A')}</div>
+                                    <span className="text-gray-500 text-sm">to</span>
+                                    <div className="time-badge bg-primary text-white text-sm font-semibold rounded-full py-1 px-2 ml-2">{dayjs(endTime, 'YYYY-MM-DD h:mm A').format('h:mm A')}</div>
+                                </div>
 
-                        {/* Event Details */}
-                        <div className="ml-28">
-                            {/* Event Session Theme */}
-                            <h3 className="text-xl font-bold text-primary mb-4">{event.name ?? 'No name provided'}</h3>
-
-                            {/* Speaker Information */}
-                            <div className="flex items-center space-x-4 mt-2">
-                                <img src={event.speaker_image} alt={event.speaker_name} className="w-16 h-16 rounded-full object-cover" />
+                                {/* Event Details */}
                                 <div>
-                                    <h4 className="text-md font-semibold">{event.speaker_name}</h4>
-                                    <p className="text-sm text-gray-500">{event.speaker_bio}</p>
+                                    <h3 className="text-lg font-bold text-primary mb-1">{event.name ?? 'No name provided'}</h3>
+                                    <p className="text-sm text-gray-600 mb-2">Convener: {event.session_convener ?? 'Unknown'}</p>
+
+                                    {/* Speaker Info */}
+                                    <div className="flex items-center mb-3">
+                                        <img src={event.speaker_image} alt={event.speaker_name} className="w-12 h-12 rounded-full object-cover mr-3" />
+                                        <div>
+                                            <h4 className="text-sm font-semibold">{event.speaker_name}</h4>
+                                            <p className="text-xs text-gray-500">{event.speaker_bio}</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Enroll Button */}
+                                    <div>
+                                        {event.theme_type === 'parallel' ? (
+                                            event.enrolled ? (
+                                                <p className="text-sm text-green-600">You are already enrolled in this event.</p>
+                                            ) : (
+                                                <button
+                                                    className="bg-primary text-white text-sm px-3 py-2 rounded-md hover:bg-primary-600"
+                                                    onClick={() => openModal(event.id)} // Open confirmation modal
+                                                >
+                                                    Enroll
+                                                </button>
+                                            )
+                                        ) : null}
+                                    </div>
                                 </div>
                             </div>
-
-                            {/* Action Buttons */}
-                            <div className="mt-4">
-                                {event.theme_type === 'parallel' ? (
-                                    <div>
-                                        {event.enrolled ? (
-                                            <p className="text-sm text-green-600">You are already enrolled in this event.</p>
-                                        ) : (
-                                            <button
-                                                className="bg-primary text-white px-4 py-2 rounded hover:bg-primary-600"
-                                                onClick={() => openModal(event.id)} // Open confirmation modal
-                                            >
-                                                Enroll
-                                            </button>
-                                        )}
-                                    </div>
-                                ) : null}
-                            </div>
-                        </div>
-                    </div>
-                ))
-            ) : (
-                <p className="text-center text-gray-500">No events for this day.</p>
-            )}
+                        );
+                    })
+                ) : (
+                    <p className="text-center text-gray-500">No events for this day.</p>
+                )}
+            </div>
 
             {/* Confirmation Modal */}
             <ConfirmEnrollModal isOpen={isModalOpen} onConfirm={handleEnroll} onCancel={handleCancel} />
