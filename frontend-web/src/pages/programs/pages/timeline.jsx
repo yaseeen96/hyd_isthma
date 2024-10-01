@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for back button
-import dayjs from 'dayjs'; // For date formatting
+import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 import LoadingComponent from '../../../components/common/loadingComponent';
 import { getProgramDetails, enrollforProgram } from '../../../services/programs_service';
-import { FiArrowLeft } from 'react-icons/fi'; // Import a back arrow icon from react-icons
+import { FiArrowLeft } from 'react-icons/fi';
 
 // Helper function to group events by date
 const groupEventsByDate = (events) => {
@@ -21,7 +21,7 @@ const groupEventsByDate = (events) => {
 // Generate an array of days for a week (or more)
 const generateCalendarDates = (events) => {
     // Find the earliest event date
-    const firstEventDate = dayjs(events[0].datetime.split(' ')[0]); // Assuming datetime format includes the date at the beginning
+    const firstEventDate = dayjs(events[0].datetime.split(' ')[0]);
 
     // Create an array starting 2 days before and ending 5 days after the first event date
     const dates = [];
@@ -33,32 +33,30 @@ const generateCalendarDates = (events) => {
 
 const Timeline = () => {
     const [selectedDate, setSelectedDate] = useState(dayjs().format('YYYY-MM-DD'));
-    const [isRefetching, setIsRefetching] = useState(false); // Add refetch state
-    const [enrollMessage, setEnrollMessage] = useState(''); // State to store enrollment status
-    const [isModalOpen, setIsModalOpen] = useState(false); // State to handle modal visibility
-    const [selectedEventId, setSelectedEventId] = useState(null); // State to track which event is selected for enrollment
-    const navigate = useNavigate(); // Create a navigate function to go back
+    const [isRefetching, setIsRefetching] = useState(false);
+    const [enrollMessage, setEnrollMessage] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedEventId, setSelectedEventId] = useState(null);
+    const navigate = useNavigate();
 
     // Use react-query to fetch the timeline data
     const { data, isLoading, isError, error, refetch } = useQuery('timelineData', getProgramDetails, {
         refetchOnWindowFocus: true,
         refetchOnMount: true,
         staleTime: 0,
-        onSettled: () => setIsRefetching(false), // Reset refetch state after refetch
+        onSettled: () => setIsRefetching(false),
     });
 
     // Trigger refetch and manage refetch state
     useEffect(() => {
         setIsRefetching(true);
-        refetch().then(() => setIsRefetching(false)); // End refetching after refetch completes
+        refetch().then(() => setIsRefetching(false));
     }, [refetch]);
 
-    // Show loading state or refetching state
     if (isLoading || isRefetching) {
         return <LoadingComponent />;
     }
 
-    // If there is an error, display an error message
     if (isError) {
         return (
             <div className="text-center p-6">
@@ -75,8 +73,8 @@ const Timeline = () => {
 
     // Function to open the confirmation modal
     const openModal = (eventId) => {
-        setSelectedEventId(eventId); // Track the event to enroll in
-        setIsModalOpen(true); // Open the modal
+        setSelectedEventId(eventId);
+        setIsModalOpen(true);
     };
 
     // Function to handle the actual enrollment
@@ -84,27 +82,23 @@ const Timeline = () => {
         if (selectedEventId) {
             const response = await enrollforProgram(selectedEventId);
             if (response.status === 'success') {
-                setEnrollMessage(response.message); // Show success message
-                refetch(); // Refetch timeline data to reflect updated enrollment status
+                setEnrollMessage(response.message);
+                refetch();
             } else {
                 setEnrollMessage('Enrollment failed, please try again.');
             }
         }
-        setIsModalOpen(false); // Close the modal
+        setIsModalOpen(false);
     };
 
-    // Function to cancel the enrollment process
     const handleCancel = () => {
-        setIsModalOpen(false); // Close the modal
+        setIsModalOpen(false);
     };
 
     return (
         <div className="container mx-auto p-4">
             {/* Back Button */}
-            <button
-                onClick={() => navigate(-1)} // Navigate back to the previous page
-                className="flex items-center text-primary mb-4"
-            >
+            <button onClick={() => navigate(-1)} className="flex items-center text-primary mb-4">
                 <FiArrowLeft className="mr-2" size={20} />
                 <span className="text-base font-semibold">Back</span>
             </button>
@@ -121,7 +115,7 @@ const Timeline = () => {
                         <button
                             key={date}
                             onClick={() => setSelectedDate(date)}
-                            disabled={!groupedEvents[date]} // Disable if no events on this date
+                            disabled={!groupedEvents[date]}
                             className={`py-2 px-3 rounded-lg ${
                                 selectedDate === date
                                     ? 'bg-primary text-white'
@@ -140,46 +134,70 @@ const Timeline = () => {
             {/* Timeline Layout */}
             <div className="timeline">
                 {groupedEvents[selectedDate] ? (
-                    groupedEvents[selectedDate].map((event) => {
-                        const [startTime, endTime] = event.datetime.split('-').map((time) => time.trim());
+                    groupedEvents[selectedDate].map((session, index) => {
+                        const dateTimeRange = session.datetime.match(/(\d{2}:\d{2} (AM|PM))/g); // Match time range
+                        const sessionStartTime = dateTimeRange ? dateTimeRange[0] : null;
+                        const sessionEndTime = dateTimeRange ? dateTimeRange[1] : null;
+
                         return (
-                            <div key={event.id} className="timeline-item flex flex-col mb-4 bg-white p-4 rounded-lg shadow-md">
-                                {/* Time Display */}
-                                <div className="flex items-center mb-2">
-                                    <div className="time-badge bg-primary text-white text-sm font-semibold rounded-full py-1 px-2 mr-2">{dayjs(startTime, 'YYYY-MM-DD h:mm A').format('h:mm A')}</div>
-                                    <span className="text-gray-500 text-sm">to</span>
-                                    <div className="time-badge bg-primary text-white text-sm font-semibold rounded-full py-1 px-2 ml-2">{dayjs(endTime, 'YYYY-MM-DD h:mm A').format('h:mm A')}</div>
+                            <div key={index} className="mb-6 bg-white p-4 rounded-lg shadow-md">
+                                {/* Session Theme */}
+                                <div className="flex items-start mb-4">
+                                    <img src={session.speaker_image} alt={session.session_convener} className="w-14 h-14 rounded-full object-cover mr-3" />
+                                    <div>
+                                        <h3 className="text-lg font-bold text-primary">{session.session_theme}</h3>
+                                        <p className="text-sm text-gray-600">Convener: {session.session_convener ?? 'Unknown'}</p>
+                                        <p className="text-sm text-gray-500">
+                                            {sessionStartTime} to {sessionEndTime}
+                                        </p>
+                                        <StatusChip status={session.status} />
+                                    </div>
                                 </div>
 
-                                {/* Event Details */}
-                                <div>
-                                    <h3 className="text-lg font-bold text-primary mb-1">{event.name ?? 'No name provided'}</h3>
-                                    <p className="text-sm text-gray-600 mb-2">Convener: {event.session_convener ?? 'Unknown'}</p>
+                                {/* Program Details */}
+                                <div className={`ml-6 ${groupedEvents[selectedDate].length > 1 ? 'relative' : ''}`}>
+                                    {groupedEvents[selectedDate].length > 1 && <div className="absolute left-4 top-0 w-1 h-full bg-gray-300"></div> /* Timeline Line */}
 
-                                    {/* Speaker Info */}
-                                    <div className="flex items-center mb-3">
-                                        <img src={event.speaker_image} alt={event.speaker_name} className="w-12 h-12 rounded-full object-cover mr-3" />
-                                        <div>
-                                            <h4 className="text-sm font-semibold">{event.speaker_name}</h4>
-                                            <p className="text-xs text-gray-500">{event.speaker_bio}</p>
+                                    {groupedEvents[selectedDate].map((program, programIndex) => (
+                                        <div key={programIndex} className="flex items-start mb-6 relative">
+                                            {/* Show timeline point only if there are multiple programs */}
+                                            {groupedEvents[selectedDate].length > 1 && (
+                                                <div className="absolute left-4 top-1 transform -translate-x-1/2 translate-y-1/2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                                                    <span className="w-3 h-3 bg-white rounded-full"></span>
+                                                </div>
+                                            )}
+
+                                            <div className="ml-10">
+                                                <div className="flex items-center">
+                                                    <img src={program.speaker_image} alt={program.speaker_name} className="w-12 h-12 rounded-full object-cover mr-3" />
+                                                    <div>
+                                                        <h5 className="text-md font-bold text-primary">{program.name}</h5>
+                                                        <p className="text-sm text-gray-500">Speaker: {program.speaker_name ?? 'Unknown'}</p>
+                                                        <p className="text-sm text-gray-500">
+                                                            {sessionStartTime} to {sessionEndTime}
+                                                        </p>
+                                                        <StatusChip status={program.status} />
+                                                    </div>
+                                                </div>
+
+                                                {/* Enroll Button */}
+                                                <div className="mt-2">
+                                                    {program.theme_type === 'parallel' ? (
+                                                        program.enrolled ? (
+                                                            <p className="text-sm text-green-600">You are already enrolled in this event.</p>
+                                                        ) : (
+                                                            <button
+                                                                className="bg-primary text-white text-sm px-3 py-2 rounded-md hover:bg-primary-600"
+                                                                onClick={() => openModal(program.id)} // Open confirmation modal
+                                                            >
+                                                                Enroll
+                                                            </button>
+                                                        )
+                                                    ) : null}
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    {/* Enroll Button */}
-                                    <div>
-                                        {event.theme_type === 'parallel' ? (
-                                            event.enrolled ? (
-                                                <p className="text-sm text-green-600">You are already enrolled in this event.</p>
-                                            ) : (
-                                                <button
-                                                    className="bg-primary text-white text-sm px-3 py-2 rounded-md hover:bg-primary-600"
-                                                    onClick={() => openModal(event.id)} // Open confirmation modal
-                                                >
-                                                    Enroll
-                                                </button>
-                                            )
-                                        ) : null}
-                                    </div>
+                                    ))}
                                 </div>
                             </div>
                         );
@@ -196,6 +214,37 @@ const Timeline = () => {
 };
 
 export default Timeline;
+
+// StatusChip Component
+const StatusChip = ({ status }) => {
+    let bgColor, textColor;
+
+    // Color mapping for each status
+    switch (status) {
+        case 'Yet to Start':
+            bgColor = 'bg-yellow-100';
+            textColor = 'text-yellow-700';
+            break;
+        case 'In Progress':
+            bgColor = 'bg-blue-100';
+            textColor = 'text-blue-700';
+            break;
+        case 'Completed':
+            bgColor = 'bg-green-100';
+            textColor = 'text-green-700';
+            break;
+        case 'Cancelled':
+            bgColor = 'bg-red-100';
+            textColor = 'text-red-700';
+            break;
+        default:
+            bgColor = 'bg-gray-100';
+            textColor = 'text-gray-700';
+            break;
+    }
+
+    return <span className={`inline-block px-3 py-1 text-xs font-semibold ${bgColor} ${textColor} rounded-full`}>{status}</span>;
+};
 
 const ConfirmEnrollModal = ({ isOpen, onConfirm, onCancel }) => {
     if (!isOpen) return null;
