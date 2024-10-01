@@ -17,6 +17,6 @@ class MemberActiveStatusFilterScope implements Scope
          * @var Builder $builder
          * Function to filter active members only
         */
-        $builder->where('status', 'active');
+        $builder->where('status', 'Active');
     }
 }

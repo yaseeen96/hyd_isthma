@@ -13,21 +13,19 @@ return new class extends Migration
     {
         Schema::create('check_in_out_entires', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id')->nullable();
-            $table->string('type')->nullable();
-            $table->string('rukun_id')->nullable();
-            $table->string('name')->nullable();
-            $table->integer('age')->nullable();
+            $table->string('batch_id');
+            $table->string('batch_type');
             $table->string('gender')->nullable();
-            $table->string('unit')->nullable();
-            $table->string('halqa')->nullable();
-            $table->string('company_name')->nullable();
-            $table->string('department_name')->nullable();
-            $table->string('govt_organization')->nullable();
+            $table->date('date');
+            $table->time('time');
             $table->integer('place_id');
-            $table->dateTime('datetime')->nullable();
             $table->string('mode')->nullable();
-            $table->string('operator_id')->nullable();
+            $table->string('name')->nullable();
+            $table->string('zone_name')->nullable();
+            $table->string('division_name')->nullable();
+            $table->string('unit_name')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->foreignId('operator_id')->constrained('members');
             $table->timestamps();
         });
     }

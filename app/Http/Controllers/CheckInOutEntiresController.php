@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AppHelperFunctions;
 use App\Models\checkInOutEntires;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -22,7 +24,9 @@ class CheckInOutEntiresController extends Controller
             $query = checkInOutEntires::with('checkInOutPlace', 'user')->orderBy('id', 'desc');
             return $datatables->eloquent($query)
                 ->editColumn('datetime', function(checkInOutEntires $checkInOutEntires){
-                    return $checkInOutEntires->datetime != null ? date('Y-m-d h:s a', strtotime($checkInOutEntires->datetime)) : 'NA';
+                    $datetime = $checkInOutEntires->date != null ? AppHelperFunctions::getGreenBadge(date('Y-m-d', strtotime($checkInOutEntires->date))) : 'NA';
+                    $datetime = $checkInOutEntires->time != null ? AppHelperFunctions::getGreenBadge(Carbon::parse($checkInOutEntires->time)->format('H:i:s')) : 'NA';
+                    return $datetime;
                 })
                 ->addColumn('place', function(checkInOutEntires $checkInOutEntires){
                     return isset($checkInOutEntires->checkInOutPlace) ? $checkInOutEntires->checkInOutPlace->place_name : 'NA';

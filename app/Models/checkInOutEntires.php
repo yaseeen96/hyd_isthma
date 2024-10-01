@@ -10,20 +10,18 @@ class checkInOutEntires extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'type',
-        'rukun_id',
-        'name',
-        'age',
+        'batch_id',
+        'batch_type',
         'gender',
-        'unit',
-        'halqa',
-        'company_name',
-        'department_name',
-        'govt_organization',
+        'date',
+        'time',
         'place_id',
-        'datetime',
         'mode',
+        'name',
+        'zone_name',
+        'division_name',
+        'unit_name',
+        'phone_number',
         'operator_id'
     ];
 

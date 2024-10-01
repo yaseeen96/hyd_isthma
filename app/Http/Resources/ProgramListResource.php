@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\ProgramRegistration;
+use App\Models\ProgramSpeaker;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -19,14 +20,15 @@ class ProgramListResource extends JsonResource
         $data = [
             'id' => $this->id,
             'name' => $this->topic,
-            'datetime' => $this->date ? date('Y-m-d', strtotime($this->date)) : 'NA' . ' ' . Carbon::parse($this->time)->format('H:i A'). '-' . Carbon::parse($this->end_time)->format('H:i A'),
-            'session_theme' => $this->sessionTheme->theme_name,
+            'datetime' => date('Y-m-d', strtotime($this->date)) . ' ' . Carbon::parse($this->from_time)->format('h:i A'). ' - ' . Carbon::parse($this->to_time)->format('h:i A'),
             'session_convener' => $this->sessionTheme->convener,
+            'convener_bio' => ProgramSpeaker::where('name', 'LIKE', '%' . $this->sessionTheme->convener . '%')->first() ? ProgramSpeaker::where('name', 'LIKE', '%' . $this->sessionTheme->convener . '%')->first()->bio : '',
             'theme_type' => $this->sessionTheme->theme_type,
             'speaker_name' => $this->programSpeaker->name,
             'speaker_bio' => $this->programSpeaker->bio,
             'speaker_image' => $this->programSpeaker->getMedia('speaker_image')->first() ? $this->programSpeaker->getMedia('speaker_image')->first()->getUrl() : '/assets/img/no-image.png',
-            'enrolled' => ProgramRegistration::where('program_id', $this->id)->where('member_id', auth()->id())->exists()
+            'enrolled' => ProgramRegistration::where('program_id', $this->id)->where('member_id', auth()->id())->exists(),
+            'status' => $this->status,
         ];
         return $data;
     }

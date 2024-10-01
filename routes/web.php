@@ -66,7 +66,7 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('syncrukundata', 'ReportsController@syncRukunData')->name('sync-rukun-data');
 Route::get('updateRukunAge', 'ReportsController@updateRukunAge')->name('update-rukun-age');
-Route::get('importQrBatchRegistrationData',  'QrBatchRegistrationController@import');
+// Route::get('importQrBatchRegistrationData',  'QrBatchRegistrationController@import');
 // temp routes
 Route::prefix('delete')->group(function () {
     Route::get('account', 'DeleteAccountController@index')->name('delete-account');

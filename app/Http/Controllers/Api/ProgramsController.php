@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProgramListResource;
+use App\Models\Member;
 use App\Models\Program;
 use App\Models\ProgramRegistration;
 use Illuminate\Http\Request;

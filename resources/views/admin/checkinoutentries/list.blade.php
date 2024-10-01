@@ -10,17 +10,15 @@
             </div>
             <x-table id="checkinout-entires">
                 <th>SL.No </th>
-                <th>Type</th>
-                <th>Rukun ID</th>
+                <th>Batch Type</th>
+                <th>Batch ID</th>
                 <th>Name</th>
-                <th>Age</th>
                 <th>Gender</th>
+                <th>Phone</th>
+                <th>Zone</th>
+                <th>Division </th>
                 <th>Unit</th>
-                <th>Halqa</th>
-                <th>Company Name</th>
-                <th>Department Name</th>
-                <th>Govt Origanization</th>
-                <th>Place Name</th>
+                <th>Place</th>
                 <th>Date&Time</th>
                 <th>Mode</th>
                 <th>Scanned By</th>
@@ -41,40 +39,34 @@
             columns: [
                 dtIndexCol(),
                 {
-                    data: 'type',
+                    data: 'batch_type',
                 },
                 {
-                    data: 'rukun_id',
+                    data: 'batch_id',
                 },
                 {
-                    data: 'name',
+                    data: 'name'
                 },
                 {
-                    data: 'age',
+                    data: 'gender',
                 },
                 {
-                    data: 'gender'
+                    data: 'phone_number'
                 },
                 {
-                    data: 'unit'
+                    data: 'zone_name'
                 },
                 {
-                    data: 'halqa'
+                    data: 'division_name'
                 },
                 {
-                    data: 'company_name'
-                },
-                {
-                    data: 'department_name'
-                },
-                {
-                    data: 'govt_organization'
+                    data: 'unit_name'
                 },
                 {
                     data: 'place'
                 },
                 {
-                    data: 'datetime'
+                    data: 'datetime',
                 },
                 {
                     data: 'mode'
