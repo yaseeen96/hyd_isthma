@@ -172,6 +172,7 @@ const Timeline = () => {
                                     <div>
                                         <h3 className="text-lg font-bold text-primary">{session.session_theme}</h3>
                                         <p className="text-sm text-gray-600">Convener: {session.session_convener ?? 'Unknown'}</p>
+                                        <p className="text-sm text-gray-500">{session.convener_bio ?? 'Bio not available'}</p>
                                         <p className="text-sm text-gray-500">
                                             {sessionStartTime} to {sessionEndTime}
                                         </p>
