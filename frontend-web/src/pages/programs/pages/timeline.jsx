@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import LoadingComponent from '../../../components/common/loadingComponent';
 import { getProgramDetails, enrollforProgram } from '../../../services/programs_service';
 import { FiArrowLeft } from 'react-icons/fi';
+import { FiArrowDown, FiArrowUp } from 'react-icons/fi';
 
 // Helper function to group events by date
 const groupEventsByDate = (events) => {
@@ -38,6 +39,15 @@ const Timeline = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedEventId, setSelectedEventId] = useState(null);
     const navigate = useNavigate();
+    const [expandedSessions, setExpandedSessions] = useState({}); // Track which sessions are expanded
+    const [showFullBio, setShowFullBio] = useState({}); // Track which speaker bios are fully expanded
+
+    const toggleSession = (index) => {
+        setExpandedSessions((prevState) => ({
+            ...prevState,
+            [index]: !prevState[index], // Toggle the session
+        }));
+    };
 
     // Use react-query to fetch the timeline data
     const { data, isLoading, isError, error, refetch } = useQuery('timelineData', getProgramDetails, {
@@ -75,6 +85,19 @@ const Timeline = () => {
     const openModal = (eventId) => {
         setSelectedEventId(eventId);
         setIsModalOpen(true);
+    };
+    const toggleBio = (index) => {
+        setShowFullBio((prevState) => ({
+            ...prevState,
+            [index]: !prevState[index],
+        }));
+    };
+
+    const getTruncatedBio = (bio, length = 40) => {
+        if (bio.length > length) {
+            return `${bio.substring(0, length)}...`;
+        }
+        return bio;
     };
 
     // Function to handle the actual enrollment
@@ -141,9 +164,11 @@ const Timeline = () => {
 
                         return (
                             <div key={index} className="mb-6 bg-white p-4 rounded-lg shadow-md">
-                                {/* Session Theme */}
-                                <div className="flex items-start mb-4">
-                                    <img src={session.speaker_image} alt={session.session_convener} className="w-14 h-14 rounded-full object-cover mr-3" />
+                                {/* Session Theme (Collapsible Header with Up/Down Arrow) */}
+                                <div
+                                    className="flex items-center justify-between mb-4 cursor-pointer"
+                                    onClick={() => toggleSession(index)} // Toggle collapse
+                                >
                                     <div>
                                         <h3 className="text-lg font-bold text-primary">{session.session_theme}</h3>
                                         <p className="text-sm text-gray-600">Convener: {session.session_convener ?? 'Unknown'}</p>
@@ -152,53 +177,67 @@ const Timeline = () => {
                                         </p>
                                         <StatusChip status={session.status} />
                                     </div>
+                                    <div>{expandedSessions[index] ? <FiArrowUp size={24} /> : <FiArrowDown size={24} />}</div>
                                 </div>
 
-                                {/* Program Details */}
-                                <div className={`ml-6 ${groupedEvents[selectedDate].length > 1 ? 'relative' : ''}`}>
-                                    {groupedEvents[selectedDate].length > 1 && <div className="absolute left-4 top-0 w-1 h-full bg-gray-300"></div> /* Timeline Line */}
+                                {/* Program Details (Collapsible Content) */}
+                                {expandedSessions[index] && (
+                                    <div className={`ml-6 ${groupedEvents[selectedDate].length > 1 ? 'relative' : ''}`}>
+                                        {groupedEvents[selectedDate].length > 1 && <div className="absolute left-4 top-0 w-1 h-full bg-gray-300"></div> /* Timeline Line */}
 
-                                    {groupedEvents[selectedDate].map((program, programIndex) => (
-                                        <div key={programIndex} className="flex items-start mb-6 relative">
-                                            {/* Show timeline point only if there are multiple programs */}
-                                            {groupedEvents[selectedDate].length > 1 && (
-                                                <div className="absolute left-4 top-1 transform -translate-x-1/2 translate-y-1/2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                                                    <span className="w-3 h-3 bg-white rounded-full"></span>
-                                                </div>
-                                            )}
+                                        {groupedEvents[selectedDate].map((program, programIndex) => (
+                                            <div key={programIndex} className="flex items-start mb-6 relative">
+                                                {/* Show timeline point only if there are multiple programs */}
+                                                {groupedEvents[selectedDate].length > 1 && (
+                                                    <div className="absolute left-4 top-1 transform -translate-x-1/2 translate-y-1/2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                                                        <span className="w-3 h-3 bg-white rounded-full"></span>
+                                                    </div>
+                                                )}
 
-                                            <div className="ml-10">
-                                                <div className="flex items-center">
-                                                    <img src={program.speaker_image} alt={program.speaker_name} className="w-12 h-12 rounded-full object-cover mr-3" />
-                                                    <div>
-                                                        <h5 className="text-md font-bold text-primary">{program.name}</h5>
-                                                        <p className="text-sm text-gray-500">Speaker: {program.speaker_name ?? 'Unknown'}</p>
-                                                        <p className="text-sm text-gray-500">
-                                                            {sessionStartTime} to {sessionEndTime}
-                                                        </p>
-                                                        <StatusChip status={program.status} />
+                                                <div className="ml-10">
+                                                    <div className="flex items-center">
+                                                        <img src={program.speaker_image} alt={program.speaker_name} className="w-12 h-12 rounded-full object-cover mr-3" />
+                                                        <div>
+                                                            <h5 className="text-md font-bold text-primary">{program.speaker_name ?? 'Unknown'}</h5>
+                                                            <p className="text-sm text-gray-500">Speaker: {program.speaker_name ?? 'Unknown'}</p>
+                                                            <p className="text-sm text-gray-500">
+                                                                {sessionStartTime} to {sessionEndTime}
+                                                            </p>
+                                                            <StatusChip status={program.status} />
+                                                        </div>
+                                                    </div>
+
+                                                    {/* About Speaker */}
+                                                    <h4 className="text-sm font-bold text-black mt-4">About Speaker</h4>
+                                                    <div className="text-sm text-gray-500 mt-2">
+                                                        {showFullBio[programIndex] ? program.speaker_bio : getTruncatedBio(program.speaker_bio)}
+                                                        {program.speaker_bio.length > 100 && (
+                                                            <button className="text-primary font-semibold ml-2" onClick={() => toggleBio(programIndex)}>
+                                                                {showFullBio[programIndex] ? 'Show Less' : 'Read More'}
+                                                            </button>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Enroll Button */}
+                                                    <div className="mt-2">
+                                                        {program.theme_type === 'parallel' ? (
+                                                            program.enrolled ? (
+                                                                <p className="text-sm text-green-600">You are already enrolled in this event.</p>
+                                                            ) : (
+                                                                <button
+                                                                    className="bg-primary text-white text-sm px-3 py-2 rounded-md hover:bg-primary-600"
+                                                                    onClick={() => openModal(program.id)} // Open confirmation modal
+                                                                >
+                                                                    Enroll
+                                                                </button>
+                                                            )
+                                                        ) : null}
                                                     </div>
                                                 </div>
-
-                                                {/* Enroll Button */}
-                                                <div className="mt-2">
-                                                    {program.theme_type === 'parallel' ? (
-                                                        program.enrolled ? (
-                                                            <p className="text-sm text-green-600">You are already enrolled in this event.</p>
-                                                        ) : (
-                                                            <button
-                                                                className="bg-primary text-white text-sm px-3 py-2 rounded-md hover:bg-primary-600"
-                                                                onClick={() => openModal(program.id)} // Open confirmation modal
-                                                            >
-                                                                Enroll
-                                                            </button>
-                                                        )
-                                                    ) : null}
-                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
-                                </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         );
                     })
