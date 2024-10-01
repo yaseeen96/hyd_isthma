@@ -199,7 +199,8 @@ const Timeline = () => {
                                                     <div className="flex items-center">
                                                         <img src={program.speaker_image} alt={program.speaker_name} className="w-12 h-12 rounded-full object-cover mr-3" />
                                                         <div>
-                                                            <h5 className="text-md font-bold text-primary">{program.speaker_name ?? 'Unknown'}</h5>
+                                                            {/* Program Name */}
+                                                            <h5 className="text-md font-bold text-primary">{program.name ?? 'Unnamed Program'}</h5>
                                                             <p className="text-sm text-gray-500">Speaker: {program.speaker_name ?? 'Unknown'}</p>
                                                             <p className="text-sm text-gray-500">
                                                                 {sessionStartTime} to {sessionEndTime}
