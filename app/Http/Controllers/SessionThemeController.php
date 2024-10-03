@@ -25,9 +25,10 @@ class SessionThemeController extends Controller
         if($request->ajax()) {
             $query = SessionTheme::query();
             return $datatable->eloquent($query)
-                // ->editColumn('status', function (SessionTheme $theme) {
-                //     return $theme->status ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">In Active</span>';
-                // })
+                ->editColumn('status', function (SessionTheme $theme) {
+                    $color = array_search($theme->status, config('program-status'));
+                    return AppHelperFunctions::getBadge($theme->status, $color);
+                })
                 ->editColumn('date', function (SessionTheme $theme) {
                     return AppHelperFunctions::getGreenBadge(date('d-m-Y', strtotime($theme->date)));
                 })
@@ -43,7 +44,7 @@ class SessionThemeController extends Controller
                             : "";
                     return $link;
                 })
-                ->rawColumns([  'action', 'date', 'from_to_time', 'to_time'])
+                ->rawColumns([  'action', 'date', 'from_to_time', 'to_time','status'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -77,13 +78,14 @@ class SessionThemeController extends Controller
             'date' => 'required',
             'from_time' => 'required',
             'to_time' => 'required',
+            'status' => 'required',
+            'hall_name' => 'required',
         ]);
         if(strtotime($request->to_time) <= strtotime($request->from_time)) {
-           return redirect()->back()->with('warning', "To time can't be greater then From time")->withInput();
+           return redirect()->back()->with('warning', "To time can't be less then From time")->withInput();
         }
         $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
         $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');
-        $data['status'] = 1;
         SessionTheme::create($data);
         return redirect()->route('sessiontheme.index')->with('success', 'Theme Session created successfully');
     }
@@ -124,13 +126,14 @@ class SessionThemeController extends Controller
             'date' => 'required',
             'from_time' => 'required',
             'to_time' => 'required',
+            'status' => 'required',
+            'hall_name' => 'required',
         ]);
         if(strtotime($request->to_time) <= strtotime($request->from_time)) {
-           return redirect()->back()->with('warning', "To time can't be greater then From time")->withInput();
+           return redirect()->back()->with('warning', "To time can't be less then From time")->withInput();
         }
         $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
         $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');
-        $data['status'] = 1;
         $sessionTheme->update($data);
         return redirect()->route('sessiontheme.index')->with('success', 'Theme session updated successfully');
     }

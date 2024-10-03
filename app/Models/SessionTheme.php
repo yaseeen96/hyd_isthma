@@ -15,7 +15,8 @@ class SessionTheme extends Model
         'convener',
         'date',
         'from_time',
-        'to_time'
+        'to_time',
+        'hall_name'
     ];
 
     public function programs() {

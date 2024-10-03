@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProgramListResource;
+use App\Http\Resources\SessionThemeListResource;
 use App\Models\Member;
 use App\Models\Program;
 use App\Models\ProgramRegistration;
+use App\Models\SessionTheme;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -14,16 +16,16 @@ use Illuminate\Http\Response;
 class ProgramsController extends Controller
 {
     public function listPrograms() {
-        $programs = Program::with('sessionTheme', 'programSpeaker')->paginate();
+        $sessions = SessionTheme::paginate();
         return response()->json([
-            "data" => ProgramListResource::collection($programs),
+            "data" => SessionThemeListResource::collection($sessions),
             "meta" => [
-                "current_page" => $programs->currentPage(),
-                "last_page" => $programs->lastPage(),
-                "per_page" => $programs->perPage(),
-                "total" => $programs->total(),
-                "next_page_url" => $programs->nextPageUrl(),
-                "prev_page_url" => $programs->previousPageUrl(),
+                "current_page" => $sessions->currentPage(),
+                "last_page" => $sessions->lastPage(),
+                "per_page" => $sessions->perPage(),
+                "total" => $sessions->total(),
+                "next_page_url" => $sessions->nextPageUrl(),
+                "prev_page_url" => $sessions->previousPageUrl(),
             ]
         ]);
     }

@@ -27,7 +27,7 @@ class ProgramsController extends Controller
             $query = Program::with('programSpeaker', 'sessionTheme');
             return $datatable->eloquent($query)
                 ->editColumn('date', function (Program $program) {
-                    return AppHelperFunctions::getGreenBadge(date('d-m-Y', strtotime($program->date)));
+                    return AppHelperFunctions::getGreenBadge(date('d-m-Y', strtotime($program->sessionTheme->date)));
                 })
                 ->editColumn('from_to_time', function (Program $program) {
                     return AppHelperFunctions::getGreenBadge(date('h:i A', strtotime($program->from_time))). '-' .AppHelperFunctions::getGreenBadge(date('h:i A', strtotime($program->to_time)));
@@ -74,7 +74,7 @@ class ProgramsController extends Controller
         return view('admin.programs.form')->with([
             'program' => new Program(),
             'program_speakers' => ProgramSpeaker::all(),
-            'session_themes' => SessionTheme::where('status', 1)->get(),
+            'session_themes' => SessionTheme::all(),
         ]);
     }
 
@@ -85,7 +85,6 @@ class ProgramsController extends Controller
     {
         $data = $request->validate([
             'topic' => 'required',
-            'date' => 'required',
             'from_time' => 'required',
             'to_time' => 'required',
             'program_speaker_id' => 'required',
@@ -94,13 +93,13 @@ class ProgramsController extends Controller
         ]);
         $sessionTheme = SessionTheme::find($request->session_theme_id);
         if((strtotime($request->from_time) < strtotime($sessionTheme->from_time) ||
-            strtotime($request->from_time) > strtotime($sessionTheme->to_time))  &&
+            strtotime($request->from_time) > strtotime($sessionTheme->to_time))  ||
             ((strtotime($request->to_time) > strtotime($sessionTheme->to_time)) ||
              (strtotime($request->to_time) < strtotime($sessionTheme->from_time)))
             ){
             return redirect()->back()->with('warning', 'Program time should be within session theme time')->withInput();
         }
-        $data['date'] = date('Y-m-d', strtotime($request->date));
+        $data['date'] = date('Y-m-d', strtotime($sessionTheme->date));
         $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
         $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');
         Program::create($data);
@@ -127,7 +126,7 @@ class ProgramsController extends Controller
         return view('admin.programs.form')->with([
             'program' => $program,
             'program_speakers' => ProgramSpeaker::all(),
-            'session_themes' => SessionTheme::where('status', 1)->get(),
+            'session_themes' => SessionTheme::all(),
         ]);
     }
 
@@ -138,7 +137,6 @@ class ProgramsController extends Controller
     {
         $data = $request->validate([
             'topic' => 'required',
-            'date' => 'required',
             'from_time' => 'required',
             'to_time' => 'required',
             'program_speaker_id' => 'required',
@@ -147,13 +145,13 @@ class ProgramsController extends Controller
         ]);
         $sessionTheme = SessionTheme::find($request->session_theme_id);
         if((strtotime($request->from_time) < strtotime($sessionTheme->from_time) ||
-            strtotime($request->from_time) > strtotime($sessionTheme->to_time))  &&
+            strtotime($request->from_time) > strtotime($sessionTheme->to_time))  ||
             ((strtotime($request->to_time) > strtotime($sessionTheme->to_time)) ||
              (strtotime($request->to_time) < strtotime($sessionTheme->from_time)))
             ){
             return redirect()->back()->with('warning', 'Program time should be within session theme time')->withInput();
         }
-        $data['date'] = date('Y-m-d', strtotime($request->date));
+        $data['date'] = date('Y-m-d', strtotime($sessionTheme->date));
         $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
         $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');
         $program->update($data);

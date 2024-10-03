@@ -20,7 +20,8 @@
                 <th>Type</th>
                 <th>Date</th>
                 <th>From-To Time</th>
-                {{-- <th>Status</th> --}}
+                <th>Status</th>
+                <th>Hall Name</th>
                 <th>Action</th>
             </x-table>
         </div>
@@ -47,9 +48,12 @@
                     {
                         data: 'from_to_time'
                     },
-                    // {
-                    //     data: "status",
-                    // },
+                    {
+                        data: "status",
+                    },
+                    {
+                        data: 'hall_name'
+                    },
                     {
                         data: 'action',
                         orderable: false

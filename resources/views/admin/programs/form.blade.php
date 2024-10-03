@@ -86,8 +86,8 @@
                                                     <option
                                                         {{ old('session_theme_id', $program->session_theme_id) == $theme->id ? 'selected' : '' }}
                                                         value="{{ $theme->id }}"> {{ $theme->theme_name }} |
-                                                        {{ \Carbon\Carbon::parse($theme->from_time)->format('h:m a') }} -
-                                                        {{ \Carbon\Carbon::parse($theme->to_time)->format('h:m a') }}
+                                                        {{ \Carbon\Carbon::parse($theme->from_time)->format('h:i A') }} -
+                                                        {{ \Carbon\Carbon::parse($theme->to_time)->format('h:i A') }}
                                                     </option>
                                                 @endforeach
                                             @endisset
@@ -100,9 +100,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                {{-- Date --}}
-                                <div class="form-group row">
+                            {{-- <div class="col-lg-6"> --}}
+                            {{-- Date --}}
+                            {{-- <div class="form-group row">
                                     <div class="col-lg-12">
                                         <label for="date">Session Date</label>
                                         <input type="text" name="date" id="date" class="form-control date_time"
@@ -111,6 +111,27 @@
                                         @if ($errors->has('date'))
                                             <span class="text-danger">
                                                 {{ $errors->first('date') }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div> --}}
+                            {{-- </div> --}}
+                            <div class="col-lg-6">
+                                {{-- Status --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label for="status">Status</label>
+                                        <select class="form-control" name="status" id="status">
+                                            @foreach (config('program-status') as $status)
+                                                <option value="{{ $status }}"
+                                                    {{ old('status', $program->status) == $status ? 'selected' : '' }}>
+                                                    {{ $status }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('status'))
+                                            <span class="text-danger">
+                                                {{ $errors->first('status') }}
                                             </span>
                                         @endif
                                     </div>
@@ -132,6 +153,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-lg-6">
                                 {{-- From Time --}}
                                 <div class="form-group row">
@@ -148,27 +170,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-12">
-                                {{-- Status --}}
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <label for="status">Status</label>
-                                        <select class="form-control" name="status" id="status">
-                                            @foreach (config('program-status') as $status)
-                                                <option value="{{ $status }}"
-                                                    {{ old('status', $program->status) == $status ? 'selected' : '' }}>
-                                                    {{ $status }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('status'))
-                                            <span class="text-danger">
-                                                {{ $errors->first('status') }}
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                     <div class="card-footer">
