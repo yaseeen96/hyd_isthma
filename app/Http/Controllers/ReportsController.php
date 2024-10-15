@@ -69,11 +69,13 @@ class ReportsController extends Controller
         }
         if($request->ajax())
         {
-            $query = Registration::with('member')->where(function ($query) use($request) {
-                    if(isset($request->paid_status)) {
-                        $condition = $request->paid_status == 'no' ? '=' : '!=';
-                        $query->where('fees_paid_to_ameer', $condition, null);
-                    }
+            $query = Registration::with('member')->where(function ($query) use ($request) {
+                if (isset($request->paid_status)) {
+                    $condition = $request->paid_status == 'no' ? '=' : '!=';
+                    $query->where('fees_paid_to_ameer', $condition, null);
+                }
+            })->where(function ($query) {
+                $query->where('member_fees', '>', 0)->orWhere('member_fees', '!=', null);
              })->whereHas('member', function ($query) use ($request) {
                 if (isset($request->unit_name)) {
                     $query->where('unit_name', $request->unit_name);
@@ -477,9 +479,16 @@ class ReportsController extends Controller
         $members = Member::all();
         foreach($members as $member) {
             $dob = $member->dob;
+
             if(Str::contains( $dob, '/'))
                 $dob = str_replace('/', '-', $request->input('dob'));
-            $member->update(['age' => Carbon::parse($dob)->age, 'dob' => $dob]);
+
+            if(str_contains($dob, 'T')) {
+                 $dob = explode('T',$dob);
+                 $dob = $dob[0];
+            }
+            if(!empty($dob))
+                $member->update(['age' => Carbon::parse($dob)->age, 'dob' => $dob]);
         }
     }
 }

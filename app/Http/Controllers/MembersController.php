@@ -45,7 +45,7 @@ class MembersController extends Controller
 
             return $dataTables->eloquent($query)
                 ->editColumn('dob', function (Member $member) {
-                    return date('d-m-Y', strtotime($member->dob));
+                    return $member->dob ? date('d-m-Y', strtotime($member->dob)) : AppHelperFunctions::getRedBadge('Not Set');
                 })
                 ->addColumn('reg_status', function (Member $member) {
                     return $member->registration ? AppHelperFunctions::getGreenBadge('Registered') : AppHelperFunctions::getRedBadge('Not Registered');

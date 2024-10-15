@@ -13,8 +13,7 @@ class NotificationsController extends Controller
 {
     public function listNotifications()
     {
-        $notifications = Notification::paginate();
-        $notifications = Notification::paginate();
+        $notifications = Notification::get();
         $filteredNotifications = ListNotificationsResource::collection($notifications)
         ->filter(function ($notification) {
             return !empty($notification->toArray(request()));

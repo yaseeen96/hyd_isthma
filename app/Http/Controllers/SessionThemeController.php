@@ -79,8 +79,8 @@ class SessionThemeController extends Controller
             'from_time' => 'required',
             'to_time' => 'required',
             'status' => 'required',
-            'hall_name' => 'required',
         ]);
+        $data['hall_name'] = $request->get("hall_name");
         if(strtotime($request->to_time) <= strtotime($request->from_time)) {
            return redirect()->back()->with('warning', "To time can't be less then From time")->withInput();
         }
@@ -127,8 +127,8 @@ class SessionThemeController extends Controller
             'from_time' => 'required',
             'to_time' => 'required',
             'status' => 'required',
-            'hall_name' => 'required',
         ]);
+        $data['hall_name'] = $request->get("hall_name");
         if(strtotime($request->to_time) <= strtotime($request->from_time)) {
            return redirect()->back()->with('warning', "To time can't be less then From time")->withInput();
         }

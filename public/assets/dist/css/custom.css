@@ -29,6 +29,9 @@
 .btn-purple:hover{
     color: #fff;
 }
+.text-purple {
+    color: var(--color-purple);
+}
 .reg_form .form-group{
     margin-bottom: 20px !important;
 }

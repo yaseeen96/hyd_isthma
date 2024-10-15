@@ -35,7 +35,7 @@
                                 @endif
                             </div>
                             <div class="col-lg-6">
-                                {{-- Name --}}
+                                {{-- Topic --}}
                                 <div class="form-group row">
                                     <div class="col-lg-12">
                                         <label for="topic">Topic</label>
@@ -170,19 +170,247 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-6">
+                                <label for="bio mt-2"> Program Copy</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="program_copy"
+                                            name="program_copy">
+                                        <label class="custom-file-label" for="program_copy">Choose
+                                            file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mt-5">
+                                <h5 class="font-weight-bold">Translations Details</h5>
+                            </div>
+                            {{-- English Progam Copy --}}
+                            <div class="col-lg-12">
+                                <h6 class="font-weight-bold my-3 bg-purple px-2 py-2">ENGLISH</h6>
+                            </div>
+                            <div class="col-lg-6">
+                                {{-- English Topic --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label for="english_topic">English Topic</label>
+                                        <input type="text" class="form-control" name="english_topic"
+                                            id="english_topic"
+                                            value="{{ old('english_topic', $program->english_topic) }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="bio mt-2">English Program Copy</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" type="file" class="custom-file-input"
+                                            id="english_program_copy" name="english_program_copy">
+                                        <label class="custom-file-label" for="english_program_copy">Choose
+                                            file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="bio mt-2">Translation Audio File</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="english_translation"
+                                            name="english_translation">
+                                        <label class="custom-file-label" for="english_translation">Choose
+                                            file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mt-2">
+                                <label for="bio mt-2">Transcript</label>
+                                <textarea type="english_transcript" class="form-control" rows="5" id="english_transcript"
+                                    name="english_transcript">{{ old('english_transcript', $program->english_transcript) }}</textarea>
+                            </div>
 
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col-lg-12 text-right">
-                                <button class="btn btn-purple  mr-2">{{ $program->id ? 'Update' : 'Save' }}</button>
-                                <a href="{{ route('programs.index') }}" class="btn btn-secondary ">Cancel</a>
+                            {{-- Malyalam Progam Copy --}}
+                            <div class="col-lg-12">
+                                <h6 class="font-weight-bold my-3 bg-purple px-2 py-2">MALYALAM</h6>
+                            </div>
+                            <div class="col-lg-6">
+                                {{-- Malyalam Topic --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label for="malyalam_topic">Malyalam Topic</label>
+                                        <input type="text" class="form-control" name="malyalam_topic"
+                                            id="malyalam_topic"
+                                            value="{{ old('malyalam_topic', $program->malyalam_topic) }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="bio mt-2">Malyalam Program Copy</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="malyalam_program_copy"
+                                            name="malyalam_program_copy">
+                                        <label class="custom-file-label" for="malyalam_program_copy">Choose
+                                            file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="bio mt-2">Translation Audio File</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="malyalam_translation"
+                                            name="malyalam_translation">
+                                        <label class="custom-file-label" for="malyalam_translation">Choose
+                                            file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mt-2">
+                                <label for="bio mt-2">Transcript</label>
+                                <textarea type="malyalam_transcript" class="form-control" rows="5" id="malyalam_transcript"
+                                    name="malyalam_transcript">{{ old('malyalam_transcript', $program->malyalam_transcript) }}</textarea>
+                            </div>
+
+                            {{-- Bengali Progam Copy --}}
+                            <div class="col-lg-12">
+                                <h6 class="font-weight-bold my-3 bg-purple px-2 py-2">BENGALI</h6>
+                            </div>
+                            <div class="col-lg-6">
+                                {{-- Bengali Topic --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label for="bengali_topic">Bengali Topic</label>
+                                        <input type="text" class="form-control" name="bengali_topic"
+                                            id="bengali_topic"
+                                            value="{{ old('bengali_topic', $program->bengali_topic) }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="bio mt-2">Bengali Program Copy</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="bengali_program_copy"
+                                            name="bengali_program_copy">
+                                        <label class="custom-file-label" for="bengali_program_copy">Choose
+                                            file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="bio mt-2">Translation Audio File</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="bengali_translation"
+                                            name="bengali_translation">
+                                        <label class="custom-file-label" for="bengali_translation">Choose
+                                            file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mt-2">
+                                <label for="bio mt-2">Transcript</label>
+                                <textarea type="bengali_transcript" class="form-control" rows="5" id="bengali_transcript"
+                                    name="bengali_transcript">{{ old('bengali_transcript', $program->bengali_transcript) }}</textarea>
+                            </div>
+
+                            {{-- Tamil Progam Copy --}}
+                            <div class="col-lg-12">
+                                <h6 class="font-weight-bold my-3 bg-purple px-2 py-2">TAMIL</h6>
+                            </div>
+                            <div class="col-lg-6">
+                                {{-- Tamil Topic --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label for="tamil_topic">Tmail Topic</label>
+                                        <input type="text" class="form-control" name="tamil_topic" id="tamil_topic"
+                                            value="{{ old('tamil_topic', $program->tamil_topic) }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="bio mt-2">Tamil Program Copy</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="tamil_program_copy"
+                                            name="tamil_program_copy">
+                                        <label class="custom-file-label" for="tamil_program_copy">Choose
+                                            file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="bio mt-2">Translation Audio File</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="tamil_translation"
+                                            name="tamil_translation">
+                                        <label class="custom-file-label" for="tamil_translation">Choose
+                                            file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mt-2">
+                                <label for="bio mt-2">Transcript</label>
+                                <textarea type="tamil_transcript" class="form-control" rows="5" id="tamil_transcript"
+                                    name="tamil_transcript">{{ old('tamil_transcript', $program->tamil_transcript) }}</textarea>
+                            </div>
+
+                            {{-- Kannada Progam Copy --}}
+                            <div class="col-lg-12">
+                                <h6 class="font-weight-bold my-3 bg-purple px-2 py-2">KANNADA</h6>
+                            </div>
+                            <div class="col-lg-6">
+                                {{-- Kannada Topic --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label for="kannada_topic">Kannada Topic</label>
+                                        <input type="text" class="form-control" name="kannada_topic"
+                                            id="kannada_topic"
+                                            value="{{ old('kannada_topic', $program->kannada_topic) }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="bio mt-2">Kannada Program Copy</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="kannada_program_copy"
+                                            name="kannada_program_copy">
+                                        <label class="custom-file-label" for="kannada_program_copy">Choose
+                                            file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="bio mt-2">Translation Audio File</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="kannada_translation"
+                                            name="kannada_translation">
+                                        <label class="custom-file-label" for="kannada_translation">Choose
+                                            file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mt-2">
+                                <label for="bio mt-2">Transcript</label>
+                                <textarea type="kannada_transcript" class="form-control" rows="5" id="kannada_transcript"
+                                    name="kannada_transcript">{{ old('kannada_transcript', $program->kannada_transcript) }}</textarea>
                             </div>
                         </div>
                     </div>
-                </form>
             </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-lg-12 text-right">
+                    <button class="btn btn-purple  mr-2">{{ $program->id ? 'Update' : 'Save' }}</button>
+                    <a href="{{ route('programs.index') }}" class="btn btn-secondary ">Cancel</a>
+                </div>
+            </div>
+        </div>
+        </form>
+        </div>
         </div>
         </div><!-- /.container-fluid -->
     </section>

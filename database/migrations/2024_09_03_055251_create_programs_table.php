@@ -20,6 +20,16 @@ return new class extends Migration
             $table->foreignId('program_speaker_id')->constrained('program_speakers');
             $table->foreignId('session_theme_id')->constrained('session_themes');
             $table->string('status')->default('Yet to Start');
+            $table->string('english_topic')->nullable();
+            $table->longText('english_transcript')->nullable();
+            $table->string('malyalam_topic')->nullable();
+            $table->longText('malyalam_transcript')->nullable();
+            $table->string('bengali_topic')->nullable();
+            $table->longText('bengali_transcript')->nullable();
+            $table->string('tamil_topic')->nullable();
+            $table->longText('tamil_transcript')->nullable();
+            $table->string('kannada_topic')->nullable();
+            $table->longText('kannada_transcript')->nullable();
             $table->timestamps();
         });
     }

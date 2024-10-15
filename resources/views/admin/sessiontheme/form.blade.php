@@ -168,6 +168,7 @@
                                     <div class="col-lg-12">
                                         <label for="hall_name">Hall Name</label>
                                         <select class="form-control" name="hall_name" id="hall_name">
+                                            <option value=""> Select Hall Name </option>
                                             @foreach (config('session-halls') as $hall)
                                                 <option value="{{ $hall }}"
                                                     {{ old('hall_name', $theme->hall_name) == $hall ? 'selected' : '' }}>

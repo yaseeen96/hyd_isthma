@@ -111,6 +111,7 @@ class QrBatchRegistrationController extends Controller
                 if($row > 1) {
                     $qrBatchRegistration = new QrBatchRegistration();
                     $qrBatchRegistration->batch_id = $data[1];
+                    $qrBatchRegistration->gender = $data[2];
                     $qrBatchRegistration->batch_type = $data[3];
                     $qrBatchRegistration->save();
                 }

@@ -7,7 +7,6 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-12 mb-5">
-
                     <button class="btn btn-purple float-right" type="button" data-toggle="collapse" data-target="#regFilters"
                         aria-expanded="false" aria-controls="regFilters">
                         <i class="fas fa-filter"></i> Filter
@@ -82,11 +81,14 @@
                 <th>Division Name</th>
                 <th>Gender</th>
                 <th>Age</th>
+                <th>dob</th>
                 <th>Confirm Arrival</th>
                 <th>Non Availibility Reason</th>
                 <th>Ammer Permission Taken</th>
                 <th>Emergency Contact</th>
                 <th>Year of Rukuniyat</th>
+                <th>Creation date</th>
+                <th>Updation date</th>
                 <th>Action</th>
             </x-table>
         </div>
@@ -145,6 +147,9 @@
                         data: 'member.age',
                     },
                     {
+                        data: 'member.dob',
+                    },
+                    {
                         data: 'confirm_arrival'
                     },
                     {
@@ -158,6 +163,12 @@
                     },
                     {
                         data: 'member.year_of_rukniyat',
+                    },
+                    {
+                        data: 'created_at'
+                    },
+                    {
+                        data: 'updated_at'
                     },
                     {
                         data: 'action'

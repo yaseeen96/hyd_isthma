@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Plank\Mediable\Mediable;
 
 class Program extends Model
 {
-    use HasFactory;
+    use HasFactory, Mediable;
 
     protected $fillable = [
         'topic',
@@ -17,6 +18,16 @@ class Program extends Model
         'program_speaker_id',
         'session_theme_id',
         'status',
+        'english_topic',
+        'english_transcript',
+        'malyalam_topic',
+        'malyalam_transcript',
+        'bengali_topic',
+        'bengali_transcript',
+        'tamil_topic',
+        'tamil_transcript',
+        'kannada_topic',
+        'kannada_transcript',
     ];
     public function programSpeaker()
     {

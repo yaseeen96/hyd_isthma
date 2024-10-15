@@ -67,10 +67,19 @@ class RegistrationController extends Controller
                 ->editColumn('ameer_permission_taken', function (Registration $registration) {
                     return $registration->ameer_permission_taken ? '<span class="badge badge-success">Yes</span>' : ($registration->ameer_permission_taken === 0 ? '<span class="badge badge-danger">NO</span>' : '-');
                 })
+                ->editColumn('created_at', function (Registration $registration) {
+                    return $registration->created_at ? '<span class="badge badge-success">'.date('Y-m-d h:i a', strtotime( $registration->created_at)).'</span>' : '<span class="badge badge-danger">NA</span>';
+                })
+                ->editColumn('updated_at', function (Registration $registration) {
+                    return $registration->updated_at ? '<span class="badge badge-success">'.date('Y-m-d h:i a', strtotime( $registration->updated_at)).'</span>' : '<span class="badge badge-danger">NA</span>';
+                })
+                ->editColumn('dob', function (Registration $registration) {
+                    return $registration->member->dob ? '<span class="badge badge-success">'.date('Y-m-d', strtotime( $registration->member->dob)).'</span>' : '<span class="badge badge-danger">NA</span>';
+                })
                 ->addColumn('action', function (Registration $registration) {
                     return   '<a href="' . route('registrations.show', $registration->id) . '" class="badge badge-primary" title="View"><i class="fas fa-eye" ></i></a>'.
                               '<a href="' . route('registrations.edit', $registration->id) . '" class="badge badge-warning ml-2" title="View"><i class="fas fa-edit" ></i></a>';
-                })->rawColumns(['confirm_arrival', 'ameer_permission_taken', 'action'])->addIndexColumn()->make(true);
+                })->rawColumns(['confirm_arrival', 'ameer_permission_taken', 'action', 'updated_at', 'created_at', 'dob'])->addIndexColumn()->make(true);
         }
 
         return view('admin.registrations.list');
@@ -207,7 +216,7 @@ class RegistrationController extends Controller
                         'gender' => $childrens['gender'][$key],
                         'age' => $childrens['age'][$key],
                         'type' => 'children',
-                        'fees' => $childrens['age'][$key] < 7 ? 0 : 300
+                        'fees' => $childrens['age'][$key] < 7 ? 0 : 600
                     ];
                     $regis->familyDetails()->create($data);
                 }
