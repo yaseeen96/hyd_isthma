@@ -48,10 +48,10 @@ class ProgramsController extends Controller
                     $color = array_search($program->status, config('program-status'));
                     return AppHelperFunctions::getBadge($program->status, $color);
                 })
-                ->editColumn('program_copy', function (Program $program) {
-                    $programCopy = $program->getMedia('program_copy')->first();
-                    return !empty($programCopy) ? '<a class="badge badge-primary" href="' . $programCopy->getUrl() . '" target="_blank">View</a>' : '';
-                })
+                // ->editColumn('program_copy', function (Program $program) {
+                //     $programCopy = $program->getMedia('program_copy')->first();
+                //     return !empty($programCopy) ? '<a class="badge badge-primary" href="' . $programCopy->getUrl() . '" target="_blank">View</a>' : '';
+                // })
                 ->editColumn('english_transcript', function (Program $program) {
                     $englishTranscript = $program->english_transcript;
                     return !empty($englishTranscript) ? substr($englishTranscript, 0, 100) . '...' : '';
@@ -60,10 +60,10 @@ class ProgramsController extends Controller
                     $englishTranslation = $program->getMedia('english_translation')->first();
                     return !empty($englishTranslation) ? '<a class="badge badge-primary" href="' . $englishTranslation->getUrl() . '" target="_blank">View</a>' : '';
                 })
-                ->editColumn('english_program_copy', function(Program $program) {
-                    $englishProgramCopy = $program->getMedia('english_program_copy')->first();
-                    return !empty($englishProgramCopy) ? '<a class="badge badge-primary" href="' . $englishProgramCopy->getUrl() . '" target="_blank">View</a>' : '';
-                })
+                // ->editColumn('english_program_copy', function(Program $program) {
+                //     $englishProgramCopy = $program->getMedia('english_program_copy')->first();
+                //     return !empty($englishProgramCopy) ? '<a class="badge badge-primary" href="' . $englishProgramCopy->getUrl() . '" target="_blank">View</a>' : '';
+                // })
                 ->editColumn('malayalam_transcript', function (Program $program) {
                     $malayalamTranscript = $program->malyalam_transcript;
                     return !empty($malayalamTranscript) ? substr($malayalamTranscript, 0, 100) . '...' : '';
@@ -72,10 +72,10 @@ class ProgramsController extends Controller
                     $malayalamTranslation = $program->getMedia('malyalam_translation')->first();
                     return !empty($malayalamTranslation) ? '<a class="badge badge-primary" href="' . $malayalamTranslation->getUrl() . '" target="_blank">View</a>' : '';
                 })
-                ->editColumn('malyalam_program_copy', function(Program $program) {
-                    $malayalamProgramCopy = $program->getMedia('malyalam_program_copy')->first();
-                    return !empty($malayalamProgramCopy) ? '<a class="badge badge-primary" href="' . $malayalamProgramCopy->getUrl() . '" target="_blank">View</a>' : '';
-                })
+                // ->editColumn('malyalam_program_copy', function(Program $program) {
+                //     $malayalamProgramCopy = $program->getMedia('malyalam_program_copy')->first();
+                //     return !empty($malayalamProgramCopy) ? '<a class="badge badge-primary" href="' . $malayalamProgramCopy->getUrl() . '" target="_blank">View</a>' : '';
+                // })
                 ->editColumn('bengali_transcript', function (Program $program) {
                     $bengaliTranscript = $program->bengali_transcript;
                     return !empty($bengaliTranscript) ? substr($bengaliTranscript, 0, 100) . '...' : '';
@@ -84,10 +84,10 @@ class ProgramsController extends Controller
                     $bengaliTranslation = $program->getMedia('bengali_translation')->first();
                     return !empty($bengaliTranslation) ? '<a class="badge badge-primary" href="' . $bengaliTranslation->getUrl() . '" target="_blank">View</a>' : '';
                 })
-                ->editColumn('bengali_program_copy', function(Program $program) {
-                    $bengaliProgramCopy = $program->getMedia('bengali_program_copy')->first();
-                    return !empty($bengaliProgramCopy) ? '<a class="badge badge-primary" href="' . $bengaliProgramCopy->getUrl() . '" target="_blank">View</a>' : '';
-                })
+                // ->editColumn('bengali_program_copy', function(Program $program) {
+                //     $bengaliProgramCopy = $program->getMedia('bengali_program_copy')->first();
+                //     return !empty($bengaliProgramCopy) ? '<a class="badge badge-primary" href="' . $bengaliProgramCopy->getUrl() . '" target="_blank">View</a>' : '';
+                // })
                 ->editColumn('tamil_transcript', function (Program $program) {
                     $tamilTranscript = $program->tamil_transcript;
                     return !empty($tamilTranscript) ? substr($tamilTranscript, 0, 100) . '...' : '';
@@ -96,10 +96,10 @@ class ProgramsController extends Controller
                     $tamilTranslation = $program->getMedia('tamil_translation')->first();
                     return !empty($tamilTranslation) ? '<a class="badge badge-primary" href="' . $tamilTranslation->getUrl() . '" target="_blank">View</a>' : '';
                 })
-                ->editColumn('tamil_program_copy', function(Program $program) {
-                    $tamilProgramCopy = $program->getMedia('tamil_program_copy')->first();
-                    return !empty($tamilProgramCopy) ? '<a class="badge badge-primary" href="' . $tamilProgramCopy->getUrl() . '" target="_blank">View</a>' : '';
-                })
+                // ->editColumn('tamil_program_copy', function(Program $program) {
+                //     $tamilProgramCopy = $program->getMedia('tamil_program_copy')->first();
+                //     return !empty($tamilProgramCopy) ? '<a class="badge badge-primary" href="' . $tamilProgramCopy->getUrl() . '" target="_blank">View</a>' : '';
+                // })
                 ->editColumn('kannada_transcript', function (Program $program) {
                     $kannadaTranscript =$program->kannada_transcript;
                     return !empty($kannadaTranscript) ? substr($kannadaTranscript, 0, 100) . '...' : '';
@@ -108,10 +108,10 @@ class ProgramsController extends Controller
                     $kannadaTranslation = $program->getMedia('kannada_translation')->first();
                     return !empty($kannadaTranslation) ? '<a class="badge badge-primary" href="' . $kannadaTranslation->getUrl() . '" target="_blank">View</a>' : '';
                 })
-                ->editColumn('kannada_program_copy', function(Program $program) {
-                    $kannadaProgramCopy = $program->getMedia('kannada_program_copy')->first();
-                    return !empty($kannadaProgramCopy) ? '<a class="badge badge-primary" href="' . $kannadaProgramCopy->getUrl() . '" target="_blank">View</a>' : '';
-                })
+                // ->editColumn('kannada_program_copy', function(Program $program) {
+                //     $kannadaProgramCopy = $program->getMedia('kannada_program_copy')->first();
+                //     return !empty($kannadaProgramCopy) ? '<a class="badge badge-primary" href="' . $kannadaProgramCopy->getUrl() . '" target="_blank">View</a>' : '';
+                // })
                 ->addColumn('action', function (Program $program) use($user): string {
                     $link = ($user->id == 1 || $user->hasPermissionTo('Edit Programs')) ?
                         '<a href="' . route('programs.edit', $program->id) . '" class="btn-purple btn mr-1" ><i class="fas fa-edit"></i></a>'
@@ -123,12 +123,17 @@ class ProgramsController extends Controller
                 })
                 ->rawColumns([ 'date', 'from_to_time', 'session_theme'
                         ,'speaker_image', 'speaker_name', 'status', 'action',
-                        'program_copy',
-                        'english_transcript', 'english_translation', 'english_program_copy',
-                        'malayalam_transcript', 'malayalam_translation', 'malyalam_program_copy',
-                        'bengali_transcript', 'bengali_translation', 'bengali_program_copy',
-                        'tamil_transcript', 'tamil_translation', 'tamil_program_copy',
-                        'kannada_transcript', 'kannada_translation', 'kannada_program_copy'
+                        // 'program_copy',
+                        'english_transcript', 'english_translation',
+                        //  'english_program_copy',
+                        'malayalam_transcript', 'malayalam_translation',
+                        // 'malyalam_program_copy',
+                        'bengali_transcript', 'bengali_translation',
+                        // 'bengali_program_copy',
+                        'tamil_transcript', 'tamil_translation',
+                        // 'tamil_program_copy',
+                        'kannada_transcript', 'kannada_translation',
+                        // 'kannada_program_copy'
                         ])
                 ->addIndexColumn()
                 ->make(true);
@@ -189,39 +194,39 @@ class ProgramsController extends Controller
 
         $program = Program::create($data);
         // Urudu Language Program Copy
-        if($request->hasFile('program_copy')) {
-            $media = MediaUploader::fromSource($request->file('program_copy'))->toDestination('public', "program_copies/urdu/$program->id")->useFilename(Str::uuid())->upload();
-            $program->attachMedia($media, ['program_copy']);
-        }
-        // English Language Program Copy
-        if($request->hasFile('english_program_copy')) {
-            $media = MediaUploader::fromSource($request->file('english_program_copy'))->toDestination('public', "program_copies/english/$program->id")->useFilename(Str::uuid())->upload();
-            $program->attachMedia($media, ['english_program_copy']);
-        }
+        // if($request->hasFile('program_copy')) {
+        //     $media = MediaUploader::fromSource($request->file('program_copy'))->toDestination('public', "program_copies/urdu/$program->id")->useFilename(Str::uuid())->upload();
+        //     $program->attachMedia($media, ['program_copy']);
+        // }
+        // // English Language Program Copy
+        // if($request->hasFile('english_program_copy')) {
+        //     $media = MediaUploader::fromSource($request->file('english_program_copy'))->toDestination('public', "program_copies/english/$program->id")->useFilename(Str::uuid())->upload();
+        //     $program->attachMedia($media, ['english_program_copy']);
+        // }
 
-        // Malayalam Language Program Copy
-        if($request->hasFile('malyalam_program_copy')) {
-            $media = MediaUploader::fromSource($request->file('malyalam_program_copy'))->toDestination('public', "program_copies/malyalam/$program->id")->useFilename(Str::uuid())->upload();
-            $program->attachMedia($media, ['malyalam_program_copy']);
-        }
+        // // Malayalam Language Program Copy
+        // if($request->hasFile('malyalam_program_copy')) {
+        //     $media = MediaUploader::fromSource($request->file('malyalam_program_copy'))->toDestination('public', "program_copies/malyalam/$program->id")->useFilename(Str::uuid())->upload();
+        //     $program->attachMedia($media, ['malyalam_program_copy']);
+        // }
 
-        // Bengali Language Program Copy
-        if($request->hasFile('bengali_program_copy')) {
-            $media = MediaUploader::fromSource($request->file('bengali_program_copy'))->toDestination('public', "program_copies/bengali/$program->id")->useFilename(Str::uuid())->upload();
-            $program->attachMedia($media, ['bengali_program_copy']);
-        }
+        // // Bengali Language Program Copy
+        // if($request->hasFile('bengali_program_copy')) {
+        //     $media = MediaUploader::fromSource($request->file('bengali_program_copy'))->toDestination('public', "program_copies/bengali/$program->id")->useFilename(Str::uuid())->upload();
+        //     $program->attachMedia($media, ['bengali_program_copy']);
+        // }
 
-        // Tamil Language Program Copy
-        if($request->hasFile('tamil_program_copy')) {
-            $media = MediaUploader::fromSource($request->file('tamil_program_copy'))->toDestination('public', "program_copies/tamil/$program->id")->useFilename(Str::uuid())->upload();
-            $program->attachMedia($media, ['tamil_program_copy']);
-        }
+        // // Tamil Language Program Copy
+        // if($request->hasFile('tamil_program_copy')) {
+        //     $media = MediaUploader::fromSource($request->file('tamil_program_copy'))->toDestination('public', "program_copies/tamil/$program->id")->useFilename(Str::uuid())->upload();
+        //     $program->attachMedia($media, ['tamil_program_copy']);
+        // }
 
-        // Kannada Language Program Copy
-        if($request->hasFile('kannada_program_copy')) {
-            $media = MediaUploader::fromSource($request->file('kannada_program_copy'))->toDestination('public', "program_copies/kannada/$program->id")->useFilename(Str::uuid())->upload();
-            $program->attachMedia($media, ['kannada_program_copy']);
-        }
+        // // Kannada Language Program Copy
+        // if($request->hasFile('kannada_program_copy')) {
+        //     $media = MediaUploader::fromSource($request->file('kannada_program_copy'))->toDestination('public', "program_copies/kannada/$program->id")->useFilename(Str::uuid())->upload();
+        //     $program->attachMedia($media, ['kannada_program_copy']);
+        // }
 
         // English Language Program translation
         if($request->hasFile('english_translation')) {

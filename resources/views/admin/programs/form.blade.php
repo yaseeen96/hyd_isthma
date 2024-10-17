@@ -170,7 +170,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            {{-- <div class="col-lg-6">
                                 <label for="bio mt-2"> Program Copy</label>
                                 <div class="input-group">
                                     <div class="custom-file">
@@ -180,7 +180,7 @@
                                             file</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-lg-12 mt-5">
                                 <h5 class="font-weight-bold">Translations Details</h5>
                             </div>
@@ -193,13 +193,12 @@
                                 <div class="form-group row">
                                     <div class="col-lg-12">
                                         <label for="english_topic">English Topic</label>
-                                        <input type="text" class="form-control" name="english_topic"
-                                            id="english_topic"
+                                        <input type="text" class="form-control" name="english_topic" id="english_topic"
                                             value="{{ old('english_topic', $program->english_topic) }}">
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            {{-- <div class="col-lg-6">
                                 <label for="bio mt-2">English Program Copy</label>
                                 <div class="input-group">
                                     <div class="custom-file">
@@ -209,7 +208,7 @@
                                             file</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-lg-6">
                                 <label for="bio mt-2">Translation Audio File</label>
                                 <div class="input-group">
@@ -242,7 +241,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            {{-- <div class="col-lg-6">
                                 <label for="bio mt-2">Malyalam Program Copy</label>
                                 <div class="input-group">
                                     <div class="custom-file">
@@ -252,7 +251,7 @@
                                             file</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-lg-6">
                                 <label for="bio mt-2">Translation Audio File</label>
                                 <div class="input-group">
@@ -285,7 +284,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            {{-- <div class="col-lg-6">
                                 <label for="bio mt-2">Bengali Program Copy</label>
                                 <div class="input-group">
                                     <div class="custom-file">
@@ -295,7 +294,7 @@
                                             file</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-lg-6">
                                 <label for="bio mt-2">Translation Audio File</label>
                                 <div class="input-group">
@@ -327,7 +326,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            {{-- <div class="col-lg-6">
                                 <label for="bio mt-2">Tamil Program Copy</label>
                                 <div class="input-group">
                                     <div class="custom-file">
@@ -337,7 +336,7 @@
                                             file</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-lg-6">
                                 <label for="bio mt-2">Translation Audio File</label>
                                 <div class="input-group">
@@ -370,7 +369,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            {{-- <div class="col-lg-6">
                                 <label for="bio mt-2">Kannada Program Copy</label>
                                 <div class="input-group">
                                     <div class="custom-file">
@@ -380,7 +379,7 @@
                                             file</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-lg-6">
                                 <label for="bio mt-2">Translation Audio File</label>
                                 <div class="input-group">

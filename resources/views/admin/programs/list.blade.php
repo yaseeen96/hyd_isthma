@@ -39,27 +39,27 @@
                 <th>Session Name</th>
                 <th>Speaker Name</th>
                 <th>Speaker Image</th>
-                <th>Program Copy</th>
+                {{-- <th>Program Copy</th> --}}
                 <th>English Topic</th>
-                <th>English Progam Copy</th>
+                {{-- <th>English Progam Copy</th> --}}
                 <th>English Transcript</th>
                 <th>English Translation</th>
                 <th>Malyalam Topic</th>
-                <th>Malyalam Program Copy</th>
+                {{-- <th>Malyalam Program Copy</th> --}}
                 <th>Malayalam Transcript</th>
                 <th>Malayalam Translation</th>
                 <th>Bengali Topic</th>
-                <th>Bengali Program Copy</th>
+                {{-- <th>Bengali Program Copy</th> --}}
                 <th>Bengali Transcript</th>
                 <th>Bengali Translation</th>
                 <th>Tamil Topic</th>
-                <th>Tamil Program Copy</th>
+                {{-- <th>Tamil Program Copy</th> --}}
                 <th>Tamil Transcript</th>
                 <th>Tamil Translation</th>
-                <th>Kannada Topic</th>
-                <th>Kannada Program Copy</th>
+                {{-- <th>Kannada Program Copy</th> --}}
                 <th>Kannada Transcript</th>
                 <th>Kannada Translation</th>
+                <th>Kannada Topic</th>
                 <th>Status</th>
                 <th>Action</th>
             </x-table>
@@ -100,15 +100,15 @@
                 {
                     data: 'speaker_image',
                 },
-                {
-                    data: 'program_copy'
-                },
+                // {
+                //     data: 'program_copy'
+                // },
                 {
                     data: 'english_topic'
                 },
-                {
-                    data: 'english_program_copy'
-                },
+                // {
+                //     data: 'english_program_copy'
+                // },
                 {
                     data: 'english_transcript'
                 },
@@ -118,9 +118,9 @@
                 {
                     data: 'malyalam_topic'
                 },
-                {
-                    data: 'malyalam_program_copy'
-                },
+                // {
+                //     data: 'malyalam_program_copy'
+                // },
                 {
                     data: 'malayalam_transcript'
                 },
@@ -136,9 +136,9 @@
                 {
                     data: 'bengali_translation'
                 },
-                {
-                    data: 'bengali_program_copy'
-                },
+                // {
+                //     data: 'bengali_program_copy'
+                // },
                 {
                     data: 'tamil_topic'
                 },
@@ -148,12 +148,10 @@
                 {
                     data: 'tamil_translation'
                 },
-                {
-                    data: 'tamil_program_copy'
-                },
-                {
-                    data: 'kannada_topic'
-                },
+                // {
+                //     data: 'tamil_program_copy'
+                // },
+
                 {
                     data: 'kannada_transcript'
                 },
@@ -161,8 +159,11 @@
                     data: 'kannada_translation'
                 },
                 {
-                    data: 'kannada_program_copy'
+                    data: 'kannada_topic'
                 },
+                // {
+                //     data: 'kannada_program_copy'
+                // },
                 {
                     data: 'status',
                 },
