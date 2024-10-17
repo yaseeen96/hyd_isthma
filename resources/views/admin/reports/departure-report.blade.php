@@ -62,7 +62,7 @@
                                 <div class="form-group">
                                     <label>To Date & Time</label>
                                     <input type="text" class="form-control datetimepicker-input datetime" id="to_date"
-                                        data-toggle="datetimepicker" data-target="#timepicker" />
+                                        data-toggle="datetimepicker" data-target="#date_time" />
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -128,6 +128,9 @@
             $('#mode_identifier').val('');
             setFilter();
         }
+        $('.datetime').on('change.datetimepicker', function() {
+            setFilter();
+        })
         $('#travel_mode').on('change', function() {
             $('#start_point').empty();
             $.ajax({

@@ -120,7 +120,9 @@ class ReportsController extends Controller
             })->select('registrations.*')->where([['confirm_arrival', '=', 1], ['arrival_details', '!=', ''], ['arrival_details->datetime', '!=', null]])
                 ->where(function ($query) use($request) {
                     if(!empty($request->from_date) && !empty($request->to_date)){
-                        $query->whereBetween('arrival_details->datetime', [$request->from_date, $request->to_date]);
+                        $startDate = Carbon::createFromFormat('Y-m-d h:i A', $request->from_date)->format('Y-m-d H:i:s');
+                        $endDate = Carbon::createFromFormat('Y-m-d h:i A', $request->to_date)->format('Y-m-d H:i:s');
+                        $query->whereRaw("STR_TO_DATE(JSON_UNQUOTE(JSON_EXTRACT(arrival_details, '$.datetime')), '%Y-%m-%d %h:%i %p')BETWEEN ? AND ? ", [$startDate, $endDate]);
                     }
                     if(!empty($request->from_date) && empty($request->to_date)){
                         $query->where('arrival_details->datetime', 'like', "%{$request->from_date}%");
@@ -184,7 +186,9 @@ class ReportsController extends Controller
             })->select('registrations.*')->where([['confirm_arrival', '=', 1], ['departure_details', '!=', ''], ['departure_details->datetime', '!=', null]])
                 ->where(function ($query) use($request) {
                     if(!empty($request->from_date) && !empty($request->to_date)){
-                        $query->whereBetween('departure_details->datetime', [$request->from_date, $request->to_date]);
+                        $startDate = Carbon::createFromFormat('Y-m-d h:i A', $request->from_date)->format('Y-m-d H:i:s');
+                        $endDate = Carbon::createFromFormat('Y-m-d h:i A', $request->to_date)->format('Y-m-d H:i:s');
+                        $query->whereRaw("STR_TO_DATE(JSON_UNQUOTE(JSON_EXTRACT(departure_details, '$.datetime')), '%Y-%m-%d %h:%i %p')BETWEEN ? AND ? ", [$startDate, $endDate]);
                     }
                     if(!empty($request->from_date) && empty($request->to_date)){
                         $query->where('departure_details->datetime', 'like', "%{$request->from_date}%");
@@ -470,9 +474,11 @@ class ReportsController extends Controller
         $existing_rids = Member::all()->pluck('user_number')->toArray();
         $inActiveList = array_diff($existing_rids, $active_rids);
         foreach($inActiveList as $item) {
-            $member = Member::where('user_number', $item)->first();
-            $member->status = 'InActive';
-            $member->save();
+            if($item != 123) {
+                $member = Member::where('user_number', $item)->first();
+                $member->status = 'InActive';
+                $member->save();
+            }
         }
     }
     public function updateRukunAge(Request $request) {

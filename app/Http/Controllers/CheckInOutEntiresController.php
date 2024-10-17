@@ -25,7 +25,7 @@ class CheckInOutEntiresController extends Controller
             return $datatables->eloquent($query)
                 ->editColumn('datetime', function(checkInOutEntires $checkInOutEntires){
                     $datetime = $checkInOutEntires->date != null ? AppHelperFunctions::getGreenBadge(date('Y-m-d', strtotime($checkInOutEntires->date))) : 'NA';
-                    $datetime = $checkInOutEntires->time != null ? AppHelperFunctions::getGreenBadge(Carbon::parse($checkInOutEntires->time)->format('H:i:s')) : 'NA';
+                    $datetime .= $checkInOutEntires->time != null ? AppHelperFunctions::getGreenBadge(Carbon::parse($checkInOutEntires->time)->format('H:i A')) : 'NA';
                     return $datetime;
                 })
                 ->addColumn('place', function(checkInOutEntires $checkInOutEntires){

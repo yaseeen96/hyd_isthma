@@ -67,13 +67,13 @@ class NotificationsController extends Controller
         $regionValue = $request->input($regionKey);
         // adding validation rules
         $rules = [
-            'region' => 'required',
+            // 'region' => 'required',
             'title' => 'required',
             'message' => 'required'
         ];
-        if($regionValue === null ){
-            $rules[$regionKey] =  'required';
-        }
+        // if($regionValue === null ){
+        //     $rules[$regionKey] =  'required';
+        // }
         // validating input fields.
         $request->validate($rules);
 
@@ -86,8 +86,10 @@ class NotificationsController extends Controller
 
         // Query to fetch data with selected criteria
         $query = Member::with('registration')->whereHas('registration', function ($q) use ($regStatus) {
-             (!empty($regStatus) && $regStatus === 1) ? $q->where('confirm_arrival', $regStatus) : $q ;
-        })->where($region . '_name' , $regionValue);
+            (!empty($regStatus) && $regStatus === 1) ? $q->where('confirm_arrival', $regStatus) : $q;
+        })->where(function ($q) use ($regionValue, $region) {
+            !empty($regionValue) ? $q->where($region . '_name' , $regionValue) : $q;
+        })->where('push_token', '!=', null);
 
         if(!empty($gender)) {
             $query->where('gender', $gender);

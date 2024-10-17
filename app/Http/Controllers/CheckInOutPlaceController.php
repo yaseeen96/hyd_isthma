@@ -15,6 +15,7 @@ class CheckInOutPlaceController extends Controller
         'vendor' => 'Vendor',
         'govt' => 'Govt',
         'volunteer' => 'Volunteer',
+        'non-rukn' => 'Non-Rukn',
     ];
     protected $genders = [
         'male' => 'Male',

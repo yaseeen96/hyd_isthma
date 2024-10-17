@@ -128,7 +128,7 @@
             $('#mode_identifier').val('');
             setFilter();
         }
-        $('#date_time').on('change.datetimepicker', function() {
+        $('.datetime').on('change.datetimepicker', function() {
             setFilter();
         })
         $('#travel_mode').on('change', function() {

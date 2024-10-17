@@ -18,6 +18,9 @@ class ListNotificationsResource extends JsonResource
         $include = false;
         $user = auth()->user();
         $confirmArrival = !empty($user->registration) ? $user->registration->confirm_arrival : 0;
+        if($this->criteria['region_type'] == null) {
+            $include = true;
+        }
         if($this->criteria['region_type']  == 'unit' &&  $user->unit_name == $this->criteria['region_value']) {
             $include = true;
         }

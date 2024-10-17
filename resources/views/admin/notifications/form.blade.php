@@ -152,7 +152,8 @@
                         <div class="column ml-3">
                             <div class="form-group">
                                 <label for="title">Title</label>
-                                <input class="form-control" placeholder="Enter title" name="title" id="title" />
+                                <input class="form-control" placeholder="Enter title" name="title" id="title"
+                                    value="{{ old('title') }}" />
                                 @if ($errors->has('title'))
                                     <span class="text-danger">
                                         {{ $errors->first('title') }}
@@ -162,7 +163,7 @@
                             <div class="form-group">
                                 <label for="title">Message</label>
                                 <textarea class="form-control" rows="4" name="message" id="message" style="height: 200px"
-                                    placeholder="Enter notification message..."></textarea>
+                                    placeholder="Enter notification message...">{{ old('message') }}</textarea>
                                 @if ($errors->has('message'))
                                     <span class="text-danger">
                                         {{ $errors->first('message') }}
@@ -200,7 +201,8 @@
                                 <input type="text" name="youtube_url" class="form-control">
                             </div>
                             <div class="row justify-content-end">
-                                <button class="btn btn-purple"><i class="fas mr-2 fa-paper-plane"></i>Send </button>
+                                <button type="submit" class="btn btn-purple"><i class="fas mr-2 fa-paper-plane"></i>Send
+                                </button>
                                 <a href="{{ route('notifications.index') }}" class="btn btn-secondary ml-2">Cancel</a>
                             </div>
                         </div>

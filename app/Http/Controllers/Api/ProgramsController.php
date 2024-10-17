@@ -16,17 +16,17 @@ use Illuminate\Http\Response;
 class ProgramsController extends Controller
 {
     public function listPrograms() {
-        $sessions = SessionTheme::paginate();
+        $sessions = SessionTheme::all();
         return response()->json([
             "data" => SessionThemeListResource::collection($sessions),
-            "meta" => [
-                "current_page" => $sessions->currentPage(),
-                "last_page" => $sessions->lastPage(),
-                "per_page" => $sessions->perPage(),
-                "total" => $sessions->total(),
-                "next_page_url" => $sessions->nextPageUrl(),
-                "prev_page_url" => $sessions->previousPageUrl(),
-            ]
+            // "meta" => [
+            //     "current_page" => $sessions->currentPage(),
+            //     "last_page" => $sessions->lastPage(),
+            //     "per_page" => $sessions->perPage(),
+            //     "total" => $sessions->total(),
+            //     "next_page_url" => $sessions->nextPageUrl(),
+            //     "prev_page_url" => $sessions->previousPageUrl(),
+            // ]
         ]);
     }
     public function registerProgram(Request $request) {

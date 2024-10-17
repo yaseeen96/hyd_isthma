@@ -51,8 +51,7 @@ class checkInOutEntiresController extends Controller
                     'division_name' => $division_name,
                     'unit_name' => $unit_name,
                     'phone_number' => $phone_number,
-                    // 'operator_id' => $user->id,
-                    'operator_id' => 1,
+                    'operator_id' => $user->id,
                 ];
                 checkInOutEntires::create($entryData);
             }
