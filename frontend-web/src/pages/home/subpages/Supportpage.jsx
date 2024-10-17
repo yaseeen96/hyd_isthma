@@ -14,8 +14,8 @@ const SupportPage = () => {
                             />
                         </svg>
                     </span>
-                    <h2 className="mt-4 text-base font-medium text-gray-800 dark:text-white">Chat to Support</h2>
-                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Chat with our friendly team.</p>
+                    <h2 className="mt-4 text-base font-medium text-gray-800 dark:text-white">Email Us</h2>
+                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Talk with our friendly team.</p>
                     <a href="mailto:aiia@jih.org.in">
                         <p className="mt-2 text-sm text-primary dark:text-primary">aiia@jih.org.in</p>
                     </a>
