@@ -146,8 +146,12 @@ class ReportsController extends Controller
                 })
                 ->addColumn('date_time', function (Registration $registration) {
                     return $registration->arrival_details['datetime'] ?
-                        '<span class="badge badge-success">' . date('Y-m-d h:s:a', strtotime($registration->arrival_details['datetime'])) . '</span>' : 'NA';
+                        '<span class="badge badge-success">' . date('Y-m-d', strtotime($registration->arrival_details['datetime'])) . '</span>' : 'NA';
                     })
+                ->addColumn('time', function(Registration $registration) {
+                    return $registration->arrival_details['datetime'] ?
+                        AppHelperFunctions::getGreenBadge(date('h:i A', strtotime($registration->arrival_details['datetime']))) : 'NA';
+                })
                 ->addColumn('end_point', function (Registration $registration) {
                     return $registration->arrival_details['end_point'] ?
                         $registration->arrival_details['end_point'] : 'NA';
@@ -159,7 +163,7 @@ class ReportsController extends Controller
                 ->addColumn('total_family_members', function (Registration $registration) {
                     return $registration->familyDetails->count();
                     })
-                ->rawColumns(['travel_mode', 'date_time' , 'end_point', 'mode_identifier', 'total_family_members'])
+                ->rawColumns(['travel_mode', 'date_time', 'time' , 'end_point', 'mode_identifier', 'total_family_members'])
                     ->addIndexColumn()->make(true);
         }
         return view('admin.reports.arrival-report');
@@ -212,8 +216,12 @@ class ReportsController extends Controller
                 })
                 ->addColumn('date_time', function (Registration $registration) {
                     return $registration->departure_details['datetime'] ?
-                        '<span class="badge badge-success">' . date('Y-m-d h:s:a', strtotime($registration->departure_details['datetime'])) . '</span>' : 'NA';
+                        '<span class="badge badge-success">' . date('Y-m-d', strtotime($registration->departure_details['datetime'])) . '</span>' : 'NA';
                     })
+                ->addColumn('time', function(Registration $registration) {
+                    return $registration->departure_details['datetime'] ?
+                       AppHelperFunctions::getGreenBadge( date('h:i A', strtotime($registration->departure_details['datetime']))) : 'NA';
+                })
                 ->addColumn('start_point', function (Registration $registration) {
                     return $registration->departure_details['start_point'] ?? 'NA';
                     })
@@ -224,7 +232,7 @@ class ReportsController extends Controller
                 ->addColumn('total_family_members', function (Registration $registration) {
                     return $registration->familyDetails->count();
                     })
-                ->rawColumns(['travel_mode', 'date_time' , 'start_point', 'mode_identifier', 'total_family_members'])
+                ->rawColumns(['travel_mode', 'date_time', 'time' , 'start_point', 'mode_identifier', 'total_family_members'])
                     ->addIndexColumn()->make(true);
         }
         return view('admin.reports.departure-report');

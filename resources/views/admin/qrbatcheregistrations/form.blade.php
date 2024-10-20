@@ -136,6 +136,11 @@
                             <select class="form-control select2bs4" style="width: 100%;" id="division_name"
                                 name="division_name" onchange="getLocations('division_name', 'unit_name')">
                                 <option value="">All</option>
+                                @if (old('division_name', $batch->division_name))
+                                    <option selected value="{{ old('division_name', $batch->division_name) }}">
+                                        {{ old('division_name', $batch->division_name) }}
+                                    </option>
+                                @endif
                             </select>
                             @if ($errors->has('division_name'))
                                 <span class="text-danger">
@@ -150,6 +155,11 @@
                             <select class="form-control select2bs4" style="width: 100%;" id="unit_name" name="unit_name"
                                 placeholder="Select Unit Name">
                                 <option value="">All</option>
+                                @if (old('unit_name', $batch->unit_name))
+                                    <option selected value="{{ old('unit_name', $batch->unit_name) }}">
+                                        {{ old('unit_name', $batch->unit_name) }}
+                                    </option>
+                                @endif
                             </select>
                             @if ($errors->has('unit_name'))
                                 <span class="text-danger">

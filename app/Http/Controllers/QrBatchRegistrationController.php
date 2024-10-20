@@ -13,24 +13,34 @@ class QrBatchRegistrationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $requset, DataTables $datatables)
+    public function index(Request $request, DataTables $datatables)
     {
         $user = User::find(auth()->user()->id);
         if ($user->id != 1 && !$user->hasPermissionTo('View BatchesManagement')){
             abort(403);
         }
-        if($requset->ajax())
+        if($request->ajax())
         {
-            $query = QrBatchRegistration::query()->orderBy('batch_id', 'asc');
+            $query = QrBatchRegistration::query()->where(function($query) use($request){
+                if(!empty($request->zone_name)) {
+                    $query->where('zone_name', $request->zone_name);
+                }
+                if(!empty($request->division_name)) {
+                    $query->where('division_name', $request->division_name);
+                }
+                if(!empty($request->unit_name)) {
+                    $query->where('unit_name', $request->unit_name);
+                }
+            })->orderBy('batch_id', 'asc');
             return $datatables->eloquent($query)
                 ->addColumn('action', function (QrBatchRegistration $batch) use ($user) {
-
-                    if(empty($batch->full_name)) {
-                        return ($user->id == 1 || $user->hasPermissionTo('Edit BatchesManagement')) ?
+                     return ($user->id == 1 || $user->hasPermissionTo('Edit BatchesManagement')) ?
                         '<a href="' . route('qrBatchRegistrations.edit', $batch->id) . '" class="btn-purple btn mr-1" ><i class="fas fa-edit"></i></a>'
                         : "";
-                    }
-                    return AppHelperFunctions::getGreenBadge('Assigned');
+                    // if(empty($batch->full_name)) {
+
+                    // }
+                    // return AppHelperFunctions::getGreenBadge('Assigned');
                 })
                 ->rawColumns(['action'])
                 ->addIndexColumn()->make(true);

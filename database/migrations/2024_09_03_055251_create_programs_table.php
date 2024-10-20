@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('programs', function (Blueprint $table) {
             $table->id();
             $table->string('topic');
-            $table->datetime('date');
+            $table->date('date');
             $table->time('from_time');
             $table->time('to_time');
             $table->foreignId('program_speaker_id')->constrained('program_speakers');

@@ -107,7 +107,8 @@
                 <th>Age</th>
                 <th>No. Family Members Accompanying</th>
                 <th>Travel Mode</th>
-                <th>Date & TIme </th>
+                <th>Date</th>
+                <th>Time</th>
                 <th>Station Name</th>
                 <th>Bus/Train Number</th>
             </x-table>
@@ -205,6 +206,9 @@
                     },
                     {
                         data: 'date_time'
+                    },
+                    {
+                        data: 'time'
                     },
                     {
                         data: 'end_point'
