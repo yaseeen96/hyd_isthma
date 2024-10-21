@@ -4,12 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import LoadingComponent from '../../../components/common/loadingComponent';
 import { getProgramDetails, enrollforProgram } from '../../../services/programs_service';
-import { FiArrowLeft } from 'react-icons/fi';
+import { FiArrowLeft, FiDownload, FiPlus } from 'react-icons/fi';
 import ConfirmEnrollModal from '../components/confirmEnrollModal';
 import SessionCard from '../components/sessionCard';
 import translations from '../utils/translations';
 import { ToastContainer, toast } from 'react-toastify'; // Import toast
 import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
+import generatePDF from '../utils/generatePdf';
+import GeneratePDF from '../utils/generatePdf';
 
 // Helper function to group events by type (Fixed or Parallel) and filter by selected date
 const groupEventsByTypeAndDate = (events, selectedDate) => {
@@ -218,6 +220,17 @@ const Timeline = () => {
                     )}
                 </div>
             </div>
+
+              {/* Floating Action Button */}
+              {/* <button 
+                // onClick={()=>{generatePDF(data.data)}} 
+                className="fixed flex flex-row items-center bottom-5 left-1/2 transform -translate-x-1/2 bg-primary text-white rounded-full p-3 shadow-lg z-50"
+                aria-label="Download PDF"
+            >
+                <span className="text-sm mx-1">Download PDF</span>
+                <FiDownload size={20} color='gray'/>
+            </button> */}
+            <GeneratePDF data={data.data} />
 
             {isModalOpen && (
                 <ConfirmEnrollModal
