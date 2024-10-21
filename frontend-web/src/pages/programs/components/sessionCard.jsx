@@ -2,45 +2,68 @@ import React from 'react';
 import { FiArrowDown, FiArrowUp } from 'react-icons/fi';
 
 const SessionCard = ({ session, index, expandedSessions, toggleSession, openModal }) => {
-    const dateTimeRange = session.datetime.match(/(\d{2}:\d{2} (AM|PM))/g);
-    const sessionStartTime = dateTimeRange ? dateTimeRange[0] : null;
-    const sessionEndTime = dateTimeRange ? dateTimeRange[1] : null;
+    const isExpanded = expandedSessions[index];
+
+    // Function to extract time from datetime
+    const formatTime = (datetime) => {
+        // Split by space and get the second part (time) until the end
+        const timePart = datetime.split(' ').slice(1).join(' ');
+        return timePart; // Returns "09:30 AM - 12:30 PM"
+    };
 
     return (
-        <div className="mb-6 bg-white p-4 rounded-lg shadow-md">
-            <div className="flex items-center justify-between mb-4 cursor-pointer" onClick={() => toggleSession(index)}>
-                <div>
-                    <h3 className="text-lg font-bold text-primary">{session.theme_name}</h3>
-                    <p className="text-sm text-gray-600">Convener: {session.session_convener ?? 'Unknown'}</p>
-                    <p className="text-sm text-gray-500">{session.convener_bio ?? 'Bio not available'}</p>
-                    <p className="text-sm text-gray-500">
-                        {sessionStartTime} to {sessionEndTime}
-                    </p>
-                    <StatusChip status={session.status} />
-                </div>
-                <div>{expandedSessions[index] ? <FiArrowUp size={24} /> : <FiArrowDown size={24} />}</div>
+        <div className="border rounded-md shadow-lg mb-4 p-4 transition-transform duration-300 ease-in-out hover:shadow-xl">
+            <div className="flex justify-between items-center cursor-pointer" onClick={() => toggleSession(index)}>
+                <h3 className="text-lg font-bold text-gray-800">{session.theme_name}</h3>
+                <button className="text-gray-600">
+                    {isExpanded ? <FiArrowUp /> : <FiArrowDown />}
+                </button>
+            </div>
+            <p className="mt-1 text-gray-500 font-bold">{formatTime(session.datetime)}</p> {/* Show only time */}
+            <div className="mt-2 text-gray-600">
+                <p className="mt-1">Hall: <span className="font-medium">{session.hall_name}</span></p>
+                <p className="mt-1">Convenor: <span className="font-medium">{session.session_convener}</span></p>
+                <p className="mt-1">Bio: <span className="font-medium">{session.convener_bio}</span></p>
             </div>
 
-            {expandedSessions[index] && (
-                <div className="ml-6">
+            {isExpanded && (
+                <div className="mt-2">
                     {session.programs.length > 0 ? (
                         session.programs.map((program) => (
-                            <div key={program.id} className="flex items-start mb-6">
-                                <img src={program.speaker_image} alt={program.speaker_name} className="w-12 h-12 rounded-full object-cover mr-3" />
-                                <div>
-                                    <h5 className="text-md font-bold text-primary">{program.name}</h5>
-                                    <p className="text-sm text-gray-500">Speaker: {program.speaker_name}</p>
-                                    <StatusChip status={program.status} />
-                                    {!program.enrolled && (
-                                        <button className="bg-primary text-white text-sm px-3 py-2 mt-2 rounded-md" onClick={() => openModal(program.id)}>
-                                            Enroll
-                                        </button>
+                            <div key={program.id} className="mt-2 p-2 border rounded-md flex bg-gray-50 shadow-sm">
+                                {/* Speaker image on the left */}
+                                {program.speaker_image && (
+                                    <img src={program.speaker_image} alt={program.speaker_name} className="w-16 h-16 rounded-full mr-4" />
+                                )}
+                                <div className="flex-grow">
+                                    <h4 className="font-bold text-gray-800">{program.name}</h4>
+                                    <p className="text-gray-600">Date & Time: {formatTime(program.datetime)}</p> {/* Display only time for programs */}
+                                    <p className="text-gray-600">Speaker Bio: {program.speaker_bio}</p>
+                                    <p className="text-gray-600">Status: {program.status}</p>
+
+                                    {/* Check if the user is enrolled */}
+                                    {
+                                    
+                                    program.enrolled === true ? (
+                                        <span className="inline-flex items-center justify-center px-2 py-1 text-sm font-medium text-green-800 bg-green-100 rounded-full">
+                                            Enrolled
+                                        </span>
+                                    ) : (
+                                        // Only show the enroll button for parallel sessions
+                                        session.theme_type === 'Parallel' && (
+                                            <button
+                                                onClick={() => openModal(program.id)}
+                                                className="bg-primary text-white py-1 px-2 rounded hover:bg-primary-dark mt-2 transition duration-200"
+                                            >
+                                                Enroll
+                                            </button>
+                                        )
                                     )}
                                 </div>
                             </div>
                         ))
                     ) : (
-                        <p className="text-gray-500">No programs for this session.</p>
+                        <p>No programs available for this session.</p>
                     )}
                 </div>
             )}
@@ -48,30 +71,4 @@ const SessionCard = ({ session, index, expandedSessions, toggleSession, openModa
     );
 };
 
-const StatusChip = ({ status }) => {
-    let bgColor, textColor;
-    switch (status) {
-        case 'Yet to Start':
-            bgColor = 'bg-yellow-100';
-            textColor = 'text-yellow-700';
-            break;
-        case 'In Progress':
-            bgColor = 'bg-blue-100';
-            textColor = 'text-blue-700';
-            break;
-        case 'Completed':
-            bgColor = 'bg-green-100';
-            textColor = 'text-green-700';
-            break;
-        case 'Cancelled':
-            bgColor = 'bg-red-100';
-            textColor = 'text-red-700';
-            break;
-        default:
-            bgColor = 'bg-gray-100';
-            textColor = 'text-gray-700';
-            break;
-    }
-    return <span className={`inline-block px-3 py-1 text-xs font-semibold ${bgColor} ${textColor} rounded-full`}>{status}</span>;
-};
 export default SessionCard;
