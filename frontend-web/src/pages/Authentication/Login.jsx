@@ -6,6 +6,7 @@ import { sendOtpService } from '../../services/login_service';
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { userStateAtom } from '../../store/atoms/userStateAtom';
+import { ROUTES } from '../../router/routes';
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
@@ -18,10 +19,9 @@ const Login = () => {
         try {
             setLoading(true);
             const response = await sendOtpService(phone);
-
             setUserState((prev) => ({ ...prev, phone: phone }));
             toast.success(response.message);
-            navigate('/verifyOtp');
+            navigate(ROUTES.verifyOtp);
         } catch (error) {
             toast.error(`${error}`);
         } finally {
@@ -30,14 +30,14 @@ const Login = () => {
     };
 
     return (
-        <AuthLayout title="Enter your phone number to login">
+        <AuthLayout title="Enter your email or phone number to login">
             <form className="space-y-5 dark:text-white" onSubmit={submitForm}>
                 <div className="mt-5">
                     <div className="relative text-white-dark">
                         <input
                             id="Phone"
-                            type="tel"
-                            placeholder="Enter Phone Number"
+                            type="text"
+                            placeholder="Enter your email / phone number"
                             className="form-input ps-10 placeholder:text-white-dark"
                             onChange={(e) => {
                                 setPhone(e.target.value);

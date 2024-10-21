@@ -9,24 +9,32 @@ const rotateX = plugin(function ({ addUtilities }) {
 
 const flowbite = require('flowbite-react/tailwind');
 
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: [
-        // ...
-        flowbite.content(),
-    ],
-    plugins: [
-        // ...
-        flowbite.plugin(),
-    ],
-};
-module.exports = {
-    content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+    content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './node_modules/react-tailwindcss-datepicker/dist/index.esm.js', flowbite.content()],
     theme: {
         container: {
             center: true,
         },
         extend: {
+            keyframes: {
+                'slide-in': {
+                    '0%': { transform: 'translateY(50px)', opacity: 0 },
+                    '100%': { transform: 'translateY(0)', opacity: 1 },
+                },
+                'grow-shrink': {
+                    '0%, 50%': { transform: 'scale(1)' },
+                    '25%': { transform: 'scale(1.1)' },
+                },
+                progress: {
+                    '0%': { height: '0%' },
+                    '100%': { height: '100%' },
+                },
+            },
+            animation: {
+                'slide-in': 'slide-in 1s ease-out',
+                'grow-shrink': 'grow-shrink 3s infinite',
+                progress: 'progress 2s ease-in-out forwards',
+            },
             colors: {
                 gray: {
                     100: '#E5E5E5',
@@ -118,5 +126,6 @@ module.exports = {
         }),
         require('@tailwindcss/typography'),
         rotateX,
+        flowbite.plugin(),
     ],
 };

@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { useDarkMode } from '../../../utils/hooks/useDarkMode';
+import ProfileDropdown from './profile_drop_down';
 
 const StickyNavBar = () => {
     const isDarkMode = useDarkMode();
@@ -39,14 +40,13 @@ const StickyNavBar = () => {
                 ) : (
                     <>
                         <img src={isDarkMode ? 'assets/images/auth/logo_app_white.png' : 'assets/images/auth/logo_app_black.png'} alt="Logo" />
-                        <button>
-                            <CgProfile
-                                size={35}
-                                style={{
-                                    color: isSticky ? '#FF0000' : '#8635BD', // Change color when sticky
-                                }}
-                            />
-                        </button>
+                        {/* <button
+                            onClick={() => {
+                                localStorage.removeItem('token');
+                                window.location.reload();
+                            }}
+                        ></button> */}
+                        <ProfileDropdown isSticky={isSticky} />
                     </>
                 )}
             </div>

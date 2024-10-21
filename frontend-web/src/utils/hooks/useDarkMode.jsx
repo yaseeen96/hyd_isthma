@@ -10,7 +10,8 @@ export function useDarkMode() {
 // a component that provides the dark mode context
 
 export const DarkModeProvider = ({ children }) => {
-    const [prefersDarkMode, setPrefersDarkMode] = useState(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    // const [prefersDarkMode, setPrefersDarkMode] = useState(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const [prefersDarkMode, setPrefersDarkMode] = useState(false); // remove dark mode
 
     useEffect(() => {
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');

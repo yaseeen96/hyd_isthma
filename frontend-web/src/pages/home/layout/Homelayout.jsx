@@ -3,9 +3,9 @@ import StickyNavBar from '../components/navBar';
 
 const HomeLayout = ({ children }) => {
     return (
-        <div>
+        <div className="relative min-h-screen flex flex-col">
             <StickyNavBar />
-            <div className="flex flex-col min-h-[80vh] items-start py-10 px-7 dark:bg-black bg-gray-50">{children}</div>
+            <div className="flex-grow flex flex-col items-start py-10 px-7 dark:bg-black bg-gray-50 pb-16">{children}</div>
             <BottomBar />
         </div>
     );

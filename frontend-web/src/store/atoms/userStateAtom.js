@@ -1,7 +1,8 @@
 import { atom } from 'recoil';
+import { atomConstants } from './atomConstants';
 
 export const userStateAtom = atom({
-    key: 'userStateAtom',
+    key: atomConstants.userStateAtom,
     default: {
         isLoggedIn: false,
         token: null,
