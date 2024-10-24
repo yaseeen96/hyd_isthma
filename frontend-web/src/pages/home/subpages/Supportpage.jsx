@@ -42,6 +42,26 @@ const SupportPage = () => {
                         <p className="mt-2 text-sm text-primary dark:text-primary">+91 97000 37063</p>
                     </a>
                 </div>
+                <div className="flex flex-col items-center justify-center">
+                    <div className="p-6 rounded-lg bg-white dark:bg-gray-800 border border-gray-100 w-full max-w-md my-4 shadow-lg">
+                        <h2 className="text-xl font-semibold text-gray-800 dark:text-white text-center">WhatsApp Support</h2>
+                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 text-center">Chat with us on WhatsApp for quick assistance.</p>
+                        <div className="flex justify-center my-4">
+                            <a href="https://gallabox.com/whatsapp/?phone=919000000000&text=I%20need%20help" target="_blank" rel="noopener noreferrer">
+                                <img
+                                    src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                                    alt="WhatsApp"
+                                    className="w-12 h-12 hover:animate-pulse transition-transform duration-200"
+                                />
+                            </a>
+                        </div>
+                        <p className="mt-2 text-sm text-blue-500 dark:text-blue-400 text-center">
+                            <a href="https://gallabox.com/whatsapp/?phone=919000000000&text=I%20need%20help" target="_blank" rel="noopener noreferrer">
+                                Chat on WhatsApp
+                            </a>
+                        </p>
+                    </div>
+                </div>
             </div>
         </HomeLayout>
     );
