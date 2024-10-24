@@ -11,12 +11,14 @@ import { useLoading } from '../../../utils/hooks/useLoading';
 import LoadingComponent from '../../../components/common/loadingComponent';
 import { analyticsState } from '../../../store/atoms/analyticsAtom';
 import { ROUTES } from '../../../router/routes';
+import { localStorageConstant } from '../../../utils/constants/localStorageConstants';
 
 const ArrivalRegistrationPage = () => {
     const user = useRecoilValue(registrationDetailsAtom);
     const navigate = useNavigate();
     const { loading, setLoading } = useLoading();
     const analytics = useRecoilValue(analyticsState);
+    const arrivalConfirmed = localStorage.getItem(localStorageConstant.arrivalConfirmed);
     const [userDetails, setUserDetails] = useState({
         date_of_birth: { startDate: null, endDate: null },
         confirmArrival: '1',
@@ -63,21 +65,10 @@ const ArrivalRegistrationPage = () => {
             const isSuccess = await confirmRegistrationService(userDetails);
 
             if (isSuccess) {
-                toast.success(
-                    <div>
-                        Thanks for completing the first phase of registration for Arkan Ijtema. Here are the next steps:
-                        <br />
-                        <ul>
-                            <li>We will soon provide program details, informative videos, and other important information.</li>
-                            <li>We will collect your arrival dates and interests to better serve you.</li>
-                            <li>Stay tuned for updates.</li>
-                        </ul>
-                    </div>,
-                    {
-                        autoClose: false,
-                        hideProgressBar: false,
-                    }
-                );
+                toast.success(<div>Thanks for completing the first phase of registration for Arkan Ijtema. Please continue the other steps</div>, {
+                    autoClose: false,
+                    hideProgressBar: false,
+                });
                 navigate(-1);
                 if (analytics) {
                     trackSelectContent(analytics, 'button', 'register-ijtema', 'Register for Ijtema');
@@ -254,7 +245,7 @@ const ArrivalRegistrationPage = () => {
             </div>
 
             <button className={`btn btn-primary mx-auto my-4 w-full`} onClick={handleSubmit} disabled={loading || userDetails.confirmArrival == null}>
-                {loading ? 'Registering' : 'Register'}
+                {arrivalConfirmed ? (loading ? 'Updating' : 'Update') : loading ? 'Registering' : 'Register'}
             </button>
         </RegistrationLayout>
     );
