@@ -10,7 +10,7 @@ class ProgramSpeaker extends Model
 {
     use HasFactory, Mediable;
 
-    protected $fillable = ['name', 'bio'];
+    protected $fillable = ['name', 'bio', 'english_name', 'english_bio', 'malyalam_name', 'malyalam_bio', 'bengali_name', 'bengali_bio', 'tamil_name', 'tamil_bio', 'kannada_name', 'kannada_bio'];
 
     public function programs()
     {

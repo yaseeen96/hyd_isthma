@@ -15,6 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->longText('bio');
+            $table->string('english_name')->nullable();
+            $table->longText('english_bio')->nullable();
+            $table->string('malyalam_name')->nullable();
+            $table->longText('malyalam_bio')->nullable();
+            $table->string('bengali_name')->nullable();
+            $table->longText('bengali_bio')->nullable();
+            $table->string('tamil_name')->nullable();
+            $table->longText('tamil_bio')->nullable();
+            $table->string('kannada_name')->nullable();
+            $table->longText('kannada_bio')->nullable();
             $table->timestamps();
         });
     }

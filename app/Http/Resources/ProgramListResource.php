@@ -28,32 +28,42 @@ class ProgramListResource extends JsonResource
             'status' => $this->status,
             // 'program_copy' => $this->getMedia('program_copy')->first() ? $this->getMedia('program_copy')->first()->getUrl() : null,
             'english' => [
-                'topic' => $this->english_topic,
+                'name' => $this->english_topic,
                 'transcript' => $this->english_transcript,
+                'speaker_name' => $this->programSpeaker->english_name,
+                'speaker_bio' => $this->programSpeaker->english_bio,
                 // 'program_copy' => $this->getMedia('english_program_copy')->first() ? $this->getMedia('english_program_copy')->first()->getUrl() : null,
                 'translation' => $this->getMedia('english_translation')->first() ? $this->getMedia('english_translation')->first()->getUrl() : null
             ],
             'malyalam' => [
-                'topic' => $this->malyalam_topic,
+                'name' => $this->malyalam_topic,
                 'transcript' => $this->malyalam_transcript,
+                'speaker_name' => $this->programSpeaker->malyalam_name,
+                'speaker_bio' => $this->programSpeaker->malyalam_bio,
                 // 'program_copy' => $this->getMedia('malyalam_program_copy')->first() ? $this->getMedia('malyalam_program_copy')->first()->getUrl() : null,
                 'translation' => $this->getMedia('malyalam_translation')->first() ? $this->getMedia('malyalam_translation')->first()->getUrl() : null
             ],
             'bengali' => [
-                'topic' => $this->bengali_topic,
+                'name' => $this->bengali_topic,
                 'transcript' => $this->bengali_transcript,
+                'bengali_name' => $this->programSpeaker->bengali_name,
+                'speaker_bio' => $this->programSpeaker->bengali_bio,
                 // 'program_copy' => $this->getMedia('bengali_program_copy')->first() ? $this->getMedia('bengali_program_copy')->first()->getUrl() : null,
                 'translation' => $this->getMedia('bengali_translation')->first() ? $this->getMedia('bengali_translation')->first()->getUrl() : null
             ],
             'tamil' => [
-                'topic' => $this->tamil_topic,
+                'name' => $this->tamil_topic,
                 'transcript' => $this->tamil_transcript,
+                'tamil_name' => $this->programSpeaker->tamil_name,
+                'speaker_bio' => $this->programSpeaker->tamil_bio,
                 // 'program_copy' => $this->getMedia('tamil_program_copy')->first() ? $this->getMedia('tamil_program_copy')->first()->getUrl() : null,
                 'translation' => $this->getMedia('tamil_translation')->first() ? $this->getMedia('tamil_translation')->first()->getUrl() : null
             ],
             'kannada' => [
-                'topic' => $this->kannada_topic,
+                'name' => $this->kannada_topic,
                 'transcript' => $this->kannada_transcript,
+                'kannada_name' => $this->programSpeaker->kannada_name,
+                'speaker_bio' => $this->programSpeaker->kannada_bio,
                 // 'program_copy' => $this->getMedia('kannada_program_copy')->first() ? $this->getMedia('kannada_program_copy')->first()->getUrl() : null,
                 'translation' => $this->getMedia('kannada_translation')->first() ? $this->getMedia('kannada_translation')->first()->getUrl() : null
             ],

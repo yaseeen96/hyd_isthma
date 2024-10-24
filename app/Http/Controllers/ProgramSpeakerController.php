@@ -63,14 +63,21 @@ class ProgramSpeakerController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required',
-            'bio' => 'required'
+            'english_name' => 'required',
+            'malyalam_name' => 'required',
+            'bengali_name' => 'required',
+            'tamil_name' => 'required',
+            'kannada_name' => 'required',
         ]);
-        $speaker = new ProgramSpeaker();
-        $speaker->name = $request->name;
-        $speaker->bio = $request->bio;
-        $speaker->save();
+        $data['bio'] = $request->bio;
+        $data['english_bio'] = $request->english_bio;
+        $data['malyalam_bio'] = $request->malyalam_bio;
+        $data['bengali_bio'] = $request->bengali_bio;
+        $data['tamil_bio'] = $request->tamil_bio;
+        $data['kannada_bio'] = $request->kannada_bio;
+        $speaker = ProgramSpeaker::create($data);
         if(!empty($request->file('speaker_image'))) {
             $media = MediaUploader::fromSource($request->file('speaker_image'))->toDestination('public', 'images/speaker_image')->useFilename(Str::uuid())->upload();
             $speaker->attachMedia($media, ['speaker_image']);
@@ -95,6 +102,7 @@ class ProgramSpeakerController extends Controller
         if ($loggedInUser->id != 1 && !$loggedInUser->hasPermissionTo('Edit SessionThemes')){
             abort(403);
         }
+        // dd(ProgramSpeaker::find($id));
         return view('admin.programspeakers.form')->with([
            'speaker' => ProgramSpeaker::find($id)
         ]);
@@ -108,8 +116,19 @@ class ProgramSpeakerController extends Controller
         $speaker = ProgramSpeaker::find($id);
         $data = $request->validate([
             'name' => 'required',
-            'bio' => 'required',
+            'english_name' => 'required',
+            'malyalam_name' => 'required',
+            'bengali_name' => 'required',
+            'tamil_name' => 'required',
+            'kannada_name' => 'required',
         ]);
+        $data['bio'] = $request->bio;
+        $data['english_bio'] = $request->english_bio;
+        $data['malyalam_bio'] = $request->malyalam_bio;
+        $data['bengali_bio'] = $request->bengali_bio;
+        $data['tamil_bio'] = $request->tamil_bio;
+        $data['kannada_bio'] = $request->kannada_bio;
+
         $speaker->update($data);
         if(!empty($request->file('speaker_image'))) {
             $uploadedImages = $speaker->getMedia('speaker_image')->first();

@@ -74,13 +74,18 @@ class SessionThemeController extends Controller
         $data = $request->validate([
             'theme_name' => 'required',
             'theme_type' => 'required',
-            'convener' => 'required',
+            'english_theme_name' => 'required',
+            'malyalam_theme_name' => 'required',
+            'bengali_theme_name' => 'required',
+            'tamil_theme_name' => 'required',
+            'kannada_theme_name' => 'required',
             'date' => 'required',
             'from_time' => 'required',
             'to_time' => 'required',
             'status' => 'required',
         ]);
         $data['hall_name'] = $request->get("hall_name");
+        $data['convener'] = $request->get("convener");
         if(strtotime($request->to_time) <= strtotime($request->from_time)) {
            return redirect()->back()->with('warning', "To time can't be less then From time")->withInput();
         }
@@ -121,14 +126,19 @@ class SessionThemeController extends Controller
         $sessionTheme = SessionTheme::find($id);
         $data = $request->validate([
             'theme_name' => 'required',
+            'english_theme_name' => 'required',
+            'malyalam_theme_name' => 'required',
+            'bengali_theme_name' => 'required',
+            'tamil_theme_name' => 'required',
+            'kannada_theme_name' => 'required',
             'theme_type' => 'required',
-            'convener' => 'required',
             'date' => 'required',
             'from_time' => 'required',
             'to_time' => 'required',
             'status' => 'required',
         ]);
         $data['hall_name'] = $request->get("hall_name");
+        $data['convener'] = $request->get("convener");
         if(strtotime($request->to_time) <= strtotime($request->from_time)) {
            return redirect()->back()->with('warning', "To time can't be less then From time")->withInput();
         }

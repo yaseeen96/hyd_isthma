@@ -85,11 +85,6 @@
                                                     value="{{ $convener }}">{{ $convener }}</option>
                                             @endforeach
                                         </select>
-                                        @if ($errors->has('convener'))
-                                            <span class="text-danger">
-                                                {{ $errors->first('convener') }}
-                                            </span>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -167,20 +162,102 @@
                                 <div class="form-group row">
                                     <div class="col-lg-12">
                                         <label for="hall_name">Hall Name</label>
-                                        <select class="form-control" name="hall_name" id="hall_name">
-                                            <option value=""> Select Hall Name </option>
-                                            @foreach (config('session-halls') as $hall)
-                                                <option value="{{ $hall }}"
-                                                    {{ old('hall_name', $theme->hall_name) == $hall ? 'selected' : '' }}>
-                                                    {{ $hall }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <input class="form-control" name="hall_name" id="hall_name"
+                                            value="{{ old('hall_name', $theme->hall_name) }}">
                                         @if ($errors->has('hall_name'))
                                             <span class="text-danger">
                                                 {{ $errors->first('hall_name') }}
                                             </span>
                                         @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    {{-- English Progam Copy --}}
+                                    <div class="col-lg-6">
+                                        <h6 class="font-weight-bold my-3 bg-purple px-2 py-2">ENGLISH</h6>
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label for="english_theme_name">Session Theme Name</label>
+                                                <input type="text" class="form-control" name="english_theme_name"
+                                                    id="english_theme_name"
+                                                    value="{{ old('english_theme_name', $theme->english_theme_name) }}">
+                                                @if ($errors->has('english_theme_name'))
+                                                    <span class="text-danger">
+                                                        {{ $errors->first('english_theme_name') }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- Malyalam --}}
+                                    <div class="col-lg-6">
+                                        <h6 class="font-weight-bold my-3 bg-purple px-2 py-2">Malyalam</h6>
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label for="malyalam_theme_name">Session Theme Name</label>
+                                                <input type="text" class="form-control" name="malyalam_theme_name"
+                                                    id="malyalam_theme_name"
+                                                    value="{{ old('malyalam_theme_name', $theme->malyalam_theme_name) }}">
+                                                @if ($errors->has('malyalam_theme_name'))
+                                                    <span class="text-danger">
+                                                        {{ $errors->first('malyalam_theme_name') }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- Bengali  --}}
+                                    <div class="col-lg-6">
+                                        <h6 class="font-weight-bold my-3 bg-purple px-2 py-2">Bengali</h6>
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label for="bengali_theme_name">Session Theme Name</label>
+                                                <input type="text" class="form-control" name="bengali_theme_name"
+                                                    id="bengali_theme_name"
+                                                    value="{{ old('bengali_theme_name', $theme->bengali_theme_name) }}">
+                                                @if ($errors->has('bengali_theme_name'))
+                                                    <span class="text-danger">
+                                                        {{ $errors->first('bengali_theme_name') }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- Tamil  --}}
+                                    <div class="col-lg-6">
+                                        <h6 class="font-weight-bold my-3 bg-purple px-2 py-2">Tamil</h6>
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label for="tamil_theme_name">Session Theme Name</label>
+                                                <input type="text" class="form-control" name="tamil_theme_name"
+                                                    id="tamil_theme_name"
+                                                    value="{{ old('tamil_theme_name', $theme->tamil_theme_name) }}">
+                                                @if ($errors->has('tamil_theme_name'))
+                                                    <span class="text-danger">
+                                                        {{ $errors->first('tamil_theme_name') }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- Kannada  --}}
+                                    <div class="col-lg-6">
+                                        <h6 class="font-weight-bold my-3 bg-purple px-2 py-2">Kannada</h6>
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label for="kannada_theme_name">Session Theme Name</label>
+                                                <input type="text" class="form-control" name="kannada_theme_name"
+                                                    id="kannada_theme_name"
+                                                    value="{{ old('kannada_theme_name', $theme->kannada_theme_name) }}">
+                                                @if ($errors->has('kannada_theme_name'))
+                                                    <span class="text-danger">
+                                                        {{ $errors->first('kannada_theme_name') }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

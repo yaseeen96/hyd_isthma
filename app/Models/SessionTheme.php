@@ -10,6 +10,11 @@ class SessionTheme extends Model
     use HasFactory;
     protected $fillable = [
         'theme_name',
+        'english_theme_name',
+        'malyalam_theme_name',
+        'bengali_theme_name',
+        'tamil_theme_name',
+        'kannada_theme_name',
         'status',
         'theme_type',
         'convener',
