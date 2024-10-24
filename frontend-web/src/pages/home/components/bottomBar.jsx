@@ -3,21 +3,16 @@ import { BiSupport } from 'react-icons/bi';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { bottomBarIndex } from '../../../store/atoms/activeBottomNavBarAtom';
-import { FaPoll } from 'react-icons/fa';
 
 const BottomBar = () => {
     const [activeIndex, setActiveIndex] = useRecoilState(bottomBarIndex);
 
     const onNotificationPress = () => {
-        setActiveIndex(2);
-    };
-
-    const onPollPress = () => {
         setActiveIndex(1);
     };
 
     const onSupportPress = () => {
-        setActiveIndex(3);
+        setActiveIndex(2);
     };
 
     const onHomePress = () => {
@@ -26,25 +21,20 @@ const BottomBar = () => {
 
     return (
         <div className="fixed bottom-0 left-0 z-50 w-screen h-16 border-gray-200 bg-gray-50 dark:bg-black border-t-[1px] dark:border-gray-600">
-            <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
+            <div className="grid h-full max-w-lg grid-cols-3 mx-auto font-medium">
                 <button type="button" className="inline-flex flex-col items-center justify-center px-5" onClick={onHomePress}>
                     <MdHomeFilled size={28} className="text-primary" style={activeIndex === 0 ? { color: '#8635BD' } : { color: 'gray' }} />
                     <span className={`text-[0.7rem] text-gray-500 dark:text-gray-400 ${activeIndex === 0 ? 'text-primary dark:text-primary-500' : 'text-gray-300'}`}>Home</span>
                 </button>
 
-                <button type="button" className="inline-flex flex-col items-center justify-center px-5" onClick={onPollPress}>
-                    <FaPoll size={28} style={activeIndex === 1 ? { color: '#8635BD' } : { color: 'gray' }} />
-                    <span className={`text-[0.7rem] text-gray-500 dark:text-gray-400 ${activeIndex === 1 ? 'text-primary dark:text-primary-500' : 'text-gray-300'}`}>Polls</span>
-                </button>
-
                 <button type="button" className="inline-flex flex-col items-center justify-center px-5" onClick={onNotificationPress}>
-                    <MdNotifications size={28} style={activeIndex === 2 ? { color: '#8635BD' } : { color: 'gray' }} />
-                    <span className={`text-[0.7rem] text-gray-500 dark:text-gray-400 ${activeIndex === 2 ? 'text-primary dark:text-primary-500' : 'text-gray-300'}`}>Notifications</span>
+                    <MdNotifications size={28} style={activeIndex === 1 ? { color: '#8635BD' } : { color: 'gray' }} />
+                    <span className={`text-[0.7rem] text-gray-500 dark:text-gray-400 ${activeIndex === 1 ? 'text-primary dark:text-primary-500' : 'text-gray-300'}`}>Notifications</span>
                 </button>
 
                 <button type="button" className="inline-flex flex-col items-center justify-center px-5" onClick={onSupportPress}>
-                    <BiSupport size={28} style={activeIndex === 3 ? { color: '#8635BD' } : { color: 'gray' }} />
-                    <span className={`text-[0.7rem] text-gray-500 dark:text-gray-400 ${activeIndex === 3 ? 'text-primary dark:text-primary-500' : 'text-gray-300'}`}>Support</span>
+                    <BiSupport size={28} style={activeIndex === 2 ? { color: '#8635BD' } : { color: 'gray' }} />
+                    <span className={`text-[0.7rem] text-gray-500 dark:text-gray-400 ${activeIndex === 2 ? 'text-primary dark:text-primary-500' : 'text-gray-300'}`}>Support</span>
                 </button>
             </div>
         </div>

@@ -4,10 +4,9 @@ import SupportPage from './subpages/Supportpage';
 import { useRecoilValue } from 'recoil';
 import { bottomBarIndex } from '../../store/atoms/activeBottomNavBarAtom';
 import NotificationPage from './subpages/NotificationPage';
-import PollsPage from './subpages/PollsPage';
 const HomeWrapper = () => {
     const activeIndex = useRecoilValue(bottomBarIndex);
-    return <div>{activeIndex == 0 ? <HomePage /> : activeIndex == 1 ? <PollsPage /> : activeIndex == 2 ? <NotificationPage /> : <SupportPage />}</div>;
+    return <div>{activeIndex == 0 ? <HomePage /> : activeIndex == 1 ? <NotificationPage /> : <SupportPage />}</div>;
 };
 
 export default HomeWrapper;
