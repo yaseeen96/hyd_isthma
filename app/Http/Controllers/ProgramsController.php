@@ -308,6 +308,66 @@ class ProgramsController extends Controller
         $data['date'] = date('Y-m-d', strtotime($sessionTheme->date));
         $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
         $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');
+        $data['english_transcript'] = $request->english_transcript;
+        $data['malyalam_transcript'] = $request->malyalam_transcript;
+        $data['bengali_transcript'] = $request->bengali_transcript;
+        $data['tamil_transcript'] = $request->tamil_transcript;
+        $data['kannada_transcript'] = $request->kannada_transcript;
+        $data['english_topic'] = $request->english_topic;
+        $data['malyalam_topic'] = $request->malyalam_topic;
+        $data['bengali_topic'] = $request->bengali_topic;
+        $data['tamil_topic'] = $request->tamil_topic;
+        $data['kannada_topic'] = $request->kannada_topic;
+        // English Language Program translation
+        if($request->hasFile('english_translation')) {
+            $media = MediaUploader::fromSource($request->file('english_translation'))->toDestination('public', "program_translations/english/$program->id")->useFilename(Str::uuid())->upload();
+            $program->attachMedia($media, ['english_translation']);
+        }
+
+        // Malayalam Language Program translation
+        if($request->hasFile('malyalam_translation')) {
+            $uploadedImages = $program->getMedia('malyalam_translation')->first();
+            if(!empty($uploadedImages)) {
+                $program->detachMedia($program->id);
+                $uploadedImages->delete();
+            }
+            $media = MediaUploader::fromSource($request->file('malyalam_translation'))->toDestination('public', "program_translations/malyalam/$program->id")->useFilename(Str::uuid())->upload();
+            $program->attachMedia($media, ['malyalam_translation']);
+        }
+
+        // Bengali Language Program translation
+        if ($request->hasFile('bengali_translation')) {
+            $uploadedImages = $program->getMedia('bengali_translation')->first();
+            if(!empty($uploadedImages)) {
+                $program->detachMedia($program->id);
+                $uploadedImages->delete();
+            }
+            $media = MediaUploader::fromSource($request->file('bengali_translation'))->toDestination('public', "program_translations/bengali/$program->id")->useFilename(Str::uuid())->upload();
+            $program->attachMedia($media, ['bengali_translation']);
+        }
+
+        // Tamil Language Program translation
+        if ($request->hasFile('tamil_translation')) {
+            $uploadedImages = $program->getMedia('tamil_translation')->first();
+            if(!empty($uploadedImages)) {
+                $program->detachMedia($program->id);
+                $uploadedImages->delete();
+            }
+            $media = MediaUploader::fromSource($request->file('tamil_translation'))->toDestination('public', "program_translations/tamil/$program->id")->useFilename(Str::uuid())->upload();
+            $program->attachMedia($media, ['tamil_translation']);
+        }
+
+        // Kannada Language Program translation
+        if ($request->hasFile('kannada_translation')) {
+            $uploadedImages = $program->getMedia('kannada_translation')->first();
+            if(!empty($uploadedImages)) {
+                $program->detachMedia($program->id);
+                $uploadedImages->delete();
+            }
+            $media = MediaUploader::fromSource($request->file('kannada_translation'))->toDestination('public', "program_translations/kannada/$program->id")->useFilename(Str::uuid())->upload();
+            $program->attachMedia($media, ['kannada_translation']);
+        }
+
         $program->update($data);
         return redirect()->back()->with('success', 'Program updated successfully');
     }
@@ -329,7 +389,8 @@ class ProgramsController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         } else {
             $program->delete();
-            $program->media()->each(function ($media) {
+            $program->media()->each(function ($media) use($program) {
+                $program->detachMedia($program->id);
                 $media->delete();
             });
             return response()->json([
