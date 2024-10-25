@@ -29,6 +29,9 @@ class SessionRegistrationController extends Controller
                     $query->where('id', $request->session_theme);
                 if(!empty($request->theme_type))
                     $query->where('theme_type', $request->theme_type);
+                if(!empty($request->session_convener)) {
+                    $query->where('convener', $request->session_convener);
+                }
             })->orderBy('id', 'desc');
             return $dataTables->eloquent($query)
                 ->addColumn('session_date_time', function (SessionRegistration $sessionRegistration) {

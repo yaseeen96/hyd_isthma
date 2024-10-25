@@ -1,16 +1,12 @@
-@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Members'])
+@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Feedback'])
 @section('content')
     <x-content-wrapper>
         <x-slot:title>
-            Members
+            Feedbacks
         </x-slot>
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-12">
-                    @if (auth()->user()->id == 1 || auth()->user()->can('Create Members'))
-                        <a href="{{ route('members.create') }}" class="btn btn-purple float-right"><i
-                                class="fas fa-plus mr-2"></i>Create</a>
-                    @endif
                     <button class="btn btn-purple float-right mr-2" type="button" data-toggle="collapse"
                         data-target="#regFilters" aria-expanded="false" aria-controls="regFilters">
                         <i class="fas fa-filter"></i> Filter
@@ -55,36 +51,45 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Register / Not reigister</label>
-                                    <select class="form-control w-full" id="register_noregister"
-                                        onchange="setFilter('register_noregister')">
-                                        <option value="">-Select Filter-</option>
-                                        <option value="registered">Registered</option>
-                                        <option value="non-registered">Non Registered</option>
+                                    <label>Program</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="program_id"
+                                        placeholder="Select Program Name" onchange="setFilter('program_id')">
+                                        <option value="">All</option>
+                                        @foreach ($programs as $program)
+                                            <option value="{{ $program->id }}">{{ $program->topic }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Feedback Type</label>
+                        <select class="form-control select2bs4" id="feedback_type" onchange="setFilter()">
+                            <option value="event">Event</option>
+                            <option value="program">Program</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <x-table id="members-table">
+            <x-table id="feedback-table">
                 <th>SL.No </th>
-                <th>Name</th>
-                <th>Email</th>
+                <th>Feedback Type</th>
+                <th>Name Of Rukun</th>
+                <th>Rukun ID</th>
                 <th>Phone</th>
-                <th>User Number</th>
-                <th>Unit Name</th>
-                <th>Zone Name</th>
-                <th>Division Name</th>
-                <th>Date Of Birth</th>
+                <th>Unit</th>
+                <th>Division</th>
+                <th>Zone</th>
                 <th>Gender</th>
-                <th>Age</th>
-                <th>Registration Status</th>
-                <th>Action</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>DateTime</th>
+                <th>Program Name</th>
             </x-table>
         </div>
     </x-content-wrapper>
@@ -92,69 +97,74 @@
 @push('scripts')
     <script type="text/javascript">
         function clearFilters() {
+            $('#feedback_type').val('').trigger('change');
             $('#zone_name').val('').trigger('change');
             $('#division_name').val('').trigger('change');
             $('#unit_name').val('').trigger('change');
-            $('#register_noregister').val('').trigger('change');
+            $('#program_id').val('').trigger('change');
+
             setFilter();
         }
         $(function() {
-            memberTable = $('#members-table').DataTable({
+            feebackTable = $('#feedback-table').DataTable({
                 ajax: {
-                    url: "{{ route('members.index') }}",
+                    url: "{{ route('feedback.index') }}",
                     data: function(d) {
-                        d.register_noregister = $("#register_noregister").val();
+                        d.feedback_type = $('#feedback_type').val();
                         d.unit_name = $("#unit_name").val()
                         d.zone_name = $("#zone_name").val()
                         d.division_name = $("#division_name").val()
+                        d.program_id = $("#program_id").val()
+
                     }
                 },
                 columns: [
                     dtIndexCol(),
                     {
-                        data: 'name',
+                        data: 'feedback_type',
                     },
                     {
-                        data: 'email',
+                        data: 'member.name',
                     },
                     {
-                        data: 'phone',
+                        data: 'member.user_number',
                     },
                     {
-                        data: 'user_number',
+                        data: 'member.phone',
                     },
                     {
-                        data: 'unit_name',
+                        data: 'member.unit_name',
                     },
                     {
-                        data: 'zone_name',
+                        data: 'member.division_name',
                     },
                     {
-                        data: 'division_name',
+                        data: 'member.zone_name',
                     },
                     {
-                        data: 'dob',
-                        orderable: false
+                        data: 'member.gender',
+                        render: function(data, type, row, meta) {
+                            return data ? data.charAt(0).toUpperCase() + data.slice(1) : '';
+                        }
                     },
                     {
-                        data: 'gender',
+                        data: 'title'
                     },
                     {
-                        data: 'age',
+                        data: 'description'
                     },
                     {
-                        data: 'reg_status',
+                        data: 'datatime'
                     },
                     {
-                        data: 'action',
-                        orderable: false
+                        data: 'program_name'
                     },
                 ],
             });
         });
 
         function setFilter() {
-            memberTable.draw();
+            feebackTable.draw();
         }
     </script>
 @endpush

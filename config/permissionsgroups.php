@@ -19,5 +19,6 @@ return [
     "CheckInOutPlaces",
     "Enrollments",
     "ScannEntires",
-    "BatchesManagement"
+    "BatchesManagement",
+    "Feeback"
 ];

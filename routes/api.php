@@ -47,6 +47,9 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('getProgram/{id}', 'ProgramsController@getProgram');
             Route::post('registerSession', 'ProgramsController@registerSession');
         });
+        Route::group(['prefix' => 'feedback'], function () {
+            Route::post('submitFeedback', 'FeedbackController@submitFeedback');
+        });
         Route::post('logout', 'AuthController@logout');
         Route::post('deleteAccount', 'AuthController@deleteAccount');
         Route::post('bulkUpload', 'checkInOutEntiresController@bulkUpload');

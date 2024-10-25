@@ -18,26 +18,14 @@
                 <div class="collapse container" id="regFilters">
                     <div class="card card-body shadow-none">
                         <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Program</label>
-                                    <select class="form-control select2bs4" style="width: 100%;" id="program_name"
-                                        onchange="setFilter()">
-                                        <option value="">All</option>
-                                        @foreach ($programs as $program)
-                                            <option value="{{ $program->id }}"> {{ $program->topic }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Program Speaker</label>
-                                    <select class="form-control select2bs4" style="width: 100%;" id="program_speaker"
+                                    <label>Session Convener </label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="session_convener"
                                         onchange="setFilter()">
                                         <option value="">All</option>
                                         @foreach ($speakers as $speaker)
-                                            <option value="{{ $speaker->id }}">{{ $speaker->name }}</option>
+                                            <option value="{{ $speaker->name }}">{{ $speaker->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -87,8 +75,7 @@
     <script type="text/javascript">
         // clear filters
         function clearFilters() {
-            $('#program_name').val('').trigger('change');
-            $('#program_speaker').val('').trigger('change');
+            $('#session_convener"').val('').trigger('change');
             $('#session_theme').val('').trigger('change');
             $('#theme_type').val('').trigger('change');
             setFilter();
@@ -98,8 +85,7 @@
                 ajax: {
                     url: "{{ route('sessionRegistration.index') }}",
                     data: function(d) {
-                        d.program_name = $('#program_name').val();
-                        d.program_speaker = $('#program_speaker').val();
+                        d.session_convener = $("#session_convener").val();
                         d.session_theme = $('#session_theme').val();
                         d.theme_type = $('#theme_type').val();
                     }

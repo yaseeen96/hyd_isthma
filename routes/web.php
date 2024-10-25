@@ -48,6 +48,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('sessionRegistration', 'SessionRegistrationController');
     // QR Batch Registrations
     Route::resource('qrBatchRegistrations',  'QrBatchRegistrationController');
+    // Feedback
+    Route::resource('feedback', 'FeedbackController');
     // Reports
     Route::prefix('reports')->group(function () {
         Route::get('familyDetailsReport', 'ReportsController@familyDetailsReport')->name('family-details-report');

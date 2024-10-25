@@ -326,6 +326,49 @@
                           </ul>
                       </li>
                   @endif
+
+                  {{-- QR Batch Registrations --}}
+                  @if (auth()->user()->can('View BatchesManagement') ||
+                          auth()->user()->can('Edit BatchesManagement') ||
+                          auth()->user()->can('Create BatchesManagement') ||
+                          auth()->user()->can('Delete BatchesManagement') ||
+                          auth()->user()->id == 1)
+                      <li class="nav-item">
+                          <a href="{{ route('qrBatchRegistrations.index') }}"
+                              class="nav-link {{ in_array(request()->route()->getName(), ['qrBatchRegistrations.index', 'qrBatchRegistrations.create', 'qrBatchRegistrations.edit', 'qrBatchRegistrations.delete']) ? 'active' : '' }}">
+                              <i class="nav-icon fas fa-qrcode"></i>
+                              <p>
+                                  QR Batches
+                              </p>
+                          </a>
+                      </li>
+                  @endif
+                  {{-- Feedback --}}
+                  @if (auth()->user()->can('View Feedback') ||
+                          auth()->user()->can('Edit Feedback') ||
+                          auth()->user()->can('Create Feedback') ||
+                          auth()->user()->can('Delete Feedback') ||
+                          auth()->user()->id == 1)
+                      <li class="nav-item">
+                          <a href="{{ route('feedback.index') }}"
+                              class="nav-link {{ in_array(request()->route()->getName(), ['feedback.index', 'feedback.create', 'feedback.edit', 'feedback.delete']) ? 'active' : '' }}">
+                              <i class="nav-icon fas fa-headphones"></i>
+                              <p>
+                                  Feedback
+                              </p>
+                          </a>
+                      </li>
+                  @endif
+                  {{-- AUDO PROCESSING --}}
+                  {{-- <li class="nav-item">
+                      <a href="{{ route('audioProcessing.index') }}"
+                          class="nav-link {{ in_array(request()->route()->getName(), ['audioProcessing.index', 'audioProcessing.create', 'audioProcessing.edit']) ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-microphone-alt"></i>
+                          <p>
+                              Audio Processing
+                          </p>
+                      </a>
+                  </li> --}}
                   {{-- SETTINGS --}}
                   @if (auth()->user()->can('View Notifications') ||
                           auth()->user()->can('View Permissions') ||
@@ -390,32 +433,6 @@
                           </ul>
                       </li>
                   @endif
-                  {{-- QR Batch Registrations --}}
-                  @if (auth()->user()->can('View BatchesManagement') ||
-                          auth()->user()->can('Edit BatchesManagement') ||
-                          auth()->user()->can('Create BatchesManagement') ||
-                          auth()->user()->can('Delete BatchesManagement') ||
-                          auth()->user()->id == 1)
-                      <li class="nav-item">
-                          <a href="{{ route('qrBatchRegistrations.index') }}"
-                              class="nav-link {{ in_array(request()->route()->getName(), ['qrBatchRegistrations.index', 'qrBatchRegistrations.create', 'qrBatchRegistrations.edit', 'qrBatchRegistrations.delete']) ? 'active' : '' }}">
-                              <i class="nav-icon fas fa-qrcode"></i>
-                              <p>
-                                  QR Batches
-                              </p>
-                          </a>
-                      </li>
-                  @endif
-                  {{-- AUDO PROCESSING --}}
-                  {{-- <li class="nav-item">
-                      <a href="{{ route('audioProcessing.index') }}"
-                          class="nav-link {{ in_array(request()->route()->getName(), ['audioProcessing.index', 'audioProcessing.create', 'audioProcessing.edit']) ? 'active' : '' }}">
-                          <i class="nav-icon fas fa-microphone-alt"></i>
-                          <p>
-                              Audio Processing
-                          </p>
-                      </a>
-                  </li> --}}
 
               </ul>
           </nav>

@@ -73,4 +73,9 @@ return [
         "Delete BatchesManagement",
         "View BatchesManagement",
 
+        "Create Feeback",
+        "Edit Feeback",
+        "Delete Feeback",
+        "View Feeback",
+
 ];
