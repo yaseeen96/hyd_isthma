@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
     // Check In Out Entries
     Route::resource('checkInOutEntries', 'CheckInOutEntiresController');
     // Program Registration
-    Route::resource('programRegistration', 'ProgramRegistrationController');
+    Route::resource('sessionRegistration', 'SessionRegistrationController');
     // QR Batch Registrations
     Route::resource('qrBatchRegistrations',  'QrBatchRegistrationController');
     // Reports

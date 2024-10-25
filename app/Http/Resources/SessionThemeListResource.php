@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Models\Program;
 use App\Models\ProgramSpeaker;
+use App\Models\SessionRegistration;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -28,6 +29,7 @@ class SessionThemeListResource extends JsonResource
             'hall_name' => $this->hall_name,
             'datetime' => date('Y-m-d', strtotime($this->date)) . ' ' . Carbon::parse($this->from_time)->format('h:i A'). ' - ' . Carbon::parse($this->to_time)->format('h:i A'),
             'status' => $this->status,
+            'enrolled' => SessionRegistration::where('session_id', $this->id)->where('member_id', auth()->id())->exists(),
             'programs' => Program::with('sessionTheme', 'programSpeaker')->where('session_theme_id', $this->id)->count() > 0 ?
                           Program::with('sessionTheme', 'programSpeaker')->where('session_theme_id', $this->id)->get()->map(function($program) {
                             return ProgramListResource::make($program);

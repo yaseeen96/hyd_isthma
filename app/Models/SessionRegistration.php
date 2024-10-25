@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProgramRegistration extends Model
+class SessionRegistration extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'member_id',
-        'program_id'
+        'session_id'
     ];
 
-    public function program() {
-        return $this->belongsTo(Program::class);
+    public function sessionTheme() {
+        return $this->belongsTo(SessionTheme::class, 'session_id', 'id');
     }
     public function member() {
         return $this->belongsTo(Member::class);

@@ -73,11 +73,10 @@
                 <th>SL.No</th>
                 <th>Rukun Name</th>
                 <th>Rukun ID</th>
-                <th>Program</th>
-                <th>Speaker</th>
-                <th>Speaker Name</th>
-                <th>Session Theme</th>
+                <th>Theme Name</th>
+                <th>Convener</th>
                 <th>Theme Type</th>
+                <th>Hall Name</th>
                 <th>Date&Time</th>
                 <th>Action</th>
             </x-table>
@@ -95,9 +94,9 @@
             setFilter();
         }
         $(function() {
-            programRegistrationsTable = $('#program-registrations-table').DataTable({
+            sessionRegistrationsTable = $('#program-registrations-table').DataTable({
                 ajax: {
-                    url: "{{ route('programRegistration.index') }}",
+                    url: "{{ route('sessionRegistration.index') }}",
                     data: function(d) {
                         d.program_name = $('#program_name').val();
                         d.program_speaker = $('#program_speaker').val();
@@ -114,22 +113,19 @@
                         data: 'member.user_number'
                     },
                     {
-                        data: 'program.topic'
+                        data: 'session_theme.theme_name'
                     },
                     {
-                        data: 'speaker_image'
+                        data: 'session_theme.convener'
                     },
                     {
-                        data: 'speaker'
+                        data: 'session_theme.theme_type'
                     },
                     {
-                        data: 'session_theme'
+                        data: 'session_theme.hall_name'
                     },
                     {
-                        data: 'theme_type'
-                    },
-                    {
-                        data: 'program_date_time'
+                        data: 'session_date_time'
                     },
                     {
                         data: 'action'
@@ -162,7 +158,7 @@
         });
 
         function setFilter() {
-            programRegistrationsTable.draw();
+            sessionRegistrationsTable.draw();
         }
     </script>
 @endpush

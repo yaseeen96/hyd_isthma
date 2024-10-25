@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Models\ProgramRegistration;
 use App\Models\ProgramSpeaker;
+use App\Models\SessionRegistration;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -25,7 +26,6 @@ class ProgramListResource extends JsonResource
             'speaker_name' => empty($lang) ? $this->programSpeaker->name : $this->programSpeaker->{$lang . '_name'},
             'speaker_bio' => empty($lang) ? $this->programSpeaker->bio : $this->programSpeaker->{$lang . '_bio'},
             'speaker_image' => $this->programSpeaker->getMedia('speaker_image')->first() ? $this->programSpeaker->getMedia('speaker_image')->first()->getUrl() : '/assets/img/no-image.png',
-            'enrolled' => ProgramRegistration::where('program_id', $this->id)->where('member_id', auth()->id())->exists(),
             'status' => $this->status,
             'translation' => empty($lang) ? null : ( $this->getMedia($lang.'_translation')->first() ? $this->getMedia($lang.'_translation')->first()->getUrl() : null),
             'transcript' => empty($lang) ? null : $this->{$lang.'_transcript'},
