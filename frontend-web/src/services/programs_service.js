@@ -1,9 +1,9 @@
 import { localStorageConstant } from '../utils/constants/localStorageConstants';
 import { axiosAuthenticatedClient } from './axios_client';
 
-export const getProgramDetails = async () => {
+export const getProgramDetails = async (language) => {
     try {
-        const response = await axiosAuthenticatedClient.get('programs/listPrograms', {
+        const response = await axiosAuthenticatedClient.get(`programs/listPrograms?lang=${language}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem(localStorageConstant.token)}`,
                 'Content-Type': 'application/json',
@@ -18,12 +18,12 @@ export const getProgramDetails = async () => {
 
 // programs/registerProgram
 
-export const enrollforProgram = async (programId) => {
+export const enrollforProgram = async (sessionId) => {
     try {
         const response = await axiosAuthenticatedClient.post(
-            'programs/registerProgram',
+            'programs/registerSession',
             {
-                program_id: programId,
+                session_id: sessionId,
             },
             {
                 headers: {
