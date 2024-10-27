@@ -39,3 +39,27 @@ export const enrollforProgram = async (sessionId) => {
         return error.response.data;
     }
 };
+
+export const submitFeedback = async (feedbackType, title, description, programId) => {
+    try {
+        // Build the data payload based on conditions
+        const data = {
+            feedback_type: feedbackType,
+            title,
+            description,
+            ...(feedbackType === 'program' && { program_id: programId }), // Include program_id if feedbackType is 'program'
+        };
+
+        const response = await axiosAuthenticatedClient.post('feedback/submitFeedback', data, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem(localStorageConstant.token)}`,
+                'Content-Type': 'application/json',
+                accept: 'application/json',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        return error.response.data;
+    }
+};
