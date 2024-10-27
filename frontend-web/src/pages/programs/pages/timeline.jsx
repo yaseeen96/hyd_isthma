@@ -1,31 +1,26 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import LoadingComponent from '../../../components/common/loadingComponent';
 import { getProgramDetails, enrollforProgram } from '../../../services/programs_service';
-import { FiArrowLeft, FiDownload, FiPlus } from 'react-icons/fi';
+import { FiArrowLeft } from 'react-icons/fi';
 import ConfirmEnrollModal from '../components/confirmEnrollModal';
 import SessionCard from '../components/sessionCard';
 import translations from '../utils/translations';
-import { ToastContainer, toast } from 'react-toastify'; // Import toast
-import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
-import generatePDF from '../utils/generatePdf';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import GeneratePDF from '../utils/generatePdf';
 
-// Helper function to group events by type (Fixed or Parallel) and filter by selected date
 const groupEventsByTypeAndDate = (events, selectedDate) => {
     return events.reduce(
         (groupedEvents, event) => {
-            if (event && event.datetime) {
-                const eventDate = dayjs(event.datetime?.split(' ')[0]).format('YYYY-MM-DD');
-                if (eventDate === selectedDate) {
-                    if (event.theme_type === 'Fixed') {
-                        groupedEvents.fixed.push(event);
-
-                    } else {
-                        groupedEvents.parallel.push(event);
-                    }
+            const eventDate = dayjs(event.datetime.split(' ')[0]).format('YYYY-MM-DD');
+            if (eventDate === selectedDate) {
+                if (event.theme_type === 'Fixed') {
+                    groupedEvents.fixed.push(event);
+                } else {
+                    groupedEvents.parallel.push(event);
                 }
             }
             return groupedEvents;
@@ -34,69 +29,48 @@ const groupEventsByTypeAndDate = (events, selectedDate) => {
     );
 };
 
-// Generate an array of dates for the calendar from the events
 const generateCalendarDates = (events) => {
-    const dates = new Set();
-    events.forEach(event => {
-        if (event && event.datetime) {
-            const eventDate = dayjs(event.datetime?.split(' ')[0]);
-            dates.add(eventDate.format('YYYY-MM-DD'));
-        }
-    });
+    const dates = new Set(events.map((event) => dayjs(event.datetime.split(' ')[0]).format('YYYY-MM-DD')).filter((date) => ['2024-11-15', '2024-11-16', '2024-11-17'].includes(date)));
+    if (dates.size === 0) {
+        return ['2024-11-15', '2024-11-16', '2024-11-17'];
+    }
+    const uniqueDates = Array.from(dates).map((date) => dayjs(date));
+    const startDate = uniqueDates.reduce((minDate, currentDate) => (currentDate.isBefore(minDate) ? currentDate : minDate), dayjs('2024-11-15'));
 
-    if (dates.size === 0) return [];
-
-    const uniqueDates = Array.from(dates).map(date => dayjs(date));
-    const startDate = uniqueDates.reduce((minDate, currentDate) => {
-        return currentDate.isBefore(minDate) ? currentDate : minDate;
-    });
-
-    return Array.from({ length: 7 }, (_, i) => startDate.add(i, 'day').format('YYYY-MM-DD'));
+    return Array.from({ length: 3 }, (_, i) => startDate.add(i, 'day').format('YYYY-MM-DD'));
 };
 
-// Function to process data based on selected language
 const processData = (data) => {
-    const newData = { ...data };
-    newData.data = data.data.map(session => {
-        const newSession = { ...session };
-        newSession.programs = session.programs.map(program => {
-            const newProgram = { ...program };
-            const langData = program.english; // Using English as default
-
-            if (langData && langData.topic) {
-                newProgram.topic = langData.topic;
-                newProgram.transcript = langData.transcript;
-                newProgram.translation = langData.translation;
-            } else {
-                // Fallback to English or default name
-                newProgram.topic = program.english?.topic || program.name;
-                newProgram.transcript = program.english?.transcript || null;
-                newProgram.translation = program.english?.translation || null;
-            }
-
-            return newProgram;
-        });
-        return newSession;
-    });
-    return newData;
+    return data.map((session) => ({
+        ...session,
+        programs: session.programs.map((program) => ({
+            ...program,
+            topic: program.name,
+            speaker: {
+                name: program.speaker_name,
+                bio: program.speaker_bio,
+            },
+        })),
+    }));
 };
 
 const Timeline = () => {
     const [selectedDate, setSelectedDate] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedEventId, setSelectedEventId] = useState(null);
+    const [language, setLanguage] = useState('english');
     const navigate = useNavigate();
     const [expandedSessions, setExpandedSessions] = useState({});
+    const scrollToRef = useRef(null);
 
     const toggleSession = (index) => {
-        setExpandedSessions(prevState => ({
+        setExpandedSessions((prevState) => ({
             ...prevState,
             [index]: !prevState[index],
         }));
     };
 
-    // Use react-query to fetch the timeline data
-    const { data, isLoading, isError, error, refetch } = useQuery('timelineData', getProgramDetails, {
+    const { data, isLoading, isError, error, refetch } = useQuery(['timelineData', language], () => getProgramDetails(language), {
         refetchOnWindowFocus: true,
         refetchOnMount: true,
         staleTime: 0,
@@ -104,8 +78,14 @@ const Timeline = () => {
 
     useEffect(() => {
         if (data && data.data.length > 0) {
-            const nearestEventDate = dayjs(data.data[0].datetime?.split(' ')[0]).format('YYYY-MM-DD');
+            const earliestInProgress = data.data.find((event) => event.status === 'In Progress');
+            const defaultDate = '2024-11-15';
+            const nearestEventDate = earliestInProgress ? dayjs(earliestInProgress.datetime.split(' ')[0]).format('YYYY-MM-DD') : defaultDate;
             setSelectedDate(nearestEventDate);
+
+            if (scrollToRef.current) {
+                scrollToRef.current.scrollIntoView({ behavior: 'smooth' });
+            }
         }
     }, [data]);
 
@@ -113,11 +93,10 @@ const Timeline = () => {
         if (selectedEventId) {
             const response = await enrollforProgram(selectedEventId);
             if (response.status === 'success') {
-                toast.success(translations.english.enrollMessageSuccess); // Show success toast
+                toast.success(translations[language].enrollMessageSuccess);
                 refetch();
-                await refetch(); // Refetch the timeline data
             } else {
-                toast.error(response.message || translations.english.enrollMessageFailure); // Show error toast
+                toast.error(response.message || translations[language].enrollMessageFailure);
             }
         }
         setIsModalOpen(false);
@@ -127,12 +106,10 @@ const Timeline = () => {
         setIsModalOpen(false);
     };
 
-    // Process data based on selected language
+    const handleLanguageChange = (e) => setLanguage(e.target.value);
+
     const processedData = useMemo(() => {
-        if (data && data.data) {
-            return processData(data);
-        }
-        return null;
+        return data && data.data ? processData(data.data) : null;
     }, [data]);
 
     if (isLoading || !processedData) {
@@ -147,8 +124,8 @@ const Timeline = () => {
         );
     }
 
-    const calendarDates = generateCalendarDates(processedData.data);
-    const { fixed, parallel } = groupEventsByTypeAndDate(processedData.data, selectedDate);
+    const calendarDates = generateCalendarDates(processedData);
+    const { fixed, parallel } = groupEventsByTypeAndDate(processedData, selectedDate);
 
     const openModal = (eventId) => {
         setSelectedEventId(eventId);
@@ -156,21 +133,40 @@ const Timeline = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4 min-h-screen overflow-y-auto">
             <button onClick={() => navigate(-1)} className="flex items-center text-primary mb-4">
                 <FiArrowLeft className="mr-2" size={20} />
-                <span className="text-base font-semibold">{translations.english.back}</span>
+                <span className="text-base font-semibold">{translations[language].back}</span>
             </button>
 
-            <h1 className="text-2xl font-bold text-primary mb-6">{translations.english.title}</h1>
+            <h1 className="text-2xl font-bold text-primary mb-6">{translations[language].title}</h1>
+
+            <div className="mb-6">
+                <label htmlFor="language-select" className="mr-2 font-semibold">
+                    {translations[language].selectLanguage}
+                </label>
+                <select
+                    id="language-select"
+                    value={language}
+                    onChange={handleLanguageChange}
+                    className="py-2 px-4 w-full border rounded-md text-gray-700 bg-white shadow-sm hover:border-primary focus:ring-2 focus:ring-primary focus:outline-none"
+                >
+                    <option value="english">English</option>
+                    <option value="urdu">Urdu</option>
+                    <option value="malyalam">Malayalam</option>
+                    <option value="bengali">Bengali</option>
+                    <option value="tamil">Tamil</option>
+                    <option value="kannada">Kannada</option>
+                </select>
+            </div>
 
             <div className="overflow-x-auto mb-6">
-                <div className="flex space-x-2">
+                <div className="flex justify-between space-x-2">
                     {calendarDates.map((date) => (
                         <button
                             key={date}
                             onClick={() => setSelectedDate(date)}
-                            className={`py-2 px-3 rounded-lg ${selectedDate === date ? 'bg-primary text-white' : 'bg-gray-200 text-primary hover:bg-primary hover:text-white'}`}
+                            className={`flex-1 py-2 px-3 rounded-lg text-center ${selectedDate === date ? 'bg-primary text-white' : 'bg-gray-200 text-primary hover:bg-primary hover:text-white'}`}
                         >
                             <div>{dayjs(date).format('DD')}</div>
                             <div>{dayjs(date).format('MMM')}</div>
@@ -179,33 +175,34 @@ const Timeline = () => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <h2 className="text-xl font-semibold mb-2">{translations.english.fixedSessions}</h2>
-                    <p className="mb-4 text-gray-600">{translations.english.fixedSessionsDescription}</p>
-                    <p className='mb-4 text-gray-600'>Fixed sessions are compulsory to attend</p>
+            <div className="mb-8">
+                <h2 className="text-xl font-semibold mb-4 text-primary">{translations[language].fixedSessions}</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {fixed.length === 0 ? (
-                        <p>{translations.english.noSessions}</p>
+                        <p>{translations[language].noSessions}</p>
                     ) : (
                         fixed.map((event, index) => (
                             <SessionCard
+                                ref={index === 0 ? scrollToRef : null}
                                 key={event.id}
                                 session={event}
                                 index={index}
                                 expandedSessions={expandedSessions}
                                 toggleSession={toggleSession}
                                 openModal={openModal}
+                                backgroundColor="bg-purple-100"
+                                programColor="bg-purple-200"
                             />
                         ))
                     )}
                 </div>
+            </div>
 
-                <div>
-                    <h2 className="text-xl font-semibold mb-2">{translations.english.parallelSessions}</h2>
-                    <p className="mb-4 text-gray-600">{translations.english.parallelSessionsDescription}</p>
-                    <p className='mb-4 text-gray-600'>You can attend only 1 parallel session. Once enrolled, it cannot be undone</p>
+            <div className="mb-8">
+                <h2 className="text-xl font-semibold mb-4 text-sky-900">{translations[language].parallelSessions}</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {parallel.length === 0 ? (
-                        <p>{translations.english.noSessions}</p>
+                        <p>{translations[language].noSessions}</p>
                     ) : (
                         parallel.map((event, index) => (
                             <SessionCard
@@ -215,32 +212,17 @@ const Timeline = () => {
                                 expandedSessions={expandedSessions}
                                 toggleSession={toggleSession}
                                 openModal={openModal}
+                                backgroundColor="bg-sky-100"
+                                programColor="bg-sky-200"
                             />
                         ))
                     )}
                 </div>
             </div>
 
-              {/* Floating Action Button */}
-              {/* <button 
-                // onClick={()=>{generatePDF(data.data)}} 
-                className="fixed flex flex-row items-center bottom-5 left-1/2 transform -translate-x-1/2 bg-primary text-white rounded-full p-3 shadow-lg z-50"
-                aria-label="Download PDF"
-            >
-                <span className="text-sm mx-1">Download PDF</span>
-                <FiDownload size={20} color='gray'/>
-            </button> */}
-            <GeneratePDF data={data.data} />
+            <GeneratePDF data={data.data} title={translations[language].downloadPdf} />
 
-            {isModalOpen && (
-                <ConfirmEnrollModal
-                    isOpen={isModalOpen}
-                    onConfirm={handleEnroll}
-                    onCancel={handleCancel}
-                />
-            )}
-
-            
+            {isModalOpen && <ConfirmEnrollModal isOpen={isModalOpen} onConfirm={handleEnroll} onCancel={handleCancel} />}
         </div>
     );
 };

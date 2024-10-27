@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PDFContent = ({ data, base64Images }) => {
+const PDFContent = ({ data }) => {
     const formatTime = (datetime) => {
         const timePart = datetime.split(' ').slice(1).join(' ');
         return timePart;
@@ -28,11 +28,6 @@ const PDFContent = ({ data, base64Images }) => {
     return (
         <div className="w-full bg-white flex flex-col items-center justify-start p-8">
             <h1 className="text-center text-5xl font-extrabold text-purple-800 mb-10">Event Timeline</h1>
-            <img
-                src={base64Images['assets/images/auth/logo_web_black.png'] || 'assets/images/auth/logo_web_black.png'}
-                alt="Logo"
-                className="w-1/2 mb-8 rounded-full shadow-md"
-            />
             <h2 className="text-center text-4xl font-extrabold text-purple-800 mb-4">All India Ijtema e Arkan 2024</h2>
             <h3 className="text-center text-2xl font-semibold text-purple-700">Wadi e Huda</h3>
             <h3 className="text-center text-xl text-purple-600 mb-10">15 - 17 Nov 2024</h3>
@@ -51,9 +46,7 @@ const PDFContent = ({ data, base64Images }) => {
                         <div key={index} className="mb-16" style={{ pageBreakInside: 'avoid' }}>
                             <div className="flex justify-center items-center mb-8">
                                 <div className="w-1 h-16 bg-purple-600"></div>
-                                <h2 className="text-3xl font-bold text-gray-900 mx-4">
-                                    {formattedDate}
-                                </h2>
+                                <h2 className="text-3xl font-bold text-gray-900 mx-4">{formattedDate}</h2>
                                 <div className="w-1 h-16 bg-purple-600"></div>
                             </div>
 
@@ -61,14 +54,8 @@ const PDFContent = ({ data, base64Images }) => {
                                 const formattedTime = formatTime(event.datetime);
 
                                 return (
-                                    <div
-                                        key={eventIndex}
-                                        className="w-full bg-white p-8 mb-12 rounded-lg shadow-lg border-l-8 border-purple-600"
-                                        style={{ pageBreakInside: 'avoid' }}
-                                    >
-                                        <h2 className="text-2xl font-bold text-purple-800 mb-4">
-                                            {event.theme_name}
-                                        </h2>
+                                    <div key={eventIndex} className="w-full bg-white p-8 mb-12 rounded-lg shadow-lg border-l-8 border-purple-600" style={{ pageBreakInside: 'avoid' }}>
+                                        <h2 className="text-2xl font-bold text-purple-800 mb-4">{event.theme_name}</h2>
                                         <small className="block text-sm text-gray-500 mb-4">
                                             <strong>Convener:</strong> {event.session_convener} - {event.hall_name}
                                         </small>
@@ -92,25 +79,12 @@ const PDFContent = ({ data, base64Images }) => {
                                             <div className="mt-8">
                                                 <h3 className="font-semibold text-xl text-purple-700 mb-4">Program Details</h3>
                                                 {event.programs.map((program, progIndex) => (
-                                                    <div key={progIndex} className="flex items-start mb-6">
-                                                        <div className="w-1/4">
-                                                            <img
-                                                                src={base64Images[program.speaker_image] || 'assets/images/placeholder.png'}
-                                                                alt={program.speaker_name}
-                                                                className="w-full h-auto rounded-lg shadow-md"
-                                                            />
-                                                        </div>
-                                                        <div className="w-3/4 ml-6">
-                                                            <h4 className="font-bold text-lg text-gray-800">
-                                                                Speaker: {program.speaker_name}
-                                                            </h4>
-                                                            <p className="text-md text-gray-700 mt-2">
-                                                                {program.speaker_bio}
-                                                            </p>
-                                                            <ul className="list-disc list-inside text-md text-gray-700 mt-2">
-                                                                <li>{program.name}</li>
-                                                            </ul>
-                                                        </div>
+                                                    <div key={progIndex} className="mb-6">
+                                                        <h4 className="font-bold text-lg text-gray-800">Speaker: {program.speaker_name}</h4>
+                                                        <p className="text-md text-gray-700 mt-2">{program.speaker_bio}</p>
+                                                        <ul className="list-disc list-inside text-md text-gray-700 mt-2">
+                                                            <li>{program.name}</li>
+                                                        </ul>
                                                     </div>
                                                 ))}
                                             </div>
