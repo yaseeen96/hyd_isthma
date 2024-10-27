@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ListNotificationsResource;
+use App\Models\Member;
 use App\Models\Notification;
 use Google\Rpc\Context\AttributeContext\Request;
 use Illuminate\Http\Response;
@@ -13,12 +14,12 @@ class NotificationsController extends Controller
 {
     public function listNotifications()
     {
-        $notifications = Notification::get();
+        $user = Member::find(auth()->user()->id);
+        $notifications = Notification::whereRaw("JSON_SEARCH(valid_tokens, 'all', ?) IS NOT NULL", [$user->push_token])->get();
         $filteredNotifications = ListNotificationsResource::collection($notifications)
         ->filter(function ($notification) {
             return !empty($notification->toArray(request()));
         })->values();
-
         return response()->json([
             'status' => 'success',
             'data' => $filteredNotifications,

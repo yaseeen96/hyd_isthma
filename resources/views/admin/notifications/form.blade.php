@@ -141,6 +141,80 @@
                                     </select>
                                 </div>
                             </div>
+
+                        </div>
+                        <div class="row m-2">
+                            <div class="col-lg-3 px-3">
+                                <div class="form-group row">
+                                    <label for="gender">Hotel Required</label>
+                                    <select class="form-control" id="hotel_required" name="hotel_required">
+                                        <option value=""> -- Select Option -- </option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 px-3">
+                                <div class="form-group row">
+                                    <label for="gender">Sight Seeing</label>
+                                    <select class="form-control" id="sight_seeing" name="sight_seeing">
+                                        <option value=""> -- Select Option -- </option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col-lg-12">
+                                <p class="text-md font-weight-bolder">Arrival Date</p>
+                            </div>
+                            <div class="col-lg-6 px-3">
+
+                                <div class="form-group">
+                                    <label for="arrival_date_condition">Condition</label>
+                                    <select class="form-control" id="arrival_date_condition"
+                                        name="arrival_date_condition">
+                                        <option value=""> -- Select Condition -- </option>
+                                        <option value="=">Equal</option>
+                                        <option value=">">Greater Than</option>
+                                        <option value="<">Less Than</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 px-3">
+                                <div class="form-group">
+                                    <label for="arrival_date_value">Value</label>
+                                    <input type="text" name="arrival_date_value" id="arrival_date_value"
+                                        class="form-control date_time" data-toggle="datetimepicker"
+                                        data-target="#date_time" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col-lg-12">
+                                <p class="text-md font-weight-bolder">Departure Date</p>
+                            </div>
+                            <div class="col-lg-6 px-3">
+                                <div class="form-group">
+                                    <label for="departure_date_condition">Condition</label>
+                                    <select class="form-control" id="departure_date_condition"
+                                        name="departure_date_condition">
+                                        <option value=""> -- Select Condition -- </option>
+                                        <option value="=">Equal</option>
+                                        <option value=">">Greater Than</option>
+                                        <option value="<">Less Than</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 px-3">
+                                <div class="form-group">
+                                    <label for="departure_date_value">Value</label>
+                                    <input type="text" name="departure_date_value" id="departure_date_value"
+                                        class="form-control date_time" data-toggle="datetimepicker"
+                                        data-target="#date_time" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -178,9 +252,9 @@
                                             name="notification_image">
                                         <label class="custom-file-label" for="notification_image">Choose file</label>
                                     </div>
-                                    <div class="input-group-append">
+                                    {{-- <div class="input-group-append">
                                         <span class="input-group-text">Upload</span>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             <div class="form-group">
@@ -191,9 +265,9 @@
                                             name="notificaiton_doc">
                                         <label class="custom-file-label" for="notificaiton_doc">Choose file</label>
                                     </div>
-                                    <div class="input-group-append">
+                                    {{-- <div class="input-group-append">
                                         <span class="input-group-text">Upload</span>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             <div class="form-group">

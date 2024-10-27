@@ -8,6 +8,7 @@ use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Plank\Mediable\Facades\MediaUploader;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
@@ -83,10 +84,29 @@ class NotificationsController extends Controller
         $ytUrl = $request->input('youtube_url');
         $regStatus = $request->input('reg_status');
         $gender = $request->input('gender');
-
+        $hotelRequired = $request->input('hotel_required');
+        $sightSeeing = $request->input('sight_seeing');
+        $arrival_date_condition = $request->input('arrival_date_condition');
+        $arrival_date_value = $request->input('arrival_date_value');
+        $departure_date_condition = $request->input('departure_date_condition');
+        $departure_date_value = $request->input('departure_date_value');
         // Query to fetch data with selected criteria
-        $query = Member::with('registration')->whereHas('registration', function ($q) use ($regStatus) {
+        $query = Member::with('registration')->whereHas('registration', function ($q) use ($regStatus, $hotelRequired, $sightSeeing, $arrival_date_condition, $arrival_date_value, $departure_date_condition, $departure_date_value) {
             (!empty($regStatus) && $regStatus === 1) ? $q->where('confirm_arrival', $regStatus) : $q;
+            (!empty($hotelRequired)) ? $q->where('hotel_required', $hotelRequired) : $q;
+            (!empty($sightSeeing)) ? $q->where('sight_seeing->required', $sightSeeing) : $q;
+            if(!empty($arrival_date_condition) && $arrival_date_condition == '=' && empty($arrival_date_value)) {
+                $q->where('arrival_details->datetime', '=', null);
+            }
+            if(!empty($arrival_date_condition) && !empty($arrival_date_value)) {
+                $q->whereDate(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(arrival_details, '$.datetime'))"), $arrival_date_condition, $arrival_date_value);
+            }
+            if(!empty($departure_date_condition) && $departure_date_condition == '=' && empty($departure_date_value)) {
+                $q->where('departure_details->datetime', '=', null);
+            }
+            if(!empty($departure_date_condition) && !empty($departure_date_value)) {
+                $q->whereDate(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(departure_details, '$.datetime'))"), $departure_date_condition, $departure_date_value);
+            }
         })->where(function ($q) use ($regionValue, $region) {
             !empty($regionValue) ? $q->where($region . '_name' , $regionValue) : $q;
         })->where('push_token', '!=', null);

@@ -4,15 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Feedback;
+use App\Models\Member;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class FeedbackController extends Controller
 {
     public function submitFeedback(Request $request) {
+        $member = Member::find(auth()->user()->id);
         $request->validate([
             'feedback_type' => 'required|string',
-            'member_id' => 'required|integer',
             'title' => 'nullable|string',
             'description' => 'required|string',
         ]);
@@ -24,7 +26,7 @@ class FeedbackController extends Controller
         $feedback = new Feedback();
         $feedback->feedback_type = $request->feedback_type;
         $feedback->program_id = $request->program_id;
-        $feedback->member_id = $request->member_id;
+        $feedback->member_id = $member->id;
         $feedback->datetime = $request->datetime;
         $feedback->title = !empty($request->title) ?? 'NA';
         $feedback->description = $request->description;

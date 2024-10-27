@@ -22,5 +22,5 @@ docker-compose.yml
 .storage
 .private
 private
-dummycode
+dummycode.txt
 progressList
