@@ -9,6 +9,10 @@ const translations = {
         enrollMessageSuccess: 'Successfully enrolled!',
         enrollMessageFailure: 'Failed to enroll.',
         downloadPdf: 'Download PDF',
+        noPrograms: 'No programs available for this session',
+        enroll: 'Enroll',
+        giveFeedback: 'Give Feedback',
+        viewTranslation: 'View Translation',
     },
     urdu: {
         back: 'واپس',
@@ -20,6 +24,10 @@ const translations = {
         enrollMessageSuccess: 'کامیابی کے ساتھ داخلہ لیا گیا!',
         enrollMessageFailure: 'داخلہ لینے میں ناکام!',
         downloadPdf: 'پی ڈی ایف ڈاؤن لوڈ کریں',
+        noPrograms: 'اس نشست کے لئے کوئی پروگرام دستیاب نہیں ہے',
+        enroll: 'داخلہ لیں',
+        giveFeedback: 'رائے دیں',
+        viewTranslation: 'ترجمہ دیکھیں',
     },
     malyalam: {
         back: 'തിരിച്ചു',
@@ -31,6 +39,10 @@ const translations = {
         enrollMessageSuccess: 'വിജയകരമായി പ്രവേശിച്ചു!',
         enrollMessageFailure: 'പ്രവേശനം പരാജയപ്പെട്ടു.',
         downloadPdf: 'PDF ഡൗൺലോഡ് ചെയ്യുക',
+        noPrograms: 'ഈ സെഷന് പ്രോഗ്രാമുകൾ ഇല്ല',
+        enroll: 'ചേരുക',
+        giveFeedback: 'പ്രതികരണം നൽകുക',
+        viewTranslation: 'അനുവാദം കാണുക',
     },
     bengali: {
         back: 'ফিরে যান',
@@ -42,6 +54,10 @@ const translations = {
         enrollMessageSuccess: 'সফলভাবে ভর্তি হয়েছেন!',
         enrollMessageFailure: 'ভর্তি ব্যর্থ হয়েছে।',
         downloadPdf: 'PDF ডাউনলোড করুন',
+        noPrograms: 'এই সেশনের জন্য কোনো প্রোগ্রাম উপলব্ধ নেই',
+        enroll: 'নিবন্ধন করুন',
+        giveFeedback: 'প্রতিক্রিয়া জানান',
+        viewTranslation: 'অনুবাদ দেখুন',
     },
     tamil: {
         back: 'திரும்பு',
@@ -53,6 +69,10 @@ const translations = {
         enrollMessageSuccess: 'வெற்றிகரமாக சேர்க்கப்பட்டது!',
         enrollMessageFailure: 'சேர்க்க தவறிவிட்டது.',
         downloadPdf: 'PDF பதிவிறக்கு',
+        noPrograms: 'இந்த அமர்வுக்கு எதுவும் கிடைக்கவில்லை',
+        enroll: 'பதிவு செய்க',
+        giveFeedback: 'பின்னூட்டம் கொடுக்கவும்',
+        viewTranslation: 'மொழிபெயர்ப்பு பார்க்க',
     },
     kannada: {
         back: 'ಹಿಂತಿರುಗು',
@@ -64,6 +84,10 @@ const translations = {
         enrollMessageSuccess: 'ಯಶಸ್ವಿಯಾಗಿ ಪ್ರವೇಶಿಸಲಾಗಿದೆ!',
         enrollMessageFailure: 'ಪ್ರವೇಶ ವಿಫಲವಾಗಿದೆ.',
         downloadPdf: 'ಪಿಡಿಎಫ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ',
+        noPrograms: 'ಈ ಅಧಿವೇಶನಕ್ಕೆ ಯಾವುದೇ ಕಾರ್ಯಕ್ರಮ ಲಭ್ಯವಿಲ್ಲ',
+        enroll: 'ಸೇರಲು',
+        giveFeedback: 'ಪ್ರತಿಕ್ರಿಯೆ ನೀಡು',
+        viewTranslation: 'ಅನುವಾದವನ್ನು ನೋಡಿ',
     },
 };
 

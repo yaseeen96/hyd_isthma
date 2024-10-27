@@ -3,30 +3,32 @@ import { FiX } from 'react-icons/fi';
 import { submitFeedback } from '../../../services/programs_service';
 import { toast } from 'react-toastify';
 
-const FeedbackModal = ({ isOpen, onClose, onSubmit }) => {
+const FeedbackModal = ({ isOpen, onClose, onSubmit, programId }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [loading, setLoading] = useState(false); // Loading state for button
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async () => {
         if (title && description) {
-            setLoading(true); // Start loading
+            setLoading(true);
             try {
-                const response = await submitFeedback('event', title, description);
+                const feedbackType = programId ? 'program' : 'event';
+                const response = await submitFeedback(feedbackType, title, description, programId);
+
                 if (response.status === 'success') {
                     toast.success(response.message);
                     setTitle('');
                     setDescription('');
                     onSubmit({ title, description });
+                    onClose(); // Close the modal after submission
                 } else {
-                    toast.error('Failed to submit feedback. Please try again.');
+                    toast.error(response.message || 'Failed to submit feedback. Please try again.');
                 }
             } catch (err) {
                 console.error(err);
                 toast.error('Failed to submit feedback. Please try again.');
             } finally {
-                setLoading(false); // Stop loading
-                onClose();
+                setLoading(false);
             }
         }
     };
@@ -41,7 +43,7 @@ const FeedbackModal = ({ isOpen, onClose, onSubmit }) => {
 
     return (
         <div id="modal-overlay" className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50 backdrop-blur-sm" onClick={handleBackgroundClick}>
-            <div className="relative w-full max-w-lg p-6 pb-32 bg-white rounded-t-3xl shadow-lg dark:bg-gray-800 animate-slide-up">
+            <div className="relative w-full max-w-lg p-6 pb-32 bg-white rounded-t-3xl shadow-lg dark:bg-gray-800 animate-slide-up" onClick={(e) => e.stopPropagation()}>
                 {/* Close Button */}
                 <button onClick={onClose} className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition duration-200">
                     <FiX size={24} />

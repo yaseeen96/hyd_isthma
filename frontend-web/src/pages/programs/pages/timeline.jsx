@@ -7,8 +7,9 @@ import { getProgramDetails, enrollforProgram } from '../../../services/programs_
 import { FiArrowLeft } from 'react-icons/fi';
 import ConfirmEnrollModal from '../components/confirmEnrollModal';
 import SessionCard from '../components/sessionCard';
+import FeedbackModal from '../../home/components/feedbackModal';
 import translations from '../utils/translations';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GeneratePDF from '../utils/generatePdf';
 
@@ -58,15 +59,17 @@ const Timeline = () => {
     const [selectedDate, setSelectedDate] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedEventId, setSelectedEventId] = useState(null);
+    const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+    const [selectedProgramId, setSelectedProgramId] = useState(null);
     const [language, setLanguage] = useState('english');
     const navigate = useNavigate();
     const [expandedSessions, setExpandedSessions] = useState({});
     const scrollToRef = useRef(null);
 
-    const toggleSession = (index) => {
+    const toggleSession = (sessionId) => {
         setExpandedSessions((prevState) => ({
             ...prevState,
-            [index]: !prevState[index],
+            [sessionId]: !prevState[sessionId],
         }));
     };
 
@@ -107,6 +110,11 @@ const Timeline = () => {
     };
 
     const handleLanguageChange = (e) => setLanguage(e.target.value);
+
+    const handleFeedbackOpen = (programId) => {
+        setSelectedProgramId(programId);
+        setIsFeedbackModalOpen(true);
+    };
 
     const processedData = useMemo(() => {
         return data && data.data ? processData(data.data) : null;
@@ -188,10 +196,15 @@ const Timeline = () => {
                                 session={event}
                                 index={index}
                                 expandedSessions={expandedSessions}
-                                toggleSession={toggleSession}
+                                toggleSession={() => toggleSession(event.id)}
                                 openModal={openModal}
+                                handleFeedbackOpen={handleFeedbackOpen}
                                 backgroundColor="bg-purple-100"
                                 programColor="bg-purple-200"
+                                noProgramsAvailable={translations[language].noPrograms}
+                                enrollMessage={translations[language].enroll}
+                                giveFeedback={translations[language].giveFeedback}
+                                viewTranslation={translations[language].viewTranslation}
                             />
                         ))
                     )}
@@ -210,10 +223,15 @@ const Timeline = () => {
                                 session={event}
                                 index={index}
                                 expandedSessions={expandedSessions}
-                                toggleSession={toggleSession}
+                                toggleSession={() => toggleSession(event.id)}
                                 openModal={openModal}
+                                handleFeedbackOpen={handleFeedbackOpen}
                                 backgroundColor="bg-sky-100"
                                 programColor="bg-sky-200"
+                                noProgramsAvailable={translations[language].noPrograms}
+                                enrollMessage={translations[language].enroll}
+                                giveFeedback={translations[language].giveFeedback}
+                                viewTranslation={translations[language].viewTranslation}
                             />
                         ))
                     )}
@@ -223,6 +241,9 @@ const Timeline = () => {
             <GeneratePDF data={data.data} title={translations[language].downloadPdf} />
 
             {isModalOpen && <ConfirmEnrollModal isOpen={isModalOpen} onConfirm={handleEnroll} onCancel={handleCancel} />}
+
+            {/* Feedback Modal */}
+            <FeedbackModal isOpen={isFeedbackModalOpen} onClose={() => setIsFeedbackModalOpen(false)} onSubmit={() => setIsFeedbackModalOpen(false)} programId={selectedProgramId} />
         </div>
     );
 };
