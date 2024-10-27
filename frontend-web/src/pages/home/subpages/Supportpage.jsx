@@ -56,7 +56,12 @@ const SupportPage = () => {
                             </a>
                         </div>
                         <p className="mt-2 text-sm text-blue-500 dark:text-blue-400 text-center">
-                            <a href="https://gallabox.com/whatsapp/?phone=919000000000&text=I%20need%20help" target="_blank" rel="noopener noreferrer">
+                            {/* old url - https://gallabox.com/whatsapp/?phone=919000000000&text=I%20need%20help */}
+                            <a
+                                href="https://api.whatsapp.com/send?phone=917676079163&text=Assalamualaikum,%0A%0AI’m%20experiencing%20an%20issue%20with%20JIH%20Ijtema%202024.%0ACould%20someone%20assist%20me?%0A%0AIssue%20details:"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
                                 Chat on WhatsApp
                             </a>
                         </p>
