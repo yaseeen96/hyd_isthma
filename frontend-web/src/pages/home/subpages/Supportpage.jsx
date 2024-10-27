@@ -42,12 +42,17 @@ const SupportPage = () => {
                         <p className="mt-2 text-sm text-primary dark:text-primary">+91 97000 37063</p>
                     </a>
                 </div>
+                {/* chat on whatsapp */}
                 <div className="flex flex-col items-center justify-center">
                     <div className="p-6 rounded-lg bg-white dark:bg-gray-800 border border-gray-100 w-full max-w-md my-4 shadow-lg">
                         <h2 className="text-xl font-semibold text-gray-800 dark:text-white text-center">WhatsApp Support</h2>
                         <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 text-center">Chat with us on WhatsApp for quick assistance.</p>
                         <div className="flex justify-center my-4">
-                            <a href="https://gallabox.com/whatsapp/?phone=919000000000&text=I%20need%20help" target="_blank" rel="noopener noreferrer">
+                            <a
+                                href="https://api.whatsapp.com/send?phone=917676079163&text=Assalamualaikum,%0A%0AI’m%20experiencing%20an%20issue%20with%20JIH%20Ijtema%202024.%0ACould%20someone%20assist%20me?%0A%0AIssue%20details:"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
                                 <img
                                     src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
                                     alt="WhatsApp"
