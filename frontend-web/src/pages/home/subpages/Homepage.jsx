@@ -12,7 +12,7 @@ import LoadingComponent from '../../../components/common/loadingComponent';
 import { RiProfileFill } from 'react-icons/ri';
 import IjtemaBanner from '../components/Banner';
 import TileCard from '../components/tileCard';
-import { FiList } from 'react-icons/fi';
+import { FiList, FiMap } from 'react-icons/fi';
 
 const HomePage = () => {
     const [isRefetching, setIsRefetching] = useState(false); // State to manage refetch indicator
@@ -54,6 +54,9 @@ const HomePage = () => {
     const onTimelineSelect = () => {
         navigate(ROUTES.timeline);
     };
+    const onMapsSelect = () => {
+        navigate(ROUTES.maps);
+    };
 
     if (isLoading || isRefetching) {
         return <LoadingComponent />;
@@ -86,6 +89,7 @@ const HomePage = () => {
                     // percentage={progress} // Pass calculated progress
                 />
                 <TileCard icon={<FiList size={32} />} title={'Program Details'} onClick={onTimelineSelect} />
+                <TileCard icon={<FiMap size={32} />} title={'Maps'} onClick={onMapsSelect} />
             </div>
         </HomeLayout>
     );
