@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import HomeLayout from '../layout/Homelayout';
-import { FiArrowLeft } from 'react-icons/fi';
+import { FiArrowLeft, FiEdit } from 'react-icons/fi';
 import FeedbackModal from '../components/feedbackModal';
 import { useNavigate } from 'react-router-dom';
 import { FaWhatsapp } from 'react-icons/fa';
@@ -56,8 +56,12 @@ const SupportPage = () => {
                 </div>
 
                 {/* Feedback Button and Modal */}
-                <button onClick={() => setIsModalOpen(true)} className="bg-primary text-white py-2 px-6 rounded-lg font-semibold mt-4 hover:bg-primary-dark transition duration-200 w-full">
-                    Give Feedback
+                <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="bg-primary text-white py-2 px-6 rounded-lg font-semibold mt-4 hover:bg-primary-dark transition duration-200 w-full flex items-center justify-center space-x-2"
+                >
+                    <FiEdit size={20} /> {/* Feedback icon */}
+                    <span>Give Feedback</span>
                 </button>
 
                 {/* Feedback Modal Component */}
