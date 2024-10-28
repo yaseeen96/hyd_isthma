@@ -14,7 +14,7 @@ const IjtemaBanner = () => {
         >
             {/* English Text */}
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-2">5th ALL India Ijtema-E-Arkan</h2>
-            <h3 className="text-lg md:text-xl lg:text-2xl font-semibold mb-4">Jamaat-E-Islami Hind</h3>
+            <h3 className="text-lg md:text-xl lg:text-2xl font-semibold mb-4">Jamaat-e-Islami Hind</h3>
 
             {/* Decorative Divider */}
             <div className="flex justify-center mb-4">
@@ -33,7 +33,7 @@ const IjtemaBanner = () => {
 
             {/* Event Date and Location */}
             <p className="text-md md:text-lg lg:text-xl font-medium mt-4">
-                At Wadi E Huda, Hyderabad on <br /> 15-17 November, 2024
+                At Wadi e Huda, Hyderabad on <br /> 15-17 November, 2024
             </p>
         </div>
     );
