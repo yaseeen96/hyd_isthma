@@ -7,8 +7,8 @@ import NotificationDetailPage from '../pages/Notification/NotificationDetailPage
 import Timeline from '../pages/programs/pages/timeline';
 import PDFContent from '../pages/programs/utils/pdfContent';
 import MapComponent from '../pages/maps/maps';
-import Otp from '../pages/authentication/Otp';
-import Login from '../pages/authentication/Login';
+import Otp from '../pages/Authentication/Otp';
+import Login from '../pages/Authentication/Login';
 import RegisterPage from '../pages/registration/registerPage';
 
 const ArrivalRegistrationPage = lazy(() => import('../pages/registration/subpages/arrivalRegistrationPage'));
