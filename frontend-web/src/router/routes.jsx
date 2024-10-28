@@ -7,12 +7,15 @@ import NotificationDetailPage from '../pages/Notification/NotificationDetailPage
 import Timeline from '../pages/programs/pages/timeline';
 import PDFContent from '../pages/programs/utils/pdfContent';
 import MapComponent from '../pages/maps/maps';
+import Otp from '../pages/authentication/Otp';
+import Login from '../pages/authentication/Login';
+import RegisterPage from '../pages/registration/registerPage';
 
 const ArrivalRegistrationPage = lazy(() => import('../pages/registration/subpages/arrivalRegistrationPage'));
-const Otp = lazy(() => import('../pages/authentication/Otp'));
+// const Otp = lazy(() => import('../pages/authentication/Otp'));
 
-const Login = lazy(() => import('../pages/authentication/Login'));
-const RegisterPage = lazy(() => import('../pages/registration/registerPage'));
+// const Login = lazy(() => import('../pages/authentication/Login'));
+// const RegisterPage = lazy(() => import('../pages/registration/registerPage'));
 
 export const ROUTES = {
     login: '/login',
