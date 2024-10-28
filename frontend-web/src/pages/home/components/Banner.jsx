@@ -13,7 +13,7 @@ const IjtemaBanner = () => {
             }}
         >
             {/* English Text */}
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-2">5th ALL India Ijtema-E-Arkan</h2>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-2">5th ALL India Ijtema-e-Arkan</h2>
             <h3 className="text-lg md:text-xl lg:text-2xl font-semibold mb-4">Jamaat-e-Islami Hind</h3>
 
             {/* Decorative Divider */}
