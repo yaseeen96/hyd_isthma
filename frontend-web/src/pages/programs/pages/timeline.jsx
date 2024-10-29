@@ -184,7 +184,6 @@ const Timeline = () => {
             </div>
 
             <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-4 text-primary">{translations[language].fixedSessions}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {fixed.length === 0 ? (
                         <p>{translations[language].noSessions}</p>
@@ -212,7 +211,6 @@ const Timeline = () => {
             </div>
 
             <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-4 text-sky-900">{translations[language].parallelSessions}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {parallel.length === 0 ? (
                         <p>{translations[language].noSessions}</p>
