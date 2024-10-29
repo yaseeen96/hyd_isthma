@@ -1,7 +1,7 @@
 const translations = {
     english: {
         back: 'Back',
-        title: 'Event Timeline',
+        title: 'Program Copy',
         selectLanguage: 'Select Language:',
         fixedSessions: 'Fixed Sessions',
         parallelSessions: 'Parallel Sessions',
@@ -16,7 +16,7 @@ const translations = {
     },
     urdu: {
         back: 'واپس',
-        title: 'ایونٹ کا ٹائم لائن',
+        title: 'پروگرام کاپی',
         selectLanguage: 'زبان منتخب کریں:',
         fixedSessions: 'مقررہ نشستیں',
         parallelSessions: 'متوازی نشستیں',
@@ -31,7 +31,7 @@ const translations = {
     },
     malyalam: {
         back: 'തിരിച്ചു',
-        title: 'പരിപാടി ടൈംലൈൻ',
+        title: 'പ്രോഗ്രാം കോപ്പി',
         selectLanguage: 'ഭാഷ തിരഞ്ഞെടുക്കുക:',
         fixedSessions: 'നിശ്ചിത സെഷനുകൾ',
         parallelSessions: 'സമാന്തര സെഷനുകൾ',
@@ -46,7 +46,7 @@ const translations = {
     },
     bengali: {
         back: 'ফিরে যান',
-        title: 'ইভেন্ট টাইমলাইন',
+        title: 'প্রোগ্রাম কপি',
         selectLanguage: 'ভাষা নির্বাচন করুন:',
         fixedSessions: 'নির্দিষ্ট সেশন',
         parallelSessions: 'সমান্তরাল সেশন',
@@ -61,7 +61,7 @@ const translations = {
     },
     tamil: {
         back: 'திரும்பு',
-        title: 'நிகழ்ச்சி காலவரிசை',
+        title: 'ப்ரோக்ராம் நகல்',
         selectLanguage: 'மொழியைத் தேர்ந்தெடுக்கவும்:',
         fixedSessions: 'நிரந்தர அமர்வுகள்',
         parallelSessions: 'இணை அமர்வுகள்',
@@ -76,7 +76,7 @@ const translations = {
     },
     kannada: {
         back: 'ಹಿಂತಿರುಗು',
-        title: 'ಕಾರ್ಯಕ್ರಮ ಕಾಲಾವಳಿ',
+        title: 'ಪ್ರೋಗ್ರಾಂ ಪ್ರತಿಕೆ',
         selectLanguage: 'ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ:',
         fixedSessions: 'ನಿರ್ದಿಷ್ಟ ಅಧಿವೇಶನಗಳು',
         parallelSessions: 'ಸಮಾಂತರ ಅಧಿವೇಶನಗಳು',

@@ -3,13 +3,17 @@ import { axiosAuthenticatedClient } from './axios_client';
 
 export const getProgramDetails = async (language) => {
     try {
-        const response = await axiosAuthenticatedClient.get(`programs/listPrograms?lang=${language}`, {
+        // Define the URL conditionally based on the language
+        const url = language.toLowerCase() === 'urdu' ? 'programs/listPrograms' : `programs/listPrograms?lang=${language}`;
+
+        const response = await axiosAuthenticatedClient.get(url, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem(localStorageConstant.token)}`,
                 'Content-Type': 'application/json',
                 accept: 'application/json',
             },
         });
+
         return response.data;
     } catch (error) {
         console.error(error);
