@@ -17,9 +17,9 @@
                             </div>
                         @endif
                         <h4 class="text-secondary font-weight-bold">1. Audience</h4>
-                        <div class="row">
+                        <div class="row">'
                             <div class="col-lg-12">
-                                <h5 class="my-3 text-md border-bottom py-1">Region</h5>
+                                <h6 class="my-3 font-weight-bold text-md border-bottom py-1">Region</h6>
                             </div>
                         </div>
                         <div class="row ml-2">
@@ -115,106 +115,36 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <h5 class="my-3 text-md  border-bottom py-1">Condition</h5>
+                        <div class="row border-bottom py-1">
+                            <div class="col-lg-1 flex">
+                                <h6 class="font-weight-bold mt-2">Condition </h6>
+                            </div>
+                            <div class="col-lg-3" style="display: flex;gap:2px;align-items: center">
+                                <select class="form-control select2bs4" name="filter_type" id="filter_type"
+                                    style="width: 100%;">
+                                    <option value=""> -- select Condition </option>
+                                    <option value="gender">Gender</option>
+                                    <option value="confirm_arrival">Registration Status</option>
+                                    <option value="arrival_date">Arrival Date</option>
+                                    <option value="departure_date">Departure Date</option>
+                                    <option value="email">Email ID</option>
+                                    <option value="dob">DOB</option>
+                                    <option value="arrival_mode">Arrival Mode</option>
+                                    <option value="departure_mode">Departure Mode</option>
+                                    <option value="arrival_mode_identifier">Arrival Vehicle Number</option>
+                                    <option value="departure_mode_identifier">Departure Vehicle Number</option>
+                                    <option value="hotel_required">Hotel Required</option>
+                                    <option value="sight_seeing_required">Sight Seeing Opted</option>
+                                    <option value="need_attendant">Need Special Care</option>
+                                    <option value="cot_or_bed">Sleep Mode</option>
+                                    <option value="year_of_rukniyat">Year of Rukniyat</option>
+                                </select>
+                                <span class="ml-2 cursor-pointer" onclick="addNewCondition()"><i
+                                        class="fas fa-plus text-primary bg-primary p-1 rounded-circle"></i></span>
                             </div>
                         </div>
-                        <div class="row ml-2">
-                            <div class="col-lg-6 px-3">
-                                <div class="form-group row">
-                                    <label for="gender">Gender</label>
-                                    <select class="form-control" id="gender" name="gender">
-                                        <option value=""> -- Select Gender -- </option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 px-3">
-                                <div class="form-group row">
-                                    <label for="gender">Registration</label>
-                                    <select class="form-control" id="reg_status" name="reg_status">
-                                        <option value=""> -- Select Option -- </option>
-                                        <option value="1">Registered</option>
-                                        <option value="0">Not Registered</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="row m-2">
-                            <div class="col-lg-3 px-3">
-                                <div class="form-group row">
-                                    <label for="gender">Hotel Required</label>
-                                    <select class="form-control" id="hotel_required" name="hotel_required">
-                                        <option value=""> -- Select Option -- </option>
-                                        <option value="yes">Yes</option>
-                                        <option value="no">No</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 px-3">
-                                <div class="form-group row">
-                                    <label for="gender">Sight Seeing</label>
-                                    <select class="form-control" id="sight_seeing" name="sight_seeing">
-                                        <option value=""> -- Select Option -- </option>
-                                        <option value="yes">Yes</option>
-                                        <option value="no">No</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row m-2">
-                            <div class="col-lg-12">
-                                <p class="text-md font-weight-bolder">Arrival Date</p>
-                            </div>
-                            <div class="col-lg-6 px-3">
-
-                                <div class="form-group">
-                                    <label for="arrival_date_condition">Condition</label>
-                                    <select class="form-control" id="arrival_date_condition"
-                                        name="arrival_date_condition">
-                                        <option value=""> -- Select Condition -- </option>
-                                        <option value="=">Equal</option>
-                                        <option value=">">Greater Than</option>
-                                        <option value="<">Less Than</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 px-3">
-                                <div class="form-group">
-                                    <label for="arrival_date_value">Value</label>
-                                    <input type="text" name="arrival_date_value" id="arrival_date_value"
-                                        class="form-control date_time" data-toggle="datetimepicker"
-                                        data-target="#date_time" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row m-2">
-                            <div class="col-lg-12">
-                                <p class="text-md font-weight-bolder">Departure Date</p>
-                            </div>
-                            <div class="col-lg-6 px-3">
-                                <div class="form-group">
-                                    <label for="departure_date_condition">Condition</label>
-                                    <select class="form-control" id="departure_date_condition"
-                                        name="departure_date_condition">
-                                        <option value=""> -- Select Condition -- </option>
-                                        <option value="=">Equal</option>
-                                        <option value=">">Greater Than</option>
-                                        <option value="<">Less Than</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 px-3">
-                                <div class="form-group">
-                                    <label for="departure_date_value">Value</label>
-                                    <input type="text" name="departure_date_value" id="departure_date_value"
-                                        class="form-control date_time" data-toggle="datetimepicker"
-                                        data-target="#date_time" />
-                                </div>
-                            </div>
+                        <div id="conditions_rows" class="mt-2">
+                            {{-- Empty DOM  --}}
                         </div>
                     </div>
                 </div>
@@ -311,6 +241,130 @@
                     ele.style.display = "block";
                 }
             }
+        }
+        const filteredKeys = [];
+
+        function addNewCondition() {
+
+            const filter_type = $('#filter_type').val();
+            $('#filter_type').val('').trigger('change');
+            if (!filter_type) {
+                return Toast.fire({
+                    icon: 'error',
+                    title: "Please Select Condition Type"
+                })
+            }
+            if (filteredKeys.includes(filter_type)) {
+                return Toast.fire({
+                    icon: 'error',
+                    title: "Condition Already Added"
+                })
+            }
+            filteredKeys.push(filter_type);
+            let dom = `<div class="row" id="${filter_type}">`;
+
+            dom += `<div class="col-lg-3 form-group">
+                                <input type="text" disabled class="form-control" value="${getInputLabel(filter_type)}" name="${filter_type}">
+                        </div>`;
+            dom += `<div class="col-lg-3 form-group">
+                            <select class="form-control" name="${filter_type}_condition" style="width: 100%;">
+                                <option value=""> -- select Condition </option>
+                                <option value="=">Equal (=)</option>
+                                <option value="!=">Not Equal (!=)</option>
+                                <option value=">">Greater Than (>) </option>
+                                <option value="<">Less Than (<) </option>
+                                <option value=">=">Greater Than or Equal (>=) </option>
+                                <option value="<=">Less Than or Equal (<=)</option>
+                            </select>
+                        </div>`;
+            dom += `<div class="col-lg-3 form-group">`;
+            const conditionValue = getConditionValue(filter_type);
+            if (typeof conditionValue == 'object') {
+                dom += getInput('select', conditionValue, filter_type);
+            } else {
+                dom += getInput(conditionValue, '', filter_type);
+            }
+            dom += `</div>`;
+            dom += `<div class="col-lg-1 form-group">
+                        <button type="button" class="btn btn-danger"
+                            onclick="removeCondition('${filter_type}')"><i class="fas fa-trash"></i></button>
+                    </div>`;
+            dom += '</div>';
+            $('#conditions_rows').append(dom);
+        }
+
+        function removeCondition(type) {
+            const index = filteredKeys.indexOf(type);
+            if (index > -1) {
+                filteredKeys.splice(index, 1);
+            }
+            const dom = document.getElementById(type);
+            dom.remove();
+        }
+
+        function getInput(type, value, key) {
+            switch (type) {
+                case 'select': {
+                    let options = `<option value=""> -- select value </option>`;
+                    options += Object.keys(value).map((key) =>
+                        `<option value="${key}">${value[key]}</option>`
+                    ).join('');
+                    return `<select class="form-control select2bs4" name="${key}_value" style="width: 100%;">${options}</select>`;
+                }
+                case 'date':
+                    return `<input type="date" class="form-control" name="${key}_value" id="${key}" >`;
+
+                default:
+                    return `<input type="text" class="form-control" name="${key}_value" value="${value}">`;
+            }
+
+        }
+
+        function getConditionValue(type) {
+            if (type == 'gender') {
+                return {
+                    Male: 'Male',
+                    Female: 'Female'
+                };
+            }
+            if (type == 'confirm_arrival') {
+                return {
+                    1: 'Confirmed',
+                    0: 'Not Confirmed'
+                }
+            }
+            if (type == 'arrival_mode' || type == 'departure_mode') {
+                // keep the key value pair same
+                return {
+                    BUS: 'BUS',
+                    TRAIN: 'Train',
+                    FLIGHT: 'Flight',
+                    SELF: 'Own Vehicle',
+                }
+            }
+            if (type == 'hotel_required' || type == 'sight_seeing_required' || type ==
+                'need_attendant' || type == 'cot_or_bed') {
+                return {
+                    Yes: 'Yes',
+                    No: 'No'
+                }
+            }
+
+            if (type == 'dob' || type == 'arrival_date' || type == 'departure_date') {
+                return 'date';
+            }
+
+            if (type == 'email', type == 'year_of_rukniyat') {
+                return 'text';
+            }
+        }
+
+        function getInputLabel(string) {
+            console.log(string);
+            return string
+                .split('_')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
         }
     </script>
 @endpush

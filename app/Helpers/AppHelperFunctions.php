@@ -12,4 +12,7 @@ class AppHelperFunctions {
     public static function getBadge($title, $color) {
         return '<span class="badge badge-'.$color.'">'.$title.'</span>';
     }
+    public static function isSetAndNotEmpty($variable) {
+        return isset($variable) && !empty($variable);
+    }
 }

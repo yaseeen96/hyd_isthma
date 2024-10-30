@@ -39,6 +39,6 @@ class Program extends Model
     }
     public function sessionRegistrations()
     {
-        return $this->hasMany(SessionRegistration::class);
+        return $this->hasMany(SessionRegistration::class, 'session_id', 'id');
     }
 }

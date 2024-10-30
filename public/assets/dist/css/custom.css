@@ -12,6 +12,9 @@
     width: 50% !important;
     background-color: rgba(255, 255, 255, 0.7);
 }
+.table-responsive {
+
+}
 .custom-table-head > thead > tr > th  {
     text-transform: uppercase !important;
     color: #7b7575a1;

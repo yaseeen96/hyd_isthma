@@ -383,7 +383,7 @@ class ProgramsController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         }
         $program = Program::find($id);
-        if($program->programRegistrations()->count() > 0) {
+        if($program->sessionRegistrations()->count() > 0) {
             return response()->json([
                 'message' => "Program can not be deleted as it is associated with registrations",
             ], Response::HTTP_BAD_REQUEST);
