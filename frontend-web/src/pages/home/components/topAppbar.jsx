@@ -8,7 +8,13 @@ const TopAppBar = ({ title, onLogout, showBackButton }) => {
     return (
         <div className="bg-white text-black h-16 flex items-center px-4">
             {showBackButton && (
-                <button onClick={() => navigate(-1)} className="text-black hover:text-gray-200 mr-4">
+                <button
+                    onClick={() => {
+                        localStorage.removeItem('token');
+                        window.location.reload();
+                    }}
+                    className="text-black hover:text-gray-200 mr-4"
+                >
                     <FiArrowLeft size={24} />
                 </button>
             )}
