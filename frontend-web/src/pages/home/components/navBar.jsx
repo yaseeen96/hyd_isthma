@@ -3,7 +3,7 @@ import { CgProfile } from 'react-icons/cg';
 import { useDarkMode } from '../../../utils/hooks/useDarkMode';
 import ProfileDropdown from './profile_drop_down';
 
-const StickyNavBar = () => {
+const StickyNavBar = ({ isLogoHidden }) => {
     const isDarkMode = useDarkMode();
     const navbarRef = useRef(null);
     const [isSticky, setIsSticky] = useState(false);
@@ -39,7 +39,7 @@ const StickyNavBar = () => {
                     </div>
                 ) : (
                     <>
-                        <img src={isDarkMode ? 'assets/images/auth/logo_app_white.png' : 'assets/images/auth/logo_app_black.png'} alt="Logo" />
+                        {isLogoHidden != true ? <img src={isDarkMode ? 'assets/images/auth/logo_app_white.png' : 'assets/images/auth/logo_app_black.png'} alt="Logo" /> : <div></div>}
                         {/* <button
                             onClick={() => {
                                 localStorage.removeItem('token');

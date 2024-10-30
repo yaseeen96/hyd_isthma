@@ -10,6 +10,8 @@ import MapComponent from '../pages/maps/maps';
 import Otp from '../pages/Authentication/Otp';
 import Login from '../pages/Authentication/Login';
 import RegisterPage from '../pages/registration/registerPage';
+import SupportPage from '../pages/home/subpages/Supportpage';
+import NotificationList from '../pages/home/subpages/NotificationPage';
 
 const ArrivalRegistrationPage = lazy(() => import('../pages/registration/subpages/arrivalRegistrationPage'));
 // const Otp = lazy(() => import('../pages/authentication/Otp'));
@@ -29,6 +31,8 @@ export const ROUTES = {
     notificationDetails: '/notification',
     timeline: '/timeline',
     maps: '/map',
+    notifications: '/notifications',
+    support: '/support',
 };
 
 const routes = [
@@ -92,6 +96,16 @@ const routes = [
     {
         path: ROUTES.maps,
         element: <MapComponent />,
+        layout: 'blank',
+    },
+    {
+        path: ROUTES.notifications,
+        element: <NotificationList />,
+        layout: 'blank',
+    },
+    {
+        path: ROUTES.support,
+        element: <SupportPage />,
         layout: 'blank',
     },
 ];
