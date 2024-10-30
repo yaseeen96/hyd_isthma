@@ -42,6 +42,16 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    <select class="form-control w-full" id="gender" onchange="setFilter('gender')">
+                                        <option value="">-Gender-</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -82,6 +92,7 @@
         function clearFilters() {
             $('#zone_name').val('').trigger('change');
             $('#division_name').val('').trigger('change');
+            $('#gender').val('').trigger('change');
             setFilter();
         }
 
@@ -98,6 +109,7 @@
                     data: function(d) {
                         d.zone_name = $("#zone_name").val()
                         d.division_name = $("#division_name").val()
+                        d.gender = $("#gender").val()
                     },
                     dataSrc: function(json) {
                         globalData = json.global_data;

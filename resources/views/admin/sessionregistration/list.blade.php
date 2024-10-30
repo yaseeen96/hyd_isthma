@@ -119,7 +119,7 @@
                 ],
             });
         })
-        $('table').on('click', '.programRegistration-delete', function(e) {
+        $('table').on('click', '.sessionRegistration-delete', function(e) {
             $.ajax({
                 url: $(this).data('href'),
                 method: 'DELETE',

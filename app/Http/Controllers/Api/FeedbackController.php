@@ -28,7 +28,7 @@ class FeedbackController extends Controller
         $feedback->program_id = $request->program_id;
         $feedback->member_id = $member->id;
         $feedback->datetime = $request->datetime;
-        $feedback->title = !empty($request->title) ?? 'NA';
+        $feedback->title = !empty($request->title) ? $request->title : 'NA';
         $feedback->description = $request->description;
         $feedback->datetime = now();
         $feedback->save();

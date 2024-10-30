@@ -384,13 +384,18 @@ class ReportsController extends Controller
                 $queryByValue = $divisionFilter;
                 $selector = 'unit_name';
             }
-
+            $gender = $request->gender;
             $query = Member::select(DB::raw("$selector , count(*) as total_arkans"))
                             ->filterByRegionType($queryBy, $queryByValue, $zoneFilter, $divisionFilter)
+                            ->where(function($query) use($gender) {
+                                    if(!empty($gender)) {
+                                        $query->where('gender', $gender);
+                                    }
+                            })
                             ->groupBy($selector)
                             ->orderBy($selector, 'asc');
 
-            $globalData = array_reduce($this->globalReportData($query, $selector, $zoneFilter, $divisionFilter), 'array_merge', []);
+            $globalData = array_reduce($this->globalReportData($query, $selector, $zoneFilter, $divisionFilter, $gender), 'array_merge', []);
             $globalData['region_column_header'] = str_replace('_', ' ', Str::upper($selector));
             return $dataTables->eloquent($query)
                 ->addColumn('region_name', function (Member $member) use ($selector, $queryByValue) {
@@ -410,7 +415,7 @@ class ReportsController extends Controller
         }
         return view('admin.reports.global-report');
     }
-    public function globalReportData($query, $selector, $zoneFilter = null, $divisionFilter = null) {
+    public function globalReportData($query, $selector, $zoneFilter = null, $divisionFilter = null, $gender = null) {
         $data = [];
         $distinctRegions = $query->get();
         $sum_total_attendees = 0;
@@ -420,28 +425,34 @@ class ReportsController extends Controller
         foreach ($distinctRegions as $region) {
             $totalArkans = $region->total_arkans;
 
-            $totalAttendees = Registration::with('member')->whereHas('member', function ($query) use ($region, $selector, $zoneFilter, $divisionFilter) {
+            $totalAttendees = Registration::with('member')->whereHas('member', function ($query) use ($region, $selector, $zoneFilter, $divisionFilter, $gender) {
                 $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter, $divisionFilter);
+                (!empty($gender)) ? $query->where('gender', $gender) : $query;
             })->confirmArrival(1)->count();
 
-            $totaNonAttendees = Registration::with('member')->whereHas('member', function ($query) use ($region, $selector, $zoneFilter, $divisionFilter) {
+            $totaNonAttendees = Registration::with('member')->whereHas('member', function ($query) use ($region, $selector, $zoneFilter, $divisionFilter, $gender) {
                 $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter, $divisionFilter);
+                (!empty($gender)) ? $query->where('gender', $gender) : $query;
             })->confirmArrival(0)->count();
 
-            $totalRegistered = Registration::with('member')->whereHas('member', function ($query) use ($region, $selector, $zoneFilter, $divisionFilter) {
+            $totalRegistered = Registration::with('member')->whereHas('member', function ($query) use ($region, $selector, $zoneFilter, $divisionFilter, $gender) {
                         $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter, $divisionFilter);
+                        (!empty($gender)) ? $query->where('gender', $gender) : $query;
                     })->count();
 
-            $totalMembersCompletedFamilyDtls = Registration::with('member')->whereHas('member', function($query) use($region, $selector, $zoneFilter, $divisionFilter) {
+            $totalMembersCompletedFamilyDtls = Registration::with('member')->whereHas('member', function($query) use($region, $selector, $zoneFilter, $divisionFilter, $gender) {
                         $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter, $zoneFilter, $divisionFilter);
+                        (!empty($gender)) ? $query->where('gender', $gender) : $query;
                     })->where('member_fees', '!=', null)->count();
 
-            $totalMembersPartialsHalfPayment = Registration::with('member')->whereHas('member', function($query) use($region, $selector, $zoneFilter, $divisionFilter) {
+            $totalMembersPartialsHalfPayment = Registration::with('member')->whereHas('member', function($query) use($region, $selector, $zoneFilter, $divisionFilter, $gender) {
                        $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter, $divisionFilter);
+                       (!empty($gender)) ? $query->where('gender', $gender) : $query;
                     })->where('fees_paid_to_ameer', '!=', null)->where('fees_paid_to_ameer', '>', 0)->count();
 
-            $totalCompletedLastStep = Member::where('year_of_rukniyat', '!=', null)->where(function($query) use($region, $selector, $zoneFilter, $divisionFilter) {
+            $totalCompletedLastStep = Member::where('year_of_rukniyat', '!=', null)->where(function($query) use($region, $selector, $zoneFilter, $divisionFilter, $gender) {
                        $query->filterByRegionType($selector, $region->{$selector}, $zoneFilter, $divisionFilter);
+                       (!empty($gender)) ? $query->where('gender', $gender) : $query;
                     })->count();
 
             $sortedData = [

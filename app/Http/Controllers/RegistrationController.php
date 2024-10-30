@@ -54,6 +54,9 @@ class RegistrationController extends Controller
                 if (isset($request->division_name)) {
                     $query->where('division_name', $request->division_name);
                 }
+                if(isset($request->gender) &&!empty($request->gender)) {
+                    $query->where('gender', $request->gender);
+                }
                 $query->filterByZone();
             })->select('registrations.*')->where(function ($query) use ($request) {
                 if (isset($request->confirm_arrival)) {

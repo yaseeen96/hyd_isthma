@@ -18,6 +18,9 @@
     letter-spacing: 1px;
     font-size: 12px;
 }
+#global-report-table {
+    margin-top: 50px !important;
+}
 .btn-purple {
     background-color: var(--color-purple);
     color: #fff;
@@ -38,11 +41,47 @@
 .cursor-pointer{
     cursor: pointer !important;
 }
+.div.dt-buttons{
+    margin: 20px !important;
+}
+.dataTables_info {
+    /* padding-top: .85em; */
+    position: absolute !important;
+    top: 35px !important;
+}
+div.dataTables_wrapper div.dataTables_paginate {
+    margin: 0;
+    white-space: nowrap;
+    text-align: right;
+    position: absolute;
+    top: 35px !important;
+    left: 240px;
+}
 @media only screen and (min-width: 280px) and (max-width: 1024px) {
     .login-box {
             width: 90% !important;
             padding: 10px !important;
         }
+}
+/* Media query for mobile screen */
+@media (min-width: 320px) and (max-width: 480px) {
+    div.dt-buttons {
+            position: initial;
+            margin-bottom: 90px !important;
+            margin-top: 20px !important;
+    }
+    .dataTables_info {
+        /* padding-top: .85em; */
+        position: absolute !important;
+        top: 90px !important;
+    }
+    div.dataTables_wrapper div.dataTables_paginate {
+        margin: 0;
+        white-space: nowrap;
+        text-align: right;
+        position: absolute;
+        top: 130px;
+    }
 }
 /* styling for datatable navigations */
 .page-item.active .page-link {

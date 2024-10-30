@@ -7,7 +7,7 @@
 $("#example_wrapper > .dt-buttons").appendTo("div.panel-heading");
 $.extend($.fn.dataTable.defaults, {
     "responsive": false,
-    "lengthChange": false,
+    "lengthChange": true,
     "autoWidth": true,
     pageLength: 100,
     processing: true,
@@ -42,6 +42,8 @@ $.extend($.fn.dataTable.defaults, {
     "lengthMenu": [100, 500, 1000, 2000, 5000, 10000, 20000],
     dom: 'Bfrtip',
 });
+
+
 
 function dtIndexCol() {
     return {

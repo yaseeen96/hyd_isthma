@@ -149,12 +149,12 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- Tmail Progam Copy --}}
+                            {{-- Tamil Progam Copy --}}
                             <div class="col-lg-12">
-                                <h6 class="font-weight-bold my-3 bg-purple px-2 py-2">Tmail</h6>
+                                <h6 class="font-weight-bold my-3 bg-purple px-2 py-2">Tamil</h6>
                             </div>
                             <div class="col-lg-6">
-                                {{-- Tmail Name --}}
+                                {{-- Tamil Name --}}
                                 <div class="form-group row">
                                     <div class="col-lg-12">
                                         <label for="tamil_name">Name</label>
