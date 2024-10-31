@@ -56,26 +56,26 @@ const SupportPage = () => {
                 </div>
 
                 {/* Feedback Button and Modal */}
-                <button
+                {/* <button
                     onClick={() => setIsModalOpen(true)}
                     className="bg-primary text-white py-2 px-6 rounded-lg font-semibold mt-4 hover:bg-primary-dark transition duration-200 w-full flex items-center justify-center space-x-2"
                 >
-                    <FiEdit size={20} /> {/* Feedback icon */}
+                    <FiEdit size={20} />
                     <span>Give Feedback</span>
-                </button>
+                </button> */}
 
                 {/* Feedback Modal Component */}
-                <FeedbackModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleFeedbackSubmit} />
+                {/* <FeedbackModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleFeedbackSubmit} /> */}
 
                 {/* WhatsApp Floating Action Button */}
-                <a
+                {/* <a
                     href="https://api.whatsapp.com/send?phone=917290010194&text=Assalamualaikum,%0A%0AI’m%20experiencing%20an%20issue%20with%20JIH%20Ijtema%202024.%0ACould%20someone%20assist%20me?%0A%0AIssue%20details:"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="fixed bottom-20 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition duration-200 flex items-center justify-center"
                 >
                     <FaWhatsapp className="w-8 h-8" />
-                </a>
+                </a> */}
             </div>
         </HomeLayout>
     );
