@@ -98,13 +98,14 @@ const SessionCard = forwardRef(
                                                 <h4 className="text-lg font-bold text-gray-800">{program.name}</h4>
                                                 <p className="text-gray-600 text-sm">{program.speaker.name}</p>
                                                 <div className="flex items-center space-x-2 text-gray-600 mt-1">
-                                                    <FiClock className="text-primary-500" />
-                                                    <p>{formatTime(program.datetime)}</p>
-                                                </div>
-                                                <div className="flex items-center space-x-2 text-gray-600 mt-1">
                                                     <FiUser className="text-primary-500" size={18} />
                                                     <p className="text-gray-600 mt-1">{program.speaker.bio}</p>
                                                 </div>
+                                                <div className="flex items-center space-x-2 text-gray-600 mt-1">
+                                                    <FiClock className="text-primary-500" />
+                                                    <p>{formatTime(program.datetime)}</p>
+                                                </div>
+
                                                 <span className={`inline-flex items-center justify-center px-3 py-1 mt-2 text-sm font-medium rounded-full ${getStatusColor(program.status)}`}>
                                                     {program.status}
                                                 </span>
