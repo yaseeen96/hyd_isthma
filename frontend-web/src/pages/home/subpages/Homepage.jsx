@@ -128,7 +128,14 @@ const HomePage = () => {
                         onSelect={onTimelineSelect}
                     />
                     <div className="h-[20px]"></div>
-                    <BigCard title={'Event Copy'} className={'h-[115px] bg-gray-200'} icon={<FiMap size={32} />} isCentered={true} textClassName={'text-center font-bold'} onSelect={onMapsSelect} />
+                    <BigCard
+                        title={'Ijtema Gah Map'}
+                        className={'h-[115px] bg-gray-200'}
+                        icon={<FiMap size={32} />}
+                        isCentered={true}
+                        textClassName={'text-center font-bold'}
+                        onSelect={onMapsSelect}
+                    />
                 </div>
                 <BigCard
                     title={'Notifications'}
