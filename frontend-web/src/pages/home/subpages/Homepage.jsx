@@ -177,7 +177,8 @@ const HomePage = () => {
                 >
                     <TileCard icon={<BiLogoWhatsapp size={32} />} title={'Whatsapp Us'} onClick={() => {}} />
                 </a>
-                <FeedbackModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleFeedbackSubmit} /> */}
+                */}
+                <FeedbackModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleFeedbackSubmit} />
             </div>
             {/* <BottomBar /> */}
         </div>
