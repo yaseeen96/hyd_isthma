@@ -166,7 +166,7 @@ class NotificationsController extends Controller
                 $q->where('email', $request->email_condition, $request->email_value);
                 array_push($criteria, ['email' => ['condition' => $request->email_condition, 'value' => $request->email_value]]);
             }
-        })->where('push_token', '!=', null);
+        })->where('push_token', '!=', null)->where('push_token', '!=', 'none');
 
 
         $result = $query->get()->pluck('push_token')->toArray();

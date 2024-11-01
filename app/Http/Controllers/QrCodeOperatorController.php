@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
+use League\Csv\Reader;
+use Illuminate\Support\Facades\DB;
 
 class QrCodeOperatorController extends Controller
 {
@@ -117,5 +119,56 @@ class QrCodeOperatorController extends Controller
         $user = User::where('id', $id)->first();
         $user->delete();
         return response()->noContent();
+    }
+
+    /**
+     * Bulk Upload
+    */
+    public function bulkUpload(Request $request)
+    {
+        // csv file type validation
+        $request->validate([
+            'qroperators_bulkupload' => 'required'
+        ]);
+        if($request->file('qroperators_bulkupload')->getClientOriginalExtension() != 'csv'){
+            return redirect()->route('qrOperators.index')->with('error', 'Only CSV files are allowed');
+        }
+        if ($request->hasFile('qroperators_bulkupload')) {
+            $csv = Reader::createFromPath($request->file('qroperators_bulkupload')->getPathname(), 'r');
+            $csv->setHeaderOffset(0);
+            $records = $csv->getRecords();
+            $headers = $csv->getHeader();
+            DB::beginTransaction();
+            if (empty($records)) {
+                return redirect()->route('qrOperators.index')->with('error', 'No records found in the uploaded file');
+            }
+            try {
+
+                foreach ($records as $offset => $record) {
+                    if (empty($record['name']) || empty($record['phone_number'])) {
+                        throw new \Exception('Name and Phone Number are required');
+                    }
+                    if (User::where('phone_number', $record['phone_number'])->exists()) {
+                        throw new \Exception("Phone Number {$record['phone_number']} already exists");
+                    }
+                    $user = new User();
+                    $user->name = $record['name'];
+                    $user->email = !empty($record['email']) ? $record['email'] : Str::uuid() . '@gmail.com';
+                    $user->password = bcrypt(Str::random(8));
+                    $user->phone_number = $record['phone_number'];
+                    $user->save();
+                    $user->assignRole('Qr Operator');
+                }
+                DB::commit();
+                return redirect()->route('qrOperators.index')->with('success', 'Qr Operators uploaded successfully');
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                if (!empty($e->getMessage())) {
+                    return redirect()->route('qrOperators.index')->with('error', $e->getMessage());
+                }
+                return redirect()->route('qrOperators.index')->with('error', 'An error occurred while uploading Qr Operators');
+            }
+        }
     }
 }

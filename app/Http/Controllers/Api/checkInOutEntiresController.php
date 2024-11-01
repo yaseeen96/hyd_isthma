@@ -29,15 +29,16 @@ class checkInOutEntiresController extends Controller
                     $userData = Member::where('user_number', $entry["id"])->get()->first();
                     $name = $userData->name;
                     $phone_number = $userData->phone;
+                    $gender = $userData->gender;
                 } else {
                     $userData = QrBatchRegistration::where('batch_id', $entry['id'])->get()->first();
                     $name = $userData->full_name;
                     $userData = $userData->phone_number;
+                    $gender = $userData->gender;
                 }
                 $zone_name = isset($userData) ?  $userData->zone_name : '';
                 $division_name = isset($userData) ?  $userData->division_name : '';
                 $unit_name = isset($userData) ? $userData->unit_name : '';
-                $gender = isset($userData) ?  $userData->gender : '';
                 $entryData = [
                     'batch_id' => $entry['id'],
                     'batch_type' => $entry['category'],

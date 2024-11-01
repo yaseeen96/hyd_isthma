@@ -269,15 +269,15 @@
                                     name="malyalam_transcript">{{ old('malyalam_transcript', $program->malyalam_transcript) }}</textarea>
                             </div>
 
-                            {{-- Bengali Progam Copy --}}
+                            {{-- Bangla Progam Copy --}}
                             <div class="col-lg-12">
-                                <h6 class="font-weight-bold my-3 bg-purple px-2 py-2">BENGALI</h6>
+                                <h6 class="font-weight-bold my-3 bg-purple px-2 py-2">Bangla</h6>
                             </div>
                             <div class="col-lg-6">
-                                {{-- Bengali Topic --}}
+                                {{-- Bangla Topic --}}
                                 <div class="form-group row">
                                     <div class="col-lg-12">
-                                        <label for="bengali_topic">Bengali Topic</label>
+                                        <label for="bengali_topic">Bangla Topic</label>
                                         <input type="text" class="form-control" name="bengali_topic"
                                             id="bengali_topic"
                                             value="{{ old('bengali_topic', $program->bengali_topic) }}">

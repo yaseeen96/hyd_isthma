@@ -164,20 +164,23 @@ class ProgramsController extends Controller
     {
         $data = $request->validate([
             'topic' => 'required',
-            'from_time' => 'required',
-            'to_time' => 'required',
-            'program_speaker_id' => 'required',
+            // 'from_time' => 'required',
+            // 'to_time' => 'required',
+            // 'program_speaker_id' => 'required',
             'session_theme_id' => 'required',
             'status' => 'required',
         ]);
         $sessionTheme = SessionTheme::find($request->session_theme_id);
-        if((strtotime($request->from_time) < strtotime($sessionTheme->from_time) ||
-            strtotime($request->from_time) > strtotime($sessionTheme->to_time))  ||
-            ((strtotime($request->to_time) > strtotime($sessionTheme->to_time)) ||
-             (strtotime($request->to_time) < strtotime($sessionTheme->from_time)))
-            ){
-            return redirect()->back()->with('warning', 'Program time should be within session theme time')->withInput();
+        if (!empty($request->from_time) && !empty($request->to_time)) {
+            if((strtotime($request->from_time) < strtotime($sessionTheme->from_time) ||
+                strtotime($request->from_time) > strtotime($sessionTheme->to_time))  ||
+                ((strtotime($request->to_time) > strtotime($sessionTheme->to_time)) ||
+                (strtotime($request->to_time) < strtotime($sessionTheme->from_time)))
+                ){
+                return redirect()->back()->with('warning', 'Program time should be within session theme time')->withInput();
+            }
         }
+
         $data['date'] = date('Y-m-d', strtotime($sessionTheme->date));
         $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
         $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');
@@ -291,20 +294,23 @@ class ProgramsController extends Controller
     {
         $data = $request->validate([
             'topic' => 'required',
-            'from_time' => 'required',
-            'to_time' => 'required',
-            'program_speaker_id' => 'required',
+            // 'from_time' => 'required',
+            // 'to_time' => 'required',
+            // 'program_speaker_id' => 'required',
             'session_theme_id' => 'required',
             'status' => 'required',
         ]);
         $sessionTheme = SessionTheme::find($request->session_theme_id);
-        if((strtotime($request->from_time) < strtotime($sessionTheme->from_time) ||
+        if (!empty($request->from_time) && !empty($request->to_time)) {
+            if((strtotime($request->from_time) < strtotime($sessionTheme->from_time) ||
             strtotime($request->from_time) > strtotime($sessionTheme->to_time))  ||
             ((strtotime($request->to_time) > strtotime($sessionTheme->to_time)) ||
              (strtotime($request->to_time) < strtotime($sessionTheme->from_time)))
             ){
             return redirect()->back()->with('warning', 'Program time should be within session theme time')->withInput();
+            }
         }
+
         $data['date'] = date('Y-m-d', strtotime($sessionTheme->date));
         $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
         $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'CheckInOut Entired'])
+@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'CheckInOut Entires'])
 @section('content')
     <x-content-wrapper>
         <x-slot:title>
@@ -14,9 +14,9 @@
                     <button class="btn btn-purple float-right mr-2" onclick="clearFilters()"> <i class="fas fa-filter "></i>
                         Clear
                         Filters</button>
-                    {{-- <a href="/percentageReport" class="btn btn-purple float-right mr-2" onclick="clearFilters()"> <i
-                            class="fas fa-file "></i>
-                        Percentage Report</a> --}}
+                    <a href="{{ route('checkInOutEntries.index') }}" class="btn btn-purple float-right mr-2"
+                        onclick="clearFilters()"> <i class="fas fa-file "></i>
+                        Main Report</a>
                 </div>
                 <div class="collapse container" id="regFilters">
                     <div class="card card-body shadow-none">
@@ -52,13 +52,6 @@
                                         placeholder="Select Unit Name" onchange="setFilter()">
                                         <option value="">All</option>
                                     </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Batch ID</label>
-                                    <input type="text" name="batch_id" id="batch_id" class="form-control"
-                                        placeholder="Enter Batch ID" onkeyup="setFilter()">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -165,7 +158,6 @@
             $('#from_time').val('');
             $('#to_time').val('');
             $('#qr_operator').val('').trigger('change');
-            $('#batch_id').val('');
             setFilter();
         }
         $('.date_time').on('change.datetimepicker', function() {
@@ -188,7 +180,6 @@
                     d.from_time = $("#from_time").val();
                     d.to_time = $("#to_time").val();
                     d.qr_operator = $("#qr_operator").val();
-                    d.batch_id = $("#batch_id").val();
                 }
             },
             columns: [

@@ -40,10 +40,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('audioProcessing', 'AudioProcessingController');
     // QR Code Operators
     Route::resource('qrOperators', 'QrCodeOperatorController');
+    Route::post('bulkUpload', 'QrCodeOperatorController@bulkUpload')->name('qrOperators.bulkUpload');
     // Check In Out Places
     Route::resource('checkInOutPlaces', 'CheckInOutPlaceController');
     // Check In Out Entries
     Route::resource('checkInOutEntries', 'CheckInOutEntiresController');
+    Route::get('percentageReport', 'CheckInOutEntiresController@percentageReport')->name('percentage-report');
     // Program Registration
     Route::resource('sessionRegistration', 'SessionRegistrationController');
     // QR Batch Registrations

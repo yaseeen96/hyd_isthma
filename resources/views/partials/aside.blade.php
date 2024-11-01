@@ -274,9 +274,9 @@
                           auth()->user()->can('View ScannEntires') ||
                           auth()->user()->id == 1)
                       <li
-                          class="nav-item  {{ str_contains('qrOperators checkInOutPlaces checkInOutEntries ', $urlsegment) ? 'menu-open' : '' }}">
+                          class="nav-item  {{ str_contains('qrOperators checkInOutPlaces checkInOutEntries percentage-report ', $urlsegment) ? 'menu-open' : '' }}">
                           <a href="#"
-                              class="nav-link  {{ str_contains('qrOperators checkInOutPlaces checkInOutEntries', $urlsegment) ? 'active' : '' }}">
+                              class="nav-link  {{ str_contains('qrOperators checkInOutPlaces checkInOutEntries percentage-report', $urlsegment) ? 'active' : '' }}">
                               <i class="nav-icon fas fa-qrcode"></i>
                               <p>
                                   QR Codes
@@ -315,7 +315,7 @@
                                       auth()->user()->id == 1)
                                   <li class="nav-item">
                                       <a href="{{ route('checkInOutEntries.index') }}"
-                                          class="nav-link {{ in_array(request()->route()->getName(), ['checkInOutEntries.index', 'checkInOutEntries.create', 'checkInOutEntries.edit', 'checkInOutEntries.delete']) ? 'active' : '' }}">
+                                          class="nav-link {{ in_array(request()->route()->getName(), ['checkInOutEntries.index', 'checkInOutEntries.create', 'checkInOutEntries.edit', 'checkInOutEntries.delete', 'percentage-report']) ? 'active' : '' }}">
                                           <i class="nav-icon fas fa-door-open"></i>
                                           <p>
                                               CheckInOut Entires
