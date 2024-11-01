@@ -89,57 +89,123 @@ class NotificationsController extends Controller
             // Registration Filters
             // hotel_required
             if( AppHelperFunctions::isSetAndNotEmpty($request->hotel_required_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->hotel_required_value) ) {
-                $q->where('hotel_required', $request->hotel_required_condition, $request->hotel_required_value);
+                if($request->hotel_required_condition == 'null') {
+                    $q->orWhereNull('hotel_required');
+                } else if($request->hotel_required_condition == 'not_null') {
+                    $q->orWhereNotNull('hotel_required');
+                } else {
+                    $q->where('hotel_required', $request->hotel_required_condition, $request->hotel_required_value);
+                }
                 array_push($criteria, ['hotel_required' => ['condition' => $request->hotel_required_condition, 'value' => $request->hotel_required_value]]);
             }
             // confirm_arrival
             if( AppHelperFunctions::isSetAndNotEmpty($request->confirm_arrival_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->confirm_arrival_value) ) {
-                $q->where('confirm_arrival', $request->confirm_arrival_condition, $request->confirm_arrival_value);
+                if($request->confirm_arrival_condition == 'null') {
+                    $q->orWhereNull('confirm_arrival');
+                } else if($request->confirm_arrival_condition == 'not_null') {
+                    $q->orWhereNotNull('confirm_arrival');
+                } else {
+                    $q->where('confirm_arrival', $request->confirm_arrival_condition, $request->confirm_arrival_value);
+                }
                 array_push($criteria, ['confirm_arrival' => ['condition' => $request->confirm_arrival_condition, 'value' => $request->confirm_arrival_value]]);
             }
             // arrival_date
             if( AppHelperFunctions::isSetAndNotEmpty($request->arrival_date_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->arrival_date_value) ) {
-                $q->whereDate(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(arrival_details, '$.datetime'))"), $request->arrival_date_condition, $request->arrival_date_value);
+                if($request->arrival_date_condition == 'null') {
+                    $q->orWhereNull(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(arrival_details, '$.datetime'))"));
+                } else if($request->arrival_date_condition == 'not_null') {
+                    $q->orWhereNotNull(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(arrival_details, '$.datetime'))"));
+                } else {
+                    $q->whereDate(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(arrival_details, '$.datetime'))"), $request->arrival_date_condition, $request->arrival_date_value);
+                }
                 array_push($criteria, ['arrival_date' => ['condition' => $request->arrival_date_condition, 'value' => $request->arrival_date_value]]);
             }
             // departure_date
             if( AppHelperFunctions::isSetAndNotEmpty($request->departure_date_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->departure_date_value) ) {
-                $q->whereDate(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(departure_details, '$.datetime'))"), $request->departure_date_condition, $request->departure_date_value);
+                if($request->departure_date_condition == 'null') {
+                    $q->orWhereNull(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(departure_details, '$.datetime'))"));
+                } else if($request->departure_date_condition == 'not_null') {
+                    $q->orWhereNotNull(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(departure_details, '$.datetime'))"));
+                } else {
+                    $q->whereDate(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(departure_details, '$.datetime'))"), $request->departure_date_condition, $request->departure_date_value);
+                }
                 array_push($criteria, ['departure_date' => ['condition' => $request->departure_date_condition, 'value' => $request->departure_date_value]]);
             }
             // arrival_mode
             if( AppHelperFunctions::isSetAndNotEmpty($request->arrival_mode_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->arrival_mode_value) ) {
-                $q->where('arrival_details->mode', $request->arrival_mode_condition, $request->arrival_mode_value);
+                if($request->arrival_mode_condition == 'null') {
+                    $q->orWhereNull('arrival_details->mode');
+                } else if($request->arrival_mode_condition == 'not_null') {
+                    $q->orWhereNotNull('arrival_details->mode');
+                } else {
+                    $q->where('arrival_details->mode', $request->arrival_mode_condition, $request->arrival_mode_value);
+                }
                 array_push($criteria, ['arrival_mode' => ['condition' => $request->arrival_mode_condition, 'value' => $request->arrival_mode_value]]);
             }
             // departure_mode
             if( AppHelperFunctions::isSetAndNotEmpty($request->departure_mode_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->departure_mode_value) ) {
-                $q->where('departure_details->mode', $request->departure_mode_condition, $request->departure_mode_value);
+                if($request->departure_mode_condition == 'null') {
+                    $q->orWhereNull('departure_details->mode');
+                } else if($request->departure_mode_condition == 'not_null') {
+                    $q->orWhereNotNull('departure_details->mode');
+                } else {
+                    $q->where('departure_details->mode', $request->departure_mode_condition, $request->departure_mode_value);
+                }
                 array_push($criteria, ['departure_mode' => ['condition' => $request->departure_mode_condition, 'value' => $request->departure_mode_value]]);
             }
             // arrival_mode_identifier
             if( AppHelperFunctions::isSetAndNotEmpty($request->arrival_mode_identifier_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->arrival_mode_identifier_value) ) {
-                $q->where('arrival_details->mode_identifier', $request->arrival_mode_identifier_condition, $request->arrival_mode_identifier_value);
+                if($request->arrival_mode_identifier_condition == 'null') {
+                    $q->orWhereNull('arrival_details->mode_identifier');
+                } else if($request->arrival_mode_identifier_condition == 'not_null') {
+                    $q->orWhereNotNull('arrival_details->mode_identifier');
+                } else {
+                    $q->where('arrival_details->mode_identifier', $request->arrival_mode_identifier_condition, $request->arrival_mode_identifier_value);
+                }
                 array_push($criteria, ['arrival_mode_identifier' => ['condition' => $request->arrival_mode_identifier_condition, 'value' => $request->arrival_mode_identifier_value]]);
             }
             // departure_mode_identifier
             if( AppHelperFunctions::isSetAndNotEmpty($request->departure_mode_identifier_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->departure_mode_identifier_value) ) {
-                $q->where('departure_details->mode_identifier', $request->departure_mode_identifier_condition, $request->departure_mode_identifier_value);
+                if($request->departure_mode_identifier_condition == 'null') {
+                    $q->orWhereNull('departure_details->mode_identifier');
+                } else if($request->departure_mode_identifier_condition == 'not_null') {
+                    $q->orWhereNotNull('departure_details->mode_identifier');
+                } else {
+                    $q->where('departure_details->mode_identifier', $request->departure_mode_identifier_condition, $request->departure_mode_identifier_value);
+                }
                 array_push($criteria, ['departure_mode_identifier' => ['condition' => $request->departure_mode_identifier_condition, 'value' => $request->departure_mode_identifier_value]]);
             }
             // sight_seeing_required
             if( AppHelperFunctions::isSetAndNotEmpty($request->sight_seeing_required_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->sight_seeing_required_value) ) {
-                $q->where('sight_seeing->required', $request->sight_seeing_required_condition, $request->sight_seeing_required_value);
+                if($request->sight_seeing_required_condition == 'null') {
+                    $q->orWhereNull('sight_seeing->required');
+                } else if($request->sight_seeing_required_condition == 'not_null') {
+                    $q->orWhereNotNull('sight_seeing->required');
+                } else {
+                    $q->where('sight_seeing->required', $request->sight_seeing_required_condition, $request->sight_seeing_required_value);
+                }
                 array_push($criteria, ['sight_seeing_required' => ['condition' => $request->sight_seeing_required_condition, 'value' => $request->sight_seeing_required_value]]);
             }
             // need_attendant
             if( AppHelperFunctions::isSetAndNotEmpty($request->need_attendant_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->need_attendant_value) ) {
-                $q->where('special_considerations->need_attendant', $request->need_attendant_condition, $request->need_attendant_value);
+                if($request->need_attendant_condition == 'null') {
+                    $q->orWhereNull('special_considerations->need_attendant');
+                } else if($request->need_attendant_condition == 'not_null') {
+                    $q->orWhereNotNull('special_considerations->need_attendant');
+                } else {
+                    $q->where('special_considerations->need_attendant', $request->need_attendant_condition, $request->need_attendant_value);
+                }
                 array_push($criteria, ['need_attendant' => ['condition' => $request->need_attendant_condition, 'value' => $request->need_attendant_value]]);
             }
             // cot_or_bed
             if( AppHelperFunctions::isSetAndNotEmpty($request->cot_or_bed_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->cot_or_bed_value) ) {
-                $q->where('special_considerations->cot_or_bed', $request->cot_or_bed_condition, $request->cot_or_bed_value);
+                if($request->cot_or_bed_condition == 'null') {
+                    $q->orWhereNull('special_considerations->cot_or_bed');
+                } else if($request->cot_or_bed_condition == 'not_null') {
+                    $q->orWhereNotNull('special_considerations->cot_or_bed');
+                } else {
+                    $q->where('special_considerations->cot_or_bed', $request->cot_or_bed_condition, $request->cot_or_bed_value);
+                }
                 array_push($criteria, ['cot_or_bed' => ['condition' => $request->cot_or_bed_condition, 'value' => $request->cot_or_bed_value]]);
             }
 
@@ -153,17 +219,38 @@ class NotificationsController extends Controller
             }
             // year_of_rukniyat
             if( AppHelperFunctions::isSetAndNotEmpty($request->year_of_rukniyat_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->year_of_rukniyat_value) ) {
-                $q->where('year_of_rukniyat', $request->year_of_rukniyat_condition, $request->year_of_rukniyat_value);
+                // want's to add null condition and is not null condition
+                if($request->year_of_rukniyat_condition == 'null') {
+                    $q->orWhereNull('year_of_rukniyat');
+                } else if($request->year_of_rukniyat_condition == 'not_null') {
+                    $q->orWhereNotNull('year_of_rukniyat');
+                } else {
+                    $q->where('year_of_rukniyat', $request->year_of_rukniyat_condition, $request->year_of_rukniyat_value);
+                }
                 array_push($criteria, ['year_of_rukniyat' => ['condition' => $request->year_of_rukniyat_condition, 'value' => $request->year_of_rukniyat_value]]);
             }
             // dob
             if( AppHelperFunctions::isSetAndNotEmpty($request->dob_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->dob_value) ) {
                 $q->date('dob', $request->dob_condition, $request->dob_value);
+                if($request->dob_condition == 'null') {
+                    $q->orWhereNull('dob');
+                } else if($request->dob_condition == 'not_null') {
+                    $q->orWhereNotNull('dob');
+                } else {
+                    $q->where('dob', $request->dob_condition, $request->dob_value);
+                }
                 array_push($criteria, ['dob' => ['condition' => $request->dob_condition, 'value' => $request->dob_value]]);
             }
             // email
             if( AppHelperFunctions::isSetAndNotEmpty($request->email_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->email_value) ) {
                 $q->where('email', $request->email_condition, $request->email_value);
+                if($request->email_condition == 'null') {
+                    $q->orWhereNull('email');
+                } else if($request->email_condition == 'not_null') {
+                    $q->orWhereNotNull('email');
+                } else {
+                    $q->where('email', $request->email_condition, $request->email_value);
+                }
                 array_push($criteria, ['email' => ['condition' => $request->email_condition, 'value' => $request->email_value]]);
             }
         })->where('push_token', '!=', null)->where('push_token', '!=', 'none');

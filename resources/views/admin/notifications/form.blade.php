@@ -275,6 +275,8 @@
                                 <option value="<">Less Than (<) </option>
                                 <option value=">=">Greater Than or Equal (>=) </option>
                                 <option value="<=">Less Than or Equal (<=)</option>
+                                <option value="null">Is Null</option>
+                                <option value="not_null">Is Not Null</option>
                             </select>
                         </div>`;
             dom += `<div class="col-lg-3 form-group">`;
