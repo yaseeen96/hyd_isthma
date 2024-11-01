@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
 use Plank\Mediable\Facades\MediaUploader;
 use Illuminate\Support\Str;
 
@@ -32,15 +33,24 @@ class ProgramsController extends Controller
                     return AppHelperFunctions::getGreenBadge(date('d-m-Y', strtotime($program->sessionTheme->date)));
                 })
                 ->editColumn('from_to_time', function (Program $program) {
+                    if(empty($program->from_time) || empty($program->to_time)) {
+                        return AppHelperFunctions::getRedBadge('Time not set');
+                    }
                     return AppHelperFunctions::getGreenBadge(date('h:i A', strtotime($program->from_time))) . '-' . AppHelperFunctions::getGreenBadge(date('h:i A', strtotime($program->to_time)));
                 })
                 ->addColumn('session_theme', function (Program $program) {
                     return '<a href="' . route('sessiontheme.edit', $program->session_theme_id) . '">' . $program->sessionTheme->theme_name . '</a>';
                 })
                 ->addColumn('speaker_name', function (Program $program) {
+                    if(empty($program->programSpeaker)) {
+                        return AppHelperFunctions::getBadge('No Speaker', 'danger');
+                    }
                     return '<a href="' . route('programSpeakers.edit', $program->program_speaker_id) . '">' . $program->programSpeaker->name . '</a>';
                 })
                 ->addColumn('speaker_image', function (Program $program) {
+                    if(empty($program->programSpeaker)) {
+                        return AppHelperFunctions::getBadge('No Speaker', 'danger');
+                    }
                     $imageSrc = !empty($program->programSpeaker->getMedia('speaker_image')->first()) ? $program->programSpeaker->getMedia('speaker_image')->first()->getUrl() : '/assets/img/no-image.png';
                     return '<img src="' . $imageSrc . '" width="80px" height="80px">';
                 })
@@ -170,6 +180,8 @@ class ProgramsController extends Controller
             'session_theme_id' => 'required',
             'status' => 'required',
         ]);
+        $data['form_time'] = $request->from_time;
+        $data['to_time'] = $request->to_time;
         $sessionTheme = SessionTheme::find($request->session_theme_id);
         if (!empty($request->from_time) && !empty($request->to_time)) {
             if((strtotime($request->from_time) < strtotime($sessionTheme->from_time) ||
@@ -180,10 +192,10 @@ class ProgramsController extends Controller
                 return redirect()->back()->with('warning', 'Program time should be within session theme time')->withInput();
             }
         }
-
+        $data['program_speaker_id'] = $request->program_speaker_id;
         $data['date'] = date('Y-m-d', strtotime($sessionTheme->date));
-        $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
-        $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');
+        $data['from_time'] = !empty($data['from_time']) ? Carbon::parse($data['from_time'])->format('H:i:s') : null;
+        $data['to_time'] = !empty($data['to_time']) ?  Carbon::parse($data['to_time'])->format('H:i:s') : null;
         $data['english_transcript'] = $request->english_transcript;
         $data['malyalam_transcript'] = $request->malyalam_transcript;
         $data['bengali_transcript'] = $request->bengali_transcript;
@@ -300,6 +312,8 @@ class ProgramsController extends Controller
             'session_theme_id' => 'required',
             'status' => 'required',
         ]);
+        $data['from_time'] = $request->from_time;
+        $data['to_time'] = $request->to_time;
         $sessionTheme = SessionTheme::find($request->session_theme_id);
         if (!empty($request->from_time) && !empty($request->to_time)) {
             if((strtotime($request->from_time) < strtotime($sessionTheme->from_time) ||
@@ -310,10 +324,10 @@ class ProgramsController extends Controller
             return redirect()->back()->with('warning', 'Program time should be within session theme time')->withInput();
             }
         }
-
+        $data['program_speaker_id'] = $request->program_speaker_id;
         $data['date'] = date('Y-m-d', strtotime($sessionTheme->date));
-        $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
-        $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');
+        $data['from_time'] = !empty($data['from_time']) ? Carbon::parse($data['from_time'])->format('H:i:s') : null;
+        $data['to_time'] = !empty($data['to_time']) ?  Carbon::parse($data['to_time'])->format('H:i:s') : null;
         $data['english_transcript'] = $request->english_transcript;
         $data['malyalam_transcript'] = $request->malyalam_transcript;
         $data['bengali_transcript'] = $request->bengali_transcript;
@@ -324,12 +338,12 @@ class ProgramsController extends Controller
         $data['bengali_topic'] = $request->bengali_topic;
         $data['tamil_topic'] = $request->tamil_topic;
         $data['kannada_topic'] = $request->kannada_topic;
+
         // English Language Program translation
         if($request->hasFile('english_translation')) {
             $media = MediaUploader::fromSource($request->file('english_translation'))->toDestination('public', "program_translations/english/$program->id")->useFilename(Str::uuid())->upload();
             $program->attachMedia($media, ['english_translation']);
         }
-
         // Malayalam Language Program translation
         if($request->hasFile('malyalam_translation')) {
             $uploadedImages = $program->getMedia('malyalam_translation')->first();
@@ -373,7 +387,6 @@ class ProgramsController extends Controller
             $media = MediaUploader::fromSource($request->file('kannada_translation'))->toDestination('public', "program_translations/kannada/$program->id")->useFilename(Str::uuid())->upload();
             $program->attachMedia($media, ['kannada_translation']);
         }
-
         $program->update($data);
         return redirect()->back()->with('success', 'Program updated successfully');
     }

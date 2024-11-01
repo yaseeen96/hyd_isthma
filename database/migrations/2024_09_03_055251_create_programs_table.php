@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('topic');
             $table->date('date');
-            $table->time('from_time');
-            $table->time('to_time');
+            $table->time('from_time')->nullable();
+            $table->time('to_time')->nullable();
             $table->foreignId('program_speaker_id')->constrained('program_speakers');
             $table->foreignId('session_theme_id')->constrained('session_themes');
             $table->string('status')->default('Yet to Start');
