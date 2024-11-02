@@ -34,16 +34,25 @@ class NotificationsController extends Controller
                     return !empty($docLink) ? '<span class="badge badge-primary text-white"><a target="_blank" href="' . $docLink . '"><i class="fas fa-eye text-white"></i></a></span>' : '';
                 })
                 ->addColumn('notificaiton_criteria', function (Notification $notification) {
-                    return '<p><b>Gender</b>: <span class="badge badge-primary">' . (ucfirst($notification->criteria['gender'] ) == null ? 'NA' : ucfirst($notification->criteria['gender'])) . '</span></p>'
-                           .'<p><b>Region-</b>' . ucfirst($notification->criteria['region_type']) . ' - <span class="badge badge-secondary">' . $notification->criteria['region_value'] . '</span></p>';
-                        //    .'<p><b>Registration Status</b>:<span class="badge badge-warning">' . ($notification->criteria['reg_status'] == 1 ? 'Confirmed' : 'Not Confirmed') . '</span></p>';
+                    return '<p><b>Gender</b>: <span class="badge badge-primary">' . (ucfirst($notification->criteria['gender']) == null ? 'NA' : ucfirst($notification->criteria['gender'])) . '</span></p>'
+                        . '<p><b>Region-</b>' . ucfirst($notification->criteria['region_type']) . ' - <span class="badge badge-secondary">' . $notification->criteria['region_value'] . '</span></p>';
+                    //    .'<p><b>Registration Status</b>:<span class="badge badge-warning">' . ($notification->criteria['reg_status'] == 1 ? 'Confirmed' : 'Not Confirmed') . '</span></p>';
+                })
+                ->editColumn('message', function (Notification $notification) {
+                    return '<p style="width: 100px; white-space: wrap;">' . $notification->message . '</p>';
+                })
+                ->editColumn('valid_tokens', function (Notification $notification) {
+                    return AppHelperFunctions::getGreenBadge( is_array($notification->valid_tokens) ? count($notification->valid_tokens) : 0);
+                })
+                ->editColumn('unknown_tokens', function (Notification $notification) {
+                    return AppHelperFunctions::getRedBadge(is_array($notification->unknown_tokens) ? count($notification->unknown_tokens) : 0);
                 })
                 ->addColumn('action', function (Notification $notification) use($user) {
                     $link = $user->id == 1 || $user->hasPermissionTo('Delete Notifications') ?
                             '<span data-href="'.route('notifications.destroy', $notification->id).'" class="btn-purple notification-delete btn"><i class="fas fa-trash"></i></span>'
                             : "";
                     return $link;
-                })->rawColumns(['image', 'document', 'notificaiton_criteria', 'action'] )->makeHidden(['criteria'])
+                })->rawColumns(['image', 'document', 'notificaiton_criteria', 'message', 'valid_tokens', 'unknown_tokens',  'action'] )->makeHidden(['criteria'])
                 ->addIndexColumn()
                 ->make(true);
 

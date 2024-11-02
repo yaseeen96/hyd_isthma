@@ -21,6 +21,8 @@
                 <th>Image</th>
                 <th>Document</th>
                 <th>Youtube Url</th>
+                <th>Successfully sent to</th>
+                <th>Failed to send</th>
                 <th>Actions</th>
             </x-table>
         </div>
@@ -51,6 +53,12 @@
                 },
                 {
                     data: 'youtube_url'
+                },
+                {
+                    data: 'valid_tokens',
+                },
+                {
+                    data: 'unknown_tokens',
                 },
                 {
                     data: 'action'
