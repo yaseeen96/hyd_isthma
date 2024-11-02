@@ -15,8 +15,8 @@
             </div>
             <x-table id="notifications-table">
                 <th>SL.No </th>
-                <th>Notification Criteria</th>
                 <th>Title</th>
+                <th>Notification Criteria</th>
                 <th>Message</th>
                 <th>Image</th>
                 <th>Document</th>
