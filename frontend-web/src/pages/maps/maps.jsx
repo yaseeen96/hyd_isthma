@@ -22,7 +22,7 @@ const MapComponent = () => {
 
             {/* Map iframe */}
             <iframe
-                src="https://www.google.com/maps/d/view?mid=1tqvYt_COGjE38bFrsggeDekVDO7x018&usp=sharing"
+                src="https://www.google.com/maps/d/embed?mid=1PfKx-RVGzuCzR7lYVkYnodqOrxmFbpQ&ehbc=2E312F&noprof=1"
                 title="Google Map"
                 className="w-full h-full border-0 pt-16" // Add padding top to avoid overlap with app bar
                 allowFullScreen
