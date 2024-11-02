@@ -12,6 +12,7 @@ import Login from '../pages/Authentication/Login';
 import RegisterPage from '../pages/registration/registerPage';
 import SupportPage from '../pages/home/subpages/Supportpage';
 import NotificationList from '../pages/home/subpages/NotificationPage';
+import PrayerTimes from '../pages/prayer/prayerTimes';
 
 const ArrivalRegistrationPage = lazy(() => import('../pages/registration/subpages/arrivalRegistrationPage'));
 // const Otp = lazy(() => import('../pages/authentication/Otp'));
@@ -33,6 +34,7 @@ export const ROUTES = {
     maps: '/map',
     notifications: '/notifications',
     support: '/support',
+    prayer: '/prayer',
 };
 
 const routes = [
@@ -106,6 +108,11 @@ const routes = [
     {
         path: ROUTES.support,
         element: <SupportPage />,
+        layout: 'blank',
+    },
+    {
+        path: ROUTES.prayer,
+        element: <PrayerTimes />,
         layout: 'blank',
     },
 ];

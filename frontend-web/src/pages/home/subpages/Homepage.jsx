@@ -20,6 +20,7 @@ import { MdFeedback, MdNotifications } from 'react-icons/md';
 import { BiLogoWhatsapp, BiSupport } from 'react-icons/bi';
 import FeedbackModal from '../components/feedbackModal';
 import BigCard from '../components/bigCard';
+import { FaMosque } from 'react-icons/fa';
 
 const HomePage = () => {
     const [isRefetching, setIsRefetching] = useState(false); // State to manage refetch indicator
@@ -75,6 +76,9 @@ const HomePage = () => {
     };
     const onSupportSelect = () => {
         navigate(ROUTES.support);
+    };
+    const onPrayerSelect = () => {
+        navigate(ROUTES.prayer);
     };
     const openWhatsApp = () => {
         window.open(
@@ -163,6 +167,7 @@ const HomePage = () => {
                     textClassName={'text-center font-bold'}
                     onSelect={openWhatsApp}
                 />
+                <BigCard title={'Prayer Times'} className={'h-[115px] bg-cyan-100'} icon={<FaMosque size={32} />} isCentered={true} textClassName={'text-center font-bold'} onSelect={onPrayerSelect} />
 
                 {/* <TileCard
                     icon={<RiProfileFill size={32} />}

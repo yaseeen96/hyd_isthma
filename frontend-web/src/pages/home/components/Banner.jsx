@@ -37,7 +37,7 @@ const IjtemaBanner = () => {
         //     </p>
         // </div>
         <div>
-            <img src="/assets/images/banner.jpeg" alt="" />
+            <img src="/assets/images/banner.png" className="w-full" alt="" />
         </div>
     );
 };
