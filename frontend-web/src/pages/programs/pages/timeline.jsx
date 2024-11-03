@@ -202,7 +202,9 @@ const Timeline = () => {
                 </div>
             </div>
 
-            <GeneratePDF data={data.data} title={translations[language].downloadPdf} />
+            {/* download pdf button - uncomment after done */}
+
+            {/* <GeneratePDF data={data.data} title={translations[language].downloadPdf} /> */}
 
             {isModalOpen && <ConfirmEnrollModal isOpen={isModalOpen} onConfirm={handleEnroll} onCancel={handleCancel} />}
             <FeedbackModal isOpen={isFeedbackModalOpen} onClose={() => setIsFeedbackModalOpen(false)} onSubmit={() => setIsFeedbackModalOpen(false)} programId={selectedProgramId} />
