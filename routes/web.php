@@ -1,6 +1,8 @@
 <?php
 
 use App\Helpers\SmsHelper;
+use App\Models\Member;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Http\Response;
@@ -81,4 +83,34 @@ Route::prefix('delete')->group(function () {
     Route::post('otpVerify', 'DeleteAccountController@otpVerify')->name('tmp-otpVerify');
     Route::post('loginWithOtp', 'DeleteAccountController@loginWithOtp')->name('tmp-loginWithOtp');
     Route::get('logout', 'DeleteAccountController@logout')->name('tmp-logout');
+});
+
+
+
+/**
+ * When you are a lazy developer you will always find short way's to get the work done.
+ * 😊😴
+*/
+
+
+Route::get('testing', function () {
+    // $id = 'dE6_IuEiQXuX6NgDy_cDKe:APA91bH7fhcp-5P5kSLIZIfDnerAbwINAqdlyUEkP5TLlieBK4tPFaRRtrG0n6Ax77SI4VkTJdVCyxN_VnxWRZ2y2dn-5NKNi4A74RNZyt_MPFNjZyTOG-a-WEg9s75o04dkUqS-_CDv';
+    // $newId = 'eagsq256RfOqvXkq0zombk:APA91bHmg2TXNDDj4XsVkJAwRF8hVFJfaVVJglmddCcNaWKYpiNIrGJPoI9YpqR_KGkiOUnwINYuVIMn2925novL0GInWVl5-qQROSQKM8L46A7ItkhB9iA';
+    // $notifications = Notification::whereJsonContains('valid_tokens', $id)->pluck('id')->toArray();
+    // foreach($notifications as $notification) {
+    //     $data = Notification::find($notification);
+    //     if(in_array($id, $data->valid_tokens )) {
+    //         $tokens = $data->valid_tokens;
+    //         echo count($tokens);
+    //         $tokens = array_diff($tokens, [$id]);
+    //         array_push($tokens, $newId);
+    //         $data->update(['valid_tokens' => $tokens]);
+    //         if(in_array($id, $tokens )) {
+    //             echo "yes";
+    //         }
+    //     }
+    // }
+    $notification = Notification::find(43);
+    $users_ids = Member::whereIn('push_token', $notification->valid_tokens)->pluck('id')->toArray();
+
 });
