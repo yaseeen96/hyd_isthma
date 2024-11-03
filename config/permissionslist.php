@@ -78,4 +78,9 @@ return [
         "Delete Feeback",
         "View Feeback",
 
+        "Create Faq",
+        "Edit Faq",
+        "Delete Faq",
+        "View Faq",
+
 ];

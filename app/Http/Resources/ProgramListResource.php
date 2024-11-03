@@ -25,7 +25,7 @@ class ProgramListResource extends JsonResource
             'datetime' => date('Y-m-d', strtotime($this->date)) . ' ' . Carbon::parse($this->from_time)->format('h:i A'). ' - ' . Carbon::parse($this->to_time)->format('h:i A'),
             'speaker_name' => !empty($this->program_speaker_id) ? ( empty($lang) ? $this->programSpeaker->name : $this->programSpeaker->{$lang . '_name'}) : null,
             'speaker_bio' => !empty($this->program_speaker_id) ? (empty($lang) ? $this->programSpeaker->bio : $this->programSpeaker->{$lang . '_bio'}) : null,
-            'speaker_image' => !empty($this->program_speaker_id) ? ($this->programSpeaker->getMedia('speaker_image')->first() ? $this->programSpeaker->getMedia('speaker_image')->first()->getUrl() : '/assets/img/no-image.png') : null,
+            'speaker_image' => !empty($this->program_speaker_id) ? ($this->programSpeaker->getMedia('speaker_image')->first() ? $this->programSpeaker->getMedia('speaker_image')->first()->getUrl() : env('APP_URL').'/assets/img/no-image.png') : null,
             'status' => $this->status,
             'translation' => empty($lang) ? null : ( $this->getMedia($lang.'_translation')->first() ? $this->getMedia($lang.'_translation')->first()->getUrl() : null),
             'transcript' => empty($lang) ? null : $this->{$lang.'_transcript'},

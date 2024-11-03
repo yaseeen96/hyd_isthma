@@ -45,13 +45,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('checkInOutPlaces', 'CheckInOutPlaceController');
     // Check In Out Entries
     Route::resource('checkInOutEntries', 'CheckInOutEntiresController');
-    Route::get('percentageReport', 'CheckInOutEntiresController@percentageReport')->name('percentage-report');
+    Route::get('positionReport', 'CheckInOutEntiresController@positionReport')->name('position-report');
     // Program Registration
     Route::resource('sessionRegistration', 'SessionRegistrationController');
     // QR Batch Registrations
     Route::resource('qrBatchRegistrations',  'QrBatchRegistrationController');
     // Feedback
     Route::resource('feedback', 'FeedbackController');
+    // FAQ
+    Route::resource('faq', controller: 'FaqController');
     // Reports
     Route::prefix('reports')->group(function () {
         Route::get('familyDetailsReport', 'ReportsController@familyDetailsReport')->name('family-details-report');

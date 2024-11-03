@@ -50,6 +50,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'feedback'], function () {
             Route::post('submitFeedback', 'FeedbackController@submitFeedback');
         });
+        Route::get('listFaqs', 'FaqController@listFaqs');
         Route::post('logout', 'AuthController@logout');
         Route::post('deleteAccount', 'AuthController@deleteAccount');
         Route::post('bulkUpload', 'checkInOutEntiresController@bulkUpload');

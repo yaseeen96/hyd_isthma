@@ -20,5 +20,6 @@ return [
     "Enrollments",
     "ScannEntires",
     "BatchesManagement",
-    "Feeback"
+    "Feeback",
+    "Faq"
 ];

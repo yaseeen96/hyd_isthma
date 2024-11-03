@@ -274,9 +274,9 @@
                           auth()->user()->can('View ScannEntires') ||
                           auth()->user()->id == 1)
                       <li
-                          class="nav-item  {{ str_contains('qrOperators checkInOutPlaces checkInOutEntries percentage-report ', $urlsegment) ? 'menu-open' : '' }}">
+                          class="nav-item  {{ str_contains('qrOperators checkInOutPlaces checkInOutEntries position-report ', $urlsegment) ? 'menu-open' : '' }}">
                           <a href="#"
-                              class="nav-link  {{ str_contains('qrOperators checkInOutPlaces checkInOutEntries percentage-report', $urlsegment) ? 'active' : '' }}">
+                              class="nav-link  {{ str_contains('qrOperators checkInOutPlaces checkInOutEntries position-report', $urlsegment) ? 'active' : '' }}">
                               <i class="nav-icon fas fa-qrcode"></i>
                               <p>
                                   QR Codes
@@ -315,7 +315,7 @@
                                       auth()->user()->id == 1)
                                   <li class="nav-item">
                                       <a href="{{ route('checkInOutEntries.index') }}"
-                                          class="nav-link {{ in_array(request()->route()->getName(), ['checkInOutEntries.index', 'checkInOutEntries.create', 'checkInOutEntries.edit', 'checkInOutEntries.delete', 'percentage-report']) ? 'active' : '' }}">
+                                          class="nav-link {{ in_array(request()->route()->getName(), ['checkInOutEntries.index', 'checkInOutEntries.create', 'checkInOutEntries.edit', 'checkInOutEntries.delete', 'position-report']) ? 'active' : '' }}">
                                           <i class="nav-icon fas fa-door-open"></i>
                                           <p>
                                               CheckInOut Entires
@@ -355,6 +355,21 @@
                               <i class="nav-icon fas fa-headphones"></i>
                               <p>
                                   Feedback
+                              </p>
+                          </a>
+                      </li>
+                  @endif
+                  @if (auth()->user()->can('View Faq') ||
+                          auth()->user()->can('Edit Faq') ||
+                          auth()->user()->can('Create Faq') ||
+                          auth()->user()->can('Delete Faq') ||
+                          auth()->user()->id == 1)
+                      <li class="nav-item">
+                          <a href="{{ route('faq.index') }}"
+                              class="nav-link {{ in_array(request()->route()->getName(), ['faq.index', 'faq.create', 'faq.edit', 'faq.delete']) ? 'active' : '' }}">
+                              <i class="nav-icon fas fa-question-circle"></i>
+                              <p>
+                                  FAQ
                               </p>
                           </a>
                       </li>

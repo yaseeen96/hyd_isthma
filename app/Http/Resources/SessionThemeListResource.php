@@ -25,6 +25,7 @@ class SessionThemeListResource extends JsonResource
             'theme_name' => empty($lang) ? $this->theme_name : $this->{$lang . '_theme_name'},
             'session_convener' => empty($lang) ? $this->convener : ($speaker_details ? $speaker_details->{$lang . '_name'} : ''),
             'convener_bio' => empty($lang) ? '' : ($speaker_details->bio ? $speaker_details->{$lang . '_bio'} : ''),
+            'convener_image' => !empty($speaker_details) ? ($speaker_details->getMedia('speaker_image')->first() ? $speaker_details->getMedia('speaker_image')->first()->getUrl() : env('APP_URL').'/assets/img/no-image.png') : null,
             'theme_type' => ucfirst($this->theme_type),
             'hall_name' => $this->hall_name,
             'datetime' => date('Y-m-d', strtotime($this->date)) . ' ' . Carbon::parse($this->from_time)->format('h:i A'). ' - ' . Carbon::parse($this->to_time)->format('h:i A'),
