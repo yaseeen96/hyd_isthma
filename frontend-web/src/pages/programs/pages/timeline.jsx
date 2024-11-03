@@ -13,23 +13,14 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GeneratePDF from '../utils/generatePdf';
 
-const groupEventsByTypeAndDate = (events, selectedDate) => {
-    return events.reduce(
-        (groupedEvents, event) => {
-            const eventDate = dayjs(event.datetime.split(' ')[0]).format('YYYY-MM-DD');
-            if (eventDate === selectedDate) {
-                if (event.theme_type === 'Fixed') {
-                    groupedEvents.fixed.push(event);
-                } else {
-                    groupedEvents.parallel.push(event);
-                }
-            }
-            return groupedEvents;
-        },
-        { fixed: [], parallel: [] }
-    );
+// Sort all sessions by full datetime, ensuring both date and time are considered
+const sortAllSessionsByDatetime = (events, selectedDate) => {
+    return events
+        .filter((event) => dayjs(event.datetime.split(' - ')[0]).format('YYYY-MM-DD') === selectedDate)
+        .sort((a, b) => dayjs(a.datetime.split(' - ')[0]).diff(dayjs(b.datetime.split(' - ')[0])));
 };
 
+// Generate calendar dates based on event dates
 const generateCalendarDates = (events) => {
     const dates = new Set(events.map((event) => dayjs(event.datetime.split(' ')[0]).format('YYYY-MM-DD')).filter((date) => ['2024-11-15', '2024-11-16', '2024-11-17'].includes(date)));
     if (dates.size === 0) {
@@ -41,6 +32,7 @@ const generateCalendarDates = (events) => {
     return Array.from({ length: 3 }, (_, i) => startDate.add(i, 'day').format('YYYY-MM-DD'));
 };
 
+// Process data to format each session and program
 const processData = (data) => {
     return data.map((session) => ({
         ...session,
@@ -133,7 +125,7 @@ const Timeline = () => {
     }
 
     const calendarDates = generateCalendarDates(processedData);
-    const { fixed, parallel } = groupEventsByTypeAndDate(processedData, selectedDate);
+    const sortedSessions = sortAllSessionsByDatetime(processedData, selectedDate);
 
     const openModal = (eventId) => {
         setSelectedEventId(eventId);
@@ -185,10 +177,10 @@ const Timeline = () => {
 
             <div className="mb-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {fixed.length === 0 ? (
+                    {sortedSessions.length === 0 ? (
                         <p>{translations[language].noSessions}</p>
                     ) : (
-                        fixed.map((event, index) => (
+                        sortedSessions.map((event, index) => (
                             <SessionCard
                                 ref={index === 0 ? scrollToRef : null}
                                 key={event.id}
@@ -198,34 +190,8 @@ const Timeline = () => {
                                 toggleSession={() => toggleSession(event.id)}
                                 openModal={openModal}
                                 handleFeedbackOpen={handleFeedbackOpen}
-                                backgroundColor="bg-purple-100"
-                                programColor="bg-purple-200"
-                                noProgramsAvailable={translations[language].noPrograms}
-                                enrollMessage={translations[language].enroll}
-                                giveFeedback={translations[language].giveFeedback}
-                                viewTranslation={translations[language].viewTranslation}
-                            />
-                        ))
-                    )}
-                </div>
-            </div>
-
-            <div className="mb-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {parallel.length === 0 ? (
-                        <p>{translations[language].noSessions}</p>
-                    ) : (
-                        parallel.map((event, index) => (
-                            <SessionCard
-                                key={event.id}
-                                session={event}
-                                index={index}
-                                expandedSessions={expandedSessions}
-                                toggleSession={() => toggleSession(event.id)}
-                                openModal={openModal}
-                                handleFeedbackOpen={handleFeedbackOpen}
-                                backgroundColor="bg-sky-100"
-                                programColor="bg-sky-200"
+                                backgroundColor={event.theme_type === 'Fixed' ? 'bg-purple-100' : 'bg-sky-100'}
+                                programColor={event.theme_type === 'Fixed' ? 'bg-purple-200' : 'bg-sky-200'}
                                 noProgramsAvailable={translations[language].noPrograms}
                                 enrollMessage={translations[language].enroll}
                                 giveFeedback={translations[language].giveFeedback}
@@ -239,8 +205,6 @@ const Timeline = () => {
             <GeneratePDF data={data.data} title={translations[language].downloadPdf} />
 
             {isModalOpen && <ConfirmEnrollModal isOpen={isModalOpen} onConfirm={handleEnroll} onCancel={handleCancel} />}
-
-            {/* Feedback Modal */}
             <FeedbackModal isOpen={isFeedbackModalOpen} onClose={() => setIsFeedbackModalOpen(false)} onSubmit={() => setIsFeedbackModalOpen(false)} programId={selectedProgramId} />
         </div>
     );
