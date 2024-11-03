@@ -62,7 +62,13 @@ const SessionCard = forwardRef(
                         {/* Convener Details */}
                         <div className="mt-4 text-gray-600">
                             <div className="flex items-center space-x-2 mb-2 font-medium">
-                                <FiUser className="text-primary-500" />
+                                {/* <FiUser className="text-primary-500" /> */}
+                                {session.convener_image ? (
+                                    <img src={session.convener_image} alt={session.convener_image} className="w-12 h-12 rounded-full" />
+                                ) : (
+                                    // <FiUser className="text-primary-500 w-12 h-12" />
+                                    <FiUser className="text-primary-500" />
+                                )}
                                 <p>{session.session_convener ?? ''}</p>
                             </div>
                             <p className="text-gray-500">{session.convener_bio}</p>
@@ -99,6 +105,7 @@ const SessionCard = forwardRef(
                                                 <p className="text-gray-600 text-sm">{program.speaker.name}</p>
                                                 <div className="flex items-center space-x-2 text-gray-600 mt-1">
                                                     <FiUser className="text-primary-500" size={18} />
+
                                                     <p className="text-gray-600 mt-1">{program.speaker.bio}</p>
                                                 </div>
                                                 <div className="flex items-center space-x-2 text-gray-600 mt-1">
