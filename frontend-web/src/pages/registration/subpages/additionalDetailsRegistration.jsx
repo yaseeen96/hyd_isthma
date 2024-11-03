@@ -153,11 +153,11 @@ const AdditionalDetailsRegistration = () => {
                                 <label>Provide your exact date and time of arrival to Hyderabad. Ijtema to begin on 15th Nov Morning</label>
                                 <DatePicker
                                     wrapperClassName="w-full"
-                                    selected={values.arrival_details.datetime ? new Date(values.arrival_details.datetime) : new Date(2024, 11, 1)}
+                                    selected={values.arrival_details.datetime ? new Date(values.arrival_details.datetime) : new Date(2024, 10, 1)}
                                     onChange={(date) => setFieldValue('arrival_details.datetime', date)}
                                     showTimeSelect
                                     timeIntervals={15} // Set time intervals to 15 minutes
-                                    startDate={new Date(2024, 11, 1)}
+                                    startDate={new Date(2024, 10, 1)}
                                     dateFormat="Pp"
                                     className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
                                 />
@@ -227,9 +227,9 @@ const AdditionalDetailsRegistration = () => {
                             <div className="w-full mb-4">
                                 <label>Provide your exact date and time of departure from Hyderabad. Ijtema to end on 17th Nov evening.</label>
                                 <DatePicker
-                                    startDate={new Date(2024, 11, 1)}
+                                    startDate={new Date(2024, 10, 1)}
                                     wrapperClassName="w-full"
-                                    selected={values.departure_details.datetime ? new Date(values.departure_details.datetime) : new Date(2024, 11, 1)}
+                                    selected={values.departure_details.datetime ? new Date(values.departure_details.datetime) : new Date(2024, 10, 1)}
                                     onChange={(date) => setFieldValue('departure_details.datetime', date)}
                                     showTimeSelect
                                     timeIntervals={15} // Set time intervals to 15 minutes
