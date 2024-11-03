@@ -303,6 +303,8 @@ class NotificationsController extends Controller
             'ytUrl' => $ytUrl,
             'id' => $notification->id
         ]);
+        $users_ids = Member::whereIn('push_token', $notificationData['valid_tokens'])->pluck('id')->toArray();
+        $notificationData['member_ids'] = $users_ids;
         $notification->update($notificationData);
         return back()->with('success', 'Notification Send Successfully');
     }

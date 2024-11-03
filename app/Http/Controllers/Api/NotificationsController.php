@@ -15,11 +15,8 @@ class NotificationsController extends Controller
     public function listNotifications()
     {
         $user = Member::find(auth()->user()->id);
-        $notifications = Notification::whereRaw("JSON_SEARCH(valid_tokens, 'all', ?) IS NOT NULL", [$user->push_token])->get();
-        $filteredNotifications = ListNotificationsResource::collection($notifications)
-        ->filter(function ($notification) {
-            return !empty($notification->toArray(request()));
-        })->values();
+        $notifications = Notification::whereJsonContains('member_ids', $user->id)->get();
+        $filteredNotifications = ListNotificationsResource::collection($notifications);
         return response()->json([
             'status' => 'success',
             'data' => $filteredNotifications,
