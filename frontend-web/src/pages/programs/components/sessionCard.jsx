@@ -63,7 +63,7 @@ const SessionCard = forwardRef(
                         <div className="mt-4 text-gray-600">
                             <div className="flex items-center space-x-2 mb-2 font-medium">
                                 <FiUser className="text-primary-500" />
-                                <p>{session.session_convener}</p>
+                                <p>{session.session_convener ?? ''}</p>
                             </div>
                             <p className="text-gray-500">{session.convener_bio}</p>
                         </div>
@@ -139,7 +139,8 @@ const SessionCard = forwardRef(
                                     );
                                 })
                             ) : (
-                                <p className="mt-4">{noProgramsAvailable}</p>
+                                // <p className="mt-4">{noProgramsAvailable}</p>
+                                <div></div>
                             )}
                         </div>
                     </div>
