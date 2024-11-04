@@ -1,7 +1,10 @@
 import React from 'react';
-import { FaMosque } from 'react-icons/fa';
+import { FaMosque, FaArrowLeft } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const PrayerTimes = () => {
+    const navigate = useNavigate();
+
     const dayOneTimings = [
         { prayer: 'Fajr', startTime: '5:15 AM', congregationalTime: '5:45 AM' },
         { prayer: 'Friday (Khutbah)', startTime: '12:30 PM', congregationalTime: '1:00 PM' },
@@ -34,6 +37,12 @@ const PrayerTimes = () => {
 
     return (
         <div className="bg-gradient-to-r from-blue-100 via-blue-200 to-blue-300 p-6 rounded-lg shadow-md max-w-md mx-auto ">
+            {/* Back Button */}
+            <button onClick={() => navigate(-1)} className="flex items-center text-primary font-semibold mb-4">
+                <FaArrowLeft className="mr-2" />
+                Back
+            </button>
+
             <h2 className="text-3xl font-bold text-primary mb-6 text-center">Prayer Times</h2>
 
             {/* Day 1 Section */}

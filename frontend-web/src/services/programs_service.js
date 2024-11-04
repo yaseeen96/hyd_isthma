@@ -67,3 +67,22 @@ export const submitFeedback = async (feedbackType, title, description, programId
         return error.response.data;
     }
 };
+
+export const getFAQs = async () => {
+    try {
+        // Define the URL conditionally based on the language
+        const url = `programs/listFaqs`;
+
+        const response = await axiosAuthenticatedClient.get(url, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem(localStorageConstant.token)}`,
+                'Content-Type': 'application/json',
+                accept: 'application/json',
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
