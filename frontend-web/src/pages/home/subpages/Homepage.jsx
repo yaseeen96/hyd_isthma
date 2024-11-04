@@ -106,7 +106,7 @@ const HomePage = () => {
 
     return (
         // <HomeLayout>
-        <div className="bg-purple-50 h-screen">
+        <div className="bg-purple-50 min-h-screen">
             <TopAppBar title={'Home'} />
             <IjtemaBanner />
             {/* <ActionCard
