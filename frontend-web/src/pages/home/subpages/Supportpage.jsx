@@ -1,9 +1,25 @@
+import React, { useState } from 'react';
 import HomeLayout from '../layout/Homelayout';
+import { FiArrowLeft, FiEdit } from 'react-icons/fi';
+import FeedbackModal from '../components/feedbackModal';
+import { useNavigate } from 'react-router-dom';
+import { FaWhatsapp } from 'react-icons/fa';
 
 const SupportPage = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const handleFeedbackSubmit = (feedback) => {
+        console.log('Feedback submitted:', feedback);
+        setIsModalOpen(false);
+    };
+
     return (
         <HomeLayout>
-            <div className="w-full flex flex-col justify-center items-center">
+            <div className="w-full flex flex-col justify-center items-center p-4">
+                {/* Back button for navigation */}
+
+                {/* Email Us Section */}
                 <div className="p-4 rounded-lg bg-gray-50 md:p-6 dark:bg-gray-800 border border-gray-100 w-full my-2">
                     <span className="inline-block p-3 text-primary rounded-lg bg-blue-100/80 dark:bg-gray-700">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
@@ -14,12 +30,14 @@ const SupportPage = () => {
                             />
                         </svg>
                     </span>
-                    <h2 className="mt-4 text-base font-medium text-gray-800 dark:text-white">Chat to Support</h2>
-                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Chat with our friendly team.</p>
-                    <a href="mailto:aiia@jih.org.in">
-                        <p className="mt-2 text-sm text-primary dark:text-primary">aiia@jih.org.in</p>
+                    <h2 className="mt-4 text-base font-medium text-gray-800 dark:text-white">Email Us</h2>
+                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Talk with our friendly team.</p>
+                    <a href="mailto:aiia@jih.org.in" className="mt-2 text-sm text-primary dark:text-primary">
+                        aiia@jih.org.in
                     </a>
                 </div>
+
+                {/* Call for Support Section */}
                 <div className="p-4 rounded-lg bg-gray-50 md:p-6 dark:bg-gray-800 border border-gray-100 w-full my-2">
                     <span className="inline-block p-3 text-primary rounded-lg bg-blue-100/80 dark:bg-gray-700">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
@@ -32,16 +50,32 @@ const SupportPage = () => {
                     </span>
                     <h2 className="mt-4 text-base font-medium text-gray-800 dark:text-white">Call for Support</h2>
                     <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Speak to our friendly team.</p>
-                    <a href="tel:+919319404079">
-                        <p className="mt-2 text-sm text-primary dark:text-primary">+91 89202 21894</p>
-                    </a>
-                    <a href="tel:+919849671884">
-                        <p className="mt-2 text-sm text-primary dark:text-primary">+91 98496 71884</p>
-                    </a>
-                    <a href="tel:+919700037063">
-                        <p className="mt-2 text-sm text-primary dark:text-primary">+91 97000 37063</p>
+                    <a href="tel:+919319404079" className="mt-2 text-sm text-primary dark:text-primary">
+                        +91 89202 21894
                     </a>
                 </div>
+
+                {/* Feedback Button and Modal */}
+                {/* <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="bg-primary text-white py-2 px-6 rounded-lg font-semibold mt-4 hover:bg-primary-dark transition duration-200 w-full flex items-center justify-center space-x-2"
+                >
+                    <FiEdit size={20} />
+                    <span>Give Feedback</span>
+                </button> */}
+
+                {/* Feedback Modal Component */}
+                {/* <FeedbackModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleFeedbackSubmit} /> */}
+
+                {/* WhatsApp Floating Action Button */}
+                {/* <a
+                    href="https://api.whatsapp.com/send?phone=917290010194&text=Assalamualaikum,%0A%0AI’m%20experiencing%20an%20issue%20with%20JIH%20Ijtema%202024.%0ACould%20someone%20assist%20me?%0A%0AIssue%20details:"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="fixed bottom-20 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition duration-200 flex items-center justify-center"
+                >
+                    <FaWhatsapp className="w-8 h-8" />
+                </a> */}
             </div>
         </HomeLayout>
     );

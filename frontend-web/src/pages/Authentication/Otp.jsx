@@ -1,15 +1,15 @@
-import AuthLayout from './Layout/AuthLayout';
-import IconPhone from '../../components/Icon/IconPhone';
+import AuthLayout from './Layout/AuthLayout.jsx';
+import IconPhone from '../../components/Icon/IconPhone.jsx';
 import { useNavigate } from 'react-router-dom';
-import { verifyOtpService } from '../../services/login_service';
+import { verifyOtpService } from '../../services/login_service.js';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { userStateAtom } from '../../store/atoms/userStateAtom';
+import { userStateAtom } from '../../store/atoms/userStateAtom.js';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { localStorageConstant } from '../../utils/constants/localStorageConstants';
-import { ROUTES } from '../../router/routes';
+import { localStorageConstant } from '../../utils/constants/localStorageConstants.js';
+import { ROUTES } from '../../router/routes.jsx';
 
-import { isUserLoggedIn } from '../../services/check_token_validity_service';
+import { isUserLoggedIn } from '../../services/check_token_validity_service.js';
 
 const Otp = () => {
     const navigate = useNavigate();

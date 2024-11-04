@@ -9,6 +9,7 @@ import { getRegistrationDetails } from '../../services/registration_service';
 import LoadingComponent from '../../components/common/loadingComponent';
 import { useSetRecoilState } from 'recoil';
 import { registrationDetailsAtom } from '../../store/atoms/registrationDetailsAtom';
+import { FiArrowLeft } from 'react-icons/fi'; // Import the back arrow icon
 
 const RegisterPage = () => {
     const setRegistrationDetails = useSetRecoilState(registrationDetailsAtom);
@@ -103,6 +104,14 @@ const RegisterPage = () => {
 
     return (
         <div className="h-screen flex flex-col items-center justify-start p-6 bg-gray-50 dark:bg-gray-900">
+            {/* Back Button */}
+            <button
+                onClick={() => navigate(-1)} // Go back to the previous page
+                className="flex self-start  text-primary mb-4"
+            >
+                <FiArrowLeft className="mr-2" size={24} />
+                <span className="text-lg font-semibold">Back</span>
+            </button>
             <div className="flex justify-between items-center w-full max-w-3xl mb-2">
                 <h2 className="text-2xl font-bold dark:text-white">Welcome to the Registration Page</h2>
                 {/* Refresh Button */}

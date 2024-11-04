@@ -4,12 +4,22 @@ import FamilyRegistrationPage from '../pages/registration/subpages/familyRegistr
 import FinancialRegistration from '../pages/registration/subpages/financialRegistration';
 import AdditionalDetailsRegistration from '../pages/registration/subpages/additionalDetailsRegistration';
 import NotificationDetailPage from '../pages/Notification/NotificationDetailPage';
+import Timeline from '../pages/programs/pages/timeline';
+import PDFContent from '../pages/programs/utils/pdfContent';
+import MapComponent from '../pages/maps/maps';
+import Otp from '../pages/Authentication/Otp';
+import Login from '../pages/Authentication/Login';
+import RegisterPage from '../pages/registration/registerPage';
+import SupportPage from '../pages/home/subpages/Supportpage';
+import NotificationList from '../pages/home/subpages/NotificationPage';
+import PrayerTimes from '../pages/prayer/prayerTimes';
+import FAQAccordion from '../pages/faq/faqAccordion';
 
 const ArrivalRegistrationPage = lazy(() => import('../pages/registration/subpages/arrivalRegistrationPage'));
-const Otp = lazy(() => import('../pages/Authentication/Otp'));
+// const Otp = lazy(() => import('../pages/authentication/Otp'));
 
-const Login = lazy(() => import('../pages/Authentication/Login'));
-const RegisterPage = lazy(() => import('../pages/registration/registerPage'));
+// const Login = lazy(() => import('../pages/authentication/Login'));
+// const RegisterPage = lazy(() => import('../pages/registration/registerPage'));
 
 export const ROUTES = {
     login: '/login',
@@ -21,6 +31,12 @@ export const ROUTES = {
     financialRegistration: '/home/register/finance',
     additionalRegistration: '/home/register/additional',
     notificationDetails: '/notification',
+    timeline: '/timeline',
+    maps: '/map',
+    notifications: '/notifications',
+    support: '/support',
+    prayer: '/prayer',
+    faq: '/faq',
 };
 
 const routes = [
@@ -28,6 +44,7 @@ const routes = [
         path: '/',
         layout: 'blank',
     },
+
     // Authentication
     {
         path: ROUTES.login,
@@ -73,6 +90,36 @@ const routes = [
     {
         path: ROUTES.notificationDetails,
         element: <NotificationDetailPage />,
+        layout: 'blank',
+    },
+    {
+        path: ROUTES.timeline,
+        element: <Timeline />,
+        layout: 'blank',
+    },
+    {
+        path: ROUTES.maps,
+        element: <MapComponent />,
+        layout: 'blank',
+    },
+    {
+        path: ROUTES.notifications,
+        element: <NotificationList />,
+        layout: 'blank',
+    },
+    {
+        path: ROUTES.support,
+        element: <SupportPage />,
+        layout: 'blank',
+    },
+    {
+        path: ROUTES.prayer,
+        element: <PrayerTimes />,
+        layout: 'blank',
+    },
+    {
+        path: ROUTES.faq,
+        element: <FAQAccordion />,
         layout: 'blank',
     },
 ];
