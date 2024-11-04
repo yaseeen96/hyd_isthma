@@ -33,7 +33,7 @@ const SessionCard = forwardRef(
                 <div className="flex justify-between items-center cursor-pointer" onClick={() => toggleSession(session.id)}>
                     <div className="flex flex-col">
                         <h3 className="text-lg font-bold text-gray-800">{session.theme_name}</h3>
-                        {program.datetime && (
+                        {session.datetime && (
                             <div className="flex items-center space-x-2 text-gray-500 mt-1">
                                 <FiClock className="text-primary-500" />
                                 <p>{formatTime(session.datetime)}</p>
@@ -112,10 +112,12 @@ const SessionCard = forwardRef(
 
                                                     <p className="text-gray-600 mt-1">{program.speaker.bio}</p>
                                                 </div>
-                                                <div className="flex items-center space-x-2 text-gray-600 mt-1">
-                                                    <FiClock className="text-primary-500" />
-                                                    <p>{formatTime(program.datetime)}</p>
-                                                </div>
+                                                {program.datetime && (
+                                                    <div className="flex items-center space-x-2 text-gray-600 mt-1">
+                                                        <FiClock className="text-primary-500" />
+                                                        <p>{formatTime(program.datetime)}</p>
+                                                    </div>
+                                                )}
 
                                                 <span className={`inline-flex items-center justify-center px-3 py-1 mt-2 text-sm font-medium rounded-full ${getStatusColor(program.status)}`}>
                                                     {program.status}
