@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:jih_ijtema_app/src/utils/logger.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   final String initialUrl;
@@ -121,6 +122,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   onReceivedError: (controller, request, error) {
                     logger.e(
                         "Failed to load ${request.url}: ${error.description}");
+                  },
+                  shouldOverrideUrlLoading:
+                      (controller, navigationAction) async {
+                    final uri = navigationAction.request.url;
+
+                    if (uri != null) {
+                      if (uri.scheme == 'mailto' || uri.scheme == 'tel') {
+                        // Handle mailto and tel links by opening them in external applications
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(uri,
+                              mode: LaunchMode.externalApplication);
+                          return NavigationActionPolicy
+                              .CANCEL; // Prevent WebView from loading
+                        }
+                      }
+                    }
+                    return NavigationActionPolicy
+                        .ALLOW; // Allow other URLs to load in WebView
                   },
                 ),
               )
