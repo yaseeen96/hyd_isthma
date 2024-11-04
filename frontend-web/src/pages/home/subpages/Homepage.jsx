@@ -16,7 +16,7 @@ import { FiList, FiMap } from 'react-icons/fi';
 import StickyNavBar from '../components/navBar';
 import BottomBar from '../components/bottomBar';
 import TopAppBar from '../components/topAppbar';
-import { MdFeedback, MdNotifications } from 'react-icons/md';
+import { MdFeedback, MdNotifications, MdQuestionAnswer } from 'react-icons/md';
 import { BiLogoWhatsapp, BiSupport } from 'react-icons/bi';
 import FeedbackModal from '../components/feedbackModal';
 import BigCard from '../components/bigCard';
@@ -79,6 +79,9 @@ const HomePage = () => {
     };
     const onPrayerSelect = () => {
         navigate(ROUTES.prayer);
+    };
+    const onFaqSelect = () => {
+        navigate(ROUTES.faq);
     };
     const openWhatsApp = () => {
         window.open(
@@ -168,6 +171,7 @@ const HomePage = () => {
                     onSelect={openWhatsApp}
                 />
                 <BigCard title={'Prayer Times'} className={'h-[115px] bg-cyan-100'} icon={<FaMosque size={32} />} isCentered={true} textClassName={'text-center font-bold'} onSelect={onPrayerSelect} />
+                <BigCard title={'FAQs'} className={'h-[115px] bg-Fuchsia-100'} icon={<MdQuestionAnswer size={32} />} isCentered={true} textClassName={'text-center font-bold'} onSelect={onFaqSelect} />
 
                 {/* <TileCard
                     icon={<RiProfileFill size={32} />}

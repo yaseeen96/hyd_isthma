@@ -71,7 +71,7 @@ export const submitFeedback = async (feedbackType, title, description, programId
 export const getFAQs = async () => {
     try {
         // Define the URL conditionally based on the language
-        const url = `programs/listFaqs`;
+        const url = `listFaqs`;
 
         const response = await axiosAuthenticatedClient.get(url, {
             headers: {
