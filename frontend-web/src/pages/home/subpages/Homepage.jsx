@@ -116,6 +116,11 @@ const HomePage = () => {
                 progress={progress}
             /> */}
 
+            {/* shaheen - add attendance & fix billing issue
+            ijtema - fix UI issues, deploy to production
+            kitabmart - deploy webview app on play store
+            meet with mannan bhai */}
+
             <div className=" mb-14 mt-2 p-4 grid grid-cols-2 w-full gap-4 animate-slide-in">
                 <BigCard
                     isCentered={true}
@@ -152,7 +157,7 @@ const HomePage = () => {
                     textClassName={'text-center font-bold'}
                     onSelect={onNotificationsSelect}
                 />
-                <BigCard title={'Support'} className={'h-[115px] bg-blue-100'} icon={<BiSupport size={32} />} isCentered={true} textClassName={'text-center font-bold'} onSelect={onSupportSelect} />
+                <BigCard title={'Call/Email'} className={'h-[115px] bg-blue-100'} icon={<BiSupport size={32} />} isCentered={true} textClassName={'text-center font-bold'} onSelect={onSupportSelect} />
                 <BigCard
                     title={'Feedback'}
                     className={'h-[115px] bg-red-200'}
@@ -163,6 +168,7 @@ const HomePage = () => {
                 />
 
                 <BigCard
+                    isDisabled={true}
                     title={'Whatsapp'}
                     className={'h-[115px] bg-green-200'}
                     icon={<BiLogoWhatsapp size={32} />}

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import LoadingComponent from '../../../components/common/loadingComponent';
 import { getProgramDetails, enrollforProgram } from '../../../services/programs_service';
-import { FiArrowLeft } from 'react-icons/fi';
+import { FiArrowLeft, FiRefreshCw } from 'react-icons/fi';
 import ConfirmEnrollModal from '../components/confirmEnrollModal';
 import SessionCard from '../components/sessionCard';
 import FeedbackModal from '../../home/components/feedbackModal';
@@ -56,6 +56,7 @@ const Timeline = () => {
     const [language, setLanguage] = useState('english');
     const navigate = useNavigate();
     const [expandedSessions, setExpandedSessions] = useState({});
+    const [isRefreshing, setIsRefreshing] = useState(false); // Track refreshing state
     const scrollToRef = useRef(null);
 
     const toggleSession = (sessionId) => {
@@ -112,6 +113,12 @@ const Timeline = () => {
         return data && data.data ? processData(data.data) : null;
     }, [data]);
 
+    // Function to refresh data
+    const handleRefresh = () => {
+        setIsRefreshing(true);
+        refetch().finally(() => setIsRefreshing(false));
+    };
+
     if (isLoading || !processedData) {
         return <LoadingComponent />;
     }
@@ -134,13 +141,22 @@ const Timeline = () => {
 
     return (
         <div className="container mx-auto p-4 min-h-screen overflow-y-auto">
-            <button onClick={() => navigate(-1)} className="flex items-center text-primary mb-4">
-                <FiArrowLeft className="mr-2" size={20} />
-                <span className="text-base font-semibold">{translations[language].back}</span>
-            </button>
+            {/* Top Navigation with Back and Refresh Button */}
+            <div className="flex justify-between items-center mb-4">
+                {/* Back Button */}
+                <button onClick={() => navigate(-1)} className="flex items-center text-primary">
+                    <FiArrowLeft className="mr-2" size={20} />
+                    <span className="text-base font-semibold">{translations[language].back}</span>
+                </button>
+                {/* Refresh Button with animation */}
+                <button onClick={handleRefresh} className={`text-primary ${isRefreshing ? 'animate-spin' : ''}`}>
+                    <FiRefreshCw size={20} />
+                </button>
+            </div>
 
             <h1 className="text-2xl font-bold text-primary mb-6">{translations[language].title}</h1>
 
+            {/* Language Selection */}
             <div className="mb-6">
                 <label htmlFor="language-select" className="mr-2 font-semibold">
                     {translations[language].selectLanguage}
@@ -160,6 +176,7 @@ const Timeline = () => {
                 </select>
             </div>
 
+            {/* Calendar Dates */}
             <div className="overflow-x-auto mb-6">
                 <div className="flex justify-between space-x-2">
                     {calendarDates.map((date) => (
@@ -175,6 +192,7 @@ const Timeline = () => {
                 </div>
             </div>
 
+            {/* Timeline Content */}
             <div className="mb-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {sortedSessions.length === 0 ? (
@@ -201,11 +219,10 @@ const Timeline = () => {
                     )}
                 </div>
             </div>
-
             {/* download pdf button - uncomment after done */}
 
             {/* <GeneratePDF data={data.data} title={translations[language].downloadPdf} /> */}
-
+            {/* Modals */}
             {isModalOpen && <ConfirmEnrollModal isOpen={isModalOpen} onConfirm={handleEnroll} onCancel={handleCancel} />}
             <FeedbackModal isOpen={isFeedbackModalOpen} onClose={() => setIsFeedbackModalOpen(false)} onSubmit={() => setIsFeedbackModalOpen(false)} programId={selectedProgramId} />
         </div>
