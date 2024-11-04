@@ -4,12 +4,18 @@ import { getFAQs } from '../../services/programs_service';
 import { FaChevronDown, FaChevronUp, FaArrowLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import LoadingComponent from '../../components/common/loadingComponent';
-import './faqAccordion.css'; // Make sure to import this CSS file
+import './faqAccordion.css'; // Ensure this CSS file exists
 
 const FAQAccordion = () => {
     const navigate = useNavigate();
     const { data, isLoading, isError } = useQuery('faqs', getFAQs);
     const [expandedIndex, setExpandedIndex] = useState(null);
+
+    // Function to detect Urdu text
+    const isUrdu = (text) => {
+        const urduPattern = /[\u0600-\u06FF]/;
+        return urduPattern.test(text);
+    };
 
     const toggleAccordion = (index) => {
         setExpandedIndex(expandedIndex === index ? null : index);
@@ -26,29 +32,34 @@ const FAQAccordion = () => {
                 Back
             </button>
 
-            <h2 className="text-3xl font-bold text-primary mb-6 text-center">FAQs</h2>
+            <h2 className="text-3xl font-bold text-primary mb-6 text-center">Announcements/FAQs</h2>
 
-            {data?.data.map((faq, index) => (
-                <div key={faq.id} className="mb-4 bg-white rounded-lg shadow-md p-4">
-                    {/* Accordion Header */}
-                    <div className="flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(index)}>
-                        <h3 className="text-lg font-semibold text-gray-800">{faq.question}</h3>
-                        <div className={`chevron ${expandedIndex === index ? 'rotate' : ''}`}>{expandedIndex === index ? <FaChevronUp /> : <FaChevronDown />}</div>
-                    </div>
+            {data?.data.map((faq, index) => {
+                const isContentUrdu = isUrdu(faq.question) || isUrdu(faq.answer);
+                const directionClass = isContentUrdu ? 'rtl' : 'ltr';
 
-                    {/* Accordion Content with Animation */}
-                    <div
-                        className={`faq-content ${expandedIndex === index ? 'expanded' : ''}`}
-                        style={{
-                            maxHeight: expandedIndex === index ? '500px' : '0',
-                            opacity: expandedIndex === index ? 1 : 0,
-                        }}
-                    >
-                        <p className="mb-3">{faq.answer}</p>
-                        {faq.faq_attachment && <img src={faq.faq_attachment} alt="FAQ Attachment" className="w-full h-auto rounded-lg shadow-md mb-3" />}
+                return (
+                    <div key={faq.id} className={`mb-4 bg-white rounded-lg shadow-md p-4 ${directionClass}`}>
+                        {/* Accordion Header */}
+                        <div className="flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(index)}>
+                            <h3 className={`text-lg font-semibold ${isContentUrdu ? 'text-right' : 'text-left'} text-gray-800`}>{faq.question}</h3>
+                            <div className={`chevron ${expandedIndex === index ? 'rotate' : ''}`}>{expandedIndex === index ? <FaChevronUp /> : <FaChevronDown />}</div>
+                        </div>
+
+                        {/* Accordion Content with Animation */}
+                        <div
+                            className={`faq-content ${expandedIndex === index ? 'expanded' : ''}`}
+                            style={{
+                                maxHeight: expandedIndex === index ? '500px' : '0',
+                                opacity: expandedIndex === index ? 1 : 0,
+                            }}
+                        >
+                            <p className={`mb-3 whitespace-pre-line ${isContentUrdu ? 'text-right' : 'text-left'}`}>{faq.answer}</p>
+                            {faq.faq_attachment !== 'NA' && faq.faq_attachment && <img src={faq.faq_attachment} alt="FAQ Attachment" className="w-full h-auto rounded-lg shadow-md mb-3" />}
+                        </div>
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </div>
     );
 };
