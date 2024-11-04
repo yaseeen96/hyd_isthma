@@ -116,7 +116,7 @@ const HomePage = () => {
                 progress={progress}
             /> */}
 
-            <div className=" mb-14 mt-4 p-4 grid grid-cols-2 w-full gap-4 animate-slide-in">
+            <div className=" mb-14 mt-2 p-4 grid grid-cols-2 w-full gap-4 animate-slide-in">
                 <BigCard
                     isCentered={true}
                     title={'Register'}
