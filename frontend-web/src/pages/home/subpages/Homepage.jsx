@@ -116,11 +116,6 @@ const HomePage = () => {
                 progress={progress}
             /> */}
 
-            {/* shaheen - add attendance & fix billing issue
-            ijtema - fix UI issues, deploy to production
-            kitabmart - deploy webview app on play store
-            meet with mannan bhai */}
-
             <div className=" mb-14 mt-2 p-4 grid grid-cols-2 w-full gap-4 animate-slide-in">
                 <BigCard
                     isCentered={true}
