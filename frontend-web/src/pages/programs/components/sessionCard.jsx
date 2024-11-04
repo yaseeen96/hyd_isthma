@@ -33,10 +33,12 @@ const SessionCard = forwardRef(
                 <div className="flex justify-between items-center cursor-pointer" onClick={() => toggleSession(session.id)}>
                     <div className="flex flex-col">
                         <h3 className="text-lg font-bold text-gray-800">{session.theme_name}</h3>
-                        <div className="flex items-center space-x-2 text-gray-500 mt-1">
-                            <FiClock className="text-primary-500" />
-                            <p>{formatTime(session.datetime)}</p>
-                        </div>
+                        {program.datetime && (
+                            <div className="flex items-center space-x-2 text-gray-500 mt-1">
+                                <FiClock className="text-primary-500" />
+                                <p>{formatTime(session.datetime)}</p>
+                            </div>
+                        )}
                         {session.hall_name && (
                             <div className="flex items-center space-x-2 text-gray-500 mt-1">
                                 <FiMapPin className="text-primary-500" />
