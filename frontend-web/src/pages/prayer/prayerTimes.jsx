@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaPrayingHands, FaMosque } from 'react-icons/fa';
+import { FaMosque } from 'react-icons/fa';
 
 const PrayerTimes = () => {
     const dayOneTimings = [
@@ -22,7 +22,7 @@ const PrayerTimes = () => {
     const TimingCard = ({ prayer, startTime, congregationalTime }) => (
         <div className="flex justify-between items-center bg-white p-4 rounded-lg shadow-lg transform transition duration-200 hover:scale-105">
             <div className="flex items-center space-x-3">
-                <FaPrayingHands className="text-primary text-xl" />
+                <FaMosque className="text-primary text-xl" />
                 <div>
                     <p className="text-lg font-semibold text-gray-800">{prayer}</p>
                     <p className="text-sm text-gray-500">Start: {startTime}</p>
