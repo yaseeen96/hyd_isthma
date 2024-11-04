@@ -6,7 +6,13 @@ const HomeLayout = ({ children }) => {
     return (
         <div className="relative min-h-screen flex flex-col w-screen">
             {/* Sticky Navigation Bar (Fixed at the top) */}
-            <TopAppBar showBackButton={true} />
+            <TopAppBar
+                showBackButton={true}
+                onLogout={() => {
+                    localStorage.removeItem('token');
+                    window.location.reload();
+                }}
+            />
             {/* Content Area with bottom padding to avoid overlap with BottomBar */}
             {/* add pb-52 when children is filled */}
             <div className="flex-grow overflow-y-auto pt-5 px-7 mb-16  dark:bg-black bg-gray-50">{children}</div>

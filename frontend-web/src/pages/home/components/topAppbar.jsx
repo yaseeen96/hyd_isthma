@@ -10,8 +10,7 @@ const TopAppBar = ({ title, onLogout, showBackButton }) => {
             {showBackButton && (
                 <button
                     onClick={() => {
-                        localStorage.removeItem('token');
-                        window.location.reload();
+                        navigate(-1);
                     }}
                     className="text-black hover:text-gray-200 mr-4"
                 >
