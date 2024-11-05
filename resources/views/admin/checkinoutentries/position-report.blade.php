@@ -14,13 +14,64 @@
                     <button class="btn btn-purple float-right mr-2" onclick="clearFilters()"> <i class="fas fa-filter "></i>
                         Clear
                         Filters</button>
-                    <a href="{{ route('checkInOutEntries.index') }}" class="btn btn-purple float-right mr-2"
-                        onclick="clearFilters()"> <i class="fas fa-file "></i>
-                        Main Report</a>
                 </div>
                 <div class="collapse container" id="regFilters">
                     <div class="card card-body shadow-none">
                         <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>ZONE NAME</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="zone_name"
+                                        onchange="getLocations('zone_name', 'division_name')">
+                                        @isset($locationsList['distnctZoneName'])
+                                            <option value="">All</option>
+                                            @foreach ($locationsList['distnctZoneName'] as $name)
+                                                <option value="{{ $name->zone_name }}"> {{ $name->zone_name }}</option>
+                                            @endforeach
+                                        @endisset
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>DISTRICT NAME</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="division_name"
+                                        onchange="getLocations('division_name', 'unit_name')">
+                                        <option value="">All</option>
+                                        {{-- data will be dynamically filled --}}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>UNIT NAME</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="unit_name"
+                                        placeholder="Select Unit Name" onchange="setFilter()">
+                                        <option value="">All</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Date</label>
+                                    <input type="text" name="date" id="date" class="form-control date_time"
+                                        data-toggle="datetimepicker" data-target="#date_time" autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>From Time</label>
+                                    <input type="text" name="from_time" id="from_time" class="form-control time"
+                                        data-toggle="datetimepicker" data-target="#time" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>To Time</label>
+                                    <input type="text" name="to_time" id="to_time" class="form-control time"
+                                        data-toggle="datetimepicker" data-target="#time" autocomplete="off">
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>PLACE</label>
@@ -71,6 +122,12 @@
         function clearFilters() {
             $('#place_id').val('').trigger('change');
             $('#mode').val('').trigger('change');
+            $('#zone_name').val('').trigger('change');
+            $('#division_name').val('').trigger('change');
+            $('#unit_name').val('').trigger('change');
+            $('#date').val('');
+            $('#from_time').val('');
+            $('#to_time').val('');
             setFilter();
         }
         $('.date_time').on('change.datetimepicker', function() {
@@ -84,6 +141,12 @@
                 url: "{{ route('position-report') }}",
                 data: function(d) {
                     d.place_id = $("#place_id").val();
+                    d.zone_name = $("#zone_name").val();
+                    d.division_name = $("#division_name").val();
+                    d.unit_name = $("#unit_name").val();
+                    d.date = $("#date").val();
+                    d.from_time = $("#from_time").val();
+                    d.to_time = $("#to_time").val();
                     d.mode = $("#mode").val();
                 }
             },

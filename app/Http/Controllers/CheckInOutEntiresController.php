@@ -32,6 +32,27 @@ class CheckInOutEntiresController extends Controller
                     if (!empty($request->mode)) {
                         $query->where('mode', $request->mode);
                     }
+                    if (!empty($request->unit_name)) {
+                         $query->where('unit_name', $request->unit_name);
+                    }
+                    if (!empty($request->zone_name)) {
+                        $query->where('zone_name', $request->zone_name);
+                    }
+                    if (!empty($request->division_name)) {
+                        $query->where('division_name', $request->division_name);
+                    }
+                    if(!empty($request->date)) {
+                        $query->whereDate('date', $request->date);
+                    }
+                    if(!empty($request->from_time) && empty($request->to_time)) {
+                        $query->whereTime('time', date('H:i:s', strtotime($request->from_time)));
+                    }
+                    if(empty($request->from_time) && !empty($request->to_time)) {
+                        $query->whereTime('time', date('H:i:s', strtotime($request->to_time)));
+                    }
+                    if(!empty($request->from_time) && !empty($request->to_time)) {
+                        $query->whereTime('time', '>=', date('H:i:s', strtotime($request->from_time)))->whereTime('time', '<=', date('H:i:s', strtotime($request->to_time)));
+                    }
                 })
                 ->whereIn('id', function ($subquery) {
                     $subquery->select(DB::raw('MAX(id)'))

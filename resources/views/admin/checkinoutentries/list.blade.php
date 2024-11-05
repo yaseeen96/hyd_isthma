@@ -14,9 +14,6 @@
                     <button class="btn btn-purple float-right mr-2" onclick="clearFilters()"> <i class="fas fa-filter "></i>
                         Clear
                         Filters</button>
-                    <a href="/positionReport" class="btn btn-purple float-right mr-2" onclick="clearFilters()"> <i
-                            class="fas fa-file "></i>
-                        Position Report</a>
                 </div>
                 <div class="collapse container" id="regFilters">
                     <div class="card card-body shadow-none">

@@ -315,7 +315,7 @@
                                       auth()->user()->id == 1)
                                   <li class="nav-item">
                                       <a href="{{ route('checkInOutEntries.index') }}"
-                                          class="nav-link {{ in_array(request()->route()->getName(), ['checkInOutEntries.index', 'checkInOutEntries.create', 'checkInOutEntries.edit', 'checkInOutEntries.delete', 'position-report']) ? 'active' : '' }}">
+                                          class="nav-link {{ in_array(request()->route()->getName(), ['checkInOutEntries.index', 'checkInOutEntries.create', 'checkInOutEntries.edit', 'checkInOutEntries.delete']) ? 'active' : '' }}">
                                           <i class="nav-icon fas fa-door-open"></i>
                                           <p>
                                               CheckInOut Entires
@@ -323,6 +323,15 @@
                                       </a>
                                   </li>
                               @endif
+                              <li class="nav-item">
+                                  <a href="{{ route('position-report') }}"
+                                      class="nav-link {{ in_array(request()->route()->getName(), ['position-report']) ? 'active' : '' }}">
+                                      <i class="nav-icon fas fa-person-booth"></i>
+                                      <p>
+                                          Position report
+                                      </p>
+                                  </a>
+                              </li>
                           </ul>
                       </li>
                   @endif

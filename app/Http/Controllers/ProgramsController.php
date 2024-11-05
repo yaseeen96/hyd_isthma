@@ -206,7 +206,12 @@ class ProgramsController extends Controller
         $data['bengali_topic'] = $request->bengali_topic;
         $data['tamil_topic'] = $request->tamil_topic;
         $data['kannada_topic'] = $request->kannada_topic;
-
+        $data['url'] = $request->url;
+        $data['english_url'] = $request->english_url;
+        $data['malyalam_url'] = $request->malyalam_url;
+        $data['bengali_url'] = $request->bengali_url;
+        $data['tamil_url'] = $request->tamil_url;
+        $data['kannada_url'] = $request->kannada_url;
         $program = Program::create($data);
         // Urudu Language Program Copy
         // if($request->hasFile('program_copy')) {
@@ -338,7 +343,12 @@ class ProgramsController extends Controller
         $data['bengali_topic'] = $request->bengali_topic;
         $data['tamil_topic'] = $request->tamil_topic;
         $data['kannada_topic'] = $request->kannada_topic;
-
+        $data['url'] = $request->url;
+        $data['english_url'] = $request->english_url;
+        $data['malyalam_url'] = $request->malyalam_url;
+        $data['bengali_url'] = $request->bengali_url;
+        $data['tamil_url'] = $request->tamil_url;
+        $data['kannada_url'] = $request->kannada_url;
         // English Language Program translation
         if($request->hasFile('english_translation')) {
             $media = MediaUploader::fromSource($request->file('english_translation'))->toDestination('public', "program_translations/english/$program->id")->useFilename(Str::uuid())->upload();

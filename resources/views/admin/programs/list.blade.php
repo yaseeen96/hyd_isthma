@@ -39,27 +39,33 @@
                 <th>Session Name</th>
                 <th>Speaker Name</th>
                 <th>Speaker Image</th>
+                <th>URL</th>
                 {{-- <th>Program Copy</th> --}}
                 <th>English Topic</th>
                 {{-- <th>English Progam Copy</th> --}}
                 <th>English Transcript</th>
                 <th>English Translation</th>
+                <th>English Url</th>
                 <th>Malyalam Topic</th>
                 {{-- <th>Malyalam Program Copy</th> --}}
                 <th>Malayalam Transcript</th>
                 <th>Malayalam Translation</th>
+                <th>Malayalam Url</th>
                 <th>Bengali Topic</th>
                 {{-- <th>Bengali Program Copy</th> --}}
                 <th>Bengali Transcript</th>
                 <th>Bengali Translation</th>
+                <th>Bengali Url</th>
                 <th>Tamil Topic</th>
                 {{-- <th>Tamil Program Copy</th> --}}
                 <th>Tamil Transcript</th>
                 <th>Tamil Translation</th>
+                <th>Tamil Url</th>
                 {{-- <th>Kannada Program Copy</th> --}}
                 <th>Kannada Transcript</th>
                 <th>Kannada Translation</th>
                 <th>Kannada Topic</th>
+                <th>Kannada Url</th>
                 <th>Status</th>
                 <th>Action</th>
             </x-table>
@@ -100,6 +106,9 @@
                 {
                     data: 'speaker_image',
                 },
+                {
+                    data: 'url'
+                },
                 // {
                 //     data: 'program_copy'
                 // },
@@ -116,6 +125,9 @@
                     data: 'english_translation'
                 },
                 {
+                    data: 'english_url'
+                },
+                {
                     data: 'malyalam_topic'
                 },
                 // {
@@ -128,6 +140,9 @@
                     data: 'malayalam_translation'
                 },
                 {
+                    data: 'malyalam_url'
+                },
+                {
                     data: 'bengali_topic'
                 },
                 {
@@ -135,6 +150,9 @@
                 },
                 {
                     data: 'bengali_translation'
+                },
+                {
+                    data: 'bengali_url'
                 },
                 // {
                 //     data: 'bengali_program_copy'
@@ -148,6 +166,9 @@
                 {
                     data: 'tamil_translation'
                 },
+                {
+                    data: 'tamil_url'
+                },
                 // {
                 //     data: 'tamil_program_copy'
                 // },
@@ -160,6 +181,9 @@
                 },
                 {
                     data: 'kannada_topic'
+                },
+                {
+                    data: 'kannada_url'
                 },
                 // {
                 //     data: 'kannada_program_copy'

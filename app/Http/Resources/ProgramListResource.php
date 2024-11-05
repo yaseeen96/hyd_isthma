@@ -22,6 +22,7 @@ class ProgramListResource extends JsonResource
         $data = [
             'id' => $this->id,
             'name' => empty($lang) ? $this->topic : $this->{$lang . '_topic'},
+            'url' => empty($lang) ? $this->url : $this->{$lang . '_url'},
             'datetime' => date('Y-m-d', strtotime($this->date)) . ' ' . Carbon::parse($this->from_time)->format('h:i A'). ' - ' . Carbon::parse($this->to_time)->format('h:i A'),
             'speaker_name' => !empty($this->program_speaker_id) ? ( empty($lang) ? $this->programSpeaker->name : $this->programSpeaker->{$lang . '_name'}) : null,
             'speaker_bio' => !empty($this->program_speaker_id) ? (empty($lang) ? $this->programSpeaker->bio : $this->programSpeaker->{$lang . '_bio'}) : null,

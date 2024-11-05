@@ -28,6 +28,12 @@ class Program extends Model
         'tamil_transcript',
         'kannada_topic',
         'kannada_transcript',
+        'url',
+        'english_url',
+        'malyalam_url',
+        'bengali_url',
+        'tamil_url',
+        'kannada_url',
     ];
     public function programSpeaker()
     {

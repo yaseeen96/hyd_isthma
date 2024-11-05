@@ -181,6 +181,14 @@
                                     </div>
                                 </div>
                             </div> --}}
+                            {{-- Input for url --}}
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="url">URL</label>
+                                    <input type="text" class="form-control" name="url" id="url"
+                                        value="{{ old('url', $program->url) }}">
+                                </div>
+                            </div>
                             <div class="col-lg-12 mt-5">
                                 <h5 class="font-weight-bold">Translations Details</h5>
                             </div>
@@ -193,7 +201,8 @@
                                 <div class="form-group row">
                                     <div class="col-lg-12">
                                         <label for="english_topic">English Topic</label>
-                                        <input type="text" class="form-control" name="english_topic" id="english_topic"
+                                        <input type="text" class="form-control" name="english_topic"
+                                            id="english_topic"
                                             value="{{ old('english_topic', $program->english_topic) }}">
                                     </div>
                                 </div>
@@ -218,6 +227,14 @@
                                         <label class="custom-file-label" for="english_translation">Choose
                                             file</label>
                                     </div>
+                                </div>
+                            </div>
+                            {{-- english url --}}
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="english_url">English URL</label>
+                                    <input type="text" class="form-control" name="english_url" id="english_url"
+                                        value="{{ old('english_url', $program->english_url) }}">
                                 </div>
                             </div>
                             <div class="col-lg-12 mt-2">
@@ -263,6 +280,14 @@
                                     </div>
                                 </div>
                             </div>
+                            {{-- Malyalam url --}}
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="malyalam_url">Malyalam URL</label>
+                                    <input type="text" class="form-control" name="malyalam_url" id="malyalam_url"
+                                        value="{{ old('malyalam_url', $program->malyalam_url) }}">
+                                </div>
+                            </div>
                             <div class="col-lg-12 mt-2">
                                 <label for="bio mt-2">Transcript</label>
                                 <textarea type="malyalam_transcript" class="form-control" rows="5" id="malyalam_transcript"
@@ -304,6 +329,14 @@
                                         <label class="custom-file-label" for="bengali_translation">Choose
                                             file</label>
                                     </div>
+                                </div>
+                            </div>
+                            {{-- Bengali url --}}
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="bengali_url">Bengali URL</label>
+                                    <input type="text" class="form-control" name="bengali_url" id="bengali_url"
+                                        value="{{ old('bengali_url', $program->bengali_url) }}">
                                 </div>
                             </div>
                             <div class="col-lg-12 mt-2">
@@ -348,6 +381,14 @@
                                     </div>
                                 </div>
                             </div>
+                            {{-- Tamil url --}}
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="tamil_url">Tamil URL</label>
+                                    <input type="text" class="form-control" name="tamil_url" id="tamil_url"
+                                        value="{{ old('tamil_url', $program->tamil_url) }}">
+                                </div>
+                            </div>
                             <div class="col-lg-12 mt-2">
                                 <label for="bio mt-2">Transcript</label>
                                 <textarea type="tamil_transcript" class="form-control" rows="5" id="tamil_transcript"
@@ -389,6 +430,14 @@
                                         <label class="custom-file-label" for="kannada_translation">Choose
                                             file</label>
                                     </div>
+                                </div>
+                            </div>
+                            {{-- Kannada url --}}
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="kannada_url">Kannada URL</label>
+                                    <input type="text" class="form-control" name="kannada_url" id="kannada_url"
+                                        value="{{ old('kannada_url', $program->kannada_url) }}">
                                 </div>
                             </div>
                             <div class="col-lg-12 mt-2">

@@ -67,7 +67,19 @@
                 },
                 dataType: 'JSON',
                 success: function(data) {
+                    if (data.status == 200) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Successfully.'
+                        })
+                    } else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Encountered an error while deleting the FAQ.'
+                        })
+                    }
                     faqTable.draw();
+
                 }
             })
         });

@@ -145,6 +145,7 @@ class FaqController extends Controller
         $faq->delete();
         return response()->json([
                 'message' => "Faq deleted successfully",
+                'status' => 200
             ], Response::HTTP_OK);
     }
 }
