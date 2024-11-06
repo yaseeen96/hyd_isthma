@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { getFAQs } from '../../services/programs_service';
-import { FaChevronDown, FaChevronUp, FaArrowLeft } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaArrowLeft, FaDownload } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import LoadingComponent from '../../components/common/loadingComponent';
 import './faqAccordion.css'; // Ensure this CSS file exists
@@ -55,7 +55,20 @@ const FAQAccordion = () => {
                             }}
                         >
                             <p className={`mb-3 whitespace-pre-line ${isContentUrdu ? 'text-right' : 'text-left'}`}>{faq.answer}</p>
-                            {faq.faq_attachment !== 'NA' && faq.faq_attachment && <img src={faq.faq_attachment} alt="FAQ Attachment" className="w-full h-auto rounded-lg shadow-md mb-3" />}
+
+                            {faq.faq_attachment !== 'NA' && faq.faq_attachment && (
+                                <div className="mt-3">
+                                    <img src={faq.faq_attachment} alt="FAQ Attachment" className="w-full h-auto rounded-lg shadow-md mb-3" />
+                                    <a
+                                        href={faq.faq_attachment}
+                                        download="attachment.jpg" // specify filename for download
+                                        className="flex items-center text-blue-500 hover:text-blue-700 mt-2 px-4 py-2 border border-blue-500 rounded-md"
+                                    >
+                                        <FaDownload className="mr-2" />
+                                        Download Image
+                                    </a>
+                                </div>
+                            )}
                         </div>
                     </div>
                 );
