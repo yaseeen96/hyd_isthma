@@ -33,7 +33,7 @@ class FaqController extends Controller
                         '<a href="' . route('faq.edit', $faq->id) . '" class="btn-purple btn mr-1" ><i class="fas fa-edit"></i></a>'
                         : "";
                     $link .= ($user->id == 1 || $user->hasPermissionTo('Delete ProgramSpeakers')) ?
-                        '<span data-href="' . route('faq.destroy', $faq->id) . '" class="btn-purple programSpeaker-delete btn"><i class="fas fa-trash"></i></span>'
+                        '<span data-href="' . route('faq.destroy', $faq->id) . '" class="btn-purple faq-delete btn"><i class="fas fa-trash"></i></span>'
                         : "";
                     return $link;
                 })
