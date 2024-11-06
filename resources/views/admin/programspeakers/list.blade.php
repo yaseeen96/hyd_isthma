@@ -8,10 +8,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="col-lg-12">
-                        <a href="{{ route('programSpeakers.create') }}" class="btn btn-purple float-right"><i
-                                class="fas fa-plus mr-2"></i>Create</a>
+                        @if (auth()->user()->id == 1 || auth()->user()->can('Create ProgramSpeakers'))
+                            <a href="{{ route('programSpeakers.create') }}" class="btn btn-purple float-right"><i
+                                    class="fas fa-plus mr-2"></i>Create</a>
+                        @endif
                     </div>
-
                 </div>
             </div>
             <x-table id="speakers-table">

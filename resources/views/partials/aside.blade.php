@@ -109,10 +109,10 @@
                                   </li>
                               @endif
                               {{-- SPEAKERS --}}
-                              @if (auth()->user()->can('Create programSpeakers') ||
-                                      auth()->user()->can('View programSpeakers') ||
-                                      auth()->user()->can('Edit programSpeakers') ||
-                                      auth()->user()->can('Delete programSpeakers') ||
+                              @if (auth()->user()->can('Create ProgramSpeakers') ||
+                                      auth()->user()->can('View ProgramSpeakers') ||
+                                      auth()->user()->can('Edit ProgramSpeakers') ||
+                                      auth()->user()->can('Delete ProgramSpeakers') ||
                                       auth()->user()->id == 1)
                                   <li class="nav-item">
                                       <a href="{{ route('programSpeakers.index') }}"
