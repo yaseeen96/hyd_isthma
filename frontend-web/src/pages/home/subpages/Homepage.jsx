@@ -107,7 +107,13 @@ const HomePage = () => {
     return (
         // <HomeLayout>
         <div className="bg-purple-50 min-h-screen">
-            <TopAppBar title={'Home'} />
+            <TopAppBar
+                title={'Home'}
+                onLogout={() => {
+                    localStorage.removeItem('token');
+                    window.location.reload();
+                }}
+            />
             <IjtemaBanner />
             {/* <ActionCard
                 message={progress === 100 ? 'Thank you. Your registration is 100% complete' : 'Your registration is not yet completed, click below & complete all steps'}
