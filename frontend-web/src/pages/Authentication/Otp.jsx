@@ -33,7 +33,8 @@ const Otp = () => {
                 localStorage.setItem(localStorageConstant.familyDetails, user.registration.family_dtls);
                 localStorage.setItem(localStorageConstant.financialDetails, user.registration.financial_dtls);
             }
-            navigate(ROUTES.home, { replace: true });
+            // navigate(ROUTES.home, { replace: true });
+            window.location.replace(ROUTES.home);
         } catch (error) {
             toast.error(`${error}`);
         } finally {
