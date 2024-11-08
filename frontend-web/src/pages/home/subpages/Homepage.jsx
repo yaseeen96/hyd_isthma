@@ -128,7 +128,7 @@ const HomePage = () => {
                     title={'Registration Details'}
                     className={'h-[250px] bg-purple-200'}
                     icon={<RiProfileFill size={50} />}
-                    textClassName={'text-3xl font-bold'}
+                    textClassName={'text-2xl font-bold'}
                     onSelect={onRegisterIjtema}
                 />
                 <div className="flex flex-col">
