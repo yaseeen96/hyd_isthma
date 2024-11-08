@@ -78,7 +78,8 @@ const NotificationDetailPage = () => {
                         </div>
                     </>
                 ) : (
-                    <p className="text-gray-500">No video available.</p>
+                    <div></div>
+                    // <p className="text-gray-500">No video available.</p>
                 )}
             </section>
         </div>
