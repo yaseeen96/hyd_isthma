@@ -56,7 +56,7 @@ const FAQAccordion = () => {
                         >
                             <p className={`mb-3 whitespace-pre-line ${isContentUrdu ? 'text-right' : 'text-left'}`}>{faq.answer}</p>
 
-                            {faq.faq_attachment && (
+                            {faq.faq_attachment !== 'NA' && faq.faq_attachment && (
                                 <div className="mt-3">
                                     <a
                                         href={faq.faq_attachment}
