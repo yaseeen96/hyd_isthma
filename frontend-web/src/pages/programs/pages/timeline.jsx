@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import LoadingComponent from '../../../components/common/loadingComponent';
 import { getProgramDetails, enrollforProgram } from '../../../services/programs_service';
 import { FiArrowLeft, FiRefreshCw } from 'react-icons/fi';
@@ -13,16 +14,18 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GeneratePDF from '../utils/generatePdf';
 
+dayjs.extend(customParseFormat);
+
 // Sort all sessions by full datetime, ensuring both date and time are considered
 const sortAllSessionsByDatetime = (events, selectedDate) => {
     return events
-        .filter((event) => dayjs(event.datetime.split(' - ')[0]).format('YYYY-MM-DD') === selectedDate)
-        .sort((a, b) => dayjs(a.datetime.split(' - ')[0]).diff(dayjs(b.datetime.split(' - ')[0])));
+        .filter((event) => dayjs(event.datetime.split(' - ')[0], 'YYYY-MM-DD hh:mm A').format('YYYY-MM-DD') === selectedDate)
+        .sort((a, b) => dayjs(a.datetime.split(' - ')[0], 'YYYY-MM-DD hh:mm A').diff(dayjs(b.datetime.split(' - ')[0], 'YYYY-MM-DD hh:mm A')));
 };
 
 // Generate calendar dates based on event dates
 const generateCalendarDates = (events) => {
-    const dates = new Set(events.map((event) => dayjs(event.datetime.split(' ')[0]).format('YYYY-MM-DD')).filter((date) => ['2024-11-15', '2024-11-16', '2024-11-17'].includes(date)));
+    const dates = new Set(events.map((event) => dayjs(event.datetime.split(' ')[0], 'YYYY-MM-DD').format('YYYY-MM-DD')).filter((date) => ['2024-11-15', '2024-11-16', '2024-11-17'].includes(date)));
     if (dates.size === 0) {
         return ['2024-11-15', '2024-11-16', '2024-11-17'];
     }
@@ -56,7 +59,7 @@ const Timeline = () => {
     const [language, setLanguage] = useState('english');
     const navigate = useNavigate();
     const [expandedSessions, setExpandedSessions] = useState({});
-    const [isRefreshing, setIsRefreshing] = useState(false); // Track refreshing state
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const scrollToRef = useRef(null);
 
     const toggleSession = (sessionId) => {
@@ -76,7 +79,7 @@ const Timeline = () => {
         if (data && data.data.length > 0) {
             const earliestInProgress = data.data.find((event) => event.status === 'In Progress');
             const defaultDate = '2024-11-15';
-            const nearestEventDate = earliestInProgress ? dayjs(earliestInProgress.datetime.split(' ')[0]).format('YYYY-MM-DD') : defaultDate;
+            const nearestEventDate = earliestInProgress ? dayjs(earliestInProgress.datetime.split(' ')[0], 'YYYY-MM-DD').format('YYYY-MM-DD') : defaultDate;
             setSelectedDate(nearestEventDate);
 
             if (scrollToRef.current) {
@@ -113,7 +116,6 @@ const Timeline = () => {
         return data && data.data ? processData(data.data) : null;
     }, [data]);
 
-    // Function to refresh data
     const handleRefresh = () => {
         setIsRefreshing(true);
         refetch().finally(() => setIsRefreshing(false));
@@ -141,14 +143,11 @@ const Timeline = () => {
 
     return (
         <div className="container mx-auto p-4 min-h-screen overflow-y-auto">
-            {/* Top Navigation with Back and Refresh Button */}
             <div className="flex justify-between items-center mb-4">
-                {/* Back Button */}
                 <button onClick={() => navigate(-1)} className="flex items-center text-primary">
                     <FiArrowLeft className="mr-2" size={20} />
                     <span className="text-base font-semibold">{translations[language].back}</span>
                 </button>
-                {/* Refresh Button with animation */}
                 <button onClick={handleRefresh} className={`text-primary ${isRefreshing ? 'animate-spin' : ''}`}>
                     <FiRefreshCw size={20} />
                 </button>
@@ -156,7 +155,6 @@ const Timeline = () => {
 
             <h1 className="text-2xl font-bold text-primary mb-6">{translations[language].title}</h1>
 
-            {/* Language Selection */}
             <div className="mb-6">
                 <label htmlFor="language-select" className="mr-2 font-semibold">
                     {translations[language].selectLanguage}
@@ -176,7 +174,6 @@ const Timeline = () => {
                 </select>
             </div>
 
-            {/* Calendar Dates */}
             <div className="overflow-x-auto mb-6">
                 <div className="flex justify-between space-x-2">
                     {calendarDates.map((date) => (
@@ -192,7 +189,6 @@ const Timeline = () => {
                 </div>
             </div>
 
-            {/* Timeline Content */}
             <div className="mb-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {sortedSessions.length === 0 ? (
@@ -219,10 +215,7 @@ const Timeline = () => {
                     )}
                 </div>
             </div>
-            {/* download pdf button - uncomment after done */}
 
-            {/* <GeneratePDF data={data.data} title={translations[language].downloadPdf} /> */}
-            {/* Modals */}
             {isModalOpen && <ConfirmEnrollModal isOpen={isModalOpen} onConfirm={handleEnroll} onCancel={handleCancel} />}
             <FeedbackModal isOpen={isFeedbackModalOpen} onClose={() => setIsFeedbackModalOpen(false)} onSubmit={() => setIsFeedbackModalOpen(false)} programId={selectedProgramId} />
         </div>
