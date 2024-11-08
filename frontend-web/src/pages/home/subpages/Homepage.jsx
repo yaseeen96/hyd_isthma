@@ -169,7 +169,7 @@ const HomePage = () => {
                 />
 
                 <BigCard
-                    isDisabled={true}
+                    isDisabled={false}
                     title={'Whatsapp'}
                     className={'h-[115px] bg-green-200'}
                     icon={<BiLogoWhatsapp size={32} />}
