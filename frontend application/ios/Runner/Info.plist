@@ -54,6 +54,10 @@
 		<array>
 			<string>mailto</string>
 			<string>tel</string>
+			<string>https</string> <!-- Allows general https links -->
+			<string>whatsapp</string>
+			<string>googlemaps</string>
+			<string>maps</string> <!-- For Apple Maps or other map applications -->
 		</array>
 	</dict>
 </plist>
