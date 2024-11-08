@@ -56,17 +56,17 @@ const FAQAccordion = () => {
                         >
                             <p className={`mb-3 whitespace-pre-line ${isContentUrdu ? 'text-right' : 'text-left'}`}>{faq.answer}</p>
 
-                            {faq.faq_attachment !== 'NA' && faq.faq_attachment && (
+                            {faq.faq_attachment && (
                                 <div className="mt-3">
-                                    <img src={faq.faq_attachment} alt="FAQ Attachment" className="w-full h-auto rounded-lg shadow-md mb-3" />
                                     <a
                                         href={faq.faq_attachment}
                                         download="attachment.jpg" // specify filename for download
-                                        className="flex items-center text-blue-500 hover:text-blue-700 mt-2 px-4 py-2 border border-blue-500 rounded-md"
+                                        className="flex items-center text-blue-500 hover:text-blue-700 my-2 px-4 py-2 border border-blue-500 rounded-md"
                                     >
                                         <FaDownload className="mr-2" />
                                         Download Image
                                     </a>
+                                    <img src={faq.faq_attachment} alt="FAQ Attachment" className="w-full h-auto rounded-lg shadow-md mb-3" />
                                 </div>
                             )}
                         </div>
