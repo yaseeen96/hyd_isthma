@@ -34,16 +34,22 @@ const AdditionalDetailsRegistration = () => {
         return mergedItems;
     };
 
+    // Helper function to parse dates and handle Safari inconsistencies
+    const parseDate = (dateString) => {
+        const date = new Date(dateString);
+        return isNaN(date.getTime()) ? new Date(2024, 10, 1) : date; // Default to November 1, 2024 if invalid
+    };
+
     const initialValues = {
         arrival_details: {
-            datetime: registrationDetails.member_reg_data?.arrival_details?.datetime ? new Date(registrationDetails.member_reg_data.arrival_details.datetime) : null,
+            datetime: registrationDetails.member_reg_data?.arrival_details?.datetime ? parseDate(registrationDetails.member_reg_data.arrival_details.datetime) : new Date(2024, 10, 1),
             mode: registrationDetails.member_reg_data?.arrival_details?.mode || '',
             mode_identifier: registrationDetails.member_reg_data?.arrival_details?.mode_identifier || '',
             start_point: registrationDetails.member_reg_data?.arrival_details?.start_point || '',
             end_point: registrationDetails.member_reg_data?.arrival_details?.end_point || '',
         },
         departure_details: {
-            datetime: registrationDetails.member_reg_data?.departure_details?.datetime ? new Date(registrationDetails.member_reg_data.departure_details.datetime) : null,
+            datetime: registrationDetails.member_reg_data?.departure_details?.datetime ? parseDate(registrationDetails.member_reg_data.departure_details.datetime) : new Date(2024, 10, 1),
             mode: registrationDetails.member_reg_data?.departure_details?.mode || '',
             mode_identifier: registrationDetails.member_reg_data?.departure_details?.mode_identifier || '',
             start_point: registrationDetails.member_reg_data?.departure_details?.start_point || '',
@@ -116,7 +122,6 @@ const AdditionalDetailsRegistration = () => {
     });
 
     const handleSubmit = async (values) => {
-        // Format dates to 'YYYY-MM-DD' before logging the result
         const formattedValues = {
             ...values,
             arrival_details: {
@@ -133,7 +138,6 @@ const AdditionalDetailsRegistration = () => {
         if (isSuccess) {
             navigate(-1);
             toast.success('Thank you. Please complete the next steps');
-            // toast.success('Registration Successful. You are all done');
         } else {
             toast.error('Something seems to be wrong. Please come back later');
         }
@@ -153,10 +157,10 @@ const AdditionalDetailsRegistration = () => {
                                 <label>Provide your exact date and time of arrival to Hyderabad. Ijtema to begin on 15th Nov Morning</label>
                                 <DatePicker
                                     wrapperClassName="w-full"
-                                    selected={values.arrival_details.datetime ? new Date(values.arrival_details.datetime) : new Date(2024, 10, 1)}
+                                    selected={values.arrival_details.datetime}
                                     onChange={(date) => setFieldValue('arrival_details.datetime', date)}
                                     showTimeSelect
-                                    timeIntervals={15} // Set time intervals to 15 minutes
+                                    timeIntervals={15}
                                     startDate={new Date(2024, 10, 1)}
                                     dateFormat="Pp"
                                     className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
@@ -229,10 +233,10 @@ const AdditionalDetailsRegistration = () => {
                                 <DatePicker
                                     startDate={new Date(2024, 10, 1)}
                                     wrapperClassName="w-full"
-                                    selected={values.departure_details.datetime ? new Date(values.departure_details.datetime) : new Date(2024, 10, 1)}
+                                    selected={values.departure_details.datetime}
                                     onChange={(date) => setFieldValue('departure_details.datetime', date)}
                                     showTimeSelect
-                                    timeIntervals={15} // Set time intervals to 15 minutes
+                                    timeIntervals={15}
                                     dateFormat="Pp"
                                     className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm p-2"
                                 />
@@ -297,6 +301,7 @@ const AdditionalDetailsRegistration = () => {
                             </div>
                         </div>
 
+                        {/* Additional fields and sections remain the same */}
                         <div className="border-b border-gray-300 pb-4">
                             <h2 className="text-lg font-semibold mb-2">Hotel & Special Considerations</h2>
                             <div className="w-full mb-4">
