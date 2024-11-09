@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\AppHelperFunctions;
+use App\Models\checkInOutEntires;
 use App\Models\QrBatchRegistration;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use League\Csv\Reader;
+use Illuminate\Support\Facades\DB;
 
 class QrBatchRegistrationController extends Controller
 {
@@ -128,6 +131,66 @@ class QrBatchRegistrationController extends Controller
                 $row++;
             }
             fclose($handle);
+        }
+    }
+
+    public function bulkUpload(Request $request) {
+
+        $request->validate([
+            'qrbatches_bulkupload' => 'required'
+        ]);
+        if($request->file('qrbatches_bulkupload')->getClientOriginalExtension() != 'csv'){
+            return redirect()->route('qrBatchRegistrations.index')->with('error', 'Only CSV files are allowed');
+        }
+        if ($request->hasFile('qrbatches_bulkupload')) {
+            $csv = Reader::createFromPath($request->file('qrbatches_bulkupload')->getPathname(), 'r');
+            $csv->setHeaderOffset(0);
+            $records = $csv->getRecords();
+            $headers = $csv->getHeader();
+            DB::beginTransaction();
+            if (empty($records)) {
+                return redirect()->route('qrBatchRegistrations.index')->with('error', 'No records found in the uploaded file');
+            }
+            try {
+                foreach ($records as $offset => $record) {
+                    if (empty($record['batch_id']) && empty($record['batch_type']) && empty($record['gender']) ) {
+                        throw new \Exception('Batch Id, Batch type & gender are required');
+                    }
+                    $qrbatchReg = QrBatchRegistration::where('batch_id', $record['batch_id'])->first();
+                    if (empty($qrbatchReg)) {
+                        throw new \Exception('Batch Id does not exist');
+                    }
+                    $qrbatchReg->update([
+                        'full_name' => $record['full_name'],
+                        'email' => $record['email'],
+                        'phone_number' => $record['phone_number'],
+                        'zone_name' => $record['zone_name'],
+                        'division_name' => $record['division_name'],
+                        'unit_name' => $record['unit_name'],
+                    ]);
+                    $qrBatchScannEntires = checkInOutEntires::where('batch_id', $record['batch_id'])->where('batch_type', 'nonRukn')->get();
+                    if($qrBatchScannEntires->count() > 0) {
+                        foreach($qrBatchScannEntires as $qrBatchScannEntire) {
+                            $qrBatchScannEntire->update([
+                                'full_name' => $record['full_name'],
+                                'email' => $record['email'],
+                                'phone_number' => $record['phone_number'],
+                                'zone_name' => $record['zone_name'],
+                                'division_name' => $record['division_name'],
+                                'unit_name' => $record['unit_name'],
+                            ]);
+                        }
+                    }
+                    DB::commit();
+                    return redirect()->route('qrBatchRegistrations.index')->with('success', 'Qr batch registrations uploaded successfully');
+                }
+            }catch (\Exception $e) {
+                DB::rollBack();
+                if (!empty($e->getMessage())) {
+                    return redirect()->route('qrBatchRegistrations.index')->with('error', $e->getMessage());
+                }
+                return redirect()->route('qrBatchRegistrations.index')->with('error', 'An error occurred while uploading Qr Operators');
+            }
         }
     }
 }

@@ -274,9 +274,9 @@
                           auth()->user()->can('View ScannEntires') ||
                           auth()->user()->id == 1)
                       <li
-                          class="nav-item  {{ str_contains('qrOperators checkInOutPlaces checkInOutEntries position-report ', $urlsegment) ? 'menu-open' : '' }}">
+                          class="nav-item  {{ str_contains('qrOperators checkInOutPlaces checkInOutEntries position-report total-check-in-out-report ', $urlsegment) ? 'menu-open' : '' }}">
                           <a href="#"
-                              class="nav-link  {{ str_contains('qrOperators checkInOutPlaces checkInOutEntries position-report', $urlsegment) ? 'active' : '' }}">
+                              class="nav-link  {{ str_contains('qrOperators checkInOutPlaces checkInOutEntries position-report total-check-in-out-report', $urlsegment) ? 'active' : '' }}">
                               <i class="nav-icon fas fa-qrcode"></i>
                               <p>
                                   QR Codes
@@ -329,6 +329,15 @@
                                       <i class="nav-icon fas fa-person-booth"></i>
                                       <p>
                                           Position report
+                                      </p>
+                                  </a>
+                              </li>
+                              <li class="nav-item">
+                                  <a href="{{ route('total-check-in-out-report') }}"
+                                      class="nav-link {{ in_array(request()->route()->getName(), ['total-check-in-out-report']) ? 'active' : '' }}">
+                                      <i class="nav-icon fas fa-person-booth"></i>
+                                      <p>
+                                          Total Check In/Out report
                                       </p>
                                   </a>
                               </li>

@@ -1,8 +1,8 @@
-@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'CheckInOut Entired'])
+@extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Total CheckInOut Entired'])
 @section('content')
     <x-content-wrapper>
         <x-slot:title>
-            CheckInOut Entires
+            Total CheckInOut Entires
         </x-slot>
         <div class="card-body">
             <div class="row">
@@ -142,8 +142,9 @@
                     </div>
                 </div>
             </div>
-            <x-table id="checkinout-entires">
+            <x-table id="total-checkinout-entires">
                 <th>SL.No </th>
+                <th>Total Scanned</th>
                 <th>Batch Type</th>
                 <th>Batch ID</th>
                 <th>Name</th>
@@ -152,10 +153,6 @@
                 <th>Zone</th>
                 <th>Division </th>
                 <th>Unit</th>
-                <th>Place</th>
-                <th>Date&Time</th>
-                <th>Mode</th>
-                <th>Scanned By</th>
             </x-table>
         </div>
     </x-content-wrapper>
@@ -183,9 +180,9 @@
         $('.time').on('change.datetimepicker', function() {
             setFilter();
         })
-        const checkInOutEntiresTable = $("#checkinout-entires").DataTable({
+        const totalCheckInOutEntiresTable = $("#total-checkinout-entires").DataTable({
             ajax: {
-                url: "{{ route('checkInOutEntries.index') }}",
+                url: "{{ route('total-check-in-out-report') }}",
                 data: function(d) {
                     d.zone_name = $("#zone_name").val();
                     d.division_name = $("#division_name").val();
@@ -203,6 +200,11 @@
             },
             columns: [
                 dtIndexCol(),
+                {
+                    data: 'total_count',
+                    searchable: false,
+                    orderable: false,
+                },
                 {
                     data: 'batch_type',
                 },
@@ -227,24 +229,11 @@
                 {
                     data: 'unit_name'
                 },
-                {
-                    data: 'place'
-                },
-                {
-                    data: 'datetime',
-                    searchable: false
-                },
-                {
-                    data: 'mode'
-                },
-                {
-                    data: 'user'
-                },
             ]
         })
 
         function setFilter() {
-            checkInOutEntiresTable.draw();
+            totalCheckInOutEntiresTable.draw();
         }
     </script>
 @endpush

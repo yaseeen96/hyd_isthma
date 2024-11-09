@@ -48,10 +48,12 @@ Route::middleware('auth')->group(function () {
     // Check In Out Entries
     Route::resource('checkInOutEntries', 'CheckInOutEntiresController');
     Route::get('positionReport', 'CheckInOutEntiresController@positionReport')->name('position-report');
+    Route::get('totalCheckInOutReport', 'CheckInOutEntiresController@totalCheckInOutReport')->name('total-check-in-out-report');
     // Program Registration
     Route::resource('sessionRegistration', 'SessionRegistrationController');
     // QR Batch Registrations
     Route::resource('qrBatchRegistrations',  'QrBatchRegistrationController');
+    route::post('bulkQrBatchRegistrations', 'QrBatchRegistrationController@bulkUpload')->name('qrBatchRegistrations.bulkUpload');
     // Feedback
     Route::resource('feedback', 'FeedbackController');
     // FAQ

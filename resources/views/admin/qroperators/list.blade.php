@@ -20,12 +20,13 @@
                         <a href="{{ route('qrOperators.create') }}" class="btn btn-purple float-right my-1"><i
                                 class="fas fa-plus mr-2"></i>Add
                             Qr Operator</a>
-                    @endif
-                    <button class="btn btn-purple float-right mr-2 my-1" type="button" data-toggle="collapse"
-                        data-target="#bulkUpload" aria-expanded="false" aria-controls="bulkUpload">
-                        <i class="fas fa-cloud-download-alt"></i> Bulk Upload
+                        <button class="btn btn-purple float-right mr-2 my-1" type="button" data-toggle="collapse"
+                            data-target="#bulkUpload" aria-expanded="false" aria-controls="bulkUpload">
+                            <i class="fas fa-cloud-download-alt"></i> Bulk Upload
 
-                    </button>
+                        </button>
+                    @endif
+
                 </div>
                 <div class="collapse container {{ ($errors->has('qroperators_bulkupload') && $errors->first('qroperators_bulkupload')) || Session::get('error') ? 'show' : '' }}"
                     id="bulkUpload">

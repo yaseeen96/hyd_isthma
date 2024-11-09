@@ -15,7 +15,7 @@ class NotificationsController extends Controller
     public function listNotifications()
     {
         $user = Member::find(auth()->user()->id);
-        $notifications = Notification::whereJsonContains('member_ids', $user->id)->get();
+        $notifications = Notification::whereJsonContains('member_ids', $user->id)->orderBy('id', 'desc')->get();
         $filteredNotifications = ListNotificationsResource::collection($notifications);
         return response()->json([
             'status' => 'success',

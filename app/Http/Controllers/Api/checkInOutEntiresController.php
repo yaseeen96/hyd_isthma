@@ -16,32 +16,33 @@ class checkInOutEntiresController extends Controller
         $user = auth()->user();
         $data = $reqest->all();
         if(count($data) > 0) {
-
             $name = '';
             $zone_name = '';
             $division_name = '';
             $unit_name = '';
             $gender = '';
             $phone_number = '';
+            $category = '';
             foreach($data as $entry) {
                 $userData = '';
                 if($entry['category'] == 'rukn') {
                     $userData = Member::where('user_number', $entry["id"])->get()->first();
                     $name = $userData->name;
-                    $phone_number = $userData->phone;
-                    $gender = $userData->gender;
+                    $category = 'Rukn';
                 } else {
                     $userData = QrBatchRegistration::where('batch_id', $entry['id'])->get()->first();
                     $name = $userData->full_name;
-                    $userData = $userData->phone_number;
-                    $gender = $userData->gender;
+                    $category = $userData->batch_type;
                 }
+                $phone_number = $userData->phone_number;
+                $gender = $userData->gender;
                 $zone_name = isset($userData) ?  $userData->zone_name : '';
                 $division_name = isset($userData) ?  $userData->division_name : '';
                 $unit_name = isset($userData) ? $userData->unit_name : '';
                 $entryData = [
                     'batch_id' => $entry['id'],
                     'batch_type' => $entry['category'],
+                    'category' => $category,
                     'gender' => $gender,
                     'place_id' => $entry['placeId'],
                     'date' => $entry['date'],

@@ -59,8 +59,7 @@ class CheckInOutEntiresController extends Controller
                         ->from('check_in_out_entires')
                         ->groupBy('batch_id')
                         ->orderBy('created_at', 'desc');
-                })
-                ->orderBy('created_at', 'desc');
+                })->orderBy('created_at', 'desc');
             return $datatables->eloquent($query)
                 ->editColumn('datetime', function(checkInOutEntires $checkInOutEntires){
                     $datetime = $checkInOutEntires->date != null ? AppHelperFunctions::getGreenBadge(date('Y-m-d', strtotime($checkInOutEntires->date))) : 'NA';
@@ -83,6 +82,78 @@ class CheckInOutEntiresController extends Controller
         $qrOperators = User::role(4)->get();
         return view('admin.checkinoutentries.position-report', compact('checkInOutPlaces', 'batchTypes', 'qrOperators'));
     }
+
+    public function totalCheckInOutReport(Request $request, DataTables $datatables)
+    {
+        $user = User::find(auth()->user()->id);
+        if ($user->id != 1 && !$user->hasPermissionTo('View ScannEntires')){
+            abort(403);
+        }
+        if($request->ajax()) {
+            $query = checkInOutEntires::select(
+                'batch_id',
+                'batch_type',
+                'gender',
+                'name',
+                'zone_name',
+                'division_name',
+                'unit_name',
+                'phone_number',
+                DB::raw('COUNT(*) as total_count')  // Count of rows in each group
+            )
+                ->where(function ($query) use ($request) {
+                    if (!empty($request->place_id)) {
+                        $query->where('place_id', $request->place_id);
+                    }
+                    if (!empty($request->mode)) {
+                        $query->where('mode', $request->mode);
+                    }
+                    if (!empty($request->unit_name)) {
+                        $query->where('unit_name', $request->unit_name);
+                    }
+                    if (!empty($request->zone_name)) {
+                        $query->where('zone_name', $request->zone_name);
+                    }
+                    if (!empty($request->division_name)) {
+                        $query->where('division_name', $request->division_name);
+                    }
+                    if (!empty($request->date)) {
+                        $query->whereDate('date', $request->date);
+                    }
+                    if(!empty($request->batch_type)) {
+                        $query->where('batch_type', $request->batch_type);
+                    }
+                    if(!empty($request->category)) {
+                        $query->where('category', $request->category);
+                    }
+                    if (!empty($request->from_time) && empty($request->to_time)) {
+                        $query->whereTime('time', date('H:i:s', strtotime($request->from_time)));
+                    }
+                    if (empty($request->from_time) && !empty($request->to_time)) {
+                        $query->whereTime('time', date('H:i:s', strtotime($request->to_time)));
+                    }
+                    if (!empty($request->from_time) && !empty($request->to_time)) {
+                        $query->whereTime('time', '>=', date('H:i:s', strtotime($request->from_time)))
+                            ->whereTime('time', '<=', date('H:i:s', strtotime($request->to_time)));
+                    }
+                })
+                ->groupBy('batch_id', 'batch_type', 'gender', 'name', 'zone_name', 'division_name', 'unit_name', 'phone_number')
+                ->orderBy('batch_id', 'desc');  // Ordering by batch_id or any column you prefer
+            return $datatables->eloquent($query)
+                ->editColumn('total_count', function ($query) {
+                    return AppHelperFunctions::getGreenBadge($query->total_count);
+                })
+                ->addIndexColumn()
+                ->rawColumns(['total_count'])
+                ->make(true);
+        }
+        $checkInOutPlaces = CheckInOutPlace::query()->get();
+        $batchTypes = QrBatchRegistration::distinct('batch_type')->pluck('batch_type')->toArray();
+        array_push($batchTypes, 'rukun');
+        $qrOperators = User::role(4)->get();
+        return view('admin.checkinoutentries.total-check-in-out-report', compact('checkInOutPlaces', 'batchTypes', 'qrOperators'));
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -112,6 +183,9 @@ class CheckInOutEntiresController extends Controller
                 }
                 if(!empty($request->batch_type)) {
                     $query->where('batch_type', $request->batch_type);
+                }
+                if(!empty($request->category)) {
+                    $query->where('category', $request->category);
                 }
                 if(!empty($request->date)) {
                     $query->whereDate('date', $request->date);
@@ -144,13 +218,14 @@ class CheckInOutEntiresController extends Controller
                 ->addColumn('user', function(checkInOutEntires $checkInOutEntires){
                     return isset($checkInOutEntires->user) ? $checkInOutEntires->user->name : 'NA';
                 })
+
                 ->addIndexColumn()
                 ->rawColumns(['place', 'user', 'datetime'])
                 ->make(true);
         }
         $checkInOutPlaces = CheckInOutPlace::query()->get();
         $batchTypes = QrBatchRegistration::distinct('batch_type')->pluck('batch_type')->toArray();
-        array_push($batchTypes, 'rukun');
+        array_push($batchTypes, 'Rukn');
         $qrOperators = User::role(4)->get();
         return view('admin.checkinoutentries.list', compact('checkInOutPlaces', 'batchTypes', 'qrOperators'));
     }

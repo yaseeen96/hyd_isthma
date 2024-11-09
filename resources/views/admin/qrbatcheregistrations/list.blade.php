@@ -5,14 +5,66 @@
             QR Batch Registraitons
         </x-slot>
         <div class="card-body">
+            @php
+                $message = Session::get('success') ?? Session::get('error');
+            @endphp
+            @if ($message)
+                <div class="alert {{ Session::get('success') ? 'alert-success' : 'alert-danger' }} alert-block">
+                    <button type="button" class="close text-white" data-dismiss="alert">X</button>
+                    <strong>{{ $message }}</strong>
+                </div>
+            @endif
             <div class="col-lg-12 mb-5">
-                <button class="btn btn-purple float-right" type="button" data-toggle="collapse" data-target="#regFilters"
-                    aria-expanded="false" aria-controls="regFilters">
-                    <i class="fas fa-filter"></i> Filter
-                </button>
-                <button class="btn btn-purple float-right mr-2" onclick="clearFilters()"> <i class="fas fa-filter "></i>
-                    Clear
-                    Filters</button>
+                @if (auth()->user()->id == 1 || auth()->user()->can('Create BatchesManagement'))
+                    <button class="btn btn-purple float-right" type="button" data-toggle="collapse" data-target="#regFilters"
+                        aria-expanded="false" aria-controls="regFilters">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                    <button class="btn btn-purple float-right mr-2" onclick="clearFilters()"> <i class="fas fa-filter "></i>
+                        Clear
+                        Filters</button>
+                    <button class="btn btn-purple float-right mr-2" type="button" data-toggle="collapse"
+                        data-target="#bulkUpload" aria-expanded="false" aria-controls="bulkUpload">
+                        <i class="fas fa-cloud-download-alt"></i> Bulk Upload
+
+                    </button>
+                @endif
+            </div>
+            <div class="collapse container {{ ($errors->has('qrbatches_bulkupload') && $errors->first('qrbatches_bulkupload')) || Session::get('error') ? 'show' : '' }}"
+                id="bulkUpload">
+                <div class="card card-body shadow-none">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <span class="btn btn-purple"><a class="text-white"
+                                    href="{{ asset('assets/documents/qr_batch_bulk_registrations_upload_file.csv') }}">Download
+                                    the sample file</a></span>
+                        </div>
+                        <div class="col-lg-6">
+                            {{-- file upload form --}}
+                            <form action="{{ route('qrBatchRegistrations.bulkUpload') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" type="file" class="custom-file-input"
+                                            id="qrbatches_bulkupload" name="qrbatches_bulkupload">
+                                        <label class="custom-file-label" for="qrbatches_bulkupload">Choose
+                                            file</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button type="submit" class="input-group-text">Upload</button>
+                                    </div>
+                                </div>
+                                @if ($errors->has('qrbatches_bulkupload'))
+                                    <span class="text-danger">
+                                        {{ $errors->first('qrbatches_bulkupload') }}
+                                    </span>
+                                @endif
+                            </form>
+                        </div>
+                        <div class="col-lg-3"></div>
+                    </div>
+                </div>
             </div>
             <div class="collapse container" id="regFilters">
                 <div class="card card-body shadow-none">
