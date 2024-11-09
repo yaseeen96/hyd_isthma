@@ -128,8 +128,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     final uri = navigationAction.request.url;
 
                     if (uri != null) {
-                      if (uri.scheme == 'mailto' || uri.scheme == 'tel') {
-                        // Handle mailto and tel links by opening them in external applications
+                      // Check if URL scheme requires opening in an external application
+                      if (uri.scheme == 'mailto' ||
+                          uri.scheme == 'tel' ||
+                          uri.host == 'api.whatsapp.com' ||
+                          uri.host == 'maps.google.com' ||
+                          uri.scheme == 'geo') {
+                        // Open in external application
                         if (await canLaunchUrl(uri)) {
                           await launchUrl(uri,
                               mode: LaunchMode.externalApplication);

@@ -154,7 +154,7 @@ const ArrivalRegistrationPage = () => {
                     className="form-input text-gray-400 "
                     placeholder="Enter District"
                     readOnly
-                    defaultValue={user ? user.member_data[0].unit_name : ''}
+                    defaultValue={user ? user.member_data[0].division_name : ''}
                 />
             </div>
             <div className="mt-4 flex flex-col items-start w-full gap-1">

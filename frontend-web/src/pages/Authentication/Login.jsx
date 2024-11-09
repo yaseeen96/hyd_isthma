@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { userStateAtom } from '../../store/atoms/userStateAtom';
 import { ROUTES } from '../../router/routes';
+import { replace } from 'formik';
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
@@ -21,7 +22,7 @@ const Login = () => {
             const response = await sendOtpService(phone);
             setUserState((prev) => ({ ...prev, phone: phone }));
             toast.success(response.message);
-            navigate(ROUTES.verifyOtp);
+            navigate(ROUTES.verifyOtp, { replace: true });
         } catch (error) {
             toast.error(`${error}`);
         } finally {

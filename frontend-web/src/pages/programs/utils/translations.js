@@ -12,7 +12,7 @@ const translations = {
         noPrograms: 'No programs available for this session',
         enroll: 'Enroll',
         giveFeedback: 'Give Feedback',
-        viewTranslation: 'View Translation',
+        viewTranslation: 'Listen Translation',
     },
     urdu: {
         back: 'واپس',
@@ -27,7 +27,7 @@ const translations = {
         noPrograms: 'اس نشست کے لئے کوئی پروگرام دستیاب نہیں ہے',
         enroll: 'داخلہ لیں',
         giveFeedback: 'رائے دیں',
-        viewTranslation: 'ترجمہ دیکھیں',
+        viewTranslation: 'ترجمہ سنیں',
     },
     malyalam: {
         back: 'തിരിച്ചു',
@@ -42,7 +42,7 @@ const translations = {
         noPrograms: 'ഈ സെഷന് പ്രോഗ്രാമുകൾ ഇല്ല',
         enroll: 'ചേരുക',
         giveFeedback: 'പ്രതികരണം നൽകുക',
-        viewTranslation: 'അനുവാദം കാണുക',
+        viewTranslation: 'പരിഭാഷ കേൾക്കുക',
     },
     bengali: {
         back: 'ফিরে যান',
@@ -57,7 +57,7 @@ const translations = {
         noPrograms: 'এই সেশনের জন্য কোনো প্রোগ্রাম উপলব্ধ নেই',
         enroll: 'নিবন্ধন করুন',
         giveFeedback: 'প্রতিক্রিয়া জানান',
-        viewTranslation: 'অনুবাদ দেখুন',
+        viewTranslation: 'অনুবাদ শুনুন',
     },
     tamil: {
         back: 'திரும்பு',
@@ -72,7 +72,7 @@ const translations = {
         noPrograms: 'இந்த அமர்வுக்கு எதுவும் கிடைக்கவில்லை',
         enroll: 'பதிவு செய்க',
         giveFeedback: 'பின்னூட்டம் கொடுக்கவும்',
-        viewTranslation: 'மொழிபெயர்ப்பு பார்க்க',
+        viewTranslation: 'மொழிபெயர்ப்பு கேளுங்கள்',
     },
     kannada: {
         back: 'ಹಿಂತಿರುಗು',
@@ -87,7 +87,7 @@ const translations = {
         noPrograms: 'ಈ ಅಧಿವೇಶನಕ್ಕೆ ಯಾವುದೇ ಕಾರ್ಯಕ್ರಮ ಲಭ್ಯವಿಲ್ಲ',
         enroll: 'ಸೇರಲು',
         giveFeedback: 'ಪ್ರತಿಕ್ರಿಯೆ ನೀಡು',
-        viewTranslation: 'ಅನುವಾದವನ್ನು ನೋಡಿ',
+        viewTranslation: 'ಅನುವಾದವನ್ನು ಕೇಳಿ',
     },
 };
 

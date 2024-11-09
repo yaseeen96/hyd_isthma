@@ -33,6 +33,16 @@
             <category android:name="android.intent.category.BROWSABLE" />
             <data android:scheme="mailto" />
             <data android:scheme="tel" />
+              
+            <!-- WhatsApp API -->
+            <data android:scheme="https" android:host="api.whatsapp.com" />
+            
+            <!-- Google Maps -->
+            <data android:scheme="https" android:host="maps.google.com" />
+            <data android:scheme="geo" />
+            
+            <!-- OpenStreetMap or any other map links if needed -->
+            <data android:host="www.openstreetmap.org" android:scheme="https" />
         </intent-filter>
         </activity>
 
