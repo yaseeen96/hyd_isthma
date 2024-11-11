@@ -76,7 +76,7 @@ const translations = {
     },
     kannada: {
         back: 'ಹಿಂತಿರುಗು',
-        title: 'ಪ್ರೋಗ್ರಾಂ ಪ್ರತಿಕೆ',
+        title: 'ಪಕಾರ್ಯಕ್ರಮಗಳು',
         selectLanguage: 'ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ:',
         fixedSessions: 'ನಿರ್ದಿಷ್ಟ ಅಧಿವೇಶನಗಳು',
         parallelSessions: 'ಸಮಾಂತರ ಅಧಿವೇಶನಗಳು',
@@ -85,7 +85,7 @@ const translations = {
         enrollMessageFailure: 'ಪ್ರವೇಶ ವಿಫಲವಾಗಿದೆ.',
         downloadPdf: 'ಪಿಡಿಎಫ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ',
         noPrograms: 'ಈ ಅಧಿವೇಶನಕ್ಕೆ ಯಾವುದೇ ಕಾರ್ಯಕ್ರಮ ಲಭ್ಯವಿಲ್ಲ',
-        enroll: 'ಸೇರಲು',
+        enroll: 'ಸೇರು',
         giveFeedback: 'ಪ್ರತಿಕ್ರಿಯೆ ನೀಡು',
         viewTranslation: 'ಅನುವಾದವನ್ನು ಕೇಳಿ',
     },
