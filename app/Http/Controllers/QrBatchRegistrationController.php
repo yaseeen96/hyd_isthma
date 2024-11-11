@@ -104,6 +104,19 @@ class QrBatchRegistrationController extends Controller
             'unit_name' => 'required',
         ]);
         $data['email'] = $request->email;
+        $qrBatchScannEntires = checkInOutEntires::where('batch_id', $qrBatchRegistration->batch_id)->where('batch_type', 'nonRukn')->get();
+        if($qrBatchScannEntires->count() > 0) {
+            foreach($qrBatchScannEntires as $qrBatchScannEntire) {
+                $qrBatchScannEntire->update([
+                    'name' => $data['full_name'],
+                    'email' => $data['email'],
+                    'phone_number' => $data['phone_number'],
+                    'zone_name' => $data['zone_name'],
+                    'division_name' => $data['division_name'],
+                    'unit_name' => $data['unit_name'],
+                ]);
+            }
+        }
         $qrBatchRegistration->update($data);
         return redirect()->back()->with('success', 'Qr Batch Registrations updated successfully');
     }
@@ -172,7 +185,7 @@ class QrBatchRegistrationController extends Controller
                     if($qrBatchScannEntires->count() > 0) {
                         foreach($qrBatchScannEntires as $qrBatchScannEntire) {
                             $qrBatchScannEntire->update([
-                                'full_name' => $record['full_name'],
+                                'name' => $record['full_name'],
                                 'email' => $record['email'],
                                 'phone_number' => $record['phone_number'],
                                 'zone_name' => $record['zone_name'],

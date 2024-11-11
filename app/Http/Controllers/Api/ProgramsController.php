@@ -6,19 +6,84 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProgramListResource;
 use App\Http\Resources\SessionThemeListResource;
 use App\Models\Program;
+use App\Models\ProgramSpeaker;
 use App\Models\SessionRegistration;
 use App\Models\SessionTheme;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 
 
 class ProgramsController extends Controller
 {
-    public function listPrograms() {
-        $sessions = SessionTheme::all();
+    public function listPrograms(Request $request) {
+        $lang = $request->lang ?? '';
+        $image_placeholder = env('APP_URL') . '/assets/img/no-image.png';
+
+        // Cache sessions and eager load necessary relationships
+        $sessions = Cache::remember('sessions', 60, function () use ($lang) {
+            return SessionTheme::with([
+                'programs.programSpeaker' => function ($query) {
+                    $query->withMedia('speaker_image');
+                },
+                'sessionRegistrations' => function ($query) {
+                    $query->where('member_id', auth()->id());
+                }
+            ])->get();
+        });
+
+        $speakers = ProgramSpeaker::withMedia('speaker_image')->get()->keyBy('id'); // Preload all speakers
+        $data = [];
+        foreach ($sessions as $session) {
+            $speaker_details = $speakers->filter(function ($speaker) use ($session) {
+                return stripos($speaker->name, $session->convener) !== false;
+            })->first() ?? '';
+            $speaker_image_url = $speaker_details && $speaker_details->firstMedia('speaker_image')
+                ? $speaker_details->firstMedia('speaker_image')->getUrl()
+                : $image_placeholder;
+
+            $programs = [];
+            foreach ($session->programs as $program) {
+                $program_speaker =  !empty($program->program_speaker_id) && !empty($speaker_details) ? ($program->programSpeaker->id == $speaker_details->id
+                    ? $speaker_details
+                    : ($speakers[$program->program_speaker_id] ?? null)) : null;
+
+                $programs[] = [
+                    'id' => $program->id,
+                    'name' => $lang ? $program->{$lang . '_topic'} : $program->topic,
+                    'url' => $lang ? $program->{$lang . '_url'} : $program->url,
+                    'datetime' => $program->from_time && $program->to_time ?
+                        date('Y-m-d', strtotime($program->date)) . ' ' . Carbon::parse($program->from_time)->format('h:i A'). ' - ' . Carbon::parse($program->to_time)->format('h:i A')
+                        : null,
+                    'speaker_name' => $program_speaker ? ($lang ? $program_speaker->{$lang . '_name'} : $program_speaker->name) : null,
+                    'speaker_bio' => $program_speaker ? ($lang ? $program_speaker->{$lang . '_bio'} : $program_speaker->bio) : null,
+                    'speaker_image' => $program_speaker ?
+                        ($program_speaker->getMedia('speaker_image')->first() ? $program_speaker->getMedia('speaker_image')->first()->getUrl() : $image_placeholder)
+                        : null,
+                    'status' => $program->status,
+                    'translation' => '',
+                    'transcript' => $lang ? $program->{$lang . '_transcript'} : null,
+                ];
+            }
+
+            $data[] = [
+                'id' => $session->id,
+                'theme_name' => $lang ? $session->{$lang . '_theme_name'} : $session->theme_name,
+                'session_convener' => $session->convener ? ($lang ? ($speaker_details->{$lang . '_name'} ?? '') : $session->convener) : '',
+                'convener_bio' => $session->convener ? ($lang ? ($speaker_details->{$lang . '_bio'} ?? '') : '') : '',
+                'convener_image' => $speaker_image_url,
+                'theme_type' => ucfirst($session->theme_type),
+                'hall_name' => $session->hall_name,
+                'datetime' => date('Y-m-d', strtotime($session->date)) . ' ' . Carbon::parse($session->from_time)->format('h:i A') . ' - ' . Carbon::parse($session->to_time)->format('h:i A'),
+                'status' => $session->status,
+                'enrolled' => $session->sessionRegistrations->isNotEmpty(),
+                'programs' => $programs,
+            ];
+        }
+
         return response()->json([
-            "data" => SessionThemeListResource::collection($sessions),
+            "data" => $data
         ]);
     }
     public function registerSession(Request $request) {

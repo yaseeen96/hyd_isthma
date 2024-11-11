@@ -99,19 +99,24 @@
                         data: 'member.user_number'
                     },
                     {
-                        data: 'session_theme.theme_name'
+                        data: 'session_theme.theme_name',
+                        searchable: false
                     },
                     {
-                        data: 'session_theme.convener'
+                        data: 'session_theme.convener',
+                        searchable: false
                     },
                     {
-                        data: 'session_theme.theme_type'
+                        data: 'session_theme.theme_type',
+                        searchable: false
                     },
                     {
-                        data: 'session_theme.hall_name'
+                        data: 'session_theme.hall_name',
+                        searchable: false
                     },
                     {
-                        data: 'session_date_time'
+                        data: 'session_date_time',
+                        searchable: false
                     },
                     {
                         data: 'action'

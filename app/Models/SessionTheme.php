@@ -27,4 +27,8 @@ class SessionTheme extends Model
     public function programs() {
         return $this->hasMany(Program::class);
     }
+
+    public function sessionRegistrations() {
+        return $this->hasMany(SessionRegistration::class, 'session_id', 'id');
+    }
 }

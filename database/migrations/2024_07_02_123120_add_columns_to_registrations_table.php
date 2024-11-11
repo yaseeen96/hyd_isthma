@@ -16,17 +16,17 @@ return new class extends Migration
             // mehram details are in different table
             $table->json('arrival_details')->nullable()
                     ->comment('
-                    {"datetime": "2024-06-08", 
-                    "mode": "bus/plane", 
-                    "mode_identifier": "BusNo", 
-                    "start_point": "Hyd", 
+                    {"datetime": "2024-06-08",
+                    "mode": "bus/plane",
+                    "mode_identifier": "BusNo",
+                    "start_point": "Hyd",
                     "end_point": "Mumbai"}');
             $table->json('departure_details')->nullable()
                     ->comment('
-                    {"datetime": "2024-06-08", 
-                    "mode": "bus/plane", 
-                    "mode_identifier": "BusNo", 
-                    "start_point": "Hyd", 
+                    {"datetime": "2024-06-08",
+                    "mode": "bus/plane",
+                    "mode_identifier": "BusNo",
+                    "start_point": "Hyd",
                     "end_point": "Mumbai"}');
             $table->string("hotel_required")->nullable();
             $table->json("special_considerations")->nullable()
@@ -39,9 +39,8 @@ return new class extends Migration
                     members_count: 0}');
             $table->string("health_concern")->nullable();
             $table->string("management_experience")->nullable();
-            // purchases required details are in different table 
-            $table->string("comments")->nullable();
-
+            // purchases required details are in different table
+            $table->string("comments", 1000)->nullable();
         });
     }
 
@@ -59,7 +58,7 @@ return new class extends Migration
             $table->dropColumn("sight_seeing");
             $table->dropColumn("health_concern");
             $table->dropColumn("management_experience");
-            $table->dropColumn("comments"); 
+            $table->dropColumn("comments");
         });
     }
 };

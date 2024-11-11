@@ -1,8 +1,8 @@
 @extends('layouts.app', ['ptype' => 'parent', 'purl' => request()->route()->getName(), 'ptitle' => 'Notifications'])
 @section('content')
     <section class="content">
-        <form method="POST" action="{{ route('notifications.store') }}" class="container-fluid  mt-3 px-3  rounded-2"
-            enctype="multipart/form-data">
+        <form method="POST" action="{{ route('notifications.store') }}" id="notification-form"
+            class="container-fluid  mt-3 px-3  rounded-2" enctype="multipart/form-data">
             @csrf
             <div class="card show-sm p-4">
                 <div class="row">
@@ -205,7 +205,8 @@
                                 <input type="text" name="youtube_url" class="form-control">
                             </div>
                             <div class="row justify-content-end">
-                                <button type="submit" class="btn btn-purple"><i class="fas mr-2 fa-paper-plane"></i>Send
+                                <button type="submit" class="btn btn-purple" id="send-notification"><i
+                                        class="fas mr-2 fa-paper-plane"></i>Send
                                 </button>
                                 <a href="{{ route('notifications.index') }}" class="btn btn-secondary ml-2">Cancel</a>
                             </div>
@@ -219,6 +220,11 @@
 @endsection
 @push('scripts')
     <script type="text/javascript">
+        $('#send-notification').on('click', function() {
+            $(this).attr('disabled', true);
+            $(this).html('<i class="fas mr-2 fa-spinner fa-spin"></i> Sending...');
+            $('#notification-form').submit();
+        });
         const selectedRegion = document.querySelector('input[name="region"]:checked');
         let current = selectedRegion == null || selectedRegion == undefined ? '' : selectedRegion.value + "_cntr";
 

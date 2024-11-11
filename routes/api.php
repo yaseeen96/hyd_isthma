@@ -23,6 +23,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('verifyOtp', 'AuthController@verifyOtp');
         Route::post('verifyToken', 'AuthController@verifyToken');
     });
+    Route::get('programs/listPrograms', 'ProgramsController@listPrograms');
     Route::group(['prefix' => 'auth/operator'], function () {
         Route::post('login', 'QrCodeOperatorController@login');
         Route::post('verifyOtp', 'QrCodeOperatorController@verifyOtp');
@@ -43,7 +44,6 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('getNotification/{id}', 'NotificationsController@getNotification');
         });
         Route::group(['prefix' => 'programs'], function () {
-            Route::get('listPrograms', 'ProgramsController@listPrograms');
             Route::get('getProgram/{id}', 'ProgramsController@getProgram');
             Route::post('registerSession', 'ProgramsController@registerSession');
         });

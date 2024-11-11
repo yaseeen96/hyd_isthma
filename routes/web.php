@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\SmsHelper;
+use App\Http\Controllers\Api\ProgramsController;
 use App\Models\Member;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 Auth::routes(['register' => false]);
+Route::get('programs/listPrograms', [ProgramsController::class, 'listPrograms'])->name('programs');
 Route::middleware('auth')->group(function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::post('/', 'DashboardController@index')->name('dashboard'); // for dashboard charts
@@ -87,6 +89,23 @@ Route::prefix('delete')->group(function () {
     Route::get('logout', 'DeleteAccountController@logout')->name('tmp-logout');
 });
 
+
+Route::get('generate-tokens', function(){
+
+    $members = Member::all();
+    $tokens = [];
+
+    foreach ($members as $member) {
+        $member->tokens()->delete();
+        $token = $member->createToken('user-token')->plainTextToken;
+
+        array_push($tokens, $token);
+    }
+
+    $jsonContent = json_encode($tokens, JSON_PRETTY_PRINT);
+     print_r($jsonContent);
+
+});
 
 
 /**

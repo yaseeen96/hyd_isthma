@@ -31,8 +31,8 @@ class SessionThemeListResource extends JsonResource
             'datetime' => date('Y-m-d', strtotime($this->date)) . ' ' . Carbon::parse($this->from_time)->format('h:i A'). ' - ' . Carbon::parse($this->to_time)->format('h:i A'),
             'status' => $this->status,
             'enrolled' => SessionRegistration::where('session_id', $this->id)->where('member_id', auth()->id())->exists(),
-            'programs' => Program::with('sessionTheme', 'programSpeaker')->where('session_theme_id', $this->id)->count() > 0 ?
-                          Program::with('sessionTheme', 'programSpeaker')->where('session_theme_id', $this->id)->get()->map(function($program) {
+            'programs' => Program::where('session_theme_id', $this->id)->count() > 0 ?
+                          Program::where('session_theme_id', $this->id)->get()->map(function($program) {
                             return ProgramListResource::make($program);
                           }) : [],
         ];

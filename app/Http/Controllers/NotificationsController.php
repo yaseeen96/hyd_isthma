@@ -45,7 +45,7 @@ class NotificationsController extends Controller
                     return '<p style="width: 100px; white-space: wrap;">' . $notification->title . '</p>';
                 })
                 ->editColumn('valid_tokens', function (Notification $notification) {
-                    return AppHelperFunctions::getGreenBadge( is_array($notification->valid_tokens) ? count($notification->valid_tokens) : 0);
+                    return AppHelperFunctions::getGreenBadge( !empty($notification->member_ids) ? count($notification->member_ids) : 0);
                 })
                 ->editColumn('unknown_tokens', function (Notification $notification) {
                     return AppHelperFunctions::getRedBadge(is_array($notification->unknown_tokens) ? count($notification->unknown_tokens) : 0);
