@@ -13,7 +13,7 @@ import { registrationDetailsAtom } from '../../../store/atoms/registrationDetail
 import { useLoading } from '../../../utils/hooks/useLoading';
 import LoadingComponent from '../../../components/common/loadingComponent';
 import { ROUTES } from '../../../router/routes';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 
 const AdditionalDetailsRegistration = () => {
     const { loading, setLoading } = useLoading();
@@ -28,6 +28,7 @@ const AdditionalDetailsRegistration = () => {
         { name: 'Carpet', qty: '0' },
     ];
 
+    const defaultDateString = '2024-11-01 12:00 AM';
     const mergePurchaseDetails = (existingDetails, defaultItems) => {
         const existingNames = existingDetails.map((item) => item.name);
         const mergedItems = [...existingDetails, ...defaultItems.filter((item) => !existingNames.includes(item.name))];
@@ -36,20 +37,34 @@ const AdditionalDetailsRegistration = () => {
 
     // Helper function to parse dates and handle Safari inconsistencies
     const parseDate = (dateString) => {
-        const date = new Date(dateString);
-        return isNaN(date.getTime()) ? new Date(2024, 10, 1) : date; // Default to November 1, 2024 if invalid
+        if (typeof dateString === 'string') {
+            const parsedDate = new Date(dateString);
+            if (!isNaN(parsedDate)) {
+                return parsedDate;
+            }
+        }
+        return new Date(2024, 10, 1); // Fallback to default if invalid
+    };
+
+    // Helper function to parse date strings in "YYYY-MM-DD hh:mm A" format
+    const parseDateString = (dateString) => {
+        return parse(dateString, 'yyyy-MM-dd hh:mm a', new Date());
     };
 
     const initialValues = {
         arrival_details: {
-            datetime: registrationDetails.member_reg_data?.arrival_details?.datetime ? parseDate(registrationDetails.member_reg_data.arrival_details.datetime) : new Date(2024, 10, 1),
+            datetime: registrationDetails.member_reg_data?.arrival_details?.datetime
+                ? parseDateString(registrationDetails.member_reg_data.arrival_details.datetime)
+                : parseDateString(defaultDateString),
             mode: registrationDetails.member_reg_data?.arrival_details?.mode || '',
             mode_identifier: registrationDetails.member_reg_data?.arrival_details?.mode_identifier || '',
             start_point: registrationDetails.member_reg_data?.arrival_details?.start_point || '',
             end_point: registrationDetails.member_reg_data?.arrival_details?.end_point || '',
         },
         departure_details: {
-            datetime: registrationDetails.member_reg_data?.departure_details?.datetime ? parseDate(registrationDetails.member_reg_data.departure_details.datetime) : new Date(2024, 10, 1),
+            datetime: registrationDetails.member_reg_data?.departure_details?.datetime
+                ? parseDateString(registrationDetails.member_reg_data.departure_details.datetime)
+                : parseDateString(defaultDateString),
             mode: registrationDetails.member_reg_data?.departure_details?.mode || '',
             mode_identifier: registrationDetails.member_reg_data?.departure_details?.mode_identifier || '',
             start_point: registrationDetails.member_reg_data?.departure_details?.start_point || '',
