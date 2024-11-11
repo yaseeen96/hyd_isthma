@@ -106,7 +106,7 @@ const HomePage = () => {
 
     return (
         // <HomeLayout>
-        <div className="bg-purple-50 min-h-screen">
+        <div className="bg-white">
             <TopAppBar
                 title={'Home'}
                 onLogout={() => {
@@ -125,7 +125,7 @@ const HomePage = () => {
             <div className=" mb-14 mt-2 p-4 grid grid-cols-2 w-full gap-4 animate-slide-in">
                 <BigCard
                     isCentered={true}
-                    title={'Registration Details'}
+                    title={'Registration\nDetails'}
                     className={'h-[250px] bg-purple-200'}
                     icon={<RiProfileFill size={50} />}
                     textClassName={'text-2xl font-bold'}
@@ -142,7 +142,7 @@ const HomePage = () => {
                     />
                     <div className="h-[20px]"></div>
                     <BigCard
-                        title={'Ijtema Gah Map'}
+                        title={'Ijtema Gah \n Map'}
                         className={'h-[115px] bg-gray-200'}
                         icon={<FiMap size={32} />}
                         isCentered={true}
@@ -160,7 +160,7 @@ const HomePage = () => {
                 />
                 <BigCard title={'Call/Email'} className={'h-[115px] bg-blue-100'} icon={<BiSupport size={32} />} isCentered={true} textClassName={'text-center font-bold'} onSelect={onSupportSelect} />
                 <BigCard
-                    title={'Feedback/Question'}
+                    title={'Feedback/\nQuestions'}
                     className={'h-[115px] bg-red-200'}
                     icon={<MdFeedback size={32} />}
                     isCentered={true}
@@ -179,7 +179,7 @@ const HomePage = () => {
                 />
                 <BigCard title={'Prayer Times'} className={'h-[115px] bg-cyan-100'} icon={<FaMosque size={32} />} isCentered={true} textClassName={'text-center font-bold'} onSelect={onPrayerSelect} />
                 <BigCard
-                    title={'Announcements/FAQs'}
+                    title={'Announcements/\nFAQs'}
                     className={'h-[115px] bg-Fuchsia-100'}
                     icon={<MdQuestionAnswer size={32} />}
                     isCentered={true}
