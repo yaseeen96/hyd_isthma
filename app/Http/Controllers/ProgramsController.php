@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Plank\Mediable\Facades\MediaUploader;
 use Illuminate\Support\Str;
 
@@ -277,6 +278,7 @@ class ProgramsController extends Controller
             $media = MediaUploader::fromSource($request->file('kannada_translation'))->toDestination('public', "program_translations/kannada/$program->id")->useFilename(Str::uuid())->upload();
             $program->attachMedia($media, ['kannada_translation']);
         }
+        Cache::forget('sessions');
         return redirect()->back()->with('success', 'Program created successfully');
     }
 
@@ -398,6 +400,7 @@ class ProgramsController extends Controller
             $program->attachMedia($media, ['kannada_translation']);
         }
         $program->update($data);
+        Cache::forget('sessions');
         return redirect()->back()->with('success', 'Program updated successfully');
     }
     /**
@@ -422,6 +425,7 @@ class ProgramsController extends Controller
                 $program->detachMedia($program->id);
                 $media->delete();
             });
+            Cache::forget('sessions');
             return response()->json([
                 'message' => 'Program deleted successfully',
             ], Response::HTTP_OK);

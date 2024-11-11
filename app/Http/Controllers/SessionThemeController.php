@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Response;
 use App\Helpers\AppHelperFunctions;
+use Illuminate\Support\Facades\Cache;
 
 class SessionThemeController extends Controller
 {
@@ -91,6 +92,7 @@ class SessionThemeController extends Controller
         }
         $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
         $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');
+        Cache::forget('sessions');
         SessionTheme::create($data);
         return redirect()->route('sessiontheme.index')->with('success', 'Theme Session created successfully');
     }
@@ -144,6 +146,7 @@ class SessionThemeController extends Controller
         }
         $data['from_time'] = Carbon::parse($data['from_time'])->format('H:i:s');
         $data['to_time'] = Carbon::parse($data['to_time'])->format('H:i:s');
+        Cache::forget('sessions');
         $sessionTheme->update($data);
         return redirect()->route('sessiontheme.index')->with('success', 'Theme session updated successfully');
     }
@@ -160,6 +163,7 @@ class SessionThemeController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         } else {
             $sessionTheme->delete();
+            Cache::forget('sessions');
             return response()->json([
                 'message' => 'Session theme deleted successfully!',
             ], Response::HTTP_OK);
