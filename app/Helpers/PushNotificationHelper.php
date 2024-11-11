@@ -39,7 +39,7 @@ class PushNotificationHelper {
                     $invalidTokens = array_merge($invalidTokens, $filteredTokens['invalid']);
                     // sending push notificaiton message
                     $result = $messaging->sendMulticast($message, $filteredTokens['valid']);
-                    // usleep(100000);
+                    usleep(100000);
                 } catch (MessagingException $e) {
                     throw new Exception($e);
                 }
