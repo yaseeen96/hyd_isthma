@@ -124,7 +124,7 @@ const SessionCard = forwardRef(
                                                 </span>
 
                                                 {/* View Translation Button */}
-                                                {(program.status === 'In Progress' || program.status === 'Completed') && (
+                                                {(program.status === 'In Progress' || program.status === 'Completed') && program.url != null && (
                                                     <a href={program.url} target="_blank" rel="noopener noreferrer" className="block w-full">
                                                         <button className="bg-primary-500 text-white py-2 px-4 mt-2 rounded-lg font-semibold hover:bg-primary-dark transition duration-200 w-full flex items-center justify-center space-x-2">
                                                             <FiExternalLink />
