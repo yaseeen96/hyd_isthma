@@ -34,16 +34,6 @@ const generateCalendarDates = (events) => {
     return Array.from({ length: 3 }, (_, i) => startDate.add(i, 'day').format('YYYY-MM-DD'));
 };
 
-const openPDFInExternalApp = () => {
-    const pdfPath = getPDFPath(language);
-    if (pdfPath) {
-        // Trigger download or open in external app
-        window.location.href = pdfPath;
-    } else {
-        console.error('PDF path not found');
-    }
-};
-
 const getPDFPath = (language) => {
     switch (language) {
         case 'bengali':
@@ -244,14 +234,15 @@ const Timeline = () => {
                     {/* <GeneratePDF data={data} title={'ss'} /> */}
                 </div>
             </div>
-            <button
-                onClick={openPDFInExternalApp}
+            <a
+                href={getPDFPath(language)} // Dynamic PDF path based on selected language
+                download
                 className="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-primary text-white rounded-full p-4 shadow-lg flex items-center"
                 aria-label="Download PDF"
             >
                 <FiDownload size={20} color="white" className="mr-2" />
                 <span>Download PDF</span>
-            </button>
+            </a>
 
             {isModalOpen && <ConfirmEnrollModal isOpen={isModalOpen} onConfirm={handleEnroll} onCancel={handleCancel} />}
             <FeedbackModal isOpen={isFeedbackModalOpen} onClose={() => setIsFeedbackModalOpen(false)} onSubmit={() => setIsFeedbackModalOpen(false)} programId={selectedProgramId} />
