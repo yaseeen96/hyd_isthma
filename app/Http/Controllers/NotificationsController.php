@@ -109,7 +109,6 @@ class NotificationsController extends Controller
                     $q->where('hotel_required', $request->hotel_required_condition, $request->hotel_required_value);
                 }
                 $criteria['hotel_required'] = ['condition' => $request->hotel_required_condition, 'value' => $request->hotel_required_value];
-                dd($criteria);
             }
             // confirm_arrival
             if( AppHelperFunctions::isSetAndNotEmpty($request->confirm_arrival_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->confirm_arrival_value) ) {
