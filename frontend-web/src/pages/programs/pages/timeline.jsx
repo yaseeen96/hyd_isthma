@@ -34,9 +34,14 @@ const generateCalendarDates = (events) => {
     return Array.from({ length: 3 }, (_, i) => startDate.add(i, 'day').format('YYYY-MM-DD'));
 };
 
-const openPDFInNewTab = () => {
+const openPDFInExternalApp = () => {
     const pdfPath = getPDFPath(language);
-    window.open(pdfPath, '_blank');
+    if (pdfPath) {
+        // Trigger download or open in external app
+        window.location.href = pdfPath;
+    } else {
+        console.error('PDF path not found');
+    }
 };
 
 const getPDFPath = (language) => {
@@ -240,7 +245,7 @@ const Timeline = () => {
                 </div>
             </div>
             <button
-                onClick={openPDFInNewTab}
+                onClick={openPDFInExternalApp}
                 className="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-primary text-white rounded-full p-4 shadow-lg flex items-center"
                 aria-label="Download PDF"
             >
