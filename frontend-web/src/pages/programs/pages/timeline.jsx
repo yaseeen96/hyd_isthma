@@ -5,14 +5,13 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import LoadingComponent from '../../../components/common/loadingComponent';
 import { getProgramDetails, enrollforProgram } from '../../../services/programs_service';
-import { FiArrowLeft, FiRefreshCw } from 'react-icons/fi';
+import { FiArrowLeft, FiDownload, FiRefreshCw } from 'react-icons/fi';
 import ConfirmEnrollModal from '../components/confirmEnrollModal';
 import SessionCard from '../components/sessionCard';
 import FeedbackModal from '../../home/components/feedbackModal';
 import translations from '../utils/translations';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import GeneratePDF from '../utils/generatePdf';
 
 dayjs.extend(customParseFormat);
 
@@ -33,6 +32,25 @@ const generateCalendarDates = (events) => {
     const startDate = uniqueDates.reduce((minDate, currentDate) => (currentDate.isBefore(minDate) ? currentDate : minDate), dayjs('2024-11-15'));
 
     return Array.from({ length: 3 }, (_, i) => startDate.add(i, 'day').format('YYYY-MM-DD'));
+};
+
+const getPDFPath = (language) => {
+    switch (language) {
+        case 'bengali':
+            return '/assets/program_copy/bengali.pdf';
+        case 'english':
+            return '/assets/program_copy/english.pdf';
+        case 'kannada':
+            return '/assets/program_copy/kannada.pdf';
+        case 'malyalam': // assuming typo: should be 'malayalam'
+            return '/assets/program_copy/malayalam.pdf';
+        case 'tamil':
+            return '/assets/program_copy/tamil.pdf';
+        case 'urdu':
+            return '/assets/program_copy/urdu.pdf';
+        default:
+            return '/assets/program_copy/english.pdf'; // default to English if no match
+    }
 };
 
 // Process data to format each session and program
@@ -213,8 +231,18 @@ const Timeline = () => {
                             />
                         ))
                     )}
+                    {/* <GeneratePDF data={data} title={'ss'} /> */}
                 </div>
             </div>
+            <a
+                href={getPDFPath(language)} // Dynamic PDF path based on selected language
+                download
+                className="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-primary text-white rounded-full p-4 shadow-lg flex items-center"
+                aria-label="Download PDF"
+            >
+                <FiDownload size={20} color="white" className="mr-2" />
+                <span>Download PDF</span>
+            </a>
 
             {isModalOpen && <ConfirmEnrollModal isOpen={isModalOpen} onConfirm={handleEnroll} onCancel={handleCancel} />}
             <FeedbackModal isOpen={isFeedbackModalOpen} onClose={() => setIsFeedbackModalOpen(false)} onSubmit={() => setIsFeedbackModalOpen(false)} programId={selectedProgramId} />
