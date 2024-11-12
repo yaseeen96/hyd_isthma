@@ -123,28 +123,85 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     logger.e(
                         "Failed to load ${request.url}: ${error.description}");
                   },
+                  onDownloadStartRequest: (controller, url) async {
+                    // Use url_launcher to open file links externally
+                    if (await canLaunchUrl(url.url)) {
+                      await launchUrl(
+                        url.url,
+                        mode: LaunchMode.externalApplication,
+                      );
+                    } else {
+                      logger.e("Could not launch ${url.url}");
+                    }
+                  },
                   shouldOverrideUrlLoading:
                       (controller, navigationAction) async {
                     final uri = navigationAction.request.url;
 
                     if (uri != null) {
-                      // Check if URL scheme requires opening in an external application
-                      if (uri.scheme == 'mailto' ||
+                      logger.i("Attempting to load URL: $uri");
+
+                      // Handle intent scheme for Android-specific URLs
+                      if (uri.scheme == 'intent') {
+                        final fallbackUrl = Uri.parse(uri
+                                .queryParameters['S.browser_fallback_url'] ??
+                            'https://play.google.com/store/apps/details?id=com.google.android.apps.maps');
+
+                        if (await canLaunchUrl(fallbackUrl)) {
+                          logger.i(
+                              "Opening intent URL in external browser: $fallbackUrl");
+                          await launchUrl(fallbackUrl,
+                              mode: LaunchMode.externalApplication);
+                          return NavigationActionPolicy.CANCEL;
+                        } else {
+                          logger.e("Failed to open fallback URL: $fallbackUrl");
+                        }
+                      }
+
+                      // Define downloadable file types
+                      final downloadableExtensions = [
+                        '.pdf',
+                        '.zip',
+                        '.docx',
+                        '.xlsx'
+                      ];
+
+                      // Check if URL is a downloadable link based on extension
+                      final isDownloadableLink = downloadableExtensions
+                          .any((ext) => uri.path.endsWith(ext));
+
+                      // If URL is a downloadable link or requires external handling, open it externally
+                      if (isDownloadableLink) {
+                        if (await canLaunchUrl(uri)) {
+                          logger.i("Opening in external browser: $uri");
+                          await launchUrl(uri,
+                              mode: LaunchMode.externalApplication);
+                          return NavigationActionPolicy.CANCEL;
+                        } else {
+                          logger.e("Failed to open downloadable URL: $uri");
+                        }
+                      }
+
+                      // External link handling for specific schemes and domains
+                      final isExternalLink = uri.scheme == 'mailto' ||
                           uri.scheme == 'tel' ||
                           uri.host == 'api.whatsapp.com' ||
                           uri.host == 'maps.google.com' ||
-                          uri.scheme == 'geo') {
-                        // Open in external application
+                          uri.scheme == 'geo';
+
+                      if (isExternalLink) {
                         if (await canLaunchUrl(uri)) {
+                          logger.i("Opening in external browser: $uri");
                           await launchUrl(uri,
                               mode: LaunchMode.externalApplication);
-                          return NavigationActionPolicy
-                              .CANCEL; // Prevent WebView from loading
+                          return NavigationActionPolicy.CANCEL;
+                        } else {
+                          logger.e("Failed to open external URL: $uri");
                         }
                       }
                     }
-                    return NavigationActionPolicy
-                        .ALLOW; // Allow other URLs to load in WebView
+
+                    return NavigationActionPolicy.ALLOW;
                   },
                 ),
               )
