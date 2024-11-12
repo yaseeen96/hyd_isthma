@@ -84,11 +84,7 @@ const HomePage = () => {
         navigate(ROUTES.faq);
     };
     const openWhatsApp = () => {
-        window.open(
-            'https://api.whatsapp.com/send?phone=917290010194&text=Assalamualaikum,%0A%0AI’m%20experiencing%20an%20issue%20with%20JIH%20Ijtema%202024.%0ACould%20someone%20assist%20me?%0A%0AIssue%20details:',
-            '_blank',
-            'noopener,noreferrer'
-        );
+        window.open('https://api.whatsapp.com/send?phone=917290010194', '_blank', 'noopener,noreferrer');
     };
 
     if (isLoading || isRefetching) {
