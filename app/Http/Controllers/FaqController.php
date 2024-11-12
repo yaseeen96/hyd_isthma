@@ -70,10 +70,12 @@ class FaqController extends Controller
         $request->validate([
             'question' => 'required',
             'faq_attachment' => 'nullable|max:2048',
+            'order' => 'nullable|numeric',
         ]);
         $faq = new Faq();
         $faq->question = $request->question;
         $faq->answer = $request->answer;
+        $faq->order = $request->order;
         $faq->save();
          if(!empty($request->file('faq_attachment'))) {
             $media = MediaUploader::fromSource($request->file('faq_attachment'))->toDestination('public', 'images/faq_attachments')->useFilename(Str::uuid())->upload();
@@ -116,9 +118,11 @@ class FaqController extends Controller
         $request->validate([
             'question' => 'required',
             'faq_attachment' => 'nullable|max:2048',
+            'order' => 'nullable|numeric',
         ]);
         $faq->question = $request->question;
         $faq->answer = $request->answer;
+        $faq->order = $request->order;
         $faq->save();
         if(!empty($request->file('faq_attachment'))) {
             $uploadedImages = $faq->getMedia('faq_attachment')->first();

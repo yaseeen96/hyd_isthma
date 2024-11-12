@@ -10,5 +10,5 @@ class Faq extends Model
 {
     use HasFactory, Mediable;
 
-    protected $fillable = ['question', 'answer'];
+    protected $fillable = ['question', 'answer', 'order'];
 }

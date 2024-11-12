@@ -11,7 +11,7 @@ class FaqController extends Controller
 {
     public function listFaqs()
     {
-        $faqs = Faq::all();
+        $faqs = Faq::orderBy('order', 'asc')->get();
         return response()->json([
             'data' => FaqsListResource::collection($faqs),
         ]);

@@ -25,6 +25,7 @@
             </div>
             <x-table id="faq-table">
                 <th>SL.No</th>
+                <th>Order</th>
                 <th>Question</th>
                 <th>Answer</th>
                 <th>Attachment</th>
@@ -42,6 +43,9 @@
                 },
                 columns: [
                     dtIndexCol(),
+                    {
+                        data: 'order',
+                    },
                     {
                         data: 'question',
                     },

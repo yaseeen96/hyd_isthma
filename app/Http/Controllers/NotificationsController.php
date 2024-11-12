@@ -108,7 +108,8 @@ class NotificationsController extends Controller
                 } else {
                     $q->where('hotel_required', $request->hotel_required_condition, $request->hotel_required_value);
                 }
-                array_push($criteria, ['hotel_required' => ['condition' => $request->hotel_required_condition, 'value' => $request->hotel_required_value]]);
+                $criteria['hotel_required'] = ['condition' => $request->hotel_required_condition, 'value' => $request->hotel_required_value];
+                dd($criteria);
             }
             // confirm_arrival
             if( AppHelperFunctions::isSetAndNotEmpty($request->confirm_arrival_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->confirm_arrival_value) ) {
@@ -119,7 +120,7 @@ class NotificationsController extends Controller
                 } else {
                     $q->where('confirm_arrival', $request->confirm_arrival_condition, $request->confirm_arrival_value);
                 }
-                array_push($criteria, ['confirm_arrival' => ['condition' => $request->confirm_arrival_condition, 'value' => $request->confirm_arrival_value]]);
+                $criteria['confirm_arrival'] = ['condition' => $request->confirm_arrival_condition, 'value' => $request->confirm_arrival_value];
             }
             // arrival_date
             if( AppHelperFunctions::isSetAndNotEmpty($request->arrival_date_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->arrival_date_value) ) {
@@ -130,7 +131,7 @@ class NotificationsController extends Controller
                 } else {
                     $q->whereDate(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(arrival_details, '$.datetime'))"), $request->arrival_date_condition, $request->arrival_date_value);
                 }
-                array_push($criteria, ['arrival_date' => ['condition' => $request->arrival_date_condition, 'value' => $request->arrival_date_value]]);
+                $criteria['arrival_date'] = ['condition' => $request->arrival_date_condition, 'value' => $request->arrival_date_value];
             }
             // departure_date
             if( AppHelperFunctions::isSetAndNotEmpty($request->departure_date_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->departure_date_value) ) {
@@ -141,7 +142,7 @@ class NotificationsController extends Controller
                 } else {
                     $q->whereDate(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(departure_details, '$.datetime'))"), $request->departure_date_condition, $request->departure_date_value);
                 }
-                array_push($criteria, ['departure_date' => ['condition' => $request->departure_date_condition, 'value' => $request->departure_date_value]]);
+                $criteria['departure_date'] = ['condition' => $request->departure_date_condition, 'value' => $request->departure_date_value];
             }
             // arrival_mode
             if( AppHelperFunctions::isSetAndNotEmpty($request->arrival_mode_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->arrival_mode_value) ) {
@@ -152,7 +153,7 @@ class NotificationsController extends Controller
                 } else {
                     $q->where('arrival_details->mode', $request->arrival_mode_condition, $request->arrival_mode_value);
                 }
-                array_push($criteria, ['arrival_mode' => ['condition' => $request->arrival_mode_condition, 'value' => $request->arrival_mode_value]]);
+                $criteria['arrival_mode'] = ['condition' => $request->arrival_mode_condition, 'value' => $request->arrival_mode_value];
             }
             // departure_mode
             if( AppHelperFunctions::isSetAndNotEmpty($request->departure_mode_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->departure_mode_value) ) {
@@ -163,7 +164,7 @@ class NotificationsController extends Controller
                 } else {
                     $q->where('departure_details->mode', $request->departure_mode_condition, $request->departure_mode_value);
                 }
-                array_push($criteria, ['departure_mode' => ['condition' => $request->departure_mode_condition, 'value' => $request->departure_mode_value]]);
+                $criteria['departure_mode'] = ['condition' => $request->departure_mode_condition, 'value' => $request->departure_mode_value];
             }
             // arrival_mode_identifier
             if( AppHelperFunctions::isSetAndNotEmpty($request->arrival_mode_identifier_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->arrival_mode_identifier_value) ) {
@@ -174,7 +175,7 @@ class NotificationsController extends Controller
                 } else {
                     $q->where('arrival_details->mode_identifier', $request->arrival_mode_identifier_condition, $request->arrival_mode_identifier_value);
                 }
-                array_push($criteria, ['arrival_mode_identifier' => ['condition' => $request->arrival_mode_identifier_condition, 'value' => $request->arrival_mode_identifier_value]]);
+                $criteria['arrival_mode_identifier'] = ['condition' => $request->arrival_mode_identifier_condition, 'value' => $request->arrival_mode_identifier_value];
             }
             // departure_mode_identifier
             if( AppHelperFunctions::isSetAndNotEmpty($request->departure_mode_identifier_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->departure_mode_identifier_value) ) {
@@ -185,7 +186,7 @@ class NotificationsController extends Controller
                 } else {
                     $q->where('departure_details->mode_identifier', $request->departure_mode_identifier_condition, $request->departure_mode_identifier_value);
                 }
-                array_push($criteria, ['departure_mode_identifier' => ['condition' => $request->departure_mode_identifier_condition, 'value' => $request->departure_mode_identifier_value]]);
+                $criteria['departure_mode_identifier'] = ['condition' => $request->departure_mode_identifier_condition, 'value' => $request->departure_mode_identifier_value];
             }
             // sight_seeing_required
             if( AppHelperFunctions::isSetAndNotEmpty($request->sight_seeing_required_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->sight_seeing_required_value) ) {
@@ -196,7 +197,7 @@ class NotificationsController extends Controller
                 } else {
                     $q->where('sight_seeing->required', $request->sight_seeing_required_condition, $request->sight_seeing_required_value);
                 }
-                array_push($criteria, ['sight_seeing_required' => ['condition' => $request->sight_seeing_required_condition, 'value' => $request->sight_seeing_required_value]]);
+                $criteria['sight_seeing_required'] = ['condition' => $request->sight_seeing_required_condition, 'value' => $request->sight_seeing_required_value];
             }
             // need_attendant
             if( AppHelperFunctions::isSetAndNotEmpty($request->need_attendant_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->need_attendant_value) ) {
@@ -207,7 +208,7 @@ class NotificationsController extends Controller
                 } else {
                     $q->where('special_considerations->need_attendant', $request->need_attendant_condition, $request->need_attendant_value);
                 }
-                array_push($criteria, ['need_attendant' => ['condition' => $request->need_attendant_condition, 'value' => $request->need_attendant_value]]);
+                $criteria['need_attendant'] = ['condition' => $request->need_attendant_condition, 'value' => $request->need_attendant_value];
             }
             // cot_or_bed
             if( AppHelperFunctions::isSetAndNotEmpty($request->cot_or_bed_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->cot_or_bed_value) ) {
@@ -218,7 +219,7 @@ class NotificationsController extends Controller
                 } else {
                     $q->where('special_considerations->cot_or_bed', $request->cot_or_bed_condition, $request->cot_or_bed_value);
                 }
-                array_push($criteria, ['cot_or_bed' => ['condition' => $request->cot_or_bed_condition, 'value' => $request->cot_or_bed_value]]);
+                $criteria['cot_or_bed'] = ['condition' => $request->cot_or_bed_condition, 'value' => $request->cot_or_bed_value];
             }
 
         })->where(function ($q) use ($regionValue, $region, $request, $criteria) {
@@ -227,7 +228,7 @@ class NotificationsController extends Controller
             // gender
             if( AppHelperFunctions::isSetAndNotEmpty($request->gender_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->gender_value) ) {
                 $q->where('gender', $request->gender_condition, $request->gender_value);
-                array_push($criteria, ['gender' => ['condition' => $request->gender_condition, 'value' => $request->gender_value]]);
+                $criteria['gender'] = ['condition' => $request->gender_condition, 'value' => $request->gender_value];
             }
             // year_of_rukniyat
             if( AppHelperFunctions::isSetAndNotEmpty($request->year_of_rukniyat_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->year_of_rukniyat_value) ) {
@@ -239,7 +240,7 @@ class NotificationsController extends Controller
                 } else {
                     $q->where('year_of_rukniyat', $request->year_of_rukniyat_condition, $request->year_of_rukniyat_value);
                 }
-                array_push($criteria, ['year_of_rukniyat' => ['condition' => $request->year_of_rukniyat_condition, 'value' => $request->year_of_rukniyat_value]]);
+                $criteria['year_of_rukniyat'] = ['condition' => $request->year_of_rukniyat_condition, 'value' => $request->year_of_rukniyat_value];
             }
             // dob
             if( AppHelperFunctions::isSetAndNotEmpty($request->dob_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->dob_value) ) {
@@ -251,7 +252,7 @@ class NotificationsController extends Controller
                 } else {
                     $q->where('dob', $request->dob_condition, $request->dob_value);
                 }
-                array_push($criteria, ['dob' => ['condition' => $request->dob_condition, 'value' => $request->dob_value]]);
+                $criteria['dob'] = ['condition' => $request->dob_condition, 'value' => $request->dob_value];
             }
             // email
             if( AppHelperFunctions::isSetAndNotEmpty($request->email_condition)  && AppHelperFunctions::isSetAndNotEmpty($request->email_value) ) {
@@ -263,7 +264,7 @@ class NotificationsController extends Controller
                 } else {
                     $q->where('email', $request->email_condition, $request->email_value);
                 }
-                array_push($criteria, ['email' => ['condition' => $request->email_condition, 'value' => $request->email_value]]);
+                $criteria['email'] = ['condition' => $request->email_condition, 'value' => $request->email_value];
             }
         })->where('push_token', '!=', null)->where('push_token', '!=', 'none');
 

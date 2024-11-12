@@ -31,7 +31,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
+                                {{-- order --}}
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label for="order">Order</label>
+                                        <input type="text" class="form-control" name="order" id="order"
+                                            value="{{ old('order', $faq->order) }}">
+                                        @if ($errors->has('order'))
+                                            <span class="text-danger">
+                                                {{ $errors->first('order') }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
                                 {{-- Attchment --}}
                                 <div class="form-group row">
                                     <div class="col-lg-12">
