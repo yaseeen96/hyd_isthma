@@ -76,7 +76,7 @@ const translations = {
     },
     kannada: {
         back: 'ಹಿಂತಿರುಗು',
-        title: 'ಪಕಾರ್ಯಕ್ರಮಗಳು',
+        title: 'ಕಾರ್ಯಕ್ರಮಗಳು',
         selectLanguage: 'ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ:',
         fixedSessions: 'ನಿರ್ದಿಷ್ಟ ಅಧಿವೇಶನಗಳು',
         parallelSessions: 'ಸಮಾಂತರ ಅಧಿವೇಶನಗಳು',
