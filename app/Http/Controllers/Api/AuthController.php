@@ -140,6 +140,7 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'gender' => $user->gender,
+                'rukn_id' => $user->user_number,
                 'confirm_arrival' => isset($IsRegDone) ? $user->registration->confirm_arrival : null,
                 'tilesInfo' => $userProgress,
                 'registration' => [
