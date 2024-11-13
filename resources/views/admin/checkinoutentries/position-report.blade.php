@@ -103,6 +103,7 @@
                 <th>SL.No </th>
                 <th>Batch Type</th>
                 <th>Batch ID</th>
+                <th>Category</th>
                 <th>Name</th>
                 <th>Gender</th>
                 <th>Phone</th>
@@ -157,6 +158,9 @@
                 },
                 {
                     data: 'batch_id',
+                },
+                {
+                    data: 'category'
                 },
                 {
                     data: 'name'

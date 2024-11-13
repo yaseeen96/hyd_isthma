@@ -22,7 +22,8 @@ class checkInOutEntires extends Model
         'division_name',
         'unit_name',
         'phone_number',
-        'operator_id'
+        'operator_id',
+        'category'
     ];
 
     public function checkInOutPlace()

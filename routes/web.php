@@ -2,8 +2,10 @@
 
 use App\Helpers\SmsHelper;
 use App\Http\Controllers\Api\ProgramsController;
+use App\Models\checkInOutEntires;
 use App\Models\Member;
 use App\Models\Notification;
+use App\Models\QrBatchRegistration;
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Http\Response;
@@ -115,6 +117,27 @@ Route::get('generate-tokens', function(){
 
 
 Route::get('testing', function () {
+    $entires = checkInOutEntires::query()->where('batch_type', 'rukn')->get();
+    foreach($entires as $entry) {
+        $member = Member::where('user_number', $entry->batch_id)->first();
+        if($member) {
+            $entry->update([
+                'phone_number' => $member->phone,
+                'category' => 'Rukn'
+            ]);
+        }
+    }
+    $nonRuknEntires = checkInOutEntires::query()->where('batch_type', '!=', 'rukn')->get();
+    foreach($nonRuknEntires as $entry) {
+        $member = QrBatchRegistration::where('batch_id', $entry->batch_id)->first();
+        if($member) {
+            $entry->update([
+                'phone_number' => $member->phone_number,
+                'category' => $member->batch_type
+            ]);
+        }
+    }
+
     // $id = 'dE6_IuEiQXuX6NgDy_cDKe:APA91bH7fhcp-5P5kSLIZIfDnerAbwINAqdlyUEkP5TLlieBK4tPFaRRtrG0n6Ax77SI4VkTJdVCyxN_VnxWRZ2y2dn-5NKNi4A74RNZyt_MPFNjZyTOG-a-WEg9s75o04dkUqS-_CDv';
     // $newId = 'eagsq256RfOqvXkq0zombk:APA91bHmg2TXNDDj4XsVkJAwRF8hVFJfaVVJglmddCcNaWKYpiNIrGJPoI9YpqR_KGkiOUnwINYuVIMn2925novL0GInWVl5-qQROSQKM8L46A7ItkhB9iA';
     // $notifications = Notification::whereJsonContains('valid_tokens', $id)->pluck('id')->toArray();
@@ -131,7 +154,7 @@ Route::get('testing', function () {
     //         }
     //     }
     // }
-    $notification = Notification::find(43);
-    $users_ids = Member::whereIn('push_token', $notification->valid_tokens)->pluck('id')->toArray();
+    // $notification = Notification::find(43);
+    // $users_ids = Member::whereIn('push_token', $notification->valid_tokens)->pluck('id')->toArray();
 
 });
