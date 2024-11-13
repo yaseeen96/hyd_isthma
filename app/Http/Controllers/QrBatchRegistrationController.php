@@ -197,9 +197,9 @@ class QrBatchRegistrationController extends Controller
                             ]);
                         }
                     }
-                    DB::commit();
-                    return redirect()->route('qrBatchRegistrations.index')->with('success', 'Qr batch registrations uploaded successfully');
                 }
+                DB::commit();
+                return redirect()->route('qrBatchRegistrations.index')->with('success', 'Qr batch registrations uploaded successfully');
             }catch (\Exception $e) {
                 DB::rollBack();
                 if (!empty($e->getMessage())) {
