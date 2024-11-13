@@ -139,7 +139,7 @@ class CheckInOutEntiresController extends Controller
                             ->whereTime('time', '<=', date('H:i:s', strtotime($request->to_time)));
                     }
                 })
-                ->groupBy('batch_id', 'batch_type', 'gender', 'name', 'zone_name', 'division_name', 'unit_name', 'phone_number')
+                ->groupBy('batch_id', 'batch_type', 'gender', 'name', 'zone_name', 'division_name', 'unit_name', 'phone_number', 'category')
                 ->orderBy('batch_id', 'desc');  // Ordering by batch_id or any column you prefer
             return $datatables->eloquent($query)
                 ->editColumn('total_count', function ($query) {
