@@ -21,18 +21,20 @@ import { BiLogoWhatsapp, BiSupport } from 'react-icons/bi';
 import FeedbackModal from '../components/feedbackModal';
 import BigCard from '../components/bigCard';
 import { FaMosque } from 'react-icons/fa';
+import AnimatedCard from '../components/animatedCard';
+import BottomSheetModal from '../../../components/common/bottomModalSheet';
 
 const HomePage = () => {
-    const [isRefetching, setIsRefetching] = useState(false); // State to manage refetch indicator
+    const [isRefetching, setIsRefetching] = useState(false);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false); // New state for bottom sheet
 
     const handleFeedbackSubmit = (feedback) => {
         console.log('Feedback submitted:', feedback);
         setIsModalOpen(false);
     };
 
-    // Fetch user details with react-query
     const { isLoading, isError, data, error, refetch } = useQuery('userDetails', isUserLoggedIn, {
         onSettled: () => setIsRefetching(false),
         refetchOnWindowFocus: true,
@@ -53,14 +55,13 @@ const HomePage = () => {
         });
     }, [refetch, data]);
 
-    // Calculate progress based on localStorage values
     const arrivalConfirmed = localStorage.getItem(localStorageConstant.arrivalConfirmed);
     const familyDetails = localStorage.getItem(localStorageConstant.familyDetails);
     const financialDetails = localStorage.getItem(localStorageConstant.financialDetails);
     const arrivalDetails = localStorage.getItem(localStorageConstant.arrivalDetails);
 
     const completedSteps = [arrivalConfirmed === '1', familyDetails === '1', financialDetails === '1', arrivalDetails === '1'].filter(Boolean).length;
-    const progress = (completedSteps / 4) * 100; // Percentage of completion
+    const progress = (completedSteps / 4) * 100;
 
     const onRegisterIjtema = () => {
         navigate(ROUTES.register);
@@ -73,6 +74,9 @@ const HomePage = () => {
     };
     const onNotificationsSelect = () => {
         navigate(ROUTES.notifications);
+    };
+    const onCardPress = () => {
+        setIsBottomSheetOpen(true); // Open the bottom sheet modal
     };
     const onSupportSelect = () => {
         navigate(ROUTES.support);
@@ -101,8 +105,7 @@ const HomePage = () => {
     }
 
     return (
-        // <HomeLayout>
-        <div className="bg-white">
+        <div className="bg-white w-screen">
             <TopAppBar
                 title={'Home'}
                 onLogout={() => {
@@ -111,14 +114,19 @@ const HomePage = () => {
                 }}
             />
             <IjtemaBanner />
-            {/* <ActionCard
-                message={progress === 100 ? 'Thank you. Your registration is 100% complete' : 'Your registration is not yet completed, click below & complete all steps'}
-                buttonText={progress === 100 ? `Program Details` : ' Register now'}
-                onButtonClick={progress === 100 ? onTimelineSelect : onRegisterIjtema}
-                progress={progress}
-            /> */}
+            {/* Full-width AnimatedCard positioned at the top */}
+            <div className="px-4 mt-6 w-full">
+                <AnimatedCard
+                    isCentered={true}
+                    title={'My Card'}
+                    className={'w-full h-[150px] p-4 bg-indigo-300'}
+                    icon={<RiProfileFill size={50} />}
+                    textClassName={'text-2xl font-bold'}
+                    onSelect={onCardPress}
+                />
+            </div>
 
-            <div className=" mb-14 mt-2 p-4 grid grid-cols-2 w-full gap-4 animate-slide-in">
+            <div className="mb-14 mt-2 p-4 grid grid-cols-2 w-full gap-4 animate-slide-in">
                 <BigCard
                     isCentered={true}
                     title={'Registration\nDetails'}
@@ -163,7 +171,6 @@ const HomePage = () => {
                     textClassName={'text-center font-bold'}
                     onSelect={() => setIsModalOpen(true)}
                 />
-
                 <BigCard
                     isDisabled={false}
                     title={'Need help?'}
@@ -183,32 +190,10 @@ const HomePage = () => {
                     onSelect={onFaqSelect}
                 />
 
-                {/* <TileCard
-                    icon={<RiProfileFill size={32} />}
-                    title={'Register'}
-                    onClick={onRegisterIjtema}
-                    className={'bg-yellow-100'}
-                    // percentage={progress} // Pass calculated progress
-                />
-                <TileCard icon={<FiList size={32} />} title={'Program Details'} onClick={onTimelineSelect} />
-                <TileCard icon={<FiMap size={32} />} title={'Event Copy'} onClick={onMapsSelect} />
-                <TileCard icon={<MdNotifications size={32} />} title={'Notifications'} onClick={onNotificationsSelect} />
-                <TileCard icon={<BiSupport size={32} />} title={'Support'} onClick={onSupportSelect} />
-                <TileCard icon={<MdFeedback size={32} />} title={'Feedback'} onClick={() => setIsModalOpen(true)} />
-                <a
-                    href="https://api.whatsapp.com/send?phone=917290010194&text=Assalamualaikum,%0A%0AI’m%20experiencing%20an%20issue%20with%20JIH%20Ijtema%202024.%0ACould%20someone%20assist%20me?%0A%0AIssue%20details:"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    // className="fixed bottom-20 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition duration-200 flex items-center justify-center"
-                >
-                    <TileCard icon={<BiLogoWhatsapp size={32} />} title={'Whatsapp Us'} onClick={() => {}} />
-                </a>
-                */}
                 <FeedbackModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleFeedbackSubmit} />
+                <BottomSheetModal response={data} isOpen={isBottomSheetOpen} onClose={() => setIsBottomSheetOpen(false)} />
             </div>
-            {/* <BottomBar /> */}
         </div>
-        // </HomeLayout>
     );
 };
 
