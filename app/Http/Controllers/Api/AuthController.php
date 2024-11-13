@@ -139,6 +139,7 @@ class AuthController extends Controller
             "data" => [
                 'id' => $user->id,
                 'name' => $user->name,
+                'gender' => $user->gender,
                 'confirm_arrival' => isset($IsRegDone) ? $user->registration->confirm_arrival : null,
                 'tilesInfo' => $userProgress,
                 'registration' => [
@@ -168,7 +169,7 @@ class AuthController extends Controller
 
     public function deleteAccount(Request $request)
     {
-        $user = auth()->user();
+        $user = Member::find(auth()->user()->id);
         $user->update(['status' => 'InActive']);
         return response()->json([
             'message' => 'Account Deleted',
