@@ -136,6 +136,9 @@ class QrBatchRegistrationController extends Controller
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 if($row > 1) {
                     $qrBatchRegistration = new QrBatchRegistration();
+                    if(QrBatchRegistration::where('batch_id', $data[1])->exists()) {
+                        continue;
+                    }
                     $qrBatchRegistration->batch_id = $data[1];
                     $qrBatchRegistration->gender = $data[2];
                     $qrBatchRegistration->batch_type = $data[3];

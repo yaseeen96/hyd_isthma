@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('otp:clean')->daily();
-        $schedule->command('queue:work --stop-when-empty')->everyMinute();
+        // $schedule->command('queue:work --stop-when-empty')->everyMinute();
     }
 
     /**

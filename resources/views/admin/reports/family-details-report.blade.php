@@ -154,24 +154,38 @@
                     },
                     {
                         data: 'registration.member.name',
+                        searchable: false,
+                        orderable: false,
                     },
                     {
-                        data: 'registration.member.user_number'
+                        data: 'registration.member.user_number',
+                        searchable: false,
+                        orderable: false,
                     },
                     {
-                        data: 'registration.member.phone'
+                        data: 'registration.member.phone',
+                        searchable: false,
+                        orderable: false,
                     },
                     {
-                        data: '.registration.member.unit_name'
+                        data: '.registration.member.unit_name',
+                        searchable: false,
+                        orderable: false,
                     },
                     {
-                        data: 'registration.member.division_name'
+                        data: 'registration.member.division_name',
+                        searchable: false,
+                        orderable: false,
                     },
                     {
-                        data: 'registration.member.zone_name'
+                        data: 'registration.member.zone_name',
+                        searchable: false,
+                        orderable: false,
                     },
                     {
-                        data: 'interested_in_volunteering'
+                        data: 'interested_in_volunteering',
+                        searchable: false,
+                        orderable: false,
                     }
                 ],
             });
