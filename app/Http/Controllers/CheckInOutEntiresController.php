@@ -100,6 +100,7 @@ class CheckInOutEntiresController extends Controller
                 'division_name',
                 'unit_name',
                 'phone_number',
+                'category',
                 DB::raw('COUNT(*) as total_count')  // Count of rows in each group
             )
                 ->where(function ($query) use ($request) {
