@@ -37,7 +37,7 @@ const MapComponent = () => {
                 {/* Accessible Button Section */}
                 <div className="flex flex-col items-center space-y-6 w-full max-w-md">
                     <button
-                        onClick={() => window.open('https://www.google.com/maps/d/viewer?mid=1PfKx-RVGzuCzR7lYVkYnodqOrxmFbpQ&ll=17.28723493661389%2C78.4684089850369&z=18', '_blank')}
+                        onClick={() => window.open('https://www.google.com/maps/d/viewer?mid=1PfKx-RVGzuCzR7lYVkYnodqOrxmFbpQ&ll=17.28723493661389%2C78.4684089850369&z=18.pdf', '_blank')}
                         className="flex items-center justify-center w-full px-8 py-4 bg-green-600 text-white font-semibold text-xl rounded-lg shadow-lg hover:bg-green-700 transition duration-200"
                     >
                         <FiMapPin className="text-white mr-2" size={24} />
