@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
     // Feedback
     Route::resource('feedback', 'FeedbackController');
     // FAQ
-    Route::resource('faq', controller: 'FaqController');
+    Route::resource('faq', 'FaqController');
     // Reports
     Route::prefix('reports')->group(function () {
         Route::get('familyDetailsReport', 'ReportsController@familyDetailsReport')->name('family-details-report');
@@ -80,7 +80,7 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('syncrukundata', 'ReportsController@syncRukunData')->name('sync-rukun-data');
 // Route::get('updateRukunAge', 'ReportsController@updateRukunAge')->name('update-rukun-age');
-// Route::get('importQrBatchRegistrationData',  'QrBatchRegistrationController@import');
+Route::get('importQrBatchRegistrationData',  'QrBatchRegistrationController@import');
 // temp routes
 Route::prefix('delete')->group(function () {
     Route::get('account', 'DeleteAccountController@index')->name('delete-account');
