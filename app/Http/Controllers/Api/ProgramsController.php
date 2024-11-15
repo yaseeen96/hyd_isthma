@@ -125,6 +125,7 @@ class ProgramsController extends Controller
             'member_id' => $user->id,
             'session_id' => $request->session_id
         ]);
+        Cache::forget('sessions');
         return response()->json([
             'message' => 'Registered for session successfully',
             'status' => 'success'
