@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('checkInOutEntries', 'CheckInOutEntiresController');
     Route::get('positionReport', 'CheckInOutEntiresController@positionReport')->name('position-report');
     Route::get('totalCheckInOutReport', 'CheckInOutEntiresController@totalCheckInOutReport')->name('total-check-in-out-report');
+    Route::get('totalCountByPlace', 'CheckInOutEntiresController@totalCountByPlace')->name('total-count-by-place');
     // Program Registration
     Route::resource('sessionRegistration', 'SessionRegistrationController');
     // QR Batch Registrations

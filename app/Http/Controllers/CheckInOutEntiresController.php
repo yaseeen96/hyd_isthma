@@ -15,6 +15,68 @@ use Yajra\DataTables\DataTables;
 class CheckInOutEntiresController extends Controller
 {
     /**
+     * Total count by place
+     */
+    public function totalCountByPlace(Request $request, DataTables $datatables) {
+        $user = User::find(auth()->user()->id);
+        if ($user->id != 1 && !$user->hasPermissionTo('View ScannEntires')){
+            abort(403);
+        }
+        if($request->ajax()) {
+            $query = checkInOutEntires::select(
+                'place_id',
+                DB::raw('COUNT(*) as total_count')  // Count of rows in each group
+            )
+                ->where(function ($query) use ($request) {
+                    if (!empty($request->unit_name)) {
+                        $query->where('unit_name', $request->unit_name);
+                    }
+                    if (!empty($request->zone_name)) {
+                        $query->where('zone_name', $request->zone_name);
+                    }
+                    if (!empty($request->division_name)) {
+                        $query->where('division_name', $request->division_name);
+                    }
+                    if (!empty($request->date)) {
+                        $query->whereDate('date', $request->date);
+                    }
+                    if (!empty($request->from_time) && empty($request->to_time)) {
+                        $query->whereTime('time', date('H:i:s', strtotime($request->from_time)));
+                    }
+                    if (empty($request->from_time) && !empty($request->to_time)) {
+                        $query->whereTime('time', date('H:i:s', strtotime($request->to_time)));
+                    }
+                    if (!empty($request->from_time) && !empty($request->to_time)) {
+                        $query->whereTime('time', '>=', date('H:i:s', strtotime($request->from_time)))
+                            ->whereTime('time', '<=', date('H:i:s', strtotime($request->to_time)));
+                    }
+                    if(!empty($request->batch_type)) {
+                        $query->where('batch_type', $request->batch_type);
+                    }
+                    if(!empty($request->category)) {
+                        $query->where('category', $request->category);
+                    }
+                })
+                ->groupBy('place_id')
+                ->orderBy('total_count', 'asc');  // Ordering by place_id or any column you prefer
+            return $datatables->eloquent($query)
+                ->editColumn('total_count', function ($query) {
+                    return AppHelperFunctions::getGreenBadge($query->total_count);
+                })
+                ->addColumn('place_name', function($query){
+                    return isset($query->checkInOutPlace) ? $query->checkInOutPlace->place_name : 'NA';
+                })
+                ->addIndexColumn()
+                ->rawColumns(['total_count', 'place_name'])
+                ->make(true);
+        }
+        $checkInOutPlaces = CheckInOutPlace::query()->get();
+        $batchTypes = QrBatchRegistration::distinct('batch_type')->pluck('batch_type')->toArray();
+        array_push($batchTypes, 'rukun');
+        $qrOperators = User::role(4)->get();
+        return view('admin.checkinoutentries.total-count-by-place', compact('checkInOutPlaces', 'batchTypes', 'qrOperators'));
+    }
+    /**
      * Percentage Report
     */
     public function positionReport(Request $request, DataTables $datatables)
