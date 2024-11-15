@@ -36,10 +36,12 @@ class checkInOutEntiresController extends Controller
                     $category = $userData->batch_type;
                     $phone_number = $userData->phone_number;
                 }
-                $gender = $userData->gender;
-                $zone_name = isset($userData) ?  $userData->zone_name : '';
-                $division_name = isset($userData) ?  $userData->division_name : '';
-                $unit_name = isset($userData) ? $userData->unit_name : '';
+                if(isset($userData) && !empty($userData)) {
+                    $gender = $userData->gender;
+                    $zone_name = isset($userData) ?  $userData->zone_name : '';
+                    $division_name = isset($userData) ?  $userData->division_name : '';
+                    $unit_name = isset($userData) ? $userData->unit_name : '';
+                }
                 $entryData = [
                     'batch_id' => $entry['id'],
                     'batch_type' => $entry['category'],

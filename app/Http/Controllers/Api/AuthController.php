@@ -128,7 +128,7 @@ class AuthController extends Controller
             ], Response::HTTP_UNAUTHORIZED);
         }
         $user = $isTokenExists->tokenable;
-        if(isset($request->push_token)) {
+        if(isset($request->push_token) && isset($user)) {
             $user->update(['push_token' => $request->push_token]);
         }
         $IsRegDone = $user->registration;
