@@ -13,6 +13,7 @@ const translations = {
         enroll: 'Enroll',
         giveFeedback: 'Give Feedback',
         viewTranslation: 'Listen Translation',
+        viewTranscript: 'View Transcript',
     },
     urdu: {
         back: 'واپس',
@@ -28,6 +29,7 @@ const translations = {
         enroll: 'داخلہ لیں',
         giveFeedback: 'رائے دیں',
         viewTranslation: 'ترجمہ سنیں',
+        viewTranscript: 'ٹرانسکرپٹ دیکھیں',
     },
     malyalam: {
         back: 'തിരിച്ചു',
@@ -43,6 +45,7 @@ const translations = {
         enroll: 'ചേരുക',
         giveFeedback: 'പ്രതികരണം നൽകുക',
         viewTranslation: 'പരിഭാഷ കേൾക്കുക',
+        viewTranscript: 'ട്രാൻസ്ക്രിപ്റ്റ് കാണുക',
     },
     bengali: {
         back: 'ফিরে যান',
@@ -58,6 +61,7 @@ const translations = {
         enroll: 'নিবন্ধন করুন',
         giveFeedback: 'প্রতিক্রিয়া জানান',
         viewTranslation: 'অনুবাদ শুনুন',
+        viewTranscript: 'ট্রান্সক্রিপ্ট দেখুন',
     },
     tamil: {
         back: 'திரும்பு',
@@ -73,6 +77,7 @@ const translations = {
         enroll: 'பதிவு செய்க',
         giveFeedback: 'பின்னூட்டம் கொடுக்கவும்',
         viewTranslation: 'மொழிபெயர்ப்பு கேளுங்கள்',
+        viewTranscript: 'டிரான்ஸ்கிரிப்ட் பார்க்கவும்',
     },
     kannada: {
         back: 'ಹಿಂತಿರುಗು',
@@ -88,6 +93,7 @@ const translations = {
         enroll: 'ಸೇರು',
         giveFeedback: 'ಪ್ರತಿಕ್ರಿಯೆ ನೀಡು',
         viewTranslation: 'ಅನುವಾದವನ್ನು ಕೇಳಿ',
+        viewTranscript: 'ಟ್ರಾನ್ಸ್ಕ್ರಿಪ್ಟ್ ವೀಕ್ಷಿಸಿ',
     },
 };
 

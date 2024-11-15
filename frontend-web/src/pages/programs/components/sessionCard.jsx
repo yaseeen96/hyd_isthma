@@ -2,7 +2,24 @@ import React, { useState, forwardRef } from 'react';
 import { FiChevronDown, FiChevronUp, FiClock, FiMapPin, FiUser, FiMessageSquare, FiExternalLink, FiFileText } from 'react-icons/fi';
 
 const SessionCard = forwardRef(
-    ({ session, index, expandedSessions, toggleSession, openModal, backgroundColor, programColor, handleFeedbackOpen, noProgramsAvailable, enrollMessage, giveFeedback, viewTranslation }, ref) => {
+    (
+        {
+            session,
+            index,
+            expandedSessions,
+            toggleSession,
+            openModal,
+            backgroundColor,
+            programColor,
+            handleFeedbackOpen,
+            noProgramsAvailable,
+            enrollMessage,
+            giveFeedback,
+            viewTranslation,
+            viewTranscript,
+        },
+        ref
+    ) => {
         const [transcriptModal, setTranscriptModal] = useState({ isOpen: false, content: '' });
 
         const isExpanded = expandedSessions[session.id];
@@ -179,7 +196,7 @@ const SessionCard = forwardRef(
                                                             className="bg-purple-500 text-white py-2 px-4 mt-2 rounded-lg font-semibold hover:bg-purple-600 transition duration-200 w-full flex items-center justify-center space-x-2"
                                                         >
                                                             <FiFileText />
-                                                            <span>View Transcript</span>
+                                                            <span>{viewTranscript}</span>
                                                         </button>
                                                     )}
                                                 </div>

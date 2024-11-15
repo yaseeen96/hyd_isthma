@@ -228,6 +228,7 @@ const Timeline = () => {
                                 enrollMessage={translations[language].enroll}
                                 giveFeedback={translations[language].giveFeedback}
                                 viewTranslation={translations[language].viewTranslation}
+                                viewTranscript={translations[language].viewTranscript}
                             />
                         ))
                     )}
