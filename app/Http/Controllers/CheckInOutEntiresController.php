@@ -56,6 +56,9 @@ class CheckInOutEntiresController extends Controller
                     if(!empty($request->category)) {
                         $query->where('category', $request->category);
                     }
+                    if (!empty($request->mode)) {
+                        $query->where('mode', $request->mode);
+                    }
                 })
                 ->groupBy('place_id')
                 ->orderBy('total_count', 'asc');  // Ordering by place_id or any column you prefer
