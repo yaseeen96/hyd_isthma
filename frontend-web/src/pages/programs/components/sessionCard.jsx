@@ -131,6 +131,7 @@ const SessionCard = forwardRef(
                                 {session.programs.length > 0 ? (
                                     session.programs.map((program) => {
                                         const isFeedbackClickable = ['In Progress', 'Completed', 'Cancelled'].includes(program.status);
+                                        const canViewTranscript = program.transcript && ['In Progress', 'Completed'].includes(program.status);
                                         return (
                                             <div key={program.id} className={`mt-4 p-4 border rounded-lg flex ${programColor} shadow-sm`}>
                                                 <div className="flex-shrink-0 mr-4">
@@ -184,7 +185,7 @@ const SessionCard = forwardRef(
                                                     </button>
 
                                                     {/* View Transcript Button */}
-                                                    {program.transcript && (
+                                                    {canViewTranscript && (
                                                         <button
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
@@ -204,7 +205,7 @@ const SessionCard = forwardRef(
                                         );
                                     })
                                 ) : (
-                                    <div></div>
+                                    <div>{noProgramsAvailable}</div>
                                 )}
                             </div>
                         </div>
