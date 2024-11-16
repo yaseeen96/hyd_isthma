@@ -113,17 +113,25 @@ const SessionCard = forwardRef(
                                 </div>
                                 <p className="text-gray-500">{session.convener_bio}</p>
                             </div>
-                            {session.theme_type === 'Parallel' && !session.enrolled && (
+                            {session.theme_type === 'Parallel' && (
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        openModal(session.id);
+                                        if (!session.enrolled) openModal(session.id);
                                     }}
-                                    className="bg-primary-500 text-white py-3 px-6 w-full rounded-lg font-semibold text-lg hover:bg-primary-dark mt-6 transition duration-200"
+                                    disabled={session.enrolled || ['In Progress', 'Completed'].includes(session.status)}
+                                    className={`py-3 px-6 w-full rounded-lg font-semibold text-lg mt-6 transition duration-200 ${
+                                        session.enrolled
+                                            ? 'bg-green-100 text-green-800 cursor-not-allowed'
+                                            : ['In Progress', 'Completed'].includes(session.status)
+                                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                            : 'bg-primary-500 text-white hover:bg-primary-dark'
+                                    }`}
                                 >
-                                    {enrollMessage}
+                                    {session.enrolled ? 'Enrolled' : enrollMessage}
                                 </button>
                             )}
+
                             {session.enrolled && <span className="inline-flex items-center justify-center px-3 py-1 mt-6 text-sm font-medium text-green-800 bg-green-100 rounded-full">Enrolled</span>}
 
                             {/* Program List */}

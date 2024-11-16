@@ -94,12 +94,14 @@ const Timeline = () => {
     });
 
     useEffect(() => {
-        if (data && data.data.length > 0) {
-            const earliestInProgress = data.data.find((event) => event.status === 'In Progress');
-            const defaultDate = '2024-11-15';
-            const nearestEventDate = earliestInProgress ? dayjs(earliestInProgress.datetime.split(' ')[0], 'YYYY-MM-DD').format('YYYY-MM-DD') : defaultDate;
-            setSelectedDate(nearestEventDate);
+        const today = dayjs().format('YYYY-MM-DD');
+        if (['2024-11-15', '2024-11-16', '2024-11-17'].includes(today)) {
+            setSelectedDate(today);
+        } else {
+            setSelectedDate('2024-11-15');
+        }
 
+        if (data && data.data.length > 0) {
             if (scrollToRef.current) {
                 scrollToRef.current.scrollIntoView({ behavior: 'smooth' });
             }
@@ -174,6 +176,7 @@ const Timeline = () => {
             <h1 className="text-2xl font-bold text-primary mb-6">{translations[language].title}</h1>
 
             <div className="mb-6">
+                <p className="mb-2 text-sm text-gray-700 font-semibold">{translations[language].changeLanguageNote}</p>
                 <label htmlFor="language-select" className="mr-2 font-semibold">
                     {translations[language].selectLanguage}
                 </label>
@@ -232,7 +235,6 @@ const Timeline = () => {
                             />
                         ))
                     )}
-                    {/* <GeneratePDF data={data} title={'ss'} /> */}
                 </div>
             </div>
             <a

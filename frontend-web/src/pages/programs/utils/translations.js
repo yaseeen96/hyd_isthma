@@ -14,6 +14,7 @@ const translations = {
         giveFeedback: 'Add Question/Give Feedback',
         viewTranslation: 'Listen Translation',
         viewTranscript: 'View Transcript',
+        changeLanguageNote: 'Please change language to listen to translation', // New translation key
     },
     urdu: {
         back: 'واپس',
@@ -30,6 +31,7 @@ const translations = {
         giveFeedback: 'سوال شامل کریں/رائے دیں',
         viewTranslation: 'ترجمہ سنیں',
         viewTranscript: 'ٹرانسکرپٹ دیکھیں',
+        changeLanguageNote: 'براہ کرم ترجمہ سننے کے لیے زبان تبدیل کریں', // New translation key
     },
     malyalam: {
         back: 'തിരിച്ചു',
@@ -46,6 +48,7 @@ const translations = {
         giveFeedback: 'ചോദ്യങ്ങൾ ചേർക്കുക/പ്രതികരണം നൽകുക',
         viewTranslation: 'പരിഭാഷ കേൾക്കുക',
         viewTranscript: 'ട്രാൻസ്ക്രിപ്റ്റ് കാണുക',
+        changeLanguageNote: 'പരിഭാഷ കേൾക്കാൻ ദയവായി ഭാഷ മാറ്റുക', // New translation key
     },
     bengali: {
         back: 'ফিরে যান',
@@ -62,6 +65,7 @@ const translations = {
         giveFeedback: 'প্রশ্ন যোগ করুন/প্রতিক্রিয়া জানান',
         viewTranslation: 'অনুবাদ শুনুন',
         viewTranscript: 'ট্রান্সক্রিপ্ট দেখুন',
+        changeLanguageNote: 'অনুবাদ শুনতে ভাষা পরিবর্তন করুন', // New translation key
     },
     tamil: {
         back: 'திரும்பு',
@@ -78,6 +82,7 @@ const translations = {
         giveFeedback: 'கேள்விகளைச் சேர்க்கவும்/பின்னூட்டம் கொடுக்கவும்',
         viewTranslation: 'மொழிபெயர்ப்பு கேளுங்கள்',
         viewTranscript: 'டிரான்ஸ்கிரிப்ட் பார்க்கவும்',
+        changeLanguageNote: 'மொழிபெயர்ப்பு கேட்க மொழியை மாற்றவும்', // New translation key
     },
     kannada: {
         back: 'ಹಿಂತಿರುಗು',
@@ -94,6 +99,7 @@ const translations = {
         giveFeedback: 'ಪ್ರಶ್ನೆಗಳನ್ನು ಸೇರಿಸಿ/ಪ್ರತಿಕ್ರಿಯೆ ನೀಡು',
         viewTranslation: 'ಅನುವಾದವನ್ನು ಕೇಳಿ',
         viewTranscript: 'ಟ್ರಾನ್ಸ್ಕ್ರಿಪ್ಟ್ ವೀಕ್ಷಿಸಿ',
+        changeLanguageNote: 'ಅನುವಾದವನ್ನು ಕೇಳಲು ದಯವಿಟ್ಟು ಭಾಷೆಯನ್ನು ಬದಲಿಸಿ', // New translation key
     },
 };
 
