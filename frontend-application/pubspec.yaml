@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.10+10
 
 environment:
   sdk: ">=3.3.1 <4.0.0"
@@ -41,11 +41,11 @@ dependencies:
   flutter_riverpod: ^2.5.1
   logger: ^2.2.0
   flutter_native_splash: ^2.3.5
-  awesome_notifications_fcm: ^0.9.3+1
-  awesome_notifications_core: ^0.9.3
-  awesome_notifications: ^0.9.3+1
-  firebase_core: ^2.31.1
-  firebase_crashlytics: ^3.5.6
+  awesome_notifications_fcm: ^0.12.0
+  awesome_notifications_core: ^0.10.1
+  awesome_notifications: ^0.12.1
+  firebase_core: ^4.4.0
+  firebase_crashlytics: ^5.2.6
   # dart run flutter_native_splash:create
 
 dev_dependencies:
@@ -73,8 +73,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/
+  # assets:
+    # - assets/
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
